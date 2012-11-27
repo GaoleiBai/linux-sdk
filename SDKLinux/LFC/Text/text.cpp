@@ -70,9 +70,13 @@ int Text::Length()
 	return length;
 }
 
-char *Text::GetAnsiString()
+void Text::GetAnsiString(char *buffer, int &len)
 {
-	return p;
+	int i = 0;
+	char *q = p;
+	char *r = buffer;
+	while (i < len && *q) *r++ = *q++;
+	len = i;
 }
 
 int Text::Compare(const char *t) 

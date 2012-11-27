@@ -26,7 +26,7 @@ public:
 	virtual ~Text();
 
 	int Length();
-	char *GetAnsiString();
+	void GetAnsiString(char *buffer, int &len);
 	int Compare(const Text &t);
 	int Compare(const char *t);
 	Text SubText(int ix);
