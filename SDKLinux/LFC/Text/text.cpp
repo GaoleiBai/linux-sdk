@@ -2,16 +2,25 @@
 #include "text_exception.h"
 #include <string.h>
 #include <stdio.h>
+#include <wchar.h>h>
 
 
-Text &Text::aquireText(const char *s, int length, bool deletePrevious)
+Text &Text::aquireText(const char *s, int len, bool deletePrevious)
 {
 	if (deletePrevious) delete p;
-	this->length = length;
-	p = new char[length + 1];
-	for (int i=0; i<length; i++) p[i] = s[i];
-	p[length] = 0;
-	return *this;
+	length = len;
+	p = new wchar_t[len + 1];
+	for (int i=0; i<len; i++) p[i] = s[i];
+	p[len] = 0;
+}
+
+Text &Text::aquireText(const wchar_t *s, int len, bool deletePrevious)
+{
+	if (deletePrevious) delete p;
+	length = len;
+	p = new wchar_t[len + 1];
+	for (int i=0; i<len; i++) p[i] = s[i];
+	p[len] = 0;
 }
 
 Text::Text()
@@ -24,9 +33,19 @@ Text::Text(const char *t)
 	aquireText(t, strlen(t), false);
 }
 
-Text::Text(const char *t, int length)
+Text::Text(const char *t, int len)
 {
-	aquireText(t, length, false);
+	aquireText(t, len, false);
+}
+
+Text::Text(const wchar_t *t)
+{
+	aquireText(t, wcslen(t), false);
+}
+
+Text::Text(const wchar_t *t, int len)
+{
+	aquireText(t, len, false);
 }
 
 Text::Text(const Text &t)
@@ -73,10 +92,19 @@ int Text::Length()
 void Text::GetAnsiString(char *buffer, int &len)
 {
 	int i = 0;
-	char *q = p;
+	wchar_t *q = p;
 	char *r = buffer;
 	while (i < len && *q) *r++ = *q++;
 	len = i;
+}
+
+void Text::GetWideString(wchar_t *buffer, int &len)
+{
+	int i = 0;
+	wchar_t *q = p;
+	wchar_t *r = buffer;
+	while (i < len && *q) *r++ = *q++;
+	len = i;	
 }
 
 int Text::Compare(const char *t) 
@@ -123,8 +151,26 @@ int Text::findIx(const char *c, int len)
 	int maxLen = len - 1;
 	int maxLength = length - len + 1;
 	for (int i = 0; i < maxLength; i++) {
-		char *uu = p + i;
+		wchar_t *uu = p + i;
 		char *vv = (char *)c;
+		for (int j=0; j<len; j++) {
+			if (*uu++ != *vv++) break;
+			if (j == maxLen) return i;
+		}
+	}
+	
+	return -1;	
+}
+
+int Text::findIx(const wchar_t *c, int len)
+{
+	if (len == 0) return -1;
+	
+	int maxLen = len - 1;
+	int maxLength = length - len + 1;
+	for (int i = 0; i < maxLength; i++) {
+		wchar_t *uu = p + i;
+		wchar_t *vv = (wchar_t *)c;
 		for (int j=0; j<len; j++) {
 			if (*uu++ != *vv++) break;
 			if (j == maxLen) return i;
@@ -215,7 +261,7 @@ Collection<Text *> &Text::Split(Collection<Text *> &destination, Text &splitChar
 
 void Text::Print()
 {
-	printf("%s", p);
+	printf("%S", p);
 }
 
 bool Text::Equals(const Text &t)
@@ -238,14 +284,29 @@ bool Text::StartsWith(const char *t)
 	return StartsWith(t, strlen(t));
 }
 
-bool Text::StartsWith(const char *t, int tlength)
+bool Text::StartsWith(const char *t, int len)
 {
-	if (tlength > length) return false;
-	int minLen = tlength < length ? tlength : length;
+	if (len > length) return false;
+	int minLen = len < length ? len : length;
 	for (int i = 0; i < minLen; i++)
 		if (t[i] != p[i])
 			return false;
 	return true;	
+}
+
+bool Text::StartsWith(const wchar_t *t)
+{
+	return StartsWith(t, wcslen(t));
+}
+
+bool Text::StartsWith(const wchar_t *t, int len)
+{
+	if (len > length) return false;
+	int minLen = len < length ? len : length;
+	for (int i = 0; i < minLen; i++)
+		if (t[i] != p[i])
+			return false;
+	return true;
 }
 
 bool Text::EndsWith(const Text &t)
@@ -262,8 +323,27 @@ bool Text::EndsWith(const char *t, int len)
 {
 	if (length < len) return false;
 	int deltat = length - len;
+	wchar_t *pp = p + deltat;
+	char *tt = (char *)t;
 	for (int i = 0; i < len; i++)
-		if (p[deltat + i] != t[i])
+		if (*pp++ != *tt++)
+			return false;
+	return true;
+}
+
+bool Text::EndsWith(const wchar_t *t)
+{
+	return EndsWith(t, wcslen(t));
+}
+
+bool Text::EndsWith(const wchar_t *t, int len)
+{
+	if (length < len) return false;
+	int deltat = length - len;
+	wchar_t *pp = p + deltat;
+	wchar_t *tt = (wchar_t *)t;
+	for (int i = 0; i < len; i++)
+		if (*pp++ != *tt++)
 			return false;
 	return true;
 }
@@ -283,14 +363,24 @@ bool Text::Contains(const char *t, int len)
 	return findIx(t, len) != -1;
 }
 
+bool Text::Contains(const wchar_t *t)
+{
+	return Contains(t, wcslen(t));
+}
+
+bool Text::Contains(const wchar_t *t, int len)
+{
+	return findIx(t, len);
+}
+
 Text Text::operator +(const Text &t)
 {
 	Text q;
 	delete q.p;
 	q.length = length + t.length;
-	q.p = new char[q.length + 1];
-	strcpy(q.p, p);
-	strcat(q.p + length, t.p);
+	q.p = new wchar_t[q.length + 1];
+	wcscpy(q.p, p);
+	wcscat(q.p + length, t.p);
 	return q;
 }
 
@@ -299,9 +389,20 @@ Text Text::operator +(const char *t)
 	Text q;
 	delete q.p;
 	q.length = length + strlen(t);
-	q.p = new char[q.length + 1];
-	strcpy(q.p, p);
-	strcat(q.p + length, t);
+	q.p = new wchar_t[q.length + 1];
+	swprintf(q.p, q.length + 1, L"%s", p);
+	swprintf(q.p + length, q.length - length + 1, L"%S", t);
+	return q;
+}
+
+Text Text::operator +(const wchar_t *t)
+{
+	Text q;
+	delete q.p;
+	q.length = length + wcslen(t);
+	q.p = new wchar_t[q.length + 1];
+	swprintf(q.p, q.length + 1, L"%s", p);
+	swprintf(q.p + length, q.length - length + 1, L"%s", t);
 	return q;
 }
 

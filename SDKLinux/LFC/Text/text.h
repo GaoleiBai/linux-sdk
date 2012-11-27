@@ -8,16 +8,20 @@
 class Text : public NObject {
 	
 private:
-	char *p;
+	wchar_t *p;
 	int length;
 	
-	Text &aquireText(const char *s, int length, bool deletePrevious);
+	Text &aquireText(const char *s, int len, bool deletePrevious);
+	Text &aquireText(const wchar_t *s, int len, bool deletePrevious);
 	int findIx(const char *c, int len);
+	int findIx(const wchar_t *c, int len);
 	
 public:
 	Text();
 	Text(const char *t);
-	Text(const char *t, int length);
+	Text(const char *t, int len);
+	Text(const wchar_t *t);
+	Text(const wchar_t *t, int len);
 	Text(const Text &t);
 	Text(bool b);
 	Text(int i);
@@ -27,6 +31,7 @@ public:
 
 	int Length();
 	void GetAnsiString(char *buffer, int &len);
+	void GetWideString(wchar_t *buffer, int &len);
 	int Compare(const Text &t);
 	int Compare(const char *t);
 	Text SubText(int ix);
@@ -47,15 +52,22 @@ public:
 	bool StartsWith(Text &t);
 	bool StartsWith(const char *c);
 	bool StartsWith(const char *c, int len);
+	bool StartsWith(const wchar_t *c);
+	bool StartsWith(const wchar_t *c, int len);
 	bool EndsWith(const Text &t);
 	bool EndsWith(const char *t);
 	bool EndsWith(const char *t, int len);
+	bool EndsWith(const wchar_t *t);
+	bool EndsWith(const wchar_t *t, int len);
 	bool Contains(const Text &t);
 	bool Contains(const char *t);
 	bool Contains(const char *t, int len);
+	bool Contains(const wchar_t *t);
+	bool Contains(const wchar_t *t, int len);
 	
 	Text operator+(const Text &t);
 	Text operator+(const char *t);
+	Text operator+(const wchar_t *t);
 	Text operator+(bool b);
 	Text operator+(int i);
 	Text operator+(float f);
