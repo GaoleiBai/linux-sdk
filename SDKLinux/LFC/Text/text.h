@@ -13,6 +13,10 @@ private:
 	
 	Text &aquireText(const char *s, int len, bool deletePrevious);
 	Text &aquireText(const wchar_t *s, int len, bool deletePrevious);
+	Text &appendText(const char *t, int len);
+	Text &appendText(const wchar_t *t, int len);
+	Text &joinText(const wchar_t *t, int tlen, const char *u, int ulen, bool deletePrevious);
+	Text &joinText(const wchar_t *t, int tlen, const wchar_t *u, int ulen, bool deletePrevious);
 	int findIx(const char *c, int len);
 	int findIx(const wchar_t *c, int len);
 	
@@ -22,7 +26,9 @@ public:
 	Text(const char *t, int len);
 	Text(const wchar_t *t);
 	Text(const wchar_t *t, int len);
+	Text(const wchar_t *t, int tlen, const wchar_t *u, int ulen);
 	Text(const Text &t);
+	Text(const Text &u, const Text &v);
 	Text(bool b);
 	Text(int i);
 	Text(float f);
@@ -74,6 +80,7 @@ public:
 	Text operator+(double d);
 	Text &operator+=(const Text &t);
 	Text &operator+=(const char *t);
+	Text &operator+=(const wchar_t *t);
 	Text &operator+=(bool b);
 	Text &operator+=(int i);
 	Text &operator+=(float f);
@@ -92,7 +99,7 @@ public:
 	bool operator<(const char *t);
 	bool operator>(const Text &t);
 	bool operator>(const char *t);
-	char &operator[](const int ix);
+	wchar_t &operator[](const int ix);
 
 };
 

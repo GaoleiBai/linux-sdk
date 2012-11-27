@@ -12,6 +12,7 @@ Text &Text::aquireText(const char *s, int len, bool deletePrevious)
 	p = new wchar_t[len + 1];
 	for (int i=0; i<len; i++) p[i] = s[i];
 	p[len] = 0;
+	return *this;
 }
 
 Text &Text::aquireText(const wchar_t *s, int len, bool deletePrevious)
@@ -21,6 +22,67 @@ Text &Text::aquireText(const wchar_t *s, int len, bool deletePrevious)
 	p = new wchar_t[len + 1];
 	for (int i=0; i<len; i++) p[i] = s[i];
 	p[len] = 0;
+	return *this;
+}
+
+Text &Text::appendText(const wchar_t *t, int len)
+{
+	int qlength = length + len;
+	wchar_t *q = new wchar_t[qlength + 1];
+	wchar_t *qq = q;
+	wchar_t *pp = p;
+	wchar_t *tt = (wchar_t *)t;
+	while (*pp) *qq++ = *pp++;
+	while (*tt) *qq++ = *tt++;
+	delete p;
+	length = qlength;
+	p = q;
+	return *this;
+}
+
+Text &Text::appendText(const char *t, int len)
+{
+	int qlength = length + len;
+	wchar_t *q = new wchar_t[qlength + 1];
+	wchar_t *qq = q;
+	wchar_t *pp = p;
+	char *tt = (char *)t;
+	while (*pp) *qq++ = *pp++;
+	while (*tt) *qq++ = *tt++;
+	delete p;
+	length = qlength;
+	p = q;
+	return *this;
+}
+
+Text &Text::joinText(const wchar_t *t, int tlen, const char *u, int ulen, bool deletePrevious)
+{
+	int qlength = tlen + ulen;
+	wchar_t *q = new wchar_t[qlength + 1];
+	wchar_t *qq = q;
+	wchar_t *tt = (wchar_t *)t;
+	char *uu = (char *)u;
+	while (*tt) *qq++ = *tt++;
+	while (*uu) *qq++ = *uu++;
+	if (deletePrevious) delete p;
+	length = qlength;
+	p = q;
+	return *this;
+}
+
+Text &Text::joinText(const wchar_t *t, int tlen, const wchar_t *u, int ulen, bool deletePrevious)
+{
+	int qlength = tlen + ulen;
+	wchar_t *q = new wchar_t[qlength + 1];
+	wchar_t *qq = q;
+	wchar_t *tt = (wchar_t *)t;
+	char *uu = (char *)u;
+	while (*tt) *qq++ = *tt++;
+	while (*uu) *qq++ = *uu++;
+	if (deletePrevious) delete p;
+	length = qlength;
+	p = q;
+	return *this;
 }
 
 Text::Text()
@@ -48,9 +110,19 @@ Text::Text(const wchar_t *t, int len)
 	aquireText(t, len, false);
 }
 
+Text::Text(const wchar_t *t, int tlen, const wchar_t *u, int ulen)
+{
+	joinText(t, tlen, u, ulen, false);
+}
+
 Text::Text(const Text &t)
 {
 	aquireText(t.p, t.length, false);
+}
+
+Text::Text(const Text &t, const Text &u)
+{
+	joinText(t.p, t.length, u.p, u.length, false);
 }
 
 Text::Text(bool b) 
@@ -376,34 +448,19 @@ bool Text::Contains(const wchar_t *t, int len)
 Text Text::operator +(const Text &t)
 {
 	Text q;
-	delete q.p;
-	q.length = length + t.length;
-	q.p = new wchar_t[q.length + 1];
-	wcscpy(q.p, p);
-	wcscat(q.p + length, t.p);
-	return q;
+	return q.joinText(p, length, t.p, t.length, true);
 }
 
 Text Text::operator +(const char *t)
 {
 	Text q;
-	delete q.p;
-	q.length = length + strlen(t);
-	q.p = new wchar_t[q.length + 1];
-	swprintf(q.p, q.length + 1, L"%s", p);
-	swprintf(q.p + length, q.length - length + 1, L"%S", t);
-	return q;
+	return q.joinText(p, length, t, strlen(t), true);
 }
 
 Text Text::operator +(const wchar_t *t)
 {
 	Text q;
-	delete q.p;
-	q.length = length + wcslen(t);
-	q.p = new wchar_t[q.length + 1];
-	swprintf(q.p, q.length + 1, L"%s", p);
-	swprintf(q.p + length, q.length - length + 1, L"%s", t);
-	return q;
+	return q.joinText(p, length, t, wcslen(t), true);
 }
 
 Text Text::operator +(bool b)
@@ -432,26 +489,17 @@ Text Text::operator +(double d)
 
 Text &Text::operator +=(const Text &t)
 {
-	int qlength = length + t.length;
-	char *q = new char[qlength + 1];
-	strcpy(q, p);
-	strcat(q + length, t.p);
-	delete p;
-	length = qlength;
-	p = q;
-	return *this;
+	return appendText(t.p, t.length);
 }
 
 Text &Text::operator +=(const char *t)
 {
-	int qlength = length + strlen(t);
-	char *q = new char[qlength + 1];
-	strcpy(q, p);
-	strcat(q + length, t);
-	delete p;
-	length = qlength;
-	p = q;
-	return *this;
+	return appendText(t, strlen(t));
+}
+
+Text &Text::operator +=(const wchar_t *t)
+{
+	return appendText(t, wcslen(t));
 }
 
 Text &Text::operator +=(bool b)
@@ -563,7 +611,7 @@ bool Text::operator >(const char *t)
 	return Compare(t) > 0;
 }
 
-char &Text::operator [](const int ix)
+wchar_t &Text::operator [](const int ix)
 {
 	if (ix < 0 || ix >= length) throw TextException("Índice fuera de límites");
 	return p[ix];
