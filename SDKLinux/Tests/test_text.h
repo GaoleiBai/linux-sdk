@@ -7,7 +7,8 @@ public:
 	TestText();
 	~TestText();
 	
-	static int Perform();
+	static int PerformAnsi();
+	static int PerformWide();
 	
 };
 

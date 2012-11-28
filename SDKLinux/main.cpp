@@ -7,8 +7,12 @@ int main(int argc, char **argv)
 {
 	printf("hello world\n");
 	
-	if (TestText::Perform() != 0) {
-		printf("TestText error!");
+	if (TestText::PerformAnsi() != 0) {
+		printf("PerformAnsi error!");
+		return -1;
+	}
+	if (TestText::PerformWide() != 0) {
+		printf("PerformWide error!");
 		return -1;
 	}
 	

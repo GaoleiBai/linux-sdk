@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <wchar.h>h>
 
-
 Text &Text::aquireText(const char *s, int len, bool deletePrevious)
 {
 	if (deletePrevious) delete p;
@@ -34,6 +33,7 @@ Text &Text::appendText(const wchar_t *t, int len)
 	wchar_t *tt = (wchar_t *)t;
 	while (*pp) *qq++ = *pp++;
 	while (*tt) *qq++ = *tt++;
+	*qq = 0;
 	delete p;
 	length = qlength;
 	p = q;
@@ -49,6 +49,7 @@ Text &Text::appendText(const char *t, int len)
 	char *tt = (char *)t;
 	while (*pp) *qq++ = *pp++;
 	while (*tt) *qq++ = *tt++;
+	*qq = 0;
 	delete p;
 	length = qlength;
 	p = q;
@@ -64,6 +65,7 @@ Text &Text::joinText(const wchar_t *t, int tlen, const char *u, int ulen, bool d
 	char *uu = (char *)u;
 	while (*tt) *qq++ = *tt++;
 	while (*uu) *qq++ = *uu++;
+	*qq = 0;
 	if (deletePrevious) delete p;
 	length = qlength;
 	p = q;
@@ -76,9 +78,10 @@ Text &Text::joinText(const wchar_t *t, int tlen, const wchar_t *u, int ulen, boo
 	wchar_t *q = new wchar_t[qlength + 1];
 	wchar_t *qq = q;
 	wchar_t *tt = (wchar_t *)t;
-	char *uu = (char *)u;
+	wchar_t *uu = (wchar_t *)u;
 	while (*tt) *qq++ = *tt++;
 	while (*uu) *qq++ = *uu++;
+	*qq = 0;
 	if (deletePrevious) delete p;
 	length = qlength;
 	p = q;
@@ -127,13 +130,37 @@ Text::Text(const Text &t, const Text &u)
 
 Text::Text(bool b) 
 {
-	aquireText(b ? "true" : "false", b ? 4 : 5, true);
+	aquireText(b ? "true" : "false", b ? 4 : 5, false);
+}
+
+Text::Text(char c)
+{
+	aquireText(&c, 1, false);
+}
+
+Text::Text(wchar_t c)
+{
+	aquireText(&c, 1, false);
+}
+
+Text::Text(short int i)
+{
+	char cadena[100];
+	sprintf(cadena, "%hi", i);
+	aquireText(cadena, strlen(cadena), false);	
 }
 
 Text::Text(int i)
 {
 	char cadena[100];
 	sprintf(cadena, "%i", i);
+	aquireText(cadena, strlen(cadena), false);
+}
+
+Text::Text(long int i)
+{
+	char cadena[100];
+	sprintf(cadena, "%li", i);
 	aquireText(cadena, strlen(cadena), false);
 }
 
@@ -179,27 +206,47 @@ void Text::GetWideString(wchar_t *buffer, int &len)
 	len = i;	
 }
 
-int Text::Compare(const char *t) 
+int Text::Compare(const char *t)
 {
-	int tlength = strlen(t);
-	int lenDiff = tlength - length;
-	if (lenDiff) return lenDiff;
-	
-	for (int i=0; i<tlength && i<length; i++) {
-		int dist = t[i] - p[i];
+	return Compare(t, strlen(t));
+}
+
+int Text::Compare(const char *t, int len) 
+{
+	int minLen = len < length ? len : length;
+	wchar_t *pp = p;
+	char *tt = (char *)t;
+	for (int i=0; i<minLen; i++) {
+		int dist = *pp++ - *tt++;
 		if (dist) return dist;
 	}
+	
+	int lenDiff = len - length;
+	if (lenDiff) return lenDiff;
+}
+
+int Text::Compare(const wchar_t *t)
+{
+	return Compare(t, wcslen(t));
+}
+
+int Text::Compare(const wchar_t *t, int len)
+{
+	int minLen = len < length ? len : length;
+	wchar_t *pp = p;
+	wchar_t *tt = (wchar_t *)t;
+	for (int i=0; i<minLen; i++) {
+		int dist = *pp++ - *tt++;
+		if (dist) return dist;
+	}
+	
+	int lenDiff = len - length;
+	if (lenDiff) return lenDiff;
 }
 
 int Text::Compare(const Text &t)
 {
-	int lenDiff = t.length - length;
-	if (lenDiff) return lenDiff;
-	
-	for (int i=0; i<t.length && i<length; i++) {
-		int dist = t.p[i] - p[i];
-		if (dist) return dist;
-	}
+	return Compare(t.p, t.length);
 }
 
 Text Text::SubText(int ix)
@@ -442,7 +489,7 @@ bool Text::Contains(const wchar_t *t)
 
 bool Text::Contains(const wchar_t *t, int len)
 {
-	return findIx(t, len);
+	return findIx(t, len) != -1;
 }
 
 Text Text::operator +(const Text &t)
@@ -469,7 +516,31 @@ Text Text::operator +(bool b)
 	return *this + q;
 }
 
+Text Text::operator +(char c)
+{
+	Text q = c;
+	return *this + c;
+}
+
+Text Text::operator +(wchar_t c)
+{
+	Text q = c;
+	return *this + c;
+}
+
+Text Text::operator +(short int i)
+{
+	Text q = i;
+	return *this + q;
+}
+
 Text Text::operator +(int i) 
+{
+	Text q = i;
+	return *this + q;
+}
+
+Text Text::operator +(long int i)
 {
 	Text q = i;
 	return *this + q;
@@ -504,13 +575,37 @@ Text &Text::operator +=(const wchar_t *t)
 
 Text &Text::operator +=(bool b)
 {
-	return b ? *this += "true" : *this += "false";
+	return appendText(b ? "true" : "false", b ? 4 : 5);
+}
+
+Text &Text::operator +=(char c)
+{
+	return appendText(&c, 1);
+}
+
+Text &Text::operator +=(wchar_t c)
+{
+	return appendText(&c, 1);
+}
+
+Text &Text::operator +=(short int i)
+{
+	char cadena[100];
+	sprintf(cadena, "%hi", i);
+	return *this += cadena;	
 }
 
 Text &Text::operator +=(int i)
 {
 	char cadena[100];
-	sprintf(cadena, "%d", i);
+	sprintf(cadena, "%i", i);
+	return *this += cadena;
+}
+
+Text &Text::operator +=(long int i)
+{
+	char cadena[100];
+	sprintf(cadena, "%li", i);
 	return *this += cadena;
 }
 
@@ -531,14 +626,17 @@ Text &Text::operator +=(double d)
 Text &Text::operator =(const Text &t)
 {
 	if (&t == this) return *this;
-	aquireText(t.p, t.length, true);
-	return *this;
+	return aquireText(t.p, t.length, true);
 }
 
 Text &Text::operator =(const char *t)
 {
-	aquireText(t, strlen(t), true);
-	return *this;
+	return aquireText(t, strlen(t), true);
+}
+
+Text &Text::operator =(const wchar_t *t)
+{
+	return aquireText(t, wcslen(t), true);
 }
 
 Text &Text::operator =(bool b)
@@ -546,10 +644,34 @@ Text &Text::operator =(bool b)
 	return aquireText(b ? "true" : "false", b ? 4 : 5, true);
 }
 
+Text &Text::operator =(char c)
+{
+	return aquireText(&c, 1, true);
+}
+
+Text &Text::operator =(wchar_t c)
+{
+	return aquireText(&c, 1, true);
+}
+
+Text &Text::operator =(short int i)
+{
+	char cadena[100];
+	sprintf(cadena, "%hi", i);
+	return aquireText(cadena, strlen(cadena), true);
+}
+
 Text &Text::operator =(int i)
 {
 	char cadena[100];
-	sprintf(cadena, "%d", i);
+	sprintf(cadena, "%i", i);
+	return aquireText(cadena, strlen(cadena), true);
+}
+
+Text &Text::operator =(long int i)
+{
+	char cadena[100];
+	sprintf(cadena, "%li", i);
 	return aquireText(cadena, strlen(cadena), true);
 }
 
@@ -578,7 +700,14 @@ bool Text::operator ==(const char *t)
 {
 	int lt = strlen(t);
 	if (lt != length) return false;
-	return Compare(t) == 0;
+	return Compare(t, lt) == 0;
+}
+
+bool Text::operator ==(const wchar_t *t)
+{
+	int lt = wcslen(t);
+	if (lt != length) return false;
+	return Compare(t, lt) == 0;
 }
 
 bool Text::operator !=(const Text &t)
@@ -587,6 +716,11 @@ bool Text::operator !=(const Text &t)
 }
 
 bool Text::operator !=(const char *t)
+{
+	return !(*this == t);
+}
+
+bool Text::operator !=(const wchar_t *t)
 {
 	return !(*this == t);
 }
@@ -601,12 +735,22 @@ bool Text::operator <(const char *t)
 	return Compare(t) < 0;
 }
 
+bool Text::operator <(const wchar_t *t)
+{
+	return Compare(t) < 0;
+}
+
 bool Text::operator >(const Text &t)
 {
 	return Compare(t) > 0;
 }
 
 bool Text::operator >(const char *t)
+{
+	return Compare(t) > 0;
+}
+
+bool Text::operator >(const wchar_t *t)
 {
 	return Compare(t) > 0;
 }

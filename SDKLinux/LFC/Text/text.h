@@ -5,6 +5,7 @@
 #include "../exception.h"
 #include "../Collections/collection.h"
 
+
 class Text : public NObject {
 	
 private:
@@ -30,7 +31,11 @@ public:
 	Text(const Text &t);
 	Text(const Text &u, const Text &v);
 	Text(bool b);
+	Text(char c);
+	Text(wchar_t c);
+	Text(short int i);
 	Text(int i);
+	Text(long int i);
 	Text(float f);
 	Text(double d);
 	virtual ~Text();
@@ -40,6 +45,9 @@ public:
 	void GetWideString(wchar_t *buffer, int &len);
 	int Compare(const Text &t);
 	int Compare(const char *t);
+	int Compare(const char *t, int len);
+	int Compare(const wchar_t *t);
+	int Compare(const wchar_t *t, int len);
 	Text SubText(int ix);
 	Text SubText(int ix, int length);
 	//static Text &ReplaceText(Text &cadena, Text &replacementString);
@@ -75,32 +83,50 @@ public:
 	Text operator+(const char *t);
 	Text operator+(const wchar_t *t);
 	Text operator+(bool b);
+	Text operator+(char c);
+	Text operator+(wchar_t c);
+	Text operator+(short int i);
 	Text operator+(int i);
+	Text operator+(long int i);
 	Text operator+(float f);
 	Text operator+(double d);
 	Text &operator+=(const Text &t);
 	Text &operator+=(const char *t);
 	Text &operator+=(const wchar_t *t);
 	Text &operator+=(bool b);
+	Text &operator+=(char c);
+	Text &operator+=(wchar_t c);
+	Text &operator+=(short int i);
 	Text &operator+=(int i);
+	Text &operator+=(long int i);
 	Text &operator+=(float f);
 	Text &operator+=(double d);
 	Text &operator=(const Text &t);
 	Text &operator=(const char *t);
+	Text &operator=(const wchar_t *t);
 	Text &operator=(bool b);
+	Text &operator=(char c);
+	Text &operator=(wchar_t c);
+	Text &operator=(short int i);
 	Text &operator=(int i);
+	Text &operator=(long int i);
 	Text &operator=(float f);
 	Text &operator=(double d);
 	bool operator==(const Text &t);
 	bool operator==(const char *t);
+	bool operator==(const wchar_t *t);
 	bool operator!=(const Text &t);
 	bool operator!=(const char *t);
+	bool operator!=(const wchar_t *t);
 	bool operator<(const Text &t);
 	bool operator<(const char *t);
+	bool operator<(const wchar_t *t);
 	bool operator>(const Text &t);
 	bool operator>(const char *t);
+	bool operator>(const wchar_t *t);
 	wchar_t &operator[](const int ix);
 
 };
+
 
 #endif // TEXT_H
