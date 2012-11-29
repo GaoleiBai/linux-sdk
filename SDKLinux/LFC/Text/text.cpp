@@ -2,7 +2,7 @@
 #include "text_exception.h"
 #include <string.h>
 #include <stdio.h>
-#include <wchar.h>h>
+#include <wchar.h>
 
 Text &Text::aquireText(const char *s, int len, bool deletePrevious)
 {

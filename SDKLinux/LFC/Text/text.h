@@ -50,7 +50,7 @@ public:
 	int Compare(const wchar_t *t, int len);
 	Text SubText(int ix);
 	Text SubText(int ix, int length);
-	//static Text &ReplaceText(Text &cadena, Text &replacementString);
+	//Text Replace(Text &search, Text &replacement);
 	int FindIx(const Text &t);
 	int FindIx(const char *t);
 	int FindIx(Collection<char> &c);

@@ -12,6 +12,8 @@
       <File Name="LFC/Text/text.h"/>
       <File Name="LFC/Text/text_exception.h"/>
       <File Name="LFC/Text/text_exception.cpp"/>
+      <File Name="LFC/Text/text_buffer.cpp"/>
+      <File Name="LFC/Text/text_buffer.h"/>
     </VirtualDirectory>
     <File Name="LFC/n_object.cpp"/>
     <File Name="LFC/n_object.h"/>
