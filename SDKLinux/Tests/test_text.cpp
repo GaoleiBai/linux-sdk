@@ -140,7 +140,7 @@ int TestText::PerformWide()
 	
 	Text a = L"HOLA";
 	Text b = L"Mundo\r\n";
-	a = a + L" cruel " + 5 + L" " + b + "\r\n";
+	a = a + L" cruel " + 5 + L" " + b;
 	a.Print();
 	
 	const wchar_t *test1str = L"HOLA cruel 5 Mundo\r\n";
