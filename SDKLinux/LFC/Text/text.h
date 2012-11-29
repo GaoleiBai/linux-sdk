@@ -124,9 +124,14 @@ public:
 	bool operator>(const Text &t);
 	bool operator>(const char *t);
 	bool operator>(const wchar_t *t);
+	bool operator<=(const Text &t);
+	bool operator<=(const char *t);
+	bool operator<=(const wchar_t *t);
+	bool operator>=(const Text &t);
+	bool operator>=(const char *t);
+	bool operator>=(const wchar_t *t);
 	wchar_t &operator[](const int ix);
 
 };
-
 
 #endif // TEXT_H

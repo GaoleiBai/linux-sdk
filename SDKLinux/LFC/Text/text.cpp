@@ -755,6 +755,36 @@ bool Text::operator >(const wchar_t *t)
 	return Compare(t) > 0;
 }
 
+bool Text::operator <=(const Text &t)
+{
+	return Compare(t) <= 0;
+}
+
+bool Text::operator <=(const char *t)
+{
+	return Compare(t) <= 0;
+}
+
+bool Text::operator <=(const wchar_t *t)
+{
+	return Compare(t) <= 0;
+}
+
+bool Text::operator >=(const Text &t)
+{
+	return Compare(t) >= 0;
+}
+
+bool Text::operator >=(const char *t)
+{
+	return Compare(t) >= 0;
+}
+
+bool Text::operator >=(const wchar_t *t)
+{
+	return Compare(t) >= 0;
+}
+
 wchar_t &Text::operator [](const int ix)
 {
 	if (ix < 0 || ix >= length) throw TextException("Índice fuera de límites");

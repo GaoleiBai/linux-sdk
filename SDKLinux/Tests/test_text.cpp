@@ -131,12 +131,21 @@ int TestText::PerformWide()
 	short int sint = 1000;
 	long int lint = 200000000000l;
 	
-	Text tsint = sint + "\r\n";
+	Text tsint = sint;
 	Text tlint = lint;
+	tsint = tsint + L"\r\n" + 5;
 	tsint += L"\r\n";
 	tlint += L"\r\n";
 	tsint.Print();
 	tlint.Print();
+	
+	Text hm = L"Hola mundo.\r\n";
+	Text hpm = "Hola";
+	hpm = hpm + " mundo.\r\n";
+	if (hm != hpm || hm > hpm || hm < hpm || !(hm >= hpm) || !(hm <= hpm )) {
+		printf("Comparison didn't work!\r\n");
+		return -1;
+	}
 	
 	Text a = L"HOLA";
 	Text b = L"Mundo\r\n";
@@ -243,7 +252,10 @@ int TestText::PerformWide()
 		gtb.Add(new Text((wchar_t)(cc + 1)));
 	}
 	for (int i=0; i<gta.Count(); i++) {
-		if (!(*gta[i] < *gtb[i])) {
+		if (!(*gta[i] < *gtb[i]) || 
+			!(*gta[i] <= *gtb[i]) || 
+			!(*gtb[i] >= *gta[i]) || 
+			!(*gtb[i] > *gta[i])) {
 			printf("La comparación no ha funcionado.\r\n");
 			return -1;
 		}
