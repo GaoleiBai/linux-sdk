@@ -261,5 +261,17 @@ int TestText::PerformWide()
 		}
 	}
 	
+	Text ss("."), tt(" ");
+	Text replacement = "a b c d e f g h i j ";
+	Text rrr = replacement.Replace(" ", ",");
+	Text sss = rrr.Replace(L",", L".");
+	Text ttt = sss.Replace(ss, tt);
+	Text uuu = replacement.Replace(",", ".");
+	Text vvv = replacement.Replace("a", "b");
+	if (replacement != ttt) {
+		printf("Replacement doesn't work!!!\r\n");
+		return -1;
+	}
+	
 	return 0;
 }

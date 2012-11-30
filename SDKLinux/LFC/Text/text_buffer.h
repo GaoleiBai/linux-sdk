@@ -20,6 +20,8 @@ public:
 	Text ToText();
 	
 private:
+	void increaseBuffer(int newLen);
+
 	wchar_t *p;
 	int length;
 	int psize;

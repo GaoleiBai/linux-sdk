@@ -18,8 +18,8 @@ private:
 	Text &appendText(const wchar_t *t, int len);
 	Text &joinText(const wchar_t *t, int tlen, const char *u, int ulen, bool deletePrevious);
 	Text &joinText(const wchar_t *t, int tlen, const wchar_t *u, int ulen, bool deletePrevious);
-	int findIx(const char *c, int len);
-	int findIx(const wchar_t *c, int len);
+	int findIx(int pos, const char *c, int len);
+	int findIx(int pos, const wchar_t *c, int len);
 	
 public:
 	Text();
@@ -50,12 +50,16 @@ public:
 	int Compare(const wchar_t *t, int len);
 	Text SubText(int ix);
 	Text SubText(int ix, int length);
-	//Text Replace(Text &search, Text &replacement);
+	Text Replace(Text &search, Text &replacement);
+	Text Replace(const wchar_t *search, const wchar_t *replacement);
+	Text Replace(const char *search, const char *replacement);
 	int FindIx(const Text &t);
 	int FindIx(const char *t);
+	int FindIx(const wchar_t *t);
 	int FindIx(Collection<char> &c);
-	int FindIx(const Text &t, int startIndex);
-	int FindIx(const char *t, int startIndex);
+	int FindIx(int startIndex, const Text &t);
+	int FindIx(int startIndex, const char *t);
+	int FindIx(int startIndex, const wchar_t *t);
 	int FindIx(Collection<char> &c, int startIndex);
 	Collection<int> &ExtractIndexes(Collection<int> &destination, Text &textToFind);
 	Collection<Text *> &Split(Collection<Text *> &destination, Collection<char> &splitChars, bool removeEmptyEntries);

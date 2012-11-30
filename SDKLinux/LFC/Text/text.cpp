@@ -1,4 +1,5 @@
 #include "text.h"
+#include "text_buffer.h"
 #include "text_exception.h"
 #include <string.h>
 #include <stdio.h>
@@ -194,6 +195,7 @@ void Text::GetAnsiString(char *buffer, int &len)
 	wchar_t *q = p;
 	char *r = buffer;
 	while (i < len && *q) *r++ = *q++;
+	*r = 0;
 	len = i;
 }
 
@@ -203,6 +205,7 @@ void Text::GetWideString(wchar_t *buffer, int &len)
 	wchar_t *q = p;
 	wchar_t *r = buffer;
 	while (i < len && *q) *r++ = *q++;
+	*r = 0;
 	len = i;	
 }
 
@@ -263,13 +266,59 @@ Text Text::SubText(int ix, int length)
 	return q.aquireText(p + ix, length, true);
 }
 
-int Text::findIx(const char *c, int len)
+Text Text::Replace(Text &search, Text &replacement)
+{
+	TextBuffer tb(10000);
+	int ix = 0;
+	while (ix != -1 && ix < length) {
+		int ixNow = FindIx(ix, search);
+		if (ixNow == -1) ix = length;
+		Text s = SubText(ix, ixNow - ix);
+		tb.Append(s);
+		if (ixNow < length) tb.Append(replacement);
+		ix = ixNow + 1;
+	}
+	return tb.ToText();
+}
+
+Text Text::Replace(const wchar_t *search, const wchar_t *replacement)
+{
+	TextBuffer tb(10000);
+	int ix = 0;
+	while (ix != -1 && ix < length) {
+		int ixNow = FindIx(ix, search);
+		if (ixNow == -1) ix = length;
+		Text s = SubText(ix, ixNow - ix);
+		tb.Append(s);
+		if (ixNow < length) tb.Append(replacement);
+		ix = ixNow + 1;
+	}
+	return tb.ToText();
+}
+
+Text Text::Replace(const char *search, const char *replacement)
+{
+	TextBuffer tb(10000);
+	int ix = 0;
+	while (ix != -1 && ix < length) {
+		int ixNow = FindIx(ix, search);
+		if (ixNow == -1) ixNow = length;
+		Text s = SubText(ix, ixNow - ix);
+		tb.Append(s);
+		if (ixNow < length) tb.Append(replacement);
+		ix = ixNow + 1;
+	}
+	return tb.ToText();
+}
+
+int Text::findIx(int pos, const char *c, int len)
 {
 	if (len == 0) return -1;
+	if (pos >= length) return -1;
 	
 	int maxLen = len - 1;
 	int maxLength = length - len + 1;
-	for (int i = 0; i < maxLength; i++) {
+	for (int i = pos; i < maxLength; i++) {
 		wchar_t *uu = p + i;
 		char *vv = (char *)c;
 		for (int j=0; j<len; j++) {
@@ -281,13 +330,14 @@ int Text::findIx(const char *c, int len)
 	return -1;	
 }
 
-int Text::findIx(const wchar_t *c, int len)
+int Text::findIx(int pos, const wchar_t *c, int len)
 {
 	if (len == 0) return -1;
+	if (pos >= length) return -1;
 	
 	int maxLen = len - 1;
 	int maxLength = length - len + 1;
-	for (int i = 0; i < maxLength; i++) {
+	for (int i = pos; i < maxLength; i++) {
 		wchar_t *uu = p + i;
 		wchar_t *vv = (wchar_t *)c;
 		for (int j=0; j<len; j++) {
@@ -301,13 +351,19 @@ int Text::findIx(const wchar_t *c, int len)
 
 int Text::FindIx(const Text &t)
 {
-	return findIx(t.p, t.length);
+	return findIx(0, t.p, t.length);
 }
 
 int Text::FindIx(const char *t)
 {
 	int tlength = strlen(t);
-	return findIx(t, tlength);
+	return findIx(0, t, tlength);
+}
+
+int Text::FindIx(const wchar_t *t)
+{
+	int tlen = wcslen(t);
+	return findIx(0, t, tlen);
 }
 
 int Text::FindIx(Collection<char> &c)
@@ -315,17 +371,24 @@ int Text::FindIx(Collection<char> &c)
 	return FindIx(c, 0);
 }
 
-int Text::FindIx(const Text &t, int startIndex)
+int Text::FindIx(int startIndex, const Text &t)
 {
-	if (startIndex < 0 || startIndex > t.length) throw new Exception("Index out of bounds");
-	return findIx(t.p + startIndex, t.length - startIndex);
+	if (startIndex < 0 || startIndex >= length) throw new Exception("Index out of bounds");
+	return findIx(startIndex, t.p, t.length);
 }
 
-int Text::FindIx(const char *t, int startIndex)
+int Text::FindIx(int startIndex, const char *t)
 {
 	int tlength = strlen(t);
-	if (startIndex < 0 || startIndex > tlength) throw new Exception("Index out of bounds");
-	return findIx(t + startIndex, tlength - startIndex);
+	if (startIndex < 0 || startIndex >= length) throw new Exception("Index out of bounds");
+	return findIx(startIndex, t, tlength);
+}
+
+int Text::FindIx(int startIndex, const wchar_t *t)
+{
+	int tlen = wcslen(t);
+	if (startIndex < 0 || startIndex >= length) throw new Exception("Index out of bounds");
+	return findIx(startIndex, t, tlen);
 }
 
 int Text::FindIx(Collection<char> &c, int startIndex) 
@@ -343,7 +406,7 @@ Collection<int> &Text::ExtractIndexes(Collection<int> &destination, Text &textTo
 	int ix = 0;
 	
 	while (ix < length) {
-		ix = FindIx(textToFind, ix);
+		ix = FindIx(ix, textToFind);
 		if (ix == -1) break;
 		destination.Add(ix);
 		ix += textToFind.length;
@@ -479,7 +542,7 @@ bool Text::Contains(const char *t)
 
 bool Text::Contains(const char *t, int len)
 {
-	return findIx(t, len) != -1;
+	return findIx(0, t, len) != -1;
 }
 
 bool Text::Contains(const wchar_t *t)
@@ -489,7 +552,7 @@ bool Text::Contains(const wchar_t *t)
 
 bool Text::Contains(const wchar_t *t, int len)
 {
-	return findIx(t, len) != -1;
+	return findIx(0, t, len) != -1;
 }
 
 Text Text::operator +(const Text &t)
