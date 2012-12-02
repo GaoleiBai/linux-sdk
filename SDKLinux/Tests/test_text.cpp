@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "test_text.h"
 #include "../LFC/LFC.h"
 
@@ -304,11 +305,13 @@ int TestText::PerformWide()
 		return -1;
 	}
 	
-	Text tombs = "El camión no funciona con cañas en la calefacción.";
-	int len = tombs.GetMultibyteCharacterString(NULL);
-	char *p = new char[len + 1];
-	tombs.GetMultibyteCharacterString(p);
-	Text fmbs = Text::FromMultibyteCharacterString(p, len + 1);
+	const char *mbs = "En la imágen se ve que el camión tiene cañas en las ruedas.\r\n";
+	Locale::SetLocale("");
+	Text tombs = Text::FromMultibyteCharacterString(mbs, strlen(mbs));
+	tombs.Print();
+	char cadena[1000];
+	tombs.GetMultibyteCharacterString(cadena, 1000);
+
 	
 	return 0;
 }

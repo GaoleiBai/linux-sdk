@@ -1,6 +1,7 @@
 #include "text.h"
 #include "text_buffer.h"
 #include "text_exception.h"
+#include "../Encoding/locale_encoding.h"
 #include <string.h>
 #include <stdio.h>
 #include <wchar.h>
@@ -221,11 +222,11 @@ void Text::GetWideString(wchar_t *buffer, int &len)
 	len = len - 1 < length ? len - 1 : length;
 }
 
-int Text::GetMultibyteCharacterString(char *buffer)
+int Text::GetMultibyteCharacterString(char *buffer, int size)
 {
-	int mblen = wcsrtombs(NULL, (const wchar_t **)&p, 1, NULL);
-	mblen = buffer ? wcsrtombs(buffer, (const wchar_t **)&p, mblen, NULL) : mblen;
-	return mblen;
+	wchar_t *q = p;
+	int i = wcsrtombs(buffer, (const wchar_t **)&q, size - 1, NULL);
+	return i;
 }
 
 Text Text::FromMultibyteCharacterString(const char *buffer, int len)
@@ -235,7 +236,7 @@ Text Text::FromMultibyteCharacterString(const char *buffer, int len)
 	
 	Text t(q, mblen);
 	delete q;
-	return t;;
+	return t;
 }
 
 int Text::Compare(const char *t)

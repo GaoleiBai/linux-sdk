@@ -50,7 +50,7 @@ public:
 	int Length();
 	void GetAnsiString(char *buffer, int &len);
 	void GetWideString(wchar_t *buffer, int &len);
-	int GetMultibyteCharacterString(char *buffer);
+	int GetMultibyteCharacterString(char *buffer, int size);
 	static Text FromMultibyteCharacterString(const char *buffer, int len);
 	int Compare(const Text &t);
 	int Compare(const char *t);

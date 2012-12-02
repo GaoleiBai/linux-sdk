@@ -9,9 +9,9 @@ public:
 	Locale();
 	virtual ~Locale();
 
-	void SetLocale(Text &locale);
-	void SetLocale(const char *locale);
-	void SetLocale(const wchar_t *locale);
+	static void SetLocale(Text &locale);
+	static void SetLocale(const char *locale);
+	static void SetLocale(const wchar_t *locale);
 };
 
 #endif // LOCALE_H
