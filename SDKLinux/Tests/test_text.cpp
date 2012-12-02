@@ -163,6 +163,10 @@ int TestText::PerformWide()
 		return -1;
 	}
 	
+	Text localeup = hm.ToUpper();
+	Text localelow = hm.ToLower();
+	
+	
 	Text a = L"HOLA";
 	Text b = L"Mundo\r\n";
 	a = a + L" cruel " + 5 + L" " + b;

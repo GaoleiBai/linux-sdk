@@ -4,6 +4,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <wchar.h>
+#include <locale.h>
+#include <wctype.h>
 
 wchar_t *Text::write(int posdest, wchar_t *dest, int ldest, int possrc, const wchar_t *src, int lsrc)
 {
@@ -440,6 +442,41 @@ Text Text::Trim(Collection<wchar_t> &c)
 	}
 	
 	return Text();
+}
+
+void Text::SetLocale(Text &locale)
+{
+	setlocale(LC_ALL, "C");
+	int lenLocale = locale.Length();
+	char *loc = new char[locale.Length() + 1];
+	locale.GetAnsiString(loc, lenLocale);
+	setlocale(LC_ALL, loc);
+	delete loc;
+}
+
+void Text::SetLocale(char *locale)
+{
+	setlocale(LC_ALL, locale);	
+}
+
+void Text::SetLocale(wchar_t *locale)
+{
+	Text loc = locale;
+	SetLocale(loc);
+}
+
+Text Text::ToUpper()
+{
+	Text t = *this;
+	for (wchar_t *pp = t.p; *pp; pp++) *pp  = towupper(*pp);
+	return t;
+}
+
+Text Text::ToLower()
+{
+	Text t = *this;
+	for (wchar_t *pp = t.p; *pp; pp++) *pp  = towlower(*pp);
+	return t;
 }
 
 Collection<int> &Text::ExtractIndexes(Collection<int> &destination, Text &textToFind)

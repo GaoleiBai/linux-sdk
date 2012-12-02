@@ -70,6 +70,11 @@ public:
 	Text TrimLeft(Collection<wchar_t> &c);
 	Text TrimRight(Collection<wchar_t> &c);
 	Text Trim(Collection<wchar_t> &c);
+	static void SetLocale(Text &locale);
+	static void SetLocale(char *locale);
+	static void SetLocale(wchar_t *locale);
+	Text ToUpper();
+	Text ToLower();
 	Collection<int> &ExtractIndexes(Collection<int> &destination, Text &textToFind);
 	Collection<Text *> &Split(Collection<Text *> &destination, Collection<char> &splitChars, bool removeEmptyEntries);
 	Collection<Text *> &Split(Collection<Text *> &destination, Collection<wchar_t> &splitChars, bool removeEmptyEntries);
