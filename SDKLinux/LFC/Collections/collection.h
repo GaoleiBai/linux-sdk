@@ -11,7 +11,7 @@ public:
 	Collection();
 	Collection(int size);
 	Collection(T t[]);
-	Collection(Collection<T> &c);
+	Collection(const Collection<T> &c);
 	virtual ~Collection();
 
 	void Add(T o);
@@ -23,7 +23,7 @@ public:
 	int Count();
 	bool Contains(T o);
 	
-	T &operator[](int ix);
+	T &operator [](int ix);
 
 private:
 	T *objects;
@@ -65,7 +65,7 @@ Collection<T>::Collection(T t[])
 }
 
 template<class T>
-Collection<T>::Collection(Collection<T> &c)
+Collection<T>::Collection(const Collection<T> &c)
 {
 	size = c.size > 0 ? c.size : 1;
 	objects = new T[size];
@@ -169,5 +169,6 @@ T &Collection<T>::operator[](int ix)
 	if (ix < 0 || ix > numObjects) new CollectionException("Index out of bounds");
 	return objects[ix];
 }
+
 
 #endif // ARRAY_H

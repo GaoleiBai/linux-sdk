@@ -5,6 +5,8 @@
 
 int main(int argc, char **argv)
 {
+	lfc_init(); // lfc initialization
+	
 	printf("hello world\n");
 	
 	if (TestText::PerformAnsi() != 0) {

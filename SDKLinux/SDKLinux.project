@@ -24,6 +24,14 @@
       <File Name="LFC/Encoding/locale_encoding.cpp"/>
       <File Name="LFC/Encoding/locale_encoding.h"/>
     </VirtualDirectory>
+    <VirtualDirectory Name="Devices"/>
+    <VirtualDirectory Name="Network"/>
+    <VirtualDirectory Name="Threading"/>
+    <VirtualDirectory Name="Filesystem">
+      <File Name="LFC/FileSystem/directory.h"/>
+      <File Name="LFC/FileSystem/directory.cpp"/>
+    </VirtualDirectory>
+    <File Name="LFC/LFC.cpp"/>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>
@@ -103,5 +111,7 @@
     <File Name="Tests/test_text.h"/>
     <File Name="Tests/test_text.cpp"/>
     <File Name="Tests/Tests.h"/>
+    <File Name="Tests/testdirectory.h"/>
+    <File Name="Tests/testdirectory.cpp"/>
   </VirtualDirectory>
 </CodeLite_Project>

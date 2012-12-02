@@ -9,5 +9,8 @@
 #include "Encoding/locale_encoding.h"
 #include "Collections/collection.h"
 #include "Collections/collection_exception.h"
+#include "FileSystem/directory.h"
+
+void lfc_init();
 
 #endif
