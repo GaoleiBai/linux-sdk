@@ -6,6 +6,7 @@
 #include "Text/text.h"
 #include "Text/text_buffer.h"
 #include "Text/text_exception.h"
+#include "Encoding/encoding.h"
 #include "Collections/collection.h"
 #include "Collections/collection_exception.h"
 

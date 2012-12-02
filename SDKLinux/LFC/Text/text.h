@@ -5,8 +5,13 @@
 #include "../exception.h"
 #include "../Collections/collection.h"
 
+class Encoding;
+class TextBuffer;
 
 class Text : public NObject {
+	
+	friend class Encoding;
+	friend class TextBuffer;
 	
 private:
 	wchar_t *p;
@@ -20,10 +25,11 @@ private:
 
 public:
 
-	static wchar_t *write(int posdest, wchar_t *dest, int ldest, int possrc, const wchar_t *src, int lsrc);
+	static char *write(int posdest, char *dest, int ldest, int possrc, const char *src, int lsrc);
 	static wchar_t *write(int posdest, wchar_t *dest, int ldest, int possrc, const char *src, int lsrc);
-	static int findIx(int strpos, const wchar_t *str, int strlen, int findpos, const wchar_t *find, int findlen);
+	static wchar_t *write(int posdest, wchar_t *dest, int ldest, int possrc, const wchar_t *src, int lsrc);
 	static int findIx(int strpos, const wchar_t *str, int strlen, int findpos, const char *find, int findlen);
+	static int findIx(int strpos, const wchar_t *str, int strlen, int findpos, const wchar_t *find, int findlen);
 
 	Text();
 	Text(const char *t);
@@ -70,9 +76,6 @@ public:
 	Text TrimLeft(Collection<wchar_t> &c);
 	Text TrimRight(Collection<wchar_t> &c);
 	Text Trim(Collection<wchar_t> &c);
-	static void SetLocale(Text &locale);
-	static void SetLocale(char *locale);
-	static void SetLocale(wchar_t *locale);
 	Text ToUpper();
 	Text ToLower();
 	Collection<int> &ExtractIndexes(Collection<int> &destination, Text &textToFind);

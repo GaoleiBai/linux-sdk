@@ -7,14 +7,15 @@
 #include <locale.h>
 #include <wctype.h>
 
-wchar_t *Text::write(int posdest, wchar_t *dest, int ldest, int possrc, const wchar_t *src, int lsrc)
+char *Text::write(int posdest, char *dest, int ldest, int possrc, const char *src, int lsrc)
 {
 	int lldest = ldest;
 	if (lsrc < ldest - posdest) lldest = posdest + lsrc;
-	wchar_t *dd = dest + posdest;
-	wchar_t *ss = (wchar_t *)src;
+	char *dd = dest + posdest;
+	char *ss = (char *)src;
 	for (int i=posdest; i<lldest; i++) *dd++ = *ss++;
 	*dd = 0;
+	return dest;
 }
 
 wchar_t *Text::write(int posdest, wchar_t *dest, int ldest, int possrc, const char *src, int lsrc)
@@ -25,23 +26,18 @@ wchar_t *Text::write(int posdest, wchar_t *dest, int ldest, int possrc, const ch
 	char *ss = (char *)src;
 	for (int i=posdest; i<lldest; i++) *dd++ = *ss++;
 	*dd = 0;
+	return dest;
 }
 
-int Text::findIx(int strpos, const wchar_t *str, int strlen, int findpos, const wchar_t *find, int findlen)
+wchar_t *Text::write(int posdest, wchar_t *dest, int ldest, int possrc, const wchar_t *src, int lsrc)
 {
-	if (findlen > strlen) return - 1;
-	int maxFindLen = findlen - 1;
-	int maxlen = strlen - findlen;
-	for (int i=strpos; i<strlen; i++) {
-		wchar_t *ss = (wchar_t *)(str + i);
-		wchar_t *ff = (wchar_t *)find;
-		for (int j = findpos; j<findlen; j++) {
-			if (*ss++ != *ff++) break;
-			if (j == maxFindLen) return i;
-		}
-	}
-	
-	return -1;
+	int lldest = ldest;
+	if (lsrc < ldest - posdest) lldest = posdest + lsrc;
+	wchar_t *dd = dest + posdest;
+	wchar_t *ss = (wchar_t *)src;
+	for (int i=posdest; i<lldest; i++) *dd++ = *ss++;
+	*dd = 0;
+	return dest;
 }
 
 int Text::findIx(int strpos, const wchar_t *str, int strlen, int findpos, const char *find, int findlen)
@@ -52,6 +48,23 @@ int Text::findIx(int strpos, const wchar_t *str, int strlen, int findpos, const 
 	for (int i=strpos; i<strlen; i++) {
 		wchar_t *ss = (wchar_t *)(str + i);
 		char *ff = (char *)find;
+		for (int j = findpos; j<findlen; j++) {
+			if (*ss++ != *ff++) break;
+			if (j == maxFindLen) return i;
+		}
+	}
+	
+	return -1;
+}
+
+int Text::findIx(int strpos, const wchar_t *str, int strlen, int findpos, const wchar_t *find, int findlen)
+{
+	if (findlen > strlen) return - 1;
+	int maxFindLen = findlen - 1;
+	int maxlen = strlen - findlen;
+	for (int i=strpos; i<strlen; i++) {
+		wchar_t *ss = (wchar_t *)(str + i);
+		wchar_t *ff = (wchar_t *)find;
 		for (int j = findpos; j<findlen; j++) {
 			if (*ss++ != *ff++) break;
 			if (j == maxFindLen) return i;
@@ -442,27 +455,6 @@ Text Text::Trim(Collection<wchar_t> &c)
 	}
 	
 	return Text();
-}
-
-void Text::SetLocale(Text &locale)
-{
-	setlocale(LC_ALL, "C");
-	int lenLocale = locale.Length();
-	char *loc = new char[locale.Length() + 1];
-	locale.GetAnsiString(loc, lenLocale);
-	setlocale(LC_ALL, loc);
-	delete loc;
-}
-
-void Text::SetLocale(char *locale)
-{
-	setlocale(LC_ALL, locale);	
-}
-
-void Text::SetLocale(wchar_t *locale)
-{
-	Text loc = locale;
-	SetLocale(loc);
 }
 
 Text Text::ToUpper()

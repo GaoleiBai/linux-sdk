@@ -1,7 +1,7 @@
 #ifndef TEXTBUFFER_H
 #define TEXTBUFFER_H
 
-#include "text.h"
+class Text;
 
 class TextBuffer {
 
@@ -16,6 +16,9 @@ public:
 	void Append(Text &t);
 	void Append(const char *t);
 	void Append(const wchar_t *t);
+	void AppendLine(Text &t);
+	void AppendLine(const char *t);
+	void AppendLine(const wchar_t *t);
 	
 	Text ToText();
 	

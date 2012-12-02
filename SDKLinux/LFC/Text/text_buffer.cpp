@@ -1,5 +1,6 @@
 #include "text_buffer.h"
 #include "text_exception.h"
+#include "text.h"
 #include <string.h>
 #include <wchar.h>
 
@@ -23,7 +24,7 @@ TextBuffer::TextBuffer(Text &t)
 	length = t.Length();
 	psize = length + 10000;
 	p = new wchar_t[psize];
-	t.GetWideString(p, psize);
+	Text::write(0, p, psize, 0, t.p, t.length);
 }
 
 TextBuffer::TextBuffer(const char *t)
@@ -31,10 +32,7 @@ TextBuffer::TextBuffer(const char *t)
 	length = strlen(t);
 	psize = length + 10000;
 	p = new wchar_t[psize];
-	wchar_t *pp = p;
-	char *tt = (char *)t;
-	for (int i=0; i<length; i++) *pp++ = *tt++;
-	*pp = 0;
+	Text::write(0, p, psize, 0, t, length);
 }
 
 TextBuffer::TextBuffer(const wchar_t *t)
@@ -42,10 +40,7 @@ TextBuffer::TextBuffer(const wchar_t *t)
 	length = wcslen(t);
 	psize = length + 10000;
 	p = new wchar_t[psize];
-	wchar_t *pp = p;
-	wchar_t *tt = (wchar_t *)t;
-	for (int i=0; i<length; i++) *pp++ = *tt++;
-	*pp = 0;
+	Text::write(0, p, psize, 0, t, length);
 }
 
 TextBuffer::~TextBuffer()
@@ -58,10 +53,7 @@ void TextBuffer::increaseBuffer(int newLen)
 	if (newLen >= psize) {
 		int qsize = 2 * psize + newLen;
 		wchar_t *q = new wchar_t[qsize];
-		wchar_t *qq = q;
-		wchar_t *pp = p;
-		for (int i=0; i<length; i++) *qq++ = *pp++;
-		*qq = 0;
+		Text::write(0, q, qsize, 0, p, length); 
 		delete p;
 		p = q;
 		psize = qsize;
@@ -101,8 +93,25 @@ void TextBuffer::Append(const wchar_t *t)
 	length += tlen;
 }
 
+void TextBuffer::AppendLine(Text &t)
+{
+	Append(t);
+	Append("\r\n");
+}
+
+void TextBuffer::AppendLine(const char *t)
+{
+	Append(t);
+	Append("\r\n");
+}
+
+void TextBuffer::AppendLine(const wchar_t *t)
+{
+	Append(t);
+	Append("\r\n");
+}
+
 Text TextBuffer::ToText()
 {
-	Text t(p);
-	return t;
+	return Text(p, length);
 }
