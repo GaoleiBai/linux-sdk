@@ -10,9 +10,12 @@ class Collection : public NObject {
 public:
 	Collection();
 	Collection(int size);
-	~Collection();
+	Collection(T t[]);
+	Collection(Collection<T> &c);
+	virtual ~Collection();
 
 	void Add(T o);
+	void AddRange(T t[]);
 	void AddRange(Collection<T> &c);
 	void Remove(T o);
 	void Compact();
@@ -46,6 +49,34 @@ Collection<T>::Collection(int size)
 }
 
 template<class T>
+Collection<T>::Collection(T t[])
+{
+	int tsize = 0;
+	T *tt = t;
+	while (*tt++) tsize++; 
+	
+	size = tsize > 0 ? tsize : 1;
+	objects = new T[size];
+	numObjects = tsize;
+	
+	tt = t;
+	T *oo = objects;
+	while (*tt) *oo++ = *tt++;
+}
+
+template<class T>
+Collection<T>::Collection(Collection<T> &c)
+{
+	size = c.size > 0 ? c.size : 1;
+	objects = new T[size];
+	numObjects = size;
+	
+	T *cc = c.objects;
+	T *oo = objects;
+	while (*cc) *oo++ = *cc++;
+}
+
+template<class T>
 Collection<T>::~Collection()
 {
 	delete objects;
@@ -63,6 +94,13 @@ void Collection<T>::Add(T o)
 	}
 	
 	objects[numObjects++] = o;
+}
+
+template<class T>
+void Collection<T>::AddRange(T t[])
+{
+	T *tt = t;
+	while (*tt) Add(*tt++);
 }
 
 template<class T>

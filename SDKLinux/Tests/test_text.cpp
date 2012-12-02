@@ -45,11 +45,17 @@ int TestText::PerformAnsi()
 	a = "Este texto es una caca\r\n";
 	b = a.SubText(11);
 	b.Print();
-	if (b != "es una caca\r\n") return -1;
+	if (b != "es una caca\r\n") {
+		printf("Subtext(a); no funciona\r\n");
+		return -1;
+	}
 	
 	Text c = a.SubText(5, 5) + "\r\n";
 	c.Print();
-	if (c != "texto\r\n") return -1;
+	if (c != "texto\r\n") {
+		printf("SubText(a, b); no funciona\r\n");
+		return -1;
+	}
 	
 	Collection<Text *> items;
 	Text splitChars = ",";
@@ -63,7 +69,7 @@ int TestText::PerformAnsi()
 	for (int i = 1; i < 10; i++)
 		generatedItems.Add(new Text(i));
 	generatedItems.Add(new Text());
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 9; i++) {	// El décimo item no se puede comparar porque es de longitud 0
 		if (*items[i] != *generatedItems[i] || !items[i]->Equals(*generatedItems[i])) {
 			printf("Error procesando y comparando items.\r\n");
 			return -1;
@@ -121,6 +127,16 @@ int TestText::PerformAnsi()
 			printf("La comparación no ha funcionado.\r\n");
 			return -1;
 		}
+	}
+	
+	Text toTrim  = ";;;...   Hola   ;;;...";
+	Collection<char> colTrim((char *)";. ");
+	if (toTrim.TrimLeft(colTrim) != "Hola   ;;;..." ||
+		toTrim.TrimRight(colTrim) != ";;;...   Hola" ||
+		toTrim.Trim(colTrim) != "Hola")
+	{
+		printf("Trim no ha funcionado.\r\n");
+		return -1;
 	}
 	
 	return 0;
@@ -198,7 +214,7 @@ int TestText::PerformWide()
 	for (int i = 1; i < 10; i++)
 		generatedItems.Add(new Text(i));
 	generatedItems.Add(new Text());
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 9; i++) {
 		if (*items[i] != *generatedItems[i] || !items[i]->Equals(*generatedItems[i])) {
 			printf("Error procesando y comparando items.\r\n");
 			return -1;
@@ -270,6 +286,17 @@ int TestText::PerformWide()
 	Text vvv = replacement.Replace("a", "b");
 	if (replacement != ttt) {
 		printf("Replacement doesn't work!!!\r\n");
+		return -1;
+	}
+	
+	Text toTrim  = L";;;...   Hola   ;;;...";
+	Collection<wchar_t> colTrim;
+	colTrim.AddRange((wchar_t *)L";. ");
+	if (toTrim.TrimLeft(colTrim) != L"Hola   ;;;..." ||
+		toTrim.TrimRight(colTrim) != L";;;...   Hola" ||
+		toTrim.Trim(colTrim) != L"Hola")
+	{
+		printf("Trim no ha funcionado.\r\n");
 		return -1;
 	}
 	
