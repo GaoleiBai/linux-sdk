@@ -304,5 +304,11 @@ int TestText::PerformWide()
 		return -1;
 	}
 	
+	Text tombs = "El camión no funciona con cañas en la calefacción.";
+	int len = tombs.GetMultibyteCharacterString(NULL);
+	char *p = new char[len + 1];
+	tombs.GetMultibyteCharacterString(p);
+	Text fmbs = Text::FromMultibyteCharacterString(p, len + 1);
+	
 	return 0;
 }

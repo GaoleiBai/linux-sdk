@@ -20,6 +20,10 @@
     <File Name="LFC/LFC.h"/>
     <File Name="LFC/exception.cpp"/>
     <File Name="LFC/exception.h"/>
+    <VirtualDirectory Name="Encoding">
+      <File Name="LFC/Encoding/locale_encoding.cpp"/>
+      <File Name="LFC/Encoding/locale_encoding.h"/>
+    </VirtualDirectory>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>

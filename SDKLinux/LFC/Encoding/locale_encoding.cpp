@@ -1,16 +1,16 @@
-#include "encoding.h"
-#include "../Text/text.h"
 #include <locale.h>
+#include "../Text/text.h"
+#include "./locale_encoding.h"
 
-Encoding::Encoding()
+Locale::Locale()
 {
 }
 
-Encoding::~Encoding()
+Locale::~Locale()
 {
 }
 
-void Encoding::SetLocale(Text &locale)
+void Locale::SetLocale(Text &locale)
 {
 	setlocale(LC_ALL, "C");
 	int len = locale.length;
@@ -20,12 +20,12 @@ void Encoding::SetLocale(Text &locale)
 	delete loc;
 }
 
-void Encoding::SetLocale(char *locale)
+void Locale::SetLocale(const char *locale)
 {
 	setlocale(LC_ALL, locale);	
 }
 
-void Encoding::SetLocale(wchar_t *locale)
+void Locale::SetLocale(const wchar_t *locale)
 {
 	Text loc(locale);
 	SetLocale(loc);

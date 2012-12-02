@@ -4,7 +4,6 @@
 #include <string.h>
 #include <stdio.h>
 #include <wchar.h>
-#include <locale.h>
 #include <wctype.h>
 
 char *Text::write(int posdest, char *dest, int ldest, int possrc, const char *src, int lsrc)
@@ -220,6 +219,23 @@ void Text::GetWideString(wchar_t *buffer, int &len)
 {
 	write(0, buffer, len - 1, 0, p, length);
 	len = len - 1 < length ? len - 1 : length;
+}
+
+int Text::GetMultibyteCharacterString(char *buffer)
+{
+	int mblen = wcsrtombs(NULL, (const wchar_t **)&p, 1, NULL);
+	mblen = buffer ? wcsrtombs(buffer, (const wchar_t **)&p, mblen, NULL) : mblen;
+	return mblen;
+}
+
+Text Text::FromMultibyteCharacterString(const char *buffer, int len)
+{
+	wchar_t *q = new wchar_t[len + 1];
+	int mblen = mbsrtowcs(q, &buffer, len, NULL);
+	
+	Text t(q, mblen);
+	delete q;
+	return t;;
 }
 
 int Text::Compare(const char *t)
