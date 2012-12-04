@@ -25,9 +25,9 @@ private:
 
 public:
 
-	static char *write(int posdest, char *dest, int ldest, int possrc, const char *src, int lsrc);
-	static wchar_t *write(int posdest, wchar_t *dest, int ldest, int possrc, const char *src, int lsrc);
-	static wchar_t *write(int posdest, wchar_t *dest, int ldest, int possrc, const wchar_t *src, int lsrc);
+	static int write(int posdest, char *dest, int ldest, int possrc, const char *src, int lsrc);
+	static int write(int posdest, wchar_t *dest, int ldest, int possrc, const char *src, int lsrc);
+	static int write(int posdest, wchar_t *dest, int ldest, int possrc, const wchar_t *src, int lsrc);
 	static int findIx(int strpos, const wchar_t *str, int strlen, int findpos, const char *find, int findlen);
 	static int findIx(int strpos, const wchar_t *str, int strlen, int findpos, const wchar_t *find, int findlen);
 
@@ -48,10 +48,8 @@ public:
 	virtual ~Text();
 
 	int Length();
-	void GetAnsiString(char *buffer, int &len);
-	void GetWideString(wchar_t *buffer, int &len);
-	int GetMultibyteCharacterString(char *buffer, int size);
-	static Text FromMultibyteCharacterString(const char *buffer, int len);
+	int GetAnsiString(char *buffer, int len);
+	int GetWideString(wchar_t *buffer, int len);
 	int Compare(const Text &t);
 	int Compare(const char *t);
 	int Compare(const char *t, int len);
@@ -80,12 +78,12 @@ public:
 	Text Trim(Collection<wchar_t> &c);
 	Text ToUpper();
 	Text ToLower();
-	Collection<int> &ExtractIndexes(Collection<int> &destination, Text &textToFind);
-	Collection<Text *> &Split(Collection<Text *> &destination, Collection<char> &splitChars, bool removeEmptyEntries);
-	Collection<Text *> &Split(Collection<Text *> &destination, Collection<wchar_t> &splitChars, bool removeEmptyEntries);
-	Collection<Text *> &Split(Collection<Text *> &destination, Text &splitChars, bool removeEmptyEntries);
-	Collection<Text *> &Split(Collection<Text *> &destination, char *splitChars, bool removeEmptyEntries);
-	Collection<Text *> &Split(Collection<Text *> &destination, wchar_t *splitChars, bool removeEmptyEntries);
+	Collection<int> ExtractIndexes(Text &textToFind);
+	Collection<Text *> Split(Collection<char> &splitChars, bool removeEmptyEntries);
+	Collection<Text *> Split(Collection<wchar_t> &splitChars, bool removeEmptyEntries);
+	Collection<Text *> Split(Text &splitChars, bool removeEmptyEntries);
+	Collection<Text *> Split(char *splitChars, bool removeEmptyEntries);
+	Collection<Text *> Split(wchar_t *splitChars, bool removeEmptyEntries);
 	void Print();
 	bool Equals(const Text &t);
 	bool Equals(const char *c);

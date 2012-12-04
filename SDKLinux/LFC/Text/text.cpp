@@ -6,8 +6,9 @@
 #include <stdio.h>
 #include <wchar.h>
 #include <wctype.h>
+#include <stdlib.h>
 
-char *Text::write(int posdest, char *dest, int ldest, int possrc, const char *src, int lsrc)
+int Text::write(int posdest, char *dest, int ldest, int possrc, const char *src, int lsrc)
 {
 	int lldest = ldest;
 	if (lsrc < ldest - posdest) lldest = posdest + lsrc;
@@ -15,21 +16,29 @@ char *Text::write(int posdest, char *dest, int ldest, int possrc, const char *sr
 	char *ss = (char *)src;
 	for (int i=posdest; i<lldest; i++) *dd++ = *ss++;
 	*dd = 0;
-	return dest;
+	return lldest - posdest;
 }
 
-wchar_t *Text::write(int posdest, wchar_t *dest, int ldest, int possrc, const char *src, int lsrc)
+int Text::write(int posdest, wchar_t *dest, int ldest, int possrc, const char *src, int lsrc)
 {
 	int lldest = ldest;
 	if (lsrc < ldest - posdest) lldest = posdest + lsrc;
 	wchar_t *dd = dest + posdest;
 	char *ss = (char *)src;
-	for (int i=posdest; i<lldest; i++) *dd++ = *ss++;
+	int written = 0;
+	int size = 0;
+	for (int i = posdest; i<lldest; i += size) {
+		size = mbtowc(dd, ss, 10);
+		if (size == -1) throw TextException("The current locale doesn't allow to translate the characters.");
+		dd++;
+		ss += size;
+		written++;
+	}
 	*dd = 0;
-	return dest;
+	return written;
 }
 
-wchar_t *Text::write(int posdest, wchar_t *dest, int ldest, int possrc, const wchar_t *src, int lsrc)
+int Text::write(int posdest, wchar_t *dest, int ldest, int possrc, const wchar_t *src, int lsrc)
 {
 	int lldest = ldest;
 	if (lsrc < ldest - posdest) lldest = posdest + lsrc;
@@ -37,7 +46,7 @@ wchar_t *Text::write(int posdest, wchar_t *dest, int ldest, int possrc, const wc
 	wchar_t *ss = (wchar_t *)src;
 	for (int i=posdest; i<lldest; i++) *dd++ = *ss++;
 	*dd = 0;
-	return dest;
+	return lldest - posdest;
 }
 
 int Text::findIx(int strpos, const wchar_t *str, int strlen, int findpos, const char *find, int findlen)
@@ -77,18 +86,16 @@ int Text::findIx(int strpos, const wchar_t *str, int strlen, int findpos, const 
 Text &Text::aquireText(const char *s, int len, bool deletePrevious)
 {
 	if (deletePrevious) delete p;
-	length = len;
 	p = new wchar_t[len + 1];
-	write(0, p, length, 0, s, len);
+	length = write(0, p, len, 0, s, len);
 	return *this;
 }
 
 Text &Text::aquireText(const wchar_t *s, int len, bool deletePrevious)
 {
 	if (deletePrevious) delete p;
-	length = len;
 	p = new wchar_t[len + 1];
-	write(0, p, length, 0, s, len);
+	length = write(0, p, len, 0, s, len);
 	return *this;
 }
 
@@ -96,11 +103,10 @@ Text &Text::appendText(const wchar_t *t, int len)
 {
 	int qlength = length + len;
 	wchar_t *q = new wchar_t[qlength + 1];
-	write(0, q, qlength + 1, 0, p, length);
-	write(length, q, qlength + 1, 0, t, len);
+	length = write(0, q, qlength + 1, 0, p, length);
+	length += write(length, q, qlength + 1, 0, t, len);
 	delete p;
 	p = q;
-	length = qlength;
 	return *this;
 }
 
@@ -108,11 +114,10 @@ Text &Text::appendText(const char *t, int len)
 {
 	int qlength = length + len;
 	wchar_t *q = new wchar_t[qlength + 1];
-	write(0, q, qlength + 1, 0, p, length);
-	write(length, q, qlength + 1, 0, t, len);
+	length = write(0, q, qlength + 1, 0, p, length);
+	length += write(length, q, qlength + 1, 0, t, len);
 	delete p;
 	p = q;
-	length = qlength;
 	return *this;
 }
 
@@ -206,37 +211,28 @@ int Text::Length()
 	return length;
 }
 
-void Text::GetAnsiString(char *buffer, int &len)
+int Text::GetAnsiString(char *buffer, int len)
 {
-	int i = 0;
 	wchar_t *q = p;
 	char *r = buffer;
-	while (i < len && *q) *r++ = *q++;
+	char test[10];
+	int i = 0;
+	while (i < len - 1 && *q) {
+		int size = wctomb(test, *q);
+		if (i + size >= len) break;
+		if (size == -1) throw TextException("Can't translate characters with the current locale.");
+		for (int j=0; j<size; j++) r[j] = test[j];
+		i += size;
+		r += size;
+		q++;
+	}
 	*r = 0;
 	len = i;
 }
 
-void Text::GetWideString(wchar_t *buffer, int &len)
+int Text::GetWideString(wchar_t *buffer, int len)
 {
-	write(0, buffer, len - 1, 0, p, length);
-	len = len - 1 < length ? len - 1 : length;
-}
-
-int Text::GetMultibyteCharacterString(char *buffer, int size)
-{
-	wchar_t *q = p;
-	int i = wcsrtombs(buffer, (const wchar_t **)&q, size - 1, NULL);
-	return i;
-}
-
-Text Text::FromMultibyteCharacterString(const char *buffer, int len)
-{
-	wchar_t *q = new wchar_t[len + 1];
-	int mblen = mbsrtowcs(q, &buffer, len, NULL);
-	
-	Text t(q, mblen);
-	delete q;
-	return t;
+	return write(0, buffer, len - 1, 0, p, length);
 }
 
 int Text::Compare(const char *t)
@@ -488,74 +484,77 @@ Text Text::ToLower()
 	return t;
 }
 
-Collection<int> &Text::ExtractIndexes(Collection<int> &destination, Text &textToFind)
+Collection<int> Text::ExtractIndexes(Text &textToFind)
 {
+	Collection<int> result;
 	int ix = 0;
 	
 	while (ix < length) {
 		ix = FindIx(ix, textToFind);
 		if (ix == -1) break;
-		destination.Add(ix);
+		result.Add(ix);
 		ix += textToFind.length;
 	}
 	
-	return destination;
+	return result;
 }
 
-Collection<Text *> &Text::Split(Collection<Text *> &destination, Collection<char> &splitChars, bool removeEmptyEntries)
+Collection<Text *> Text::Split(Collection<char> &splitChars, bool removeEmptyEntries)
 {
+	Collection<Text *> result;
 	int ix = 0, previx = 0;
 	
 	while (ix <= length) {
 		ix = FindIx(ix, splitChars);
 		if (ix == -1) ix = length;
 		if (ix == previx) {
-			if (!removeEmptyEntries) destination.Add(new Text());
+			if (!removeEmptyEntries) result.Add(new Text());
 		} else {
-			destination.Add(new Text(p + previx, (int)(ix - previx)));
+			result.Add(new Text(p + previx, (int)(ix - previx)));
 		}
 		ix++;
 		previx = ix;
 	}
 	
-	return destination;
+	return result;
 }
 
-Collection<Text *> &Text::Split(Collection<Text *> &destination, Collection<wchar_t> &splitChars, bool removeEmptyEntries)
+Collection<Text *> Text::Split(Collection<wchar_t> &splitChars, bool removeEmptyEntries)
 {
+	Collection<Text *> result;
 	int ix = 0, previx = 0;
 	
 	while (ix <= length) {
 		ix = FindIx(ix, splitChars);
 		if (ix == -1) ix = length;
 		if (ix == previx) {
-			if (!removeEmptyEntries) destination.Add(new Text());
+			if (!removeEmptyEntries) result.Add(new Text());
 		} else {
-			destination.Add(new Text(p + previx, (int)(ix - previx)));
+			result.Add(new Text(p + previx, (int)(ix - previx)));
 		}
 		ix++;
 		previx = ix;
 	}
 	
-	return destination;
+	return result;
 }
 
-Collection<Text *> &Text::Split(Collection<Text *> &destination, Text &splitChars, bool removeEmptyEntries)
+Collection<Text *> Text::Split(Text &splitChars, bool removeEmptyEntries)
 {
 	Collection<wchar_t> cSplitChars(splitChars.p);
-	return Split(destination, cSplitChars, removeEmptyEntries);
+	return Split(cSplitChars, removeEmptyEntries);
 }
 
-Collection<Text *> &Text::Split(Collection<Text *> &destination, char *splitChars, bool removeEmptyEntries)
+Collection<Text *> Text::Split(char *splitChars, bool removeEmptyEntries)
 {
 	Collection<char> cSplitChars(splitChars);
-	return Split(destination, cSplitChars, removeEmptyEntries);
+	return Split(cSplitChars, removeEmptyEntries);
 }
 
-Collection<Text *> &Text::Split(Collection<Text *> &destination, wchar_t *splitChars, bool removeEmptyEntries)
+Collection<Text *> Text::Split(wchar_t *splitChars, bool removeEmptyEntries)
 {
 	Collection<wchar_t> cSplitChars(splitChars);
-	return Split(destination, cSplitChars, removeEmptyEntries);
+	return Split(cSplitChars, removeEmptyEntries);
 }
 
 void Text::Print()
@@ -892,9 +891,8 @@ bool Text::operator ==(const Text &t)
 
 bool Text::operator ==(const char *t)
 {
-	int lt = strlen(t);
-	if (lt != length) return false;
-	return Compare(t, lt) == 0;
+	Text q = t;
+	return *this == q;
 }
 
 bool Text::operator ==(const wchar_t *t)

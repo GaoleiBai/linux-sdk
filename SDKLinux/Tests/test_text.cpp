@@ -13,20 +13,21 @@ TestText::~TestText()
 
 int TestText::PerformAnsi()
 {
-	Text a = "HOLA";
+	Text a = "HÓLA";
 	Text b = "Mundo\r\n";
 	a = a + " cruel " + 5 + " " + b;
 	a.Print();
 	
-	const char *test1str = "HOLA cruel 5 Mundo\r\n";
+	const char *test1str = "HÓLA cruel 5 Mundo\r\n";
 	if (a != test1str) {
 		printf("Test 1 Error\r\n");
 		return -1;
 	}
 	
+	Text t1str = test1str;
 	for (int i=0; i<a.Length(); i++) {
-		printf("%c", a[i]);
-		if (a[i] != test1str[i]) {
+		printf("%C", a[i]);
+		if (a[i] != t1str[i]) {
 			printf("Test 2 Error\r\n");
 		}
 	}
@@ -58,10 +59,9 @@ int TestText::PerformAnsi()
 		return -1;
 	}
 	
-	Collection<Text *> items;
 	Text splitChars = ",";
 	Text textToSplit = "1,2,3,4,5,6,7,8,9,";
-	items = textToSplit.Split(items, splitChars, false);
+	Collection<Text *> items = textToSplit.Split(splitChars, false);
 	for (int i=0; i<items.Count(); i++) {
 		items[i]->Print();
 		printf("\r\n");
@@ -106,7 +106,7 @@ int TestText::PerformAnsi()
 	add += 9.0;
 	add += "\r\n";
 	add.Print();
-	if (add != "Lucky true false 8 7.000000 9.000000\r\n") {
+	if (add != "Lucky true false 8 7,000000 9,000000\r\n") {
 		printf("La agregación no ha funcionado\r\n");
 		return -1;
 	}
@@ -207,10 +207,9 @@ int TestText::PerformWide()
 	c.Print();
 	if (c != L"texto\r\n") return -1;
 	
-	Collection<Text *> items;
 	Text splitChars = L",";
 	Text textToSplit = L"1,2,3,4,5,6,7,8,9,";
-	items = textToSplit.Split(items, splitChars, false);
+	Collection<Text *> items = textToSplit.Split(splitChars, false);
 	for (int i=0; i<items.Count(); i++) {
 		items[i]->Print();
 		printf("\r\n");
@@ -255,7 +254,7 @@ int TestText::PerformWide()
 	add += 9.0;
 	add += L"\r\n";
 	add.Print();
-	if (add != L"Lucky true false 8 7.000000 9.000000\r\n") {
+	if (add != L"Lucky true false 8 7,000000 9,000000\r\n") {
 		printf("La agregación no ha funcionado\r\n");
 		return -1;
 	}
@@ -307,10 +306,14 @@ int TestText::PerformWide()
 	
 	const char *mbs = "En la imágen se ve que el camión tiene cañas en las ruedas.\r\n";
 	Locale::SetLocale("");
-	Text tombs = Text::FromMultibyteCharacterString(mbs, strlen(mbs));
+	Text tombs(mbs);
 	tombs.Print();
 	char cadena[1000];
-	tombs.GetMultibyteCharacterString(cadena, 1000);
+	tombs.GetAnsiString(cadena, 1000);
+	if (tombs != cadena) {
+		printf("GetAnsiString didn't work.\r\n");
+		return -1;
+	}
 
 	
 	return 0;
