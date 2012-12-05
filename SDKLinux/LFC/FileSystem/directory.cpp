@@ -18,7 +18,7 @@ void Directory::GetFiles(const char *path, const char *searchPattern, Collection
 	
 	DIR *d = opendir(path);
 	while (dent = readdir(d)) {
-		if (dent->d_type == DT_REG) continue;
+		if (dent->d_type != DT_REG) continue;
 		if (searchPattern && strstr(dent->d_name, searchPattern) == NULL) continue;
 		result.Add(new Text(dent->d_name));
 	}	

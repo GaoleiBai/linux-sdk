@@ -7,7 +7,7 @@ public:
 	TestDirectory();
 	virtual ~TestDirectory();
 
-	static void Perform();
+	static int Perform();
 };
 
 #endif // TESTDIRECTORY_H

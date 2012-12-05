@@ -2,5 +2,6 @@
 #define TESTS_H
 
 #include "test_text.h"
+#include "testdirectory.h"
 
 #endif

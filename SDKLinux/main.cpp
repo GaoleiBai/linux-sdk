@@ -10,11 +10,15 @@ int main(int argc, char **argv)
 	printf("hello world\n");
 	
 	if (TestText::PerformAnsi() != 0) {
-		printf("PerformAnsi error!");
+		printf("PerformAnsi error!\r\n");
 		return -1;
 	}
 	if (TestText::PerformWide() != 0) {
-		printf("PerformWide error!");
+		printf("PerformWide error!\r\n");
+		return -1;
+	}
+	if (TestDirectory::Perform() != 0) {
+		printf("TestDirectory::Perform error!\r\n");
 		return -1;
 	}
 	
