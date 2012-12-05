@@ -7,11 +7,13 @@
 
 class Locale;
 class TextBuffer;
+class Directory;
 
 class Text : public NObject {
 	
 	friend class Locale;
 	friend class TextBuffer;
+	friend class Directory;
 	
 private:
 	wchar_t *p;

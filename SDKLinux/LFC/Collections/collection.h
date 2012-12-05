@@ -20,6 +20,7 @@ public:
 	void Remove(T o);
 	void Compact();
 	void Clear();
+	void DeleteAndClear();
 	int Count();
 	bool Contains(T o);
 	
@@ -134,6 +135,13 @@ void Collection<T>::Clear()
 	size = 1;
 	objects = new NObject*[size];
 	numObjects = 0;
+}
+
+template<class T>
+void Collection<T>::DeleteAndClear()
+{
+	if (is_pointer<T>::value) for (int i=0; i<numObjects; i++) delete objects[i];
+	Clear();
 }
 
 template<class T>

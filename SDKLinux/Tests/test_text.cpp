@@ -310,7 +310,7 @@ int TestText::PerformWide()
 	tombs.Print();
 	char cadena[1000];
 	tombs.GetAnsiString(cadena, 1000);
-	if (tombs != cadena) {
+	if (strcmp(mbs, cadena) != 0) {
 		printf("GetAnsiString didn't work.\r\n");
 		return -1;
 	}

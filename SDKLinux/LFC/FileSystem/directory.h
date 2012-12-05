@@ -5,7 +5,7 @@
 
 class Text;
 
-class Directory {
+class Directory : NObject {
 
 public:
 	Directory();
@@ -14,7 +14,7 @@ public:
 	static Collection<Text *> GetFiles(const Text &path);
 	static Collection<Text *> GetFiles(const char *path);
 	static Collection<Text *> GetFiles(const wchar_t *path);
-	static Collection<Text *> GetFiles(const Text &path, Text &searchPattern);
+	static Collection<Text *> GetFiles(const Text &path, const Text &searchPattern);
 	static Collection<Text *> GetFiles(const char *path, const char *searchPattern);
 	static Collection<Text *> GetFiles(const wchar_t *path, const wchar_t *searchPattern);
 	static Collection<Text *> GetDirectories(const Text &path);
@@ -23,10 +23,6 @@ public:
 	static Collection<Text *> GetDirectories(const Text &path, const Text &searchPattern);
 	static Collection<Text *> GetDirectories(const char *path, const char *searchPattern);
 	static Collection<Text *> GetDirectories(const wchar_t *path, const wchar_t *searchPattern);
-
-private:
-	
-	static void GetFiles(const char *path, const char *searchPattern, Collection<Text *> &result);
 
 };
 

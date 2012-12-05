@@ -1,9 +1,11 @@
 #ifndef EXCEPTION_H
 #define EXCEPTION_H
 
+#include "n_object.h"
+
 class Text;
 
-class Exception {
+class Exception : NObject {
 
 public:
 	Exception();

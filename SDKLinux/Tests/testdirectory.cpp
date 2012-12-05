@@ -17,6 +17,12 @@ int TestDirectory::Perform()
 		files[i]->Print();
 		printf("\r\n");
 	}
+	Collection<Text *> directories = Directory::GetDirectories("..");
+	for (int i=0; i<directories.Count(); i++) {
+		directories[i]->Print();
+		printf("\r\n");
+	}
+
 	return 0;
 }
 
