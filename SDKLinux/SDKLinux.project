@@ -32,6 +32,10 @@
       <File Name="LFC/FileSystem/directory.cpp"/>
     </VirtualDirectory>
     <File Name="LFC/LFC.cpp"/>
+    <VirtualDirectory Name="Time">
+      <File Name="LFC/Time/datetime.h"/>
+      <File Name="LFC/Time/datetime.cpp"/>
+    </VirtualDirectory>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>
