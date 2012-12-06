@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CodeLite_Project Name="SDKLinux" InternalType="Console">
+  <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
+    </Plugin>
+  </Plugins>
   <VirtualDirectory Name="LFC">
     <VirtualDirectory Name="Collections">
       <File Name="LFC/Collections/collection.cpp"/>
@@ -35,6 +40,8 @@
     <VirtualDirectory Name="Time">
       <File Name="LFC/Time/datetime.h"/>
       <File Name="LFC/Time/datetime.cpp"/>
+      <File Name="LFC/Time/timeexception.h"/>
+      <File Name="LFC/Time/timeexception.cpp"/>
     </VirtualDirectory>
   </VirtualDirectory>
   <Description/>
@@ -42,21 +49,21 @@
   <VirtualDirectory Name="src">
     <File Name="main.cpp"/>
   </VirtualDirectory>
+  <VirtualDirectory Name="Tests">
+    <File Name="Tests/test_text.h"/>
+    <File Name="Tests/test_text.cpp"/>
+    <File Name="Tests/Tests.h"/>
+    <File Name="Tests/testdirectory.h"/>
+    <File Name="Tests/testdirectory.cpp"/>
+  </VirtualDirectory>
   <Settings Type="Executable">
-    <GlobalSettings>
-      <Compiler Options="">
-        <IncludePath Value="."/>
-      </Compiler>
-      <Linker Options="">
-        <LibraryPath Value="."/>
-      </Linker>
-      <ResourceCompiler Options=""/>
-    </GlobalSettings>
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-g" Required="yes" PreCompiledHeader="">
         <IncludePath Value="."/>
       </Compiler>
-      <Linker Options="" Required="yes"/>
+      <Linker Options="" Required="yes">
+        <Library Value="rt"/>
+      </Linker>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="no"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
@@ -85,7 +92,9 @@
       <Compiler Options="" Required="yes" PreCompiledHeader="">
         <IncludePath Value="."/>
       </Compiler>
-      <Linker Options="-O2" Required="yes"/>
+      <Linker Options="-O2" Required="yes">
+        <Library Value="rt"/>
+      </Linker>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Release" Command="./$(ProjectName)" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
@@ -110,12 +119,14 @@
         <CustomPreBuild/>
       </AdditionalRules>
     </Configuration>
+    <GlobalSettings>
+      <Compiler Options="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="">
+        <LibraryPath Value="."/>
+      </Linker>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
   </Settings>
-  <VirtualDirectory Name="Tests">
-    <File Name="Tests/test_text.h"/>
-    <File Name="Tests/test_text.cpp"/>
-    <File Name="Tests/Tests.h"/>
-    <File Name="Tests/testdirectory.h"/>
-    <File Name="Tests/testdirectory.cpp"/>
-  </VirtualDirectory>
 </CodeLite_Project>

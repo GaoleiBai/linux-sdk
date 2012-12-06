@@ -8,12 +8,14 @@
 class Locale;
 class TextBuffer;
 class Directory;
+class DateTime;
 
 class Text : public NObject {
 	
 	friend class Locale;
 	friend class TextBuffer;
 	friend class Directory;
+	friend class DateTime;
 	
 private:
 	wchar_t *p;

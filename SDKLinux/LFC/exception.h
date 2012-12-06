@@ -11,7 +11,10 @@ public:
 	Exception();
 	Exception(const char *t);
 	Exception(const Text &t);
+	Exception(const Exception &t);
 	virtual ~Exception();
+	
+	Text ToText();
 
 protected:
 	Text *t;

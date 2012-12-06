@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "./LFC/LFC.h"
-#include "./Tests/Tests.h";
+#include "./Tests/Tests.h"
 #include "LFC/Collections/collection.h"
 
 int main(int argc, char **argv)

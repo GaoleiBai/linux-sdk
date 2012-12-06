@@ -1,6 +1,10 @@
 #ifndef LFC_H
 #define LFC_H
 
+// Libraries needed to compile
+// rt
+
+
 #include "n_object.h"
 #include "exception.h"
 #include "Text/text.h"
