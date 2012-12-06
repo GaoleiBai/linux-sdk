@@ -14,6 +14,8 @@
 #include "Collections/collection.h"
 #include "Collections/collection_exception.h"
 #include "FileSystem/directory.h"
+#include "Time/datetime.h"
+#include "Time/timeexception.h"
 
 void lfc_init();
 

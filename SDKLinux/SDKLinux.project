@@ -55,6 +55,8 @@
     <File Name="Tests/Tests.h"/>
     <File Name="Tests/testdirectory.h"/>
     <File Name="Tests/testdirectory.cpp"/>
+    <File Name="Tests/testdatetime.h"/>
+    <File Name="Tests/testdatetime.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">

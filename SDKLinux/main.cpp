@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include "./LFC/LFC.h"
 #include "./Tests/Tests.h"
-#include "LFC/Collections/collection.h"
 
 int main(int argc, char **argv)
 {
@@ -19,6 +18,10 @@ int main(int argc, char **argv)
 	}
 	if (TestDirectory::Perform() != 0) {
 		printf("TestDirectory::Perform error!\r\n");
+		return -1;
+	}
+	if (TestDateTime::Perform() != 0) {
+		printf("TestDateTime::Perform error!\r\n");
 		return -1;
 	}
 	

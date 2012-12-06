@@ -42,8 +42,9 @@ DateTime::DateTime(const DateTime &t)
 
 DateTime::DateTime(long double totalDays)
 {
-	currentTime.tv_sec = totalDays * 81400;
-	currentTime.tv_nsec = ((totalDays * 81400) - currentTime.tv_sec) * 1000000000.0;
+	long double secs = totalDays * 86400.0;
+	currentTime.tv_sec = secs;
+	currentTime.tv_nsec = (secs - currentTime.tv_sec) * 1000000000.0;
 	updatetmhelper();
 }
 
@@ -123,7 +124,7 @@ long double DateTime::TotalDays()
 {
 	long double d = currentTime.tv_sec;
 	d += currentTime.tv_nsec / 1000000000.0;
-	return d / 86400;
+	return d / 86400.0;
 }
 
 DateTime & DateTime::operator =(const long double days)
@@ -285,7 +286,9 @@ Text DateTime::ToText(const wchar_t *format)
 
 DateTime DateTime::ToUtcDateTime()
 {
-	return DateTime(TotalDays() + timezone);
+	long double dd = TotalDays();
+	dd += timezone / 86400.0;
+	return DateTime(dd);
 }
 
 DateTime DateTime::FromUtcDateTime(DateTime &t)
