@@ -89,6 +89,11 @@ public:
 	Collection<Text *> Split(char *splitChars, bool removeEmptyEntries);
 	Collection<Text *> Split(wchar_t *splitChars, bool removeEmptyEntries);
 	void Print();
+	void PrintLine();
+	static void Print(const char *c);
+	static void Print(const wchar_t *c);
+	static void PrintLine(const char *c);
+	static void PrintLine(const wchar_t *c);
 	bool Equals(const Text &t);
 	bool Equals(const char *c);
 	bool Equals(const wchar_t *c);

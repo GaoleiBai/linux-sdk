@@ -562,6 +562,31 @@ void Text::Print()
 	printf("%S", p);
 }
 
+void Text::PrintLine()
+{
+	printf("%S\r\n", p);
+}
+
+void Text::Print(const char *c)
+{
+	printf("%s", c);
+}
+
+void Text::Print(const wchar_t *c)
+{
+	printf("%S", c);
+}
+
+void Text::PrintLine(const char *c)
+{
+	printf("%s\r\n", c);
+}
+
+void Text::PrintLine(const wchar_t *c)
+{
+	printf("%S\r\n", c);
+}
+
 bool Text::Equals(const Text &t)
 {
 	return *this == t;
