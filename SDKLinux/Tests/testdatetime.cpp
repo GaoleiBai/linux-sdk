@@ -27,9 +27,9 @@ int TestDateTime::Perform()
 		return -1;
 	}
 	
-	DateTime cmpl2(1981, 12, 07, 03, 04, 05);
+	DateTime cmpl2(1981, 12, 07, 00, 04, 05);
 	cmpl2.ToText("%d/%m/%Y %H:%M:%S").PrintLine();
-	if (cmpl2.ToText(L"%d/%m/%Y %H:%M:%S") != L"07/12/1981 03:04:05") {
+	if (cmpl2.ToText(L"%d/%m/%Y %H:%M:%S") != L"07/12/1981 00:04:05") {
 		Text::PrintLine("DateTime instantiation error!");
 		return -1;
 	}

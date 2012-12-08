@@ -270,7 +270,7 @@ int Text::Compare(const wchar_t *t, int len)
 	}
 	
 	int lenDiff = len - length;
-	if (lenDiff) return lenDiff;
+	return lenDiff;
 }
 
 int Text::Compare(const Text &t)
