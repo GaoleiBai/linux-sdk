@@ -8,6 +8,10 @@
 
 void DateTime::init(int year, int month, int day, int hour, int minute, int second)
 {
+	if (year < 1970) throw TimeException("Cannot build dates before 1970");
+	if (month < 1 || month > 12) throw TimeException("Months must be beetween 1 and 12");
+	if (day < 1 || day > 31) throw TimeException("Days must be between 1 and 31");
+	
 	struct tm tt;
 	memset(&tt, 0, sizeof(tt));
 	tt.tm_year = year - 1900;
@@ -87,7 +91,7 @@ int DateTime::Day()
 
 DateTime DateTime::TimePart()
 {
-	return DateTime(0, 0, 0, Day(), Minute(), Second());
+	return DateTime(1970, 1, 1, Day(), Minute(), Second());
 }
 
 int DateTime::Hour()
