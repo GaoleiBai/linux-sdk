@@ -42,15 +42,15 @@ public:
 	void operator+=(DateTime &d);
 	void operator-=(const long double days);
 	void operator-=(DateTime &d);
-	bool operator==(DateTime &d);
-	bool operator!=(DateTime &d);
-	bool operator>(DateTime &d);
-	bool operator<(DateTime &d);
-	bool operator>=(DateTime &d);
-	bool operator<=(DateTime &d);
+	bool operator==(const DateTime &d);
+	bool operator!=(const DateTime &d);
+	bool operator>(const DateTime &d);
+	bool operator<(const DateTime &d);
+	bool operator>=(const DateTime &d);
+	bool operator<=(const DateTime &d);
 	
-	bool Equals(DateTime &d);
-	int Compare(DateTime &d);
+	bool Equals(const DateTime &d);
+	int Compare(const DateTime &d);
 	
 	static DateTime Parse(const Text &format, const Text &strDate);
 	static DateTime Parse(const wchar_t *format, const wchar_t *strDate);
@@ -65,7 +65,7 @@ public:
 	DateTime FromUtcDateTime(DateTime &d);
 	static void SetUtcDateTime(const DateTime &d);
 
-private:
+protected:
 
 	void init(int year, int month, int day, int hour, int minute, int second);
 	void updatetmhelper();

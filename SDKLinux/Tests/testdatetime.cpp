@@ -52,6 +52,18 @@ int TestDateTime::Perform()
 		return -1;
 	}
 	
+	DateTime cpy2(cmpl2);
+	if (cpy2 != cmpl2 || cpy2 != cpy) {
+		Text::PrintLine("DateTime constructor composition doesn't work!");
+		return -1;
+	}
+	
+	DateTime datePart = cmpl2.DatePart();
+	DateTime timePart = cmpl2.TimePart();
+	if (cmpl2 != datePart + timePart) {
+		Text::PrintLine("DateTime DatePart and TimePart don't work!");
+		return -1;
+	}
 
 	return 0;
 }

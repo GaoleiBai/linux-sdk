@@ -192,50 +192,50 @@ void DateTime::operator -=(DateTime &t)
 	*this = *this - t.TotalDays();
 }
 
-bool DateTime::operator ==(DateTime &d)
+bool DateTime::operator ==(const DateTime &d)
 {
 	return currentTime.tv_sec == d.currentTime.tv_sec && currentTime.tv_nsec == d.currentTime.tv_nsec;
 }
 
-bool DateTime::operator !=(DateTime &d)
+bool DateTime::operator !=(const DateTime &d)
 {
 	return currentTime.tv_sec != d.currentTime.tv_sec || currentTime.tv_nsec != d.currentTime.tv_nsec;
 }
 
-bool DateTime::operator >(DateTime &d)
+bool DateTime::operator >(const DateTime &d)
 {
 	if (this->currentTime.tv_sec > d.currentTime.tv_sec) return true;
 	if (this->currentTime.tv_sec == d.currentTime.tv_sec && this->currentTime.tv_nsec > d.currentTime.tv_nsec) return true;
 	return false;
 }
 
-bool DateTime::operator <(DateTime &d)
+bool DateTime::operator <(const DateTime &d)
 {
 	if (this->currentTime.tv_sec < d.currentTime.tv_sec) return true;
 	if (this->currentTime.tv_sec == d.currentTime.tv_sec && this->currentTime.tv_nsec < d.currentTime.tv_nsec) return true;
 	return false;
 }
 
-bool DateTime::operator >=(DateTime &d)
+bool DateTime::operator >=(const DateTime &d)
 {
 	if (this->currentTime.tv_sec >= d.currentTime.tv_sec) return true;
 	if (this->currentTime.tv_sec == d.currentTime.tv_sec && this->currentTime.tv_nsec >= d.currentTime.tv_nsec) return true;
 	return false;
 }
 
-bool DateTime::operator <=(DateTime &d)
+bool DateTime::operator <=(const DateTime &d)
 {
 	if (this->currentTime.tv_sec <= d.currentTime.tv_sec) return true;
 	if (this->currentTime.tv_sec == d.currentTime.tv_sec && this->currentTime.tv_nsec <= d.currentTime.tv_nsec) return true;
 	return false;
 }
 
-bool DateTime::Equals(DateTime &d)
+bool DateTime::Equals(const DateTime &d)
 {
 	return *this == d;
 }
 
-int DateTime::Compare(DateTime &d)
+int DateTime::Compare(const DateTime &d)
 {
 	long int diff = this->currentTime.tv_sec - d.currentTime.tv_sec;
 	if (diff) return diff;
