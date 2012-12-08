@@ -13,9 +13,8 @@ TestDateTime::~TestDateTime()
 int TestDateTime::Perform()
 {
 	DateTime t;
-	t.ToText().PrintLine();
-	
 	t.ToUtcDateTime().ToText().PrintLine();
+	t.ToText().PrintLine();
 	
 	DateTime cmpl(1977, 03, 06);
 	if (cmpl.ToText("%d/%m/%Y %H:%M:%S") != "06/03/1977 00:00:00") {
@@ -36,6 +35,20 @@ int TestDateTime::Perform()
 		cmpl2.Hour() != 03 || cmpl2.Minute() != 04 || cmpl2.Second() != 05) 
 	{
 		Text::PrintLine("Cannot extract member variables");
+		return -1;
+	}
+	
+	DateTime cpy = cmpl2.TotalDays();
+	if (cpy != cmpl2) {
+		Text::PrintLine("DateTime TotalDays composition doesn't work!");
+		return -1;
+	}
+	if (cpy < cmpl2 || !(cpy <= cmpl2) || !(cpy == cmpl2) || cpy > cmpl2 || !(cpy >= cmpl2)) {
+		Text::PrintLine("DateTime comparation error!");
+		return -1;
+	}
+	if (cmpl > cmpl2 || cmpl >= cmpl2 || cmpl2 < cmpl || cmpl2 <= cmpl) {
+		Text::PrintLine("DateTime comparation error!");
 		return -1;
 	}
 	

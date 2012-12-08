@@ -197,31 +197,36 @@ bool DateTime::operator ==(DateTime &d)
 	return currentTime.tv_sec == d.currentTime.tv_sec && currentTime.tv_nsec == d.currentTime.tv_nsec;
 }
 
+bool DateTime::operator !=(DateTime &d)
+{
+	return currentTime.tv_sec != d.currentTime.tv_sec || currentTime.tv_nsec != d.currentTime.tv_nsec;
+}
+
 bool DateTime::operator >(DateTime &d)
 {
 	if (this->currentTime.tv_sec > d.currentTime.tv_sec) return true;
-	if (this->currentTime.tv_nsec > d.currentTime.tv_nsec) return true;
+	if (this->currentTime.tv_sec == d.currentTime.tv_sec && this->currentTime.tv_nsec > d.currentTime.tv_nsec) return true;
 	return false;
 }
 
 bool DateTime::operator <(DateTime &d)
 {
 	if (this->currentTime.tv_sec < d.currentTime.tv_sec) return true;
-	if (this->currentTime.tv_nsec < d.currentTime.tv_nsec) return true;
+	if (this->currentTime.tv_sec == d.currentTime.tv_sec && this->currentTime.tv_nsec < d.currentTime.tv_nsec) return true;
 	return false;
 }
 
 bool DateTime::operator >=(DateTime &d)
 {
 	if (this->currentTime.tv_sec >= d.currentTime.tv_sec) return true;
-	if (this->currentTime.tv_nsec >= d.currentTime.tv_nsec) return true;
+	if (this->currentTime.tv_sec == d.currentTime.tv_sec && this->currentTime.tv_nsec >= d.currentTime.tv_nsec) return true;
 	return false;
 }
 
 bool DateTime::operator <=(DateTime &d)
 {
 	if (this->currentTime.tv_sec <= d.currentTime.tv_sec) return true;
-	if (this->currentTime.tv_nsec <= d.currentTime.tv_nsec) return true;
+	if (this->currentTime.tv_sec == d.currentTime.tv_sec && this->currentTime.tv_nsec <= d.currentTime.tv_nsec) return true;
 	return false;
 }
 

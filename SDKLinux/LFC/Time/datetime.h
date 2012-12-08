@@ -43,6 +43,7 @@ public:
 	void operator-=(const long double days);
 	void operator-=(DateTime &d);
 	bool operator==(DateTime &d);
+	bool operator!=(DateTime &d);
 	bool operator>(DateTime &d);
 	bool operator<(DateTime &d);
 	bool operator>=(DateTime &d);
