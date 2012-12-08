@@ -17,6 +17,7 @@ int TestDateTime::Perform()
 	t.ToText().PrintLine();
 	
 	DateTime cmpl(1977, 03, 06);
+	cmpl.ToText("%d/%m/%Y %H:%M:%S").PrintLine();	
 	if (cmpl.ToText("%d/%m/%Y %H:%M:%S") != "06/03/1977 00:00:00") {
 		Text::PrintLine("DateTime instantiation error!");
 		return -1;
@@ -27,6 +28,7 @@ int TestDateTime::Perform()
 	}
 	
 	DateTime cmpl2(1981, 12, 07, 03, 04, 05);
+	cmpl2.ToText("%d/%m/%Y %H:%M:%S").PrintLine();
 	if (cmpl2.ToText(L"%d/%m/%Y %H:%M:%S") != L"07/12/1981 03:04:05") {
 		Text::PrintLine("DateTime instantiation error!");
 		return -1;
@@ -58,8 +60,29 @@ int TestDateTime::Perform()
 		return -1;
 	}
 	
+	DateTime datePartA = cmpl.DatePart();
+	if (datePartA != cmpl) {
+		Text::PrintLine("DateTime DatePart doesn't work!");
+		return -1;
+	}
+	
 	DateTime datePart = cmpl2.DatePart();
+	datePart.ToText("%d/%m/%Y %H:%M:%S").PrintLine();
+	if (datePart.ToText("%d/%m/%Y %H:%M:%S") != L"07/12/1981 00:00:00") {
+		Text::PrintLine("DatePart doesn't work!");
+		return -1;
+	}
+	
 	DateTime timePart = cmpl2.TimePart();
+	timePart.ToText("%d/%m/%Y %H:%M:%S").PrintLine();
+	if (timePart.ToText("%d/%m/%Y %H:%M:%S") != "01/01/1970 03:04:05") {
+		Text::PrintLine("TimePart doesn't work!");
+		return -1;
+	}
+	
+	DateTime temp = datePart + timePart;
+	temp.ToText("%d/%m/%Y %H:%M:%S").PrintLine();
+	
 	if (cmpl2 != datePart + timePart) {
 		Text::PrintLine("DateTime DatePart and TimePart don't work!");
 		return -1;

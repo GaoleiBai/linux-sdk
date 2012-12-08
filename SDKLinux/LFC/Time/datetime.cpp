@@ -91,7 +91,7 @@ int DateTime::Day()
 
 DateTime DateTime::TimePart()
 {
-	return DateTime(1970, 1, 1, Day(), Minute(), Second());
+	return DateTime(1970, 1, 1, Hour(), Minute(), Second());
 }
 
 int DateTime::Hour()
