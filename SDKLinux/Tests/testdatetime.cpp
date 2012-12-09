@@ -34,7 +34,7 @@ int TestDateTime::Perform()
 		return -1;
 	}
 	if (cmpl2.Year() != 1981 || cmpl2.Month() != 12 || cmpl2.Day() != 07 || 
-		cmpl2.Hour() != 03 || cmpl2.Minute() != 04 || cmpl2.Second() != 05) 
+		cmpl2.Hour() != 00 || cmpl2.Minute() != 04 || cmpl2.Second() != 05) 
 	{
 		Text::PrintLine("Cannot extract member variables");
 		return -1;
@@ -75,7 +75,7 @@ int TestDateTime::Perform()
 	
 	DateTime timePart = cmpl2.TimePart();
 	timePart.ToText("%d/%m/%Y %H:%M:%S").PrintLine();
-	if (timePart.ToText("%d/%m/%Y %H:%M:%S") != "01/01/1970 03:04:05") {
+	if (timePart.ToText("%d/%m/%Y %H:%M:%S") != "01/01/1970 00:04:05") {
 		Text::PrintLine("TimePart doesn't work!");
 		return -1;
 	}

@@ -21,6 +21,7 @@ void DateTime::init(int year, int month, int day, int hour, int minute, int seco
 	tt.tm_min = minute;
 	tt.tm_sec = second;
 	time_t ttt = mktime(&tt);
+	ttt += tt.tm_gmtoff;
 	if (ttt < 0) throw TimeException("Can't form DateTime with the current data.");
 	currentTime.tv_sec = ttt;
 	currentTime.tv_nsec = 0;
@@ -28,7 +29,8 @@ void DateTime::init(int year, int month, int day, int hour, int minute, int seco
 
 void DateTime::updatetmhelper()
 {
-	struct tm *t = localtime(&currentTime.tv_sec);
+	time_t secs = currentTime.tv_sec;
+	struct tm *t = gmtime(&secs);
 	tmhelper = *t;
 }
 
@@ -295,9 +297,7 @@ Text DateTime::ToText(const wchar_t *format)
 
 DateTime DateTime::ToUtcDateTime()
 {
-	long double dd = TotalDays();
-	dd += timezone / 86400.0;
-	return DateTime(dd);
+	return DateTime(TotalDays());
 }
 
 DateTime DateTime::FromUtcDateTime(DateTime &t)
