@@ -87,6 +87,22 @@ int TestDateTime::Perform()
 		Text::PrintLine("DateTime DatePart and TimePart don't work!");
 		return -1;
 	}
+	
+	DateTime substract = cmpl2 - timePart;
+	substract.ToText("%d/%m/%Y %H:%M:%S").PrintLine();
+	
+	if (datePart != cmpl2 - timePart) {
+		Text::PrintLine("Substraction doesn't work!");
+		return -1;
+	}
+	
+	printf("%d\r\n", datePart.Compare(cmpl2 - timePart));
+	printf("%d\r\n", cmpl2.Compare(cmpl));
+	printf("%d\r\n", cmpl.Compare(cmpl2));
+	if (datePart.Compare(cmpl2 - timePart) != 0 || cmpl2.Compare(cmpl) >= 0 || cmpl.Compare(cmpl2) <= 0) {
+		Text::PrintLine("Compare doesn't work!");
+		return -1;
+	}
 
 	return 0;
 }

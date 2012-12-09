@@ -314,6 +314,22 @@ int TestText::PerformWide()
 		printf("GetAnsiString didn't work.\r\n");
 		return -1;
 	}
+	
+	Text cmpA = "aaa";
+	Text cmpB = "bbb";
+	Text cmpC = "aaa";
+	printf("%d\r\n", cmpA.Compare(cmpB));
+	printf("%d\r\n", cmpB.Compare(cmpA));
+	printf("%d\r\n", cmpC.Compare(cmpA));
+	printf("%d\r\n", cmpC.Compare("aaa"));
+	printf("%d\r\n", cmpC.Compare(L"aaa"));
+	if (cmpA.Compare(cmpB) > 0 || cmpB.Compare(cmpA) < 0 || 
+		cmpA.Compare(cmpB) >= 0 || cmpB.Compare(cmpA) <= 0 ||
+		cmpC.Compare(cmpA) != 0 || !(cmpC.Compare("aaa") == 0))
+	{
+		Text::PrintLine("Compare doesn't work!");
+		return -1;
+	}
 
 	
 	return 0;

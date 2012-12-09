@@ -244,9 +244,9 @@ bool DateTime::Equals(const DateTime &d)
 int DateTime::Compare(const DateTime &d)
 {
 	long int diff = this->currentTime.tv_sec - d.currentTime.tv_sec;
-	if (diff) return diff;
+	if (diff) return -diff;
 	diff = this->currentTime.tv_nsec - d.currentTime.tv_nsec;
-	return diff;
+	return -diff;
 }
 
 DateTime DateTime::Parse(const Text &format, const Text &strDate)
