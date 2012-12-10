@@ -257,9 +257,12 @@ DateTime DateTime::Parse(const Text &format, const Text &strDate)
 DateTime DateTime::Parse(const char *format, const char *strDate)
 {
 	struct tm ttt;
+	memset(&ttt, 0, sizeof(ttt));
 	if (strptime(strDate, format, &ttt) == NULL) throw TimeException("The format cannot allow to parse the date string");
 	
-	return DateTime(1.0 * mktime(&ttt) / 1000.0);
+	time_t tt = mktime(&ttt) + ttt.tm_gmtoff;
+	long double dd = tt / 86400.0l;
+	return DateTime(dd);
 }
 
 DateTime DateTime::Parse(const wchar_t *format, const wchar_t *strDate)

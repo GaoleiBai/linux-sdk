@@ -96,11 +96,25 @@ int TestDateTime::Perform()
 		return -1;
 	}
 	
+	if (!datePart.Equals(cmpl2 - timePart)) {
+		Text::PrintLine("Equals doesn't work!");
+		return -1;
+	}
+	
 	printf("%d\r\n", datePart.Compare(cmpl2 - timePart));
 	printf("%d\r\n", cmpl2.Compare(cmpl));
 	printf("%d\r\n", cmpl.Compare(cmpl2));
 	if (datePart.Compare(cmpl2 - timePart) != 0 || cmpl2.Compare(cmpl) >= 0 || cmpl.Compare(cmpl2) <= 0) {
 		Text::PrintLine("Compare doesn't work!");
+		return -1;
+	}
+	
+	DateTime::Parse("%d/%m/%Y", "06/03/1977").ToText(L"%d/%m/%Y").PrintLine();
+	DateTime::Parse(L"%d/%m/%Y %H:%M:%S", L"07/12/1981 00:04:05").ToText("%d/%m/%Y %H:%M:%S").PrintLine();
+	if (DateTime::Parse("%d/%m/%Y", "06/03/1977") != cmpl ||
+		DateTime::Parse("%d/%m/%Y %H:%M:%S", "07/12/1981 00:04:05") != cmpl2) 
+	{
+		Text::PrintLine("Parse doesn't work!");
 		return -1;
 	}
 
