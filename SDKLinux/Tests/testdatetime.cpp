@@ -109,12 +109,31 @@ int TestDateTime::Perform()
 		return -1;
 	}
 	
+	Text fparse = L"%d/%m/%Y %H:%M:%S";
+	Text tparse = L"07/12/1981 00:04:05";
 	DateTime::Parse("%d/%m/%Y", "06/03/1977").ToText(L"%d/%m/%Y").PrintLine();
 	DateTime::Parse(L"%d/%m/%Y %H:%M:%S", L"07/12/1981 00:04:05").ToText("%d/%m/%Y %H:%M:%S").PrintLine();
+	DateTime::Parse(fparse, tparse).ToText(tparse).PrintLine();
 	if (DateTime::Parse("%d/%m/%Y", "06/03/1977") != cmpl ||
-		DateTime::Parse("%d/%m/%Y %H:%M:%S", "07/12/1981 00:04:05") != cmpl2) 
+		DateTime::Parse("%d/%m/%Y %H:%M:%S", "07/12/1981 00:04:05") != cmpl2 ||
+		DateTime::Parse(fparse, tparse) != cmpl2) 
 	{
 		Text::PrintLine("Parse doesn't work!");
+		return -1;
+	}
+	
+	if (cmpl2.ToText(fparse) != tparse ||
+		cmpl2.ToText(L"%d/%m/%Y %H:%M:%S") != L"07/12/1981 00:04:05" ||
+		cmpl2.ToText("%d/%m/%Y %H:%M:%S") != "07/12/1981 00:04:05") 
+	{
+		Text::PrintLine("ToText doesn't work!");
+		return -1; 
+	}
+	
+	DateTime tudt = cmpl2.ToUtcDateTime();
+	tudt.ToText("%d/%m/%Y %H:%M:%S").PrintLine();
+	if (tudt != DateTime::Parse("%d/%m/%Y %H:%M:%S", "06/12/1981 23:04:05")) {
+		Text::PrintLine("ToUtcDateTime doesn't work!");
 		return -1;
 	}
 

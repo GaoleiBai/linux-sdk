@@ -300,12 +300,16 @@ Text DateTime::ToText(const wchar_t *format)
 
 DateTime DateTime::ToUtcDateTime()
 {
-	return DateTime(TotalDays());
+	time_t t = time(NULL);
+	struct tm *tt = localtime(&t);
+	return DateTime(TotalDays() - tt->tm_gmtoff / 86400.0);
 }
 
 DateTime DateTime::FromUtcDateTime(DateTime &t)
 {
-	return DateTime(t.TotalDays() - timezone);
+	time_t tt = time(NULL);
+	struct tm *ttt = localtime(&tt);
+	return DateTime(t.TotalDays() + ttt->tm_gmtoff / 86400.0);
 }
 
 void DateTime::SetUtcDateTime(const DateTime &t)
