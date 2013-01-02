@@ -11,11 +11,11 @@
       <File Name="LFC/Collections/collection.h"/>
       <File Name="LFC/Collections/collection_exception.h"/>
       <File Name="LFC/Collections/collection_exception.cpp"/>
+      <File Name="LFC/Text/text_exception.h"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Text">
       <File Name="LFC/Text/text.cpp"/>
       <File Name="LFC/Text/text.h"/>
-      <File Name="LFC/Text/text_exception.h"/>
       <File Name="LFC/Text/text_exception.cpp"/>
       <File Name="LFC/Text/text_buffer.cpp"/>
       <File Name="LFC/Text/text_buffer.h"/>
@@ -29,12 +29,24 @@
       <File Name="LFC/Encoding/locale_encoding.cpp"/>
       <File Name="LFC/Encoding/locale_encoding.h"/>
     </VirtualDirectory>
-    <VirtualDirectory Name="Devices"/>
+    <VirtualDirectory Name="Devices">
+      <File Name="LFC/Devices/stdout.h"/>
+      <File Name="LFC/Devices/stdout.cpp"/>
+    </VirtualDirectory>
     <VirtualDirectory Name="Network"/>
     <VirtualDirectory Name="Threading"/>
     <VirtualDirectory Name="Filesystem">
       <File Name="LFC/FileSystem/directory.h"/>
       <File Name="LFC/FileSystem/directory.cpp"/>
+      <File Name="LFC/FileSystem/filesystemobjectinfo.h"/>
+      <File Name="LFC/FileSystem/filesystemobjectinfo.cpp"/>
+      <File Name="LFC/FileSystem/filesystemexception.cpp"/>
+      <File Name="LFC/FileSystem/filesystemexception.h"/>
+      <File Name="LFC/FileSystem/filesystem.h"/>
+      <File Name="LFC/FileSystem/file.h"/>
+      <File Name="LFC/FileSystem/file.cpp"/>
+      <File Name="LFC/FileSystem/ifile.h"/>
+      <File Name="LFC/FileSystem/ifile.cpp"/>
     </VirtualDirectory>
     <File Name="LFC/LFC.cpp"/>
     <VirtualDirectory Name="Time">
@@ -42,6 +54,18 @@
       <File Name="LFC/Time/datetime.cpp"/>
       <File Name="LFC/Time/timeexception.h"/>
       <File Name="LFC/Time/timeexception.cpp"/>
+    </VirtualDirectory>
+    <File Name="LFC/icomparable.h"/>
+    <File Name="LFC/icomparable.cpp"/>
+    <VirtualDirectory Name="Administration">
+      <File Name="LFC/Administration/administrationexception.cpp"/>
+      <File Name="LFC/Administration/administrationexception.h"/>
+      <File Name="LFC/Administration/userinfo.h"/>
+      <File Name="LFC/Administration/userinfo.cpp"/>
+      <File Name="LFC/Administration/groupinfo.h"/>
+      <File Name="LFC/Administration/groupinfo.cpp"/>
+      <File Name="LFC/Administration/administration.h"/>
+      <File Name="LFC/Administration/administration.cpp"/>
     </VirtualDirectory>
   </VirtualDirectory>
   <Description/>
@@ -57,6 +81,8 @@
     <File Name="Tests/testdirectory.cpp"/>
     <File Name="Tests/testdatetime.h"/>
     <File Name="Tests/testdatetime.cpp"/>
+    <File Name="Tests/testadministration.h"/>
+    <File Name="Tests/testadministration.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">

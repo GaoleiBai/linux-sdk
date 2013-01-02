@@ -16,11 +16,25 @@ int TestText::PerformAnsi()
 	Text a = "HÓLA";
 	Text b = "Mundo\r\n";
 	a = a + " cruel " + 5 + " " + b;
-	a.Print();
+	StdOut::PrintLine(a);
+	StdOut::PrintLine((Text)"Hola " + 5.25);
+	
+	NObject o;
+	Text compnobject = "7NObject";
+	StdOut::PrintLine(o.ToText());
+	if (compnobject != o.ToText()) {
+		StdOut::PrintLine("NObject::ToText() error!!!");
+		return -1;
+	}
+	
+	if (a != a.ToText()) {
+		StdOut::PrintLine("Text::ToText() error!!!");
+		return -1;
+	}
 	
 	const char *test1str = "HÓLA cruel 5 Mundo\r\n";
 	if (a != test1str) {
-		printf("Test 1 Error\r\n");
+		StdOut::PrintLine("Test 1 Error");
 		return -1;
 	}
 	
@@ -28,7 +42,7 @@ int TestText::PerformAnsi()
 	for (int i=0; i<a.Length(); i++) {
 		printf("%C", a[i]);
 		if (a[i] != t1str[i]) {
-			printf("Test 2 Error\r\n");
+			StdOut::PrintLine("Test 2 Error\r\n");
 		}
 	}
 	printf("\r\n");
@@ -36,7 +50,7 @@ int TestText::PerformAnsi()
 	Text *u = new Text("u");
 	Text *v = new Text("v");
 	*u = *u + *v + 5 + "\r\n";
-	u->Print();
+	StdOut::Print(*u);
 	if (*u != "uv5\r\n") {
 		printf("Test 3 Error\r\n");
 		return -1;
@@ -46,14 +60,14 @@ int TestText::PerformAnsi()
 	
 	a = "Este texto es una caca\r\n";
 	b = a.SubText(11);
-	b.Print();
+	StdOut::Print(b);
 	if (b != "es una caca\r\n") {
 		printf("Subtext(a); no funciona\r\n");
 		return -1;
 	}
 	
 	Text c = a.SubText(5, 5) + "\r\n";
-	c.Print();
+	StdOut::Print(c);
 	if (c != "texto\r\n") {
 		printf("SubText(a, b); no funciona\r\n");
 		return -1;
@@ -61,10 +75,9 @@ int TestText::PerformAnsi()
 	
 	Text splitChars = ",";
 	Text textToSplit = "1,2,3,4,5,6,7,8,9,";
-	Collection<Text *> items = textToSplit.Split(splitChars, false);
+	Collection<Text *> items = textToSplit.Split(",", false);
 	for (int i=0; i<items.Count(); i++) {
-		items[i]->Print();
-		printf("\r\n");
+		StdOut::PrintLine(*items[i]);
 	}
 	Collection<Text *> generatedItems;
 	for (int i = 1; i < 10; i++)
@@ -72,11 +85,11 @@ int TestText::PerformAnsi()
 	generatedItems.Add(new Text());
 	for (int i = 0; i < 9; i++) {	// El décimo item no se puede comparar porque es de longitud 0
 		if (*items[i] != *generatedItems[i] || !items[i]->Equals(*generatedItems[i])) {
-			printf("Error procesando y comparando items.\r\n");
+			StdOut::PrintLine("Error procesando y comparando items.");
 			return -1;
 		}
 		if (!items[i]->StartsWith(*generatedItems[i]) || !items[i]->EndsWith(*generatedItems[i])) {
-			printf("Error comprobando principios y finales de cadenas.\r\n");
+			StdOut::PrintLine("Error comprobando principios y finales de cadenas.");
 			return -1;
 		}
 		delete items[i];
@@ -89,31 +102,20 @@ int TestText::PerformAnsi()
 		!largeText.EndsWith("lidoso") || 
 		smallText.StartsWith("Pocos") || 
 		smallText.EndsWith("aPoco")) {
-		printf("Error comparando principio y final.\r\n");
+		StdOut::PrintLine("Error comparando principio y final.");
 		return -1;
 	}
 	
-	Text add;
-	add += "Lucky ";
-	add += true;
-	add += " ";
-	add += false;
-	add += " ";
-	add += 8;
-	add += " ";
-	add += 7.0f;
-	add += " ";
-	add += 9.0;
-	add += "\r\n";
-	add.Print();
+	Text add = (Text)"Lucky " + true + " " + false + " " + 8 + " " + 7.0f + " " + 9.0 + "\r\n";
+	StdOut::Print(add);
 	if (add != "Lucky true false 8 7,000000 9,000000\r\n") {
-		printf("La agregación no ha funcionado\r\n");
+		StdOut::PrintLine("La agregación no ha funcionado");
 		return -1;
 	}
 	
 	Text contains = "Jotiu";
 	if (!contains.Contains("Jo") || !contains.Contains("tiu") || !contains.Contains("Jotiu") || contains.Contains("ota")) {
-		printf("La contención no ha funcionado.");
+		StdOut::PrintLine("La contención no ha funcionado.");
 		return -1;
 	} 
 	
@@ -125,7 +127,7 @@ int TestText::PerformAnsi()
 	}
 	for (int i=0; i<gta.Count(); i++) {
 		if (!(*gta[i] < *gtb[i])) {
-			printf("La comparación no ha funcionado.\r\n");
+			StdOut::PrintLine("La comparación no ha funcionado.");
 			return -1;
 		}
 	}
@@ -136,7 +138,7 @@ int TestText::PerformAnsi()
 		toTrim.TrimRight(colTrim) != ";;;...   Hola" ||
 		toTrim.Trim(colTrim) != "Hola")
 	{
-		printf("Trim no ha funcionado.\r\n");
+		StdOut::PrintLine("Trim no ha funcionado.");
 		return -1;
 	}
 	
@@ -153,8 +155,8 @@ int TestText::PerformWide()
 	tsint = tsint + L"\r\n" + 5;
 	tsint += L"\r\n";
 	tlint += L"\r\n";
-	tsint.Print();
-	tlint.Print();
+	StdOut::Print(tsint);
+	StdOut::Print(tlint);
 	
 	Text hm = L"Hola mundo.\r\n";
 	Text hpm = "Hola";
@@ -171,18 +173,18 @@ int TestText::PerformWide()
 	Text a = L"HOLA";
 	Text b = L"Mundo\r\n";
 	a = a + L" cruel " + 5 + L" " + b;
-	a.Print();
+	StdOut::Print(a);
 	
 	const wchar_t *test1str = L"HOLA cruel 5 Mundo\r\n";
 	if (a != test1str) {
-		printf("Test 1 Error\r\n");
+		StdOut::Print("Test 1 Error\r\n");
 		return -1;
 	}
 	
 	for (int i=0; i<a.Length(); i++) {
 		printf("%c", a[i]);
 		if (a[i] != test1str[i]) {
-			printf("Test 2 Error\r\n");
+			StdOut::Print("Test 2 Error\r\n");
 		}
 	}
 	printf("\r\n");
@@ -190,7 +192,7 @@ int TestText::PerformWide()
 	Text *u = new Text(L"u");
 	Text *v = new Text(L"v");
 	*u = *u + *v + 5 + L"\r\n";
-	u->Print();
+	StdOut::PrintLine(*u);
 	if (*u != L"uv5\r\n") {
 		printf("Test 3 Error\r\n");
 		return -1;
@@ -200,19 +202,18 @@ int TestText::PerformWide()
 	
 	a = L"Este texto es una caca\r\n";
 	b = a.SubText(11);
-	b.Print();
+	StdOut::Print(b);
 	if (b != L"es una caca\r\n") return -1;
 	
 	Text c = a.SubText(5, 5) + L"\r\n";
-	c.Print();
+	StdOut::Print(c);
 	if (c != L"texto\r\n") return -1;
 	
 	Text splitChars = L",";
 	Text textToSplit = L"1,2,3,4,5,6,7,8,9,";
 	Collection<Text *> items = textToSplit.Split(splitChars, false);
 	for (int i=0; i<items.Count(); i++) {
-		items[i]->Print();
-		printf("\r\n");
+		StdOut::PrintLine(items[i]);
 	}
 	Collection<Text *> generatedItems;
 	for (int i = 1; i < 10; i++)
@@ -220,11 +221,11 @@ int TestText::PerformWide()
 	generatedItems.Add(new Text());
 	for (int i = 0; i < 9; i++) {
 		if (*items[i] != *generatedItems[i] || !items[i]->Equals(*generatedItems[i])) {
-			printf("Error procesando y comparando items.\r\n");
+			StdOut::Print("Error procesando y comparando items.\r\n");
 			return -1;
 		}
 		if (!items[i]->StartsWith(*generatedItems[i]) || !items[i]->EndsWith(*generatedItems[i])) {
-			printf("Error comprobando principios y finales de cadenas.\r\n");
+			StdOut::Print("Error comprobando principios y finales de cadenas.\r\n");
 			return -1;
 		}
 		delete items[i];
@@ -253,15 +254,15 @@ int TestText::PerformWide()
 	add += " ";
 	add += 9.0;
 	add += L"\r\n";
-	add.Print();
+	StdOut::Print(add);
 	if (add != L"Lucky true false 8 7,000000 9,000000\r\n") {
-		printf("La agregación no ha funcionado\r\n");
+		StdOut::Print("La agregación no ha funcionado\r\n");
 		return -1;
 	}
 	
 	Text contains = L"Jotiu";
 	if (!contains.Contains(L"Jo") || !contains.Contains(L"tiu") || !contains.Contains(L"Jotiu") || contains.Contains(L"ota")) {
-		printf("La contención no ha funcionado.\r\n");
+		StdOut::Print("La contención no ha funcionado.\r\n");
 		return -1;
 	}
 	
@@ -276,7 +277,7 @@ int TestText::PerformWide()
 			!(*gta[i] <= *gtb[i]) || 
 			!(*gtb[i] >= *gta[i]) || 
 			!(*gtb[i] > *gta[i])) {
-			printf("La comparación no ha funcionado.\r\n");
+			StdOut::Print("La comparación no ha funcionado.\r\n");
 			return -1;
 		}
 	}
@@ -289,7 +290,7 @@ int TestText::PerformWide()
 	Text uuu = replacement.Replace(",", ".");
 	Text vvv = replacement.Replace("a", "b");
 	if (replacement != ttt) {
-		printf("Replacement doesn't work!!!\r\n");
+		StdOut::Print("Replacement doesn't work!!!\r\n");
 		return -1;
 	}
 	
@@ -300,18 +301,18 @@ int TestText::PerformWide()
 		toTrim.TrimRight(colTrim) != L";;;...   Hola" ||
 		toTrim.Trim(colTrim) != L"Hola")
 	{
-		printf("Trim no ha funcionado.\r\n");
+		StdOut::Print("Trim no ha funcionado.\r\n");
 		return -1;
 	}
 	
 	const char *mbs = "En la imágen se ve que el camión tiene cañas en las ruedas.\r\n";
 	Locale::SetLocale("");
 	Text tombs(mbs);
-	tombs.Print();
+	StdOut::Print(tombs);
 	char cadena[1000];
 	tombs.GetAnsiString(cadena, 1000);
 	if (strcmp(mbs, cadena) != 0) {
-		printf("GetAnsiString didn't work.\r\n");
+		StdOut::Print("GetAnsiString didn't work.\r\n");
 		return -1;
 	}
 	
@@ -327,7 +328,7 @@ int TestText::PerformWide()
 		cmpA.Compare(cmpB) >= 0 || cmpB.Compare(cmpA) <= 0 ||
 		cmpC.Compare(cmpA) != 0 || !(cmpC.Compare("aaa") == 0))
 	{
-		Text::PrintLine("Compare doesn't work!");
+		StdOut::PrintLine("Compare doesn't work!");
 		return -1;
 	}
 

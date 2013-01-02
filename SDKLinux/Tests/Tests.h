@@ -4,5 +4,6 @@
 #include "test_text.h"
 #include "testdirectory.h"
 #include "testdatetime.h"
+#include "testadministration.h"
 
 #endif
