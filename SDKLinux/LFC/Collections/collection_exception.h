@@ -3,12 +3,11 @@
 
 #include "../exception.h"
 
-class CollectionException : Exception {
+class CollectionException : public Exception {
 
 public:
 	CollectionException();
-	CollectionException(const char *t);
-	CollectionException(const Text &t);
+	CollectionException(const Text &t, const char *file, int line, const char *func);
 	virtual ~CollectionException();
 
 };

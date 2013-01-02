@@ -9,9 +9,7 @@ class TimeException : Exception {
 
 public:
 	TimeException();
-	TimeException(const char *c);
-	TimeException(const Text &t);
-	TimeException(const TimeException &t);
+	TimeException(const Text &t, const char *file, int line, const char *func);
 	virtual ~TimeException();
 
 

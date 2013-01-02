@@ -1,3 +1,4 @@
+#include <typeinfo>
 #include "datetime.h"
 #include "timeexception.h"
 #include "../Text/text.h"
@@ -6,11 +7,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+long double DateTime::gmtoff = -5000;
+
 void DateTime::init(int year, int month, int day, int hour, int minute, int second)
 {
-	if (year < 1970) throw TimeException("Cannot build dates before 1970");
-	if (month < 1 || month > 12) throw TimeException("Months must be beetween 1 and 12");
-	if (day < 1 || day > 31) throw TimeException("Days must be between 1 and 31");
+	if (year < 1970) throw new TimeException("Cannot build dates before 1970", __FILE__, __LINE__, __func__);
+	if (month < 1 || month > 12) throw new TimeException("Months must be beetween 1 and 12", __FILE__, __LINE__, __func__);
+	if (day < 1 || day > 31) throw new TimeException("Days must be between 1 and 31", __FILE__, __LINE__, __func__);
 	
 	struct tm tt;
 	memset(&tt, 0, sizeof(tt));
@@ -22,7 +25,7 @@ void DateTime::init(int year, int month, int day, int hour, int minute, int seco
 	tt.tm_sec = second;
 	time_t ttt = mktime(&tt);
 	ttt += tt.tm_gmtoff;
-	if (ttt < 0) throw TimeException("Can't form DateTime with the current data.");
+	if (ttt < 0) throw new TimeException("Can't form DateTime with the current data.", __FILE__, __LINE__, __func__);
 	currentTime.tv_sec = ttt;
 	currentTime.tv_nsec = 0;
 }
@@ -34,41 +37,84 @@ void DateTime::updatetmhelper()
 	tmhelper = *t;
 }
 
+void DateTime::prepareGMTOFF()
+{
+	if (gmtoff == -5000) {
+		time_t tt = time(NULL);
+		struct tm *ttt = localtime(&tt);
+		gmtoff = ttt->tm_gmtoff / 86400.0l;
+	}
+}
+
+/**
+ * @brief Builds a DateTime object with the current DateTime
+ */
 DateTime::DateTime()
 {
 	clock_gettime(CLOCK_REALTIME, &currentTime);
 	updatetmhelper();
+	prepareGMTOFF();
 }
 
+/**
+ * @brief Builds a copy of the DateTime &t object
+ */
 DateTime::DateTime(const DateTime &t)
 {
 	currentTime = t.currentTime;
 	updatetmhelper();
+	prepareGMTOFF();
 }
 
+DateTime::DateTime(const DateTime *t)
+{
+	currentTime = t->currentTime;
+	updatetmhelper();
+	prepareGMTOFF();
+}
+
+/**
+ * @brief Builds a DateTime object with the number of days passed in the argument
+ */
 DateTime::DateTime(long double totalDays)
 {
 	long double secs = totalDays * 86400.0;
 	currentTime.tv_sec = secs;
 	currentTime.tv_nsec = (secs - currentTime.tv_sec) * 1000000000.0;
 	updatetmhelper();
+	prepareGMTOFF();
+}
+
+DateTime::DateTime(time_t t)
+{
+	currentTime.tv_sec = t;
+	currentTime.tv_nsec = 0;
+	updatetmhelper();
+	prepareGMTOFF();
 }
 
 DateTime::DateTime(int year, int month, int day)
 {
 	init(year, month, day, 0, 0 , 0);
 	updatetmhelper();
+	prepareGMTOFF();
 }
 
 DateTime::DateTime(int year, int month, int day, int hour, int minute, int second)
 {
 	init(year, month, day, hour, minute, second);
 	updatetmhelper();
+	prepareGMTOFF();
 }
 
 DateTime::~DateTime()
 {
 	
+}
+
+long double DateTime::GMTOFF()
+{
+	return gmtoff;
 }
 
 DateTime DateTime::DatePart()
@@ -133,6 +179,13 @@ long double DateTime::TotalDays()
 	return d / 86400.0;
 }
 
+DateTime & DateTime::operator =(const time_t t)
+{
+	currentTime.tv_sec = t;
+	currentTime.tv_nsec = 0;
+	updatetmhelper();
+}
+
 DateTime & DateTime::operator =(const long double days)
 {
 	double secs = (days * 86400);
@@ -146,6 +199,14 @@ DateTime & DateTime::operator =(const DateTime &d)
 	currentTime = d.currentTime;
 	tmhelper = d.tmhelper;
 	return *this;
+}
+
+DateTime DateTime::operator +(const time_t t)
+{
+	DateTime q = *this;
+	q.currentTime.tv_sec += t;
+	q.updatetmhelper();
+	return q;
 }
 
 DateTime DateTime::operator +(const long double days)
@@ -168,6 +229,14 @@ DateTime DateTime::operator +(DateTime &d)
 	return *this + d.TotalDays();
 }
 
+DateTime DateTime::operator -(const time_t t)
+{
+	DateTime q = *this;
+	q.currentTime.tv_sec -= t;
+	q.updatetmhelper();
+	return q;
+}
+
 DateTime DateTime::operator -(const long double d)
 {
 	return *this + (-d);
@@ -178,6 +247,11 @@ DateTime DateTime::operator -(DateTime &d)
 	return *this + (-d.TotalDays());
 }
 
+void DateTime::operator +=(const time_t t)
+{
+	*this = *this + t;
+}
+
 void DateTime::operator +=(const long double days)
 {
 	*this = *this + days;
@@ -186,6 +260,11 @@ void DateTime::operator +=(const long double days)
 void DateTime::operator +=(DateTime &t)
 {
 	*this = *this + t.TotalDays();
+}
+
+void DateTime::operator -=(const time_t t)
+{
+	*this = *this - t;
 }
 
 void DateTime::operator -=(const long double days)
@@ -241,6 +320,16 @@ bool DateTime::Equals(const DateTime &d)
 	return *this == d;
 }
 
+int DateTime::Compare(const NObject &o) 
+{
+	if (typeid(o) != typeid(DateTime)) 
+		throw TimeException(
+			(Text)"Cannot compare a DateTime object with a object of type " + typeid(o).name(), 
+			__FILE__, __LINE__, __func__);
+	
+	return Compare((DateTime &)o);
+}
+
 int DateTime::Compare(const DateTime &d)
 {
 	long int diff = this->currentTime.tv_sec - d.currentTime.tv_sec;
@@ -258,7 +347,7 @@ DateTime DateTime::Parse(const char *format, const char *strDate)
 {
 	struct tm ttt;
 	memset(&ttt, 0, sizeof(ttt));
-	if (strptime(strDate, format, &ttt) == NULL) throw TimeException("The format cannot allow to parse the date string");
+	if (strptime(strDate, format, &ttt) == NULL) throw new TimeException("The format cannot allow to parse the date string", __FILE__, __LINE__, __func__);
 	
 	time_t tt = mktime(&ttt) + ttt.tm_gmtoff;
 	long double dd = tt / 86400.0l;
@@ -298,18 +387,14 @@ Text DateTime::ToText(const wchar_t *format)
 	return ToText(cadena);
 }
 
-DateTime DateTime::ToUtcDateTime()
+DateTime DateTime::AddGMTOffset()
 {
-	time_t t = time(NULL);
-	struct tm *tt = localtime(&t);
-	return DateTime(TotalDays() - tt->tm_gmtoff / 86400.0);
+	return DateTime(TotalDays() - gmtoff);
 }
 
-DateTime DateTime::FromUtcDateTime(DateTime &t)
+DateTime DateTime::RemoveGMTOffset()
 {
-	time_t tt = time(NULL);
-	struct tm *ttt = localtime(&tt);
-	return DateTime(t.TotalDays() + ttt->tm_gmtoff / 86400.0);
+	return DateTime(TotalDays() + gmtoff);
 }
 
 void DateTime::SetUtcDateTime(const DateTime &t)

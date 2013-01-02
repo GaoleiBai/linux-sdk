@@ -13,7 +13,7 @@ TextBuffer::TextBuffer()
 
 TextBuffer::TextBuffer(int size)
 {
-	if (size <= 0) throw new TextException("Size ");
+	if (size <= 0) throw new TextException("Size cannot be smaller than one", __FILE__, __LINE__, __func__);
 	p = new wchar_t[size];
 	psize = size;
 	length = 0;
@@ -60,52 +60,17 @@ void TextBuffer::increaseBuffer(int newLen)
 	}
 }
 
-void TextBuffer::Append(Text &t)
+void TextBuffer::Append(const Text &t)
 {
-	increaseBuffer(length + t.Length());
+	Text tt = &t;
+	increaseBuffer(length + tt.Length());
 	
 	int len = psize - length - 1;
-	t.GetWideString(p + length, len);
-	length += t.Length();
+	tt.GetWideString(p + length, len);
+	length += tt.Length();
 }
 
-void TextBuffer::Append(const char *t)
-{
-	int tlen = strlen(t);
-	increaseBuffer(length + tlen);
-	
-	wchar_t *pp = p + length;
-	char *tt = (char *)t;
-	for (int i=0; i<tlen; i++) *pp++ = *tt++;
-	*pp = 0;
-	length += tlen;
-}
-
-void TextBuffer::Append(const wchar_t *t)
-{
-	int tlen = wcslen(t);
-	increaseBuffer(length + tlen);
-	
-	wchar_t *pp = p + length;
-	wchar_t *tt = (wchar_t *)t;
-	for (int i=0; i<tlen; i++) *pp++ = *tt++;
-	*pp = 0;	
-	length += tlen;
-}
-
-void TextBuffer::AppendLine(Text &t)
-{
-	Append(t);
-	Append("\r\n");
-}
-
-void TextBuffer::AppendLine(const char *t)
-{
-	Append(t);
-	Append("\r\n");
-}
-
-void TextBuffer::AppendLine(const wchar_t *t)
+void TextBuffer::AppendLine(const Text &t)
 {
 	Append(t);
 	Append("\r\n");

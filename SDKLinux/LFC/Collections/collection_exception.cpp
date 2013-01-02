@@ -4,12 +4,7 @@ CollectionException::CollectionException() : Exception()
 {
 }
 
-CollectionException::CollectionException(const char *t) : Exception(t)
-{
-	
-}
-
-CollectionException::CollectionException(const Text &t) : Exception(t)
+CollectionException::CollectionException(const Text &t, const char *file, int line, const char *func) : Exception(t, file, line, func)
 {
 	
 }

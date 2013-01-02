@@ -1,24 +1,22 @@
 #include "exception.h"
 #include "LFC.h"
+#include "Devices/stdout.h"
 
 Exception::Exception()
 {
 	t = new Text("");
 }
 
-Exception::Exception(const char *p)
-{
-	t = new Text(p);
-}
-
-Exception::Exception(const Text &p)
-{
-	t = new Text(p);
-}
-
 Exception::Exception(const Exception &e)
 {
-	t = new Text(*e.t);
+	t = new Text(e.t);
+	StdOut::PrintLine(t);
+}
+
+Exception::Exception(const Text &p, const char *file, int line, const char *func)
+{
+	t = new Text((Text)p + " in " + file + " at " + line + " : " + func);
+	StdOut::PrintLine(t);
 }
 
 Exception::~Exception()
@@ -28,6 +26,6 @@ Exception::~Exception()
 
 Text Exception::ToText()
 {
-	return Text(*t);
+	return *t;
 }
 

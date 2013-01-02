@@ -10,7 +10,7 @@ class Collection : public NObject {
 public:
 	Collection();
 	Collection(int size);
-	Collection(T t[]);
+	Collection(const T t[]);
 	Collection(const Collection<T> &c);
 	virtual ~Collection();
 
@@ -18,13 +18,27 @@ public:
 	void AddRange(T t[]);
 	void AddRange(Collection<T> &c);
 	void Remove(T o);
+	void RemoveAt(int ix);
+	void RemoveFirst();
+	void RemoveLast();
+	void DeleteAndRemoveAt(int ix);
+	void DeleteAndRemoveFirst();
+	void DeleteAndRemoveLast();
+	void InsertAt(int ix, T o);
 	void Compact();
 	void Clear();
 	void DeleteAndClear();
 	int Count();
 	bool Contains(T o);
 	
+	T &First();
+	T &Last();
 	T &operator [](int ix);
+	
+	//int Compare(static Collection<T> &c)
+	
+protected:
+	void expandSize();
 
 private:
 	T *objects;
@@ -50,17 +64,17 @@ Collection<T>::Collection(int size)
 }
 
 template<class T>
-Collection<T>::Collection(T t[])
+Collection<T>::Collection(const T t[])
 {
 	int tsize = 0;
-	T *tt = t;
-	while (*tt++) tsize++; 
+	T *tt = (T *)t;
+	while (*tt++) tsize++;
 	
 	size = tsize > 0 ? tsize : 1;
 	objects = new T[size];
 	numObjects = tsize;
 	
-	tt = t;
+	tt = (T *)t;
 	T *oo = objects;
 	while (*tt) *oo++ = *tt++;
 }
@@ -70,7 +84,7 @@ Collection<T>::Collection(const Collection<T> &c)
 {
 	size = c.size > 0 ? c.size : 1;
 	objects = new T[size];
-	numObjects = size;
+	numObjects = c.numObjects;
 	
 	T *cc = c.objects;
 	T *oo = objects;
@@ -84,16 +98,21 @@ Collection<T>::~Collection()
 }
 
 template<class T>
+void Collection<T>::expandSize()
+{
+	if (numObjects < size) return;
+	
+	T *p = new T[2 * size];
+	for (int i = 0; i < size; i++) p[i] = objects[i];
+	delete objects;
+	objects = p;
+	size *= 2;
+}
+
+template<class T>
 void Collection<T>::Add(T o)
 {
-	if (numObjects == size) {
-		T *p = new T[2 * size];
-		for (int i = 0; i < size; i++) p[i] = objects[i];
-		delete objects;
-		objects = p;
-		size *= 2;
-	}
-	
+	expandSize();
 	objects[numObjects++] = o;
 }
 
@@ -129,11 +148,78 @@ void Collection<T>::Remove(T o)
 }
 
 template<class T>
+void Collection<T>::RemoveAt(int ix)
+{
+	if (ix < 0 || ix >= numObjects) throw new CollectionException((Text)"Index out of bounds", __FILE__, __LINE__, __func__);
+	numObjects--;
+	for (int i = ix; i<numObjects; i++) objects[i] = objects[i + 1];
+}
+
+template<class T>
+void Collection<T>::RemoveFirst()
+{
+	RemoveAt(0);
+}
+
+template<class T>
+void Collection<T>::RemoveLast()
+{
+	RemoveAt(numObjects - 1);
+}
+
+template<class T>
+void Collection<T>::DeleteAndRemoveAt(int ix)
+{
+	if (ix < 0 || ix >= numObjects) throw new CollectionException("Index out of bounds", __FILE__, __LINE__, __func__);
+	if (is_pointer<T>::value) delete objects[ix];
+	RemoveAt(ix);
+}
+
+template<class T>
+void Collection<T>::DeleteAndRemoveFirst()
+{
+	if (numObjects < 1) throw new CollectionException("Atempting to delete an item which doesn't exist", __FILE__, __LINE__, __func__);
+	if (is_pointer<T>::value) delete objects[0];
+	RemoveAt(0);
+}
+
+template<class T>
+void Collection<T>::DeleteAndRemoveLast()
+{
+	if (numObjects < 1) throw new CollectionException("Atempting to delete an item which doesn't exist", __FILE__, __LINE__, __func__);
+	if (is_pointer<T>::value) delete objects[numObjects - 1];
+	RemoveAt(numObjects - 1);
+}
+
+template<class T>
+void Collection<T>::InsertAt(int ix, T o)
+{
+	expandSize();
+	numObjects++;
+	for (int i = ix; i<numObjects; i++) objects[i + 1] = objects[i];
+	objects[ix] = o;
+}
+
+template<class T>
+T &Collection<T>::First()
+{
+	if (numObjects < 1) throw new CollectionException("Atempting to get the first item in an empty collection", __FILE__, __LINE__, __func__);
+	return objects[0];
+}
+
+template<class T>
+T &Collection<T>::Last()
+{
+	if (numObjects < 1) throw new CollectionException("Atempting to get the last item in an empty collection", __FILE__, __LINE__, __func__);
+	return objects[numObjects - 1];
+}
+
+template<class T>
 void Collection<T>::Clear()
 {
 	delete objects;
 	size = 1;
-	objects = new NObject*[size];
+	objects = new T[size];
 	numObjects = 0;
 }
 
@@ -174,7 +260,7 @@ bool Collection<T>::Contains(T o)
 template<class T>
 T &Collection<T>::operator[](int ix)
 {
-	if (ix < 0 || ix > numObjects) new CollectionException("Index out of bounds");
+	if (ix < 0 || ix > numObjects) new CollectionException("Index out of bounds", __FILE__, __LINE__, __func__);
 	return objects[ix];
 }
 

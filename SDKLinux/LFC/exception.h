@@ -5,13 +5,12 @@
 
 class Text;
 
-class Exception : NObject {
+class Exception : public NObject {
 
 public:
 	Exception();
-	Exception(const char *t);
-	Exception(const Text &t);
-	Exception(const Exception &t);
+	Exception(const Exception &e);
+	Exception(const Text &t, const char *file, int line, const char *func);
 	virtual ~Exception();
 	
 	Text ToText();

@@ -7,6 +7,7 @@
 #include <wchar.h>
 #include <wctype.h>
 #include <stdlib.h>
+#include <errno.h>
 
 int Text::write(int posdest, char *dest, int ldest, int possrc, const char *src, int lsrc)
 {
@@ -29,7 +30,7 @@ int Text::write(int posdest, wchar_t *dest, int ldest, int possrc, const char *s
 	int size = 0;
 	for (int i = posdest; i<lldest; i += size) {
 		size = mbtowc(dd, ss, 10);
-		if (size == -1) throw TextException("The current locale doesn't allow to translate the characters.");
+		if (size == -1) throw new TextException("The current locale doesn't allow to translate the characters.", __FILE__, __LINE__, __func__);
 		dd++;
 		ss += size;
 		written++;
@@ -151,6 +152,11 @@ Text::Text(const Text &t)
 	aquireText(t.p, t.length, false);
 }
 
+Text::Text(const Text *t)
+{
+	aquireText(t->p, t->length, false);
+}
+
 Text::Text(bool b) 
 {
 	aquireText(b ? "true" : "false", b ? 4 : 5, false);
@@ -180,7 +186,21 @@ Text::Text(int i)
 	aquireText(cadena, strlen(cadena), false);
 }
 
+Text::Text(unsigned int i)
+{
+	char cadena[100];
+	sprintf(cadena, "%i", i);
+	aquireText(cadena, strlen(cadena), false);
+}
+
 Text::Text(long int i)
+{
+	char cadena[100];
+	sprintf(cadena, "%li", i);
+	aquireText(cadena, strlen(cadena), false);
+}
+
+Text::Text(unsigned long int i)
 {
 	char cadena[100];
 	sprintf(cadena, "%li", i);
@@ -220,7 +240,7 @@ int Text::GetAnsiString(char *buffer, int len)
 	while (i < len - 1 && *q) {
 		int size = wctomb(test, *q);
 		if (i + size >= len) break;
-		if (size == -1) throw TextException("Can't translate characters with the current locale.");
+		if (size == -1) throw new TextException("Can't translate characters with the current locale.", __FILE__, __LINE__, __func__);
 		for (int j=0; j<size; j++) r[j] = test[j];
 		i += size;
 		r += size;
@@ -235,9 +255,19 @@ int Text::GetWideString(wchar_t *buffer, int len)
 	return write(0, buffer, len - 1, 0, p, length);
 }
 
+int Text::Compare(const NObject &o)
+{
+	return Compare(((NObject *)&o)->ToText());
+}
+
 int Text::Compare(const char *t)
 {
 	return Compare(t, strlen(t));
+}
+
+int Text::Compare(const wchar_t *t)
+{
+	return Compare(t, wcslen(t));
 }
 
 int Text::Compare(const char *t, int len) 
@@ -252,11 +282,6 @@ int Text::Compare(const char *t, int len)
 	
 	int lenDiff = len - length;
 	if (lenDiff) return lenDiff;
-}
-
-int Text::Compare(const wchar_t *t)
-{
-	return Compare(t, wcslen(t));
 }
 
 int Text::Compare(const wchar_t *t, int len)
@@ -285,8 +310,8 @@ Text Text::SubText(int ix)
 
 Text Text::SubText(int ix, int length)
 {
-	if (ix < 0) throw TextException("Index out of bounds");
-	if (ix + length > this->length) throw TextException("Text piece out of source Text");
+	if (ix < 0) throw new TextException("Index out of bounds", __FILE__, __LINE__, __func__);
+	if (ix + length > this->length) throw new TextException("Text piece out of source Text", __FILE__, __LINE__, __func__);
 	
 	Text q;
 	return q.aquireText(p + ix, length, true);
@@ -337,7 +362,6 @@ Text Text::Replace(const char *search, const char *replacement)
 	return tb.ToText();
 }
 
-
 int Text::FindIx(const Text &t)
 {
 	return findIx(0, p, length, 0, t.p, t.length);
@@ -355,12 +379,12 @@ int Text::FindIx(const wchar_t *t)
 	return findIx(0, p, length, 0, t, tlen);
 }
 
-int Text::FindIx(Collection<char> &c)
+int Text::FindIx(const Collection<char> &c)
 {
 	return FindIx(0, c);
 }
 
-int Text::FindIx(Collection<wchar_t> &c)
+int Text::FindIx(const Collection<wchar_t> &c)
 {
 	return FindIx(0, c);
 }
@@ -382,72 +406,74 @@ int Text::FindIx(int startIndex, const wchar_t *t)
 	return findIx(startIndex, p, length, 0, t, tlen);
 }
 
-int Text::FindIx(int startIndex, Collection<char> &c) 
+int Text::FindIx(int startIndex, const Collection<char> &c) 
 {
 	for (int i=startIndex; i<length; i++) {
-		if (c.Contains(p[i]))
+		if (((Collection<char> *)&c)->Contains(p[i]))
 			return i;
 	}
 	
 	return -1;
 }
 
-int Text::FindIx(int startIndex, Collection<wchar_t> &c)
+int Text::FindIx(int startIndex, const Collection<wchar_t> &c)
 {
 	for (int i=startIndex; i<length; i++) {
-		if (c.Contains(p[i]))
+		if (((Collection<wchar_t> *)&c)->Contains(p[i]))
 			return i;
 	}
 	
 	return -1;	
 }
 
-Text Text::TrimLeft(Collection<char> &c) 
+Text Text::TrimLeft(const Collection<char> &c) 
 {
 	for (int i=0; i<length; i++) {
-		if (c.Contains(p[i])) continue;
+		if (((Collection<char> *)&c)->Contains(p[i])) continue;
 		return SubText(i);
 	}
 	
 	return Text();
 }
 
-Text Text::TrimLeft(Collection<wchar_t> &c) 
+Text Text::TrimLeft(const Collection<wchar_t> &c) 
 {
 	for (int i=0; i<length; i++) {
-		if (c.Contains(p[i])) continue;
+		if (((Collection<wchar_t> *)&c)->Contains(p[i])) continue;
 		return SubText(i);
 	}
 	
 	return Text();
 }
 
-Text Text::TrimRight(Collection<char> &c) 
+Text Text::TrimRight(const Collection<char> &c) 
 {
 	for (int i = length - 1; i >= 0; i--) {
-		if (c.Contains(p[i])) continue;
+		if (((Collection<char> *)&c)->Contains(p[i])) continue;
 		return SubText(0, i + 1);
 	}
 	
 	return Text();
 }
 
-Text Text::TrimRight(Collection<wchar_t> &c) 
+Text Text::TrimRight(const Collection<wchar_t> &c) 
 {
 	for (int i = length - 1; i >= 0; i--) {
-		if (c.Contains(p[i])) continue;
+		if (((Collection<wchar_t> *)&c)->Contains(p[i])) continue;
 		return SubText(0, i + 1);
 	}
 	
 	return Text();
 }
 
-Text Text::Trim(Collection<char> &c) 
+Text Text::Trim(const Collection<char> &c) 
 {
+	Collection<char> *cc = (Collection<char> *)&c;
+	
 	for (int i=0; i<length; i++) {
-		if (c.Contains(p[i])) continue;
+		if (cc->Contains(p[i])) continue;
 		for (int j=length - 1; j>i; j--) {
-			if (c.Contains(p[j])) continue;
+			if (cc->Contains(p[j])) continue;
 			return SubText(i, j - i + 1);
 		}
 		break;
@@ -456,12 +482,14 @@ Text Text::Trim(Collection<char> &c)
 	return Text();
 }
 
-Text Text::Trim(Collection<wchar_t> &c) 
+Text Text::Trim(const Collection<wchar_t> &c) 
 {
+	Collection<wchar_t> *cc = (Collection<wchar_t> *)&c;
+
 	for (int i=0; i<length; i++) {
-		if (c.Contains(p[i])) continue;
+		if (cc->Contains(p[i])) continue;
 		for (int j=length - 1; j>i; j--) {
-			if (c.Contains(p[j])) continue;
+			if (cc->Contains(p[j])) continue;
 			return SubText(i, j - i + 1);
 		}
 		break;
@@ -484,6 +512,11 @@ Text Text::ToLower()
 	return t;
 }
 
+Text Text::ToText()
+{
+	return *this;
+}
+
 Collection<int> Text::ExtractIndexes(Text &textToFind)
 {
 	Collection<int> result;
@@ -499,7 +532,7 @@ Collection<int> Text::ExtractIndexes(Text &textToFind)
 	return result;
 }
 
-Collection<Text *> Text::Split(Collection<char> &splitChars, bool removeEmptyEntries)
+Collection<Text *> Text::Split(const Collection<char> &splitChars, bool removeEmptyEntries)
 {
 	Collection<Text *> result;
 	int ix = 0, previx = 0;
@@ -519,7 +552,7 @@ Collection<Text *> Text::Split(Collection<char> &splitChars, bool removeEmptyEnt
 	return result;
 }
 
-Collection<Text *> Text::Split(Collection<wchar_t> &splitChars, bool removeEmptyEntries)
+Collection<Text *> Text::Split(const Collection<wchar_t> &splitChars, bool removeEmptyEntries)
 {
 	Collection<Text *> result;
 	int ix = 0, previx = 0;
@@ -530,6 +563,7 @@ Collection<Text *> Text::Split(Collection<wchar_t> &splitChars, bool removeEmpty
 		if (ix == previx) {
 			if (!removeEmptyEntries) result.Add(new Text());
 		} else {
+			if (ix == 0) result.Add(new Text(""));	// Splitchar at the beginning
 			result.Add(new Text(p + previx, (int)(ix - previx)));
 		}
 		ix++;
@@ -539,52 +573,35 @@ Collection<Text *> Text::Split(Collection<wchar_t> &splitChars, bool removeEmpty
 	return result;
 }
 
-Collection<Text *> Text::Split(Text &splitChars, bool removeEmptyEntries)
+Collection<Text *> Text::Split(const Text &splitChars, bool removeEmptyEntries)
 {
 	Collection<wchar_t> cSplitChars(splitChars.p);
 	return Split(cSplitChars, removeEmptyEntries);
 }
 
-Collection<Text *> Text::Split(char *splitChars, bool removeEmptyEntries)
+Collection<Text *> Text::Split(const char *splitChars, bool removeEmptyEntries)
 {
 	Collection<char> cSplitChars(splitChars);
 	return Split(cSplitChars, removeEmptyEntries);
 }
 
-Collection<Text *> Text::Split(wchar_t *splitChars, bool removeEmptyEntries)
+Collection<Text *> Text::Split(const wchar_t *splitChars, bool removeEmptyEntries)
 {
 	Collection<wchar_t> cSplitChars(splitChars);
 	return Split(cSplitChars, removeEmptyEntries);
 }
 
-void Text::Print()
+Text Text::Join(const Collection<Text *> &tokens, const Text &separator)
 {
-	printf("%S", p);
-}
-
-void Text::PrintLine()
-{
-	printf("%S\r\n", p);
-}
-
-void Text::Print(const char *c)
-{
-	printf("%s", c);
-}
-
-void Text::Print(const wchar_t *c)
-{
-	printf("%S", c);
-}
-
-void Text::PrintLine(const char *c)
-{
-	printf("%s\r\n", c);
-}
-
-void Text::PrintLine(const wchar_t *c)
-{
-	printf("%S\r\n", c);
+	Collection<Text *> *c = (Collection<Text *> *)&tokens;
+	if (c->Count() == 0) return "";
+	TextBuffer b;
+	b.Append((*c)[0]);
+	for (int i=1; i<c->Count(); i++) {
+		b.Append(separator);
+		b.Append((*c)[i]);
+	}
+	return b.ToText();
 }
 
 bool Text::Equals(const Text &t)
@@ -684,6 +701,11 @@ bool Text::Contains(const wchar_t *t, int len)
 	return findIx(0, p, length, 0, t, len) != -1;
 }
 
+Text Text::FromErrno()
+{
+	return Text(strerror(errno));
+}
+
 Text Text::operator +(const Text &t)
 {
 	int qlength = length + t.length;
@@ -697,7 +719,7 @@ Text Text::operator +(const Text &t)
 	tt.p = q;
 	return tt;
 }
-
+/*
 Text Text::operator +(const char *t)
 {
 	int tlength = strlen(t);
@@ -775,11 +797,13 @@ Text Text::operator +(double d)
 	Text q = d;
 	return *this + q;
 }
-
+*/
 Text &Text::operator +=(const Text &t)
 {
 	return appendText(t.p, t.length);
 }
+
+/*
 
 Text &Text::operator +=(const char *t)
 {
@@ -840,6 +864,8 @@ Text &Text::operator +=(double d)
 	sprintf(cadena, "%f", d);
 	return *this += cadena;
 }
+ * 
+ * */
 
 Text &Text::operator =(const Text &t)
 {
@@ -847,6 +873,7 @@ Text &Text::operator =(const Text &t)
 	return aquireText(t.p, t.length, true);
 }
 
+/*
 Text &Text::operator =(const char *t)
 {
 	return aquireText(t, strlen(t), true);
@@ -906,7 +933,7 @@ Text &Text::operator =(double d)
 	sprintf(cadena, "%f", d);
 	return aquireText(cadena, strlen(cadena), true);
 }
-
+*/
 bool Text::operator ==(const Text &t)
 {
 	if (&t == this) return true;
@@ -914,6 +941,7 @@ bool Text::operator ==(const Text &t)
 	return Compare(t) == 0;
 }
 
+/*
 bool Text::operator ==(const char *t)
 {
 	Text q = t;
@@ -926,12 +954,13 @@ bool Text::operator ==(const wchar_t *t)
 	if (lt != length) return false;
 	return Compare(t, lt) == 0;
 }
+ */
 
 bool Text::operator !=(const Text &t)
 {
 	return !(*this == t);
 }
-
+/*
 bool Text::operator !=(const char *t)
 {
 	return !(*this == t);
@@ -941,12 +970,12 @@ bool Text::operator !=(const wchar_t *t)
 {
 	return !(*this == t);
 }
-
+*/
 bool Text::operator <(const Text &t)
 {
 	return Compare(t) < 0;
 }
-
+/*
 bool Text::operator <(const char *t)
 {
 	return Compare(t) < 0;
@@ -956,12 +985,12 @@ bool Text::operator <(const wchar_t *t)
 {
 	return Compare(t) < 0;
 }
-
+*/
 bool Text::operator >(const Text &t)
 {
 	return Compare(t) > 0;
 }
-
+/*
 bool Text::operator >(const char *t)
 {
 	return Compare(t) > 0;
@@ -971,12 +1000,12 @@ bool Text::operator >(const wchar_t *t)
 {
 	return Compare(t) > 0;
 }
-
+*/
 bool Text::operator <=(const Text &t)
 {
 	return Compare(t) <= 0;
 }
-
+/*
 bool Text::operator <=(const char *t)
 {
 	return Compare(t) <= 0;
@@ -986,12 +1015,12 @@ bool Text::operator <=(const wchar_t *t)
 {
 	return Compare(t) <= 0;
 }
-
+*/
 bool Text::operator >=(const Text &t)
 {
 	return Compare(t) >= 0;
 }
-
+/*
 bool Text::operator >=(const char *t)
 {
 	return Compare(t) >= 0;
@@ -1001,9 +1030,9 @@ bool Text::operator >=(const wchar_t *t)
 {
 	return Compare(t) >= 0;
 }
-
+*/
 wchar_t &Text::operator [](const int ix)
 {
-	if (ix < 0 || ix >= length) throw TextException("Índice fuera de límites");
+	if (ix < 0 || ix >= length) throw new TextException("Índice fuera de límites", __FILE__, __LINE__, __func__);
 	return p[ix];
 }

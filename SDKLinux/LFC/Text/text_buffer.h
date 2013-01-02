@@ -1,9 +1,11 @@
 #ifndef TEXTBUFFER_H
 #define TEXTBUFFER_H
 
+#include "../n_object.h"
+
 class Text;
 
-class TextBuffer {
+class TextBuffer : NObject {
 
 public:
 	TextBuffer();
@@ -13,12 +15,8 @@ public:
 	TextBuffer(const wchar_t *c);
 	virtual ~TextBuffer();
 	
-	void Append(Text &t);
-	void Append(const char *t);
-	void Append(const wchar_t *t);
-	void AppendLine(Text &t);
-	void AppendLine(const char *t);
-	void AppendLine(const wchar_t *t);
+	void Append(const Text &t);
+	void AppendLine(const Text &t);
 	
 	Text ToText();
 	
