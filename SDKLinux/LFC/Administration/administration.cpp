@@ -50,7 +50,8 @@ Collection<UserInfo *> Administration::Users()
 	}
 	endpwent();
 	
-	if (errno != 0) throw new AdministrationException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+	if (errno != 0) 
+		throw new AdministrationException(Text::FromErrno(), __FILE__, __LINE__, __func__);
 	return cui;
 }
 

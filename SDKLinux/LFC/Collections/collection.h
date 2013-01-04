@@ -86,9 +86,8 @@ Collection<T>::Collection(const Collection<T> &c)
 	objects = new T[size];
 	numObjects = c.numObjects;
 	
-	T *cc = c.objects;
-	T *oo = objects;
-	while (*cc) *oo++ = *cc++;
+	for (int i=0; i<numObjects; i++) 
+		objects[i] = c.objects[i];
 }
 
 template<class T>
