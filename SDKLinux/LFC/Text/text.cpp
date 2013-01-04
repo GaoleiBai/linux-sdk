@@ -479,7 +479,7 @@ Text Text::Trim(const Collection<char> &c)
 		break;
 	}
 	
-	return Text();
+	return *this;
 }
 
 Text Text::Trim(const Collection<wchar_t> &c) 
@@ -495,7 +495,7 @@ Text Text::Trim(const Collection<wchar_t> &c)
 		break;
 	}
 	
-	return Text();
+	return *this;
 }
 
 Text Text::ToUpper()

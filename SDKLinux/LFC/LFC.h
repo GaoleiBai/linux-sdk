@@ -19,6 +19,7 @@
 #include "FileSystem/filesystemobjectinfo.h"
 #include "FileSystem/file.h"
 #include "FileSystem/ifile.h"
+#include "FileSystem/buffer.h"
 #include "Time/datetime.h"
 #include "Time/timeexception.h"
 #include "Devices/stdout.h"

@@ -5,5 +5,6 @@
 #include "testdirectory.h"
 #include "testdatetime.h"
 #include "testadministration.h"
+#include "testfile.h"
 
 #endif

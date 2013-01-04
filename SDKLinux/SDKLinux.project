@@ -47,6 +47,8 @@
       <File Name="LFC/FileSystem/file.cpp"/>
       <File Name="LFC/FileSystem/ifile.h"/>
       <File Name="LFC/FileSystem/ifile.cpp"/>
+      <File Name="LFC/FileSystem/buffer.h"/>
+      <File Name="LFC/FileSystem/buffer.cpp"/>
     </VirtualDirectory>
     <File Name="LFC/LFC.cpp"/>
     <VirtualDirectory Name="Time">
@@ -83,6 +85,8 @@
     <File Name="Tests/testdatetime.cpp"/>
     <File Name="Tests/testadministration.h"/>
     <File Name="Tests/testadministration.cpp"/>
+    <File Name="Tests/testfile.h"/>
+    <File Name="Tests/testfile.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">

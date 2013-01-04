@@ -3,6 +3,7 @@
 
 #include "filesystem.h"
 #include "ifile.h"
+#include "buffer.h"
 #include "../Text/text.h"
 #include "../Collections/collection.h"
 
@@ -23,9 +24,9 @@ public:
 	
 	Text FileName();
 	
-	virtual void Open();
-	virtual void Close();
-	virtual void Flush();
+	void Open();
+	void Close();
+	void Flush();
 	virtual off_t FSetStart();
 	virtual off_t FSetEnd();
 	virtual off_t FSet(int position);

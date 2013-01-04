@@ -11,9 +11,6 @@ public:
 	IFile();
 	virtual ~IFile();
 
-	virtual void Open() = 0;
-	virtual void Close() = 0;
-	virtual void Flush() = 0;
 	virtual off_t FSetStart() = 0;
 	virtual off_t FSetEnd() = 0;
 	virtual off_t FSet(int position) = 0;

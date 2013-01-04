@@ -36,6 +36,12 @@ int main(int argc, char **argv)
 		StdOut::PrintLine("TestAdministration::Perform error!!!");
 		return -1;
 	}
+	StdOut::PrintLine();
+	
+	if (TestFile::Perform() != 0) {
+		StdOut::PrintLine("TestFile::Perform error!!!");
+		return -1;
+	}
 	
 	return 0;
 }

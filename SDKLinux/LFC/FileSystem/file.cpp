@@ -1,7 +1,9 @@
 #include "file.h"
 #include "filesystemobjectinfo.h"
 #include "filesystemexception.h"
+#include "buffer.h"
 #include "../Text/text_exception.h"
+#include "../Text/text_buffer.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -114,21 +116,20 @@ void File::Write(char *buffer, int lonBuffer)
 Text File::ReadAllText(const Text &filename)
 {
 	FileSystemObjectInfo fsoi(filename);
-	char *buffer = new char[fsoi.Size()];
+	char buffer[10000];
+	Buffer b;
 
-	try {
-		File f(filename, FO_ReadOnly);
-		f.Open();
-		for (int leido = 0; leido < fsoi.Size(); )
-			leido += f.Read(buffer + leido, fsoi.Size() - leido);
-	} catch (FileSystemException *e) {
-		delete buffer;
-		throw e;
+	File f(filename, FO_ReadOnly);
+	f.Open();
+	for (int leido = 0; leido < fsoi.Size(); ) {
+		int res = f.Read(buffer, 10000);
+		if (!res) continue;
+		b.Write(buffer, res);
+		leido += res;
 	}
+	f.Close();
 	
-	Text t(buffer);
-	delete buffer;
-	return t;
+	return b.ToText();
 }
 
 Collection<Text *> File::ReadAllLines(const Text &filename)
@@ -184,7 +185,7 @@ void File::WriteAllLines(const Text &filename, const Collection<Text *> &lines)
 			t.GetAnsiString(converted, 10000);
 			f.Write(converted, strlen(converted));
 		}
-		f.Write("\n", 1);
+		f.Write((char *)"\n", 1);
 	}
 	
 	f.Flush();
