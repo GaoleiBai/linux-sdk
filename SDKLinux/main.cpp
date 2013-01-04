@@ -9,25 +9,25 @@ int main(int argc, char **argv)
 	StdOut::PrintLine("hello world");
 	
 	if (TestText::PerformAnsi() != 0) {
-		printf("PerformAnsi error!\r\n");
+		StdOut::PrintLine("PerformAnsi error!");
 		return -1;
 	}
 	StdOut::PrintLine();
 	
 	if (TestText::PerformWide() != 0) {
-		printf("PerformWide error!\r\n");
+		StdOut::PrintLine("PerformWide error!");
 		return -1;
 	}
 	StdOut::PrintLine();
 	
 	if (TestDirectory::Perform() != 0) {
-		printf("TestDirectory::Perform error!\r\n");
+		StdOut::PrintLine("TestDirectory::Perform error!");
 		return -1;
 	}
 	StdOut::PrintLine();
 	
 	if (TestDateTime::Perform() != 0) {
-		printf("TestDateTime::Perform error!\r\n");
+		StdOut::PrintLine("TestDateTime::Perform error!");
 		return -1;
 	}
 	StdOut::PrintLine();
