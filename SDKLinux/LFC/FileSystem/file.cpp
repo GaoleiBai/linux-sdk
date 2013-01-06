@@ -9,6 +9,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdio.h>
 
 File::File(const Text &filename, int mode)
 {
@@ -190,4 +191,61 @@ void File::WriteAllLines(const Text &filename, const Collection<Text *> &lines)
 	
 	f.Flush();
 	f.Close();
+}
+
+void File::Copy(const Text &from, const Text &to)
+{
+	char buffer[100000];
+	File ffrom(from, FO_ReadOnly);
+	File fto(to, FO_WriteOnly);
+	
+	int leido = ffrom.Read(buffer, 100000);
+	while (leido > 0) {
+		fto.Write(buffer, leido);
+		leido = ffrom.Read(buffer, 100000);
+	}
+}
+
+void File::Move(const Text &from, const Text &to)
+{
+	char strFrom[10001];
+	char strTo[10001];
+	
+	((Text *)&from)->GetAnsiString(strFrom, 10000);
+	((Text *)&to)->GetAnsiString(strTo, 10000);
+	
+	if (rename(strFrom, strTo) == -1)
+		throw new FileSystemException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+}
+
+void File::Delete(const Text &filename)
+{
+	char cadena[10001];
+	((Text *)&filename)->GetAnsiString(cadena, 10000);
+	if (unlink(cadena) == -1)
+		throw new FileSystemException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+}
+
+void File::Link(const Text &from, const Text &to)
+{
+	char strFrom[10001];
+	char strTo[10001];
+	
+	((Text *)&from)->GetAnsiString(strFrom, 10000);
+	((Text *)&to)->GetAnsiString(strTo, 10000);
+	
+	if (link(strFrom, strTo) == -1)
+		throw new FileSystemException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+}
+
+void File::Symlink(const Text &from, const Text &to)
+{
+	char strFrom[10001];
+	char strTo[10001];
+	
+	((Text *)&from)->GetAnsiString(strFrom, 10000);
+	((Text *)&to)->GetAnsiString(strTo, 10000);
+	
+	if (symlink(strFrom, strTo) == -1)
+		throw new FileSystemException(Text::FromErrno(), __FILE__, __LINE__, __func__);
 }

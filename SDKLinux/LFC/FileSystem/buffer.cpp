@@ -22,6 +22,15 @@ Buffer::Buffer()
 	buffer = new char[capacity];
 }
 
+Buffer::Buffer(const char *buffer, int lonBuffer)
+{
+	position = 0;
+	capacity = lonBuffer;
+	this->lonBuffer = lonBuffer;
+	this->buffer = new char[capacity];
+	memcpy(this->buffer, buffer, lonBuffer);
+}
+
 Buffer::Buffer(const Buffer &b)
 {
 	position = 0;
@@ -91,4 +100,64 @@ Text Buffer::ToText()
 {
 	Text t(buffer, lonBuffer);
 	return t;
+}
+
+int Buffer::Length()
+{
+	return lonBuffer;
+}
+
+int Buffer::FindIx(const Buffer &b)
+{
+	for (int i=0; i<lonBuffer - b.lonBuffer + 1; i++) {
+		for (int j=0; j<b.lonBuffer; j++) {
+			if (buffer[i + j] != b.buffer[j]) break;
+			if (j == b.lonBuffer - 1) return i;
+		}
+	}
+	
+	return -1;
+}
+
+Buffer Buffer::SubBuffer(int ix)
+{
+	if (ix < 0 || ix >= lonBuffer)
+		throw new FileSystemException("Index out of bounds", __FILE__, __LINE__, __func__);
+		
+	Buffer b(buffer + ix, lonBuffer - ix);
+	return b;
+}
+
+Buffer Buffer::SubBuffer(int ix, int length)
+{
+	if (ix < 0 || ix + length > lonBuffer)
+		throw new FileSystemException("Index ot of bounds", __FILE__, __LINE__, __func__);
+		
+	Buffer b(buffer + ix, length);
+	return b;
+}
+
+char &Buffer::operator [](int ix)
+{
+	if (ix < 0 || ix >= lonBuffer)
+		throw new FileSystemException("Index out of bounds.", __FILE__, __LINE__, __func__);
+		
+	return buffer[ix];
+}
+
+bool Buffer::operator ==(const Buffer &b)
+{
+	if (lonBuffer != b.lonBuffer) return false;
+	for (int i=0; i<lonBuffer; i++)
+		if (buffer[i] != b.buffer[i])
+			return false;
+	return true;
+}
+
+Buffer Buffer::operator +(const Buffer &b)
+{
+	Buffer q = *this;
+	q.expandBuffer(q.lonBuffer + b.lonBuffer);
+	memcpy(q.buffer + q.lonBuffer, b.buffer, b.lonBuffer);
+	return q;
 }

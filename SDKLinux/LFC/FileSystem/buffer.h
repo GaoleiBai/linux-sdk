@@ -8,6 +8,7 @@ class Buffer : NObject, IFile {
 
 public:
 	Buffer();
+	Buffer(const char *buffer, int lonBuffer);
 	Buffer(const Buffer &b);
 	Buffer(const Buffer *b);
 	virtual ~Buffer();
@@ -20,6 +21,15 @@ public:
 	virtual int Read(char *buffer, int lonBuffer);
 	
 	Text ToText();
+	
+	int Length();
+	int FindIx(const Buffer &b);
+	Buffer SubBuffer(int ix);
+	Buffer SubBuffer(int ix, int length);
+	
+	char &operator[](int ix);
+	bool operator==(const Buffer &b);
+	Buffer operator+(const Buffer &b);
 	
 private:
 	char *buffer;

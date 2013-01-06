@@ -39,6 +39,12 @@ public:
 	static void WriteAllText(const Text &filename, const Text &contents);
 	static void WriteAllLines(const Text &filename, const Collection<Text *> &lines);
 	
+	static void Copy(const Text &from, const Text &to);
+	static void Move(const Text &from, const Text &to);
+	static void Delete(const Text &filename);
+	static void Link(const Text &from, const Text &to);
+	static void Symlink(const Text &from, const Text &to);
+	
 private:
 	int file;
 	Text *fileName;
