@@ -65,11 +65,12 @@ void Buffer::Write(char *buffer, int lonBuffer)
 
 int Buffer::Read(char *buffer, int lonBuffer)
 {
-	if (position + lonBuffer > this->lonBuffer) 
-		throw new FileSystemException("Cannot read beyond the end of the buffer", __FILE__, __LINE__, __func__);
+	int leer = position + lonBuffer >= this->lonBuffer ? leer = this->lonBuffer - position : lonBuffer;
+	if (!leer) return 0;
 	
-	memcpy(buffer, this->buffer + position, lonBuffer);
-	return lonBuffer;
+	memcpy(buffer, this->buffer + position, leer);
+	position += leer;
+	return leer;
 }
 
 off_t Buffer::FSetStart()

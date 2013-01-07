@@ -161,8 +161,6 @@ void File::WriteAllText(const Text &filename, const Text &contents)
 			t.GetAnsiString(converted, 10000);
 			f.Write(converted, strlen(converted));
 		}
-		f.Flush();
-		f.Close();
 	} catch (FileSystemException *e) {
 		throw e;
 	} catch (TextException *e) {
@@ -216,6 +214,7 @@ void File::WriteAllBytes(const Text &filename, const Buffer &buffer)
 	File f(filename, FO_Create | FO_Truncate | FO_WriteOnly, S_IRUSR | S_IWUSR );
 	f.Open();
 	
+	((Buffer *)&buffer)->FSetStart();
 	int leido = ((Buffer *)&buffer)->Read(baux, 100000);
 	while (leido) {
 		f.Write(baux, leido);
