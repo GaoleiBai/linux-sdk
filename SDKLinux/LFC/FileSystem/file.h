@@ -13,7 +13,6 @@ class File : public NObject, IFile {
 
 public:
 	File(const Text &filename, int mode);
-	File(const Text &filename, int mode, int creationFlags);
 	virtual ~File();
 	
 	Text FileName();
@@ -43,12 +42,12 @@ public:
 	static void Delete(const Text &filename);
 	static void Link(const Text &from, const Text &to);
 	static void Symlink(const Text &from, const Text &to);
+	static void Chmod(const Text &filename, mode_t mode);
 	
 private:
 	int file;
 	Text *fileName;
 	int mode;
-	int creationFlags;
 
 };
 

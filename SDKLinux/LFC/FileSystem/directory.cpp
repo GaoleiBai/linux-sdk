@@ -239,7 +239,7 @@ bool Directory::CheckFileSystemObject(const Text &t)
 	return res == 0;
 }
 
-void Directory::CreateDirectory(const Text &t, int mode)
+void Directory::CreateDirectory(const Text &t)
 {
 	char cadena[10001];	
 	Text pathToCheck;	
@@ -253,7 +253,7 @@ void Directory::CreateDirectory(const Text &t, int mode)
 		if (CheckFileSystemObject(pathToCheck)) continue;
 		
 		pathToCheck.GetAnsiString(cadena, 10000);
-		result = mkdir(cadena, mode | 1000);
+		result = mkdir(cadena, 0700);
 		if (result) break;
 	}
 	folders.DeleteAndClear();
@@ -283,4 +283,12 @@ Text Directory::CurrentDirectory()
 	Text t = dn;
 	delete dn;
 	return t;
+}
+
+void Directory::Chmod(const Text &objectPath, mode_t mode)
+{
+	char cadena[10001];
+	((Text *)&objectPath)->GetAnsiString(cadena, 10000);
+	if (chmod(cadena, mode) == -1)
+		throw new FileSystemException(Text::FromErrno(), __FILE__, __LINE__, __func__);
 }

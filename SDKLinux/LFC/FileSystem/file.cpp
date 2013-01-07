@@ -16,14 +16,6 @@ File::File(const Text &filename, int mode)
 {
 	this->fileName = new Text(filename);
 	this->mode = mode;
-	this->creationFlags = 0;
-}
-
-File::File(const Text &filename, int mode, int creationFlags)
-{
-	this->fileName = new Text(filename);
-	this->mode = mode;
-	this->creationFlags = creationFlags;
 }
 
 File::~File()
@@ -37,7 +29,7 @@ void File::Open()
 	char cadena[1001];
 	
 	fileName->GetAnsiString(cadena, 1000);
-	file = open(cadena, mode, creationFlags);
+	file = open(cadena, mode, S_IRUSR | S_IWUSR );
 	if (file == -1)
 		throw new FileSystemException(Text::FromErrno(), __FILE__, __LINE__, __func__);	
 }
@@ -151,7 +143,7 @@ void File::WriteAllText(const Text &filename, const Text &contents)
 	Text *cc = (Text *)&contents;
 	
 	try {
-		File f(filename, FO_Create | FO_Truncate | FO_WriteOnly, USER_READ | USER_WRITE | GROUP_READ | OTHERS_READ );
+		File f(filename, FO_Create | FO_Truncate | FO_WriteOnly );
 		f.Open();
 
 		char converted[10000];
@@ -174,7 +166,7 @@ void File::WriteAllLines(const Text &filename, const Collection<Text *> &lines)
 {
 	Collection<Text *> *ll = (Collection<Text *> *)&lines;
 	Text t;
-	File f(filename, FO_Create | FO_Truncate | FO_WriteOnly, USER_READ | USER_WRITE | GROUP_READ | OTHERS_READ );
+	File f(filename, FO_Create | FO_Truncate | FO_WriteOnly );
 	f.Open();
 	
 	char converted[10000];
@@ -211,7 +203,7 @@ Buffer File::ReadAllBytes(const Text &filename)
 void File::WriteAllBytes(const Text &filename, const Buffer &buffer)
 {
 	char baux[100000];
-	File f(filename, FO_Create | FO_Truncate | FO_WriteOnly, S_IRUSR | S_IWUSR );
+	File f(filename, FO_Create | FO_Truncate | FO_WriteOnly );
 	f.Open();
 	
 	((Buffer *)&buffer)->FSetStart();
@@ -236,7 +228,7 @@ void File::Copy(const Text &from, const Text &to)
 {
 	char buffer[100000];
 	File ffrom(from, FO_ReadOnly);
-	File fto(to, FO_WriteOnly | FO_Create | FO_Truncate, S_IRUSR | S_IWUSR );
+	File fto(to, FO_WriteOnly | FO_Create | FO_Truncate );
 	
 	ffrom.Open();
 	fto.Open();
@@ -290,4 +282,12 @@ void File::Symlink(const Text &from, const Text &to)
 	
 	if (symlink(strFrom, strTo) == -1)
 		throw new FileSystemException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+}
+
+void File::Chmod(const Text &filename, mode_t mode)
+{
+	char cadena[10001];
+	((Text *)&filename)->GetAnsiString(cadena, 10000);
+	if (chmod(cadena, mode) == -1)
+		throw new FileSystemException(Text::FromErrno(), __FILE__, __LINE__, __func__);	
 }

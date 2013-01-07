@@ -14,15 +14,15 @@
 
 
 // File rights
-#define	USER_READ 400
-#define	USER_WRITE 200
-#define	USER_EXEC 100
-#define	GROUP_READ 40
-#define	GROUP_WRITE 20
-#define	GROUP_EXEC 10
-#define	OTHERS_READ 4
-#define	OTHERS_WRITE 2
-#define	OTHERS_EXEC 1
+#define	USER_READ 0400
+#define	USER_WRITE 0200
+#define	USER_EXEC 0100
+#define	GROUP_READ 0040
+#define	GROUP_WRITE 0020
+#define	GROUP_EXEC 0010
+#define	OTHERS_READ 0004
+#define	OTHERS_WRITE 0002
+#define	OTHERS_EXEC 0001
 
 // File open modes
 #define FO_Append O_APPEND

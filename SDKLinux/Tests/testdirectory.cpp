@@ -96,7 +96,16 @@ int TestDirectory::Perform()
 	blockDevicesList.DeleteAndClear();
 	characterDevicesList.DeleteAndClear();
 
-	Directory::CreateDirectory("test/test1/testñ", 744);
+	Directory::CreateDirectory("test/test1/testñ");
+	if (!Directory::CheckFileSystemObject("test") ||
+		!Directory::CheckFileSystemObject("test/test1") || 
+		!Directory::CheckFileSystemObject("test/test1/testñ")) 
+	{
+		StdOut::PrintLine("CreateDirectory didn't work");
+		return -1;
+	}
+	
+	
 	return 0;
 }
 

@@ -48,10 +48,12 @@ public:
 	static Collection<FileSystemObjectInfo *> GetDomainSocketLink(const Text &path);
 	static Collection<FileSystemObjectInfo *> GetDomainSocketLink(const Text &path, const Text &textInName);
 	static bool CheckFileSystemObject(const Text &t);
-	static void CreateDirectory(const Text &t, int mode);
+	static void CreateDirectory(const Text &t);
 	static void DeleteDirectory(const Text &t);
 	static void ChangeDirectory(const Text &t);
 	static Text CurrentDirectory();
+	static void Chmod(const Text &objectPath, mode_t mode);
+	
 
 };
 

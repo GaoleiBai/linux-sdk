@@ -54,15 +54,12 @@ int TestFile::Perform()
 		
 		File::Move("prueba2", "prueba3");
 		Buffer b4 = File::ReadAllBytes("prueba3");
-		if (b1 != b4) {
+		if (b1 != b4 || File::Exists("prueba2")) {
 			StdOut::PrintLine("Move didn't work");
 			return -1;
 		}
 		
 		Collection<Text *> lines = File::ReadAllLines(fileToTest);
-		
-		//for (int i=0; i<lines.Count(); i++)
-		//	StdOut::PrintLine(lines[i]);
 
 		Text t = Text::Join(lines, "\n");
 		Text u = File::ReadAllText(fileToTest);
@@ -73,6 +70,38 @@ int TestFile::Perform()
 		}
 		
 		lines.DeleteAndClear();
+		
+		File::Link("prueba3", "prueba4");
+		if (!File::Exists("prueba4")) {
+			StdOut::PrintLine("Link didn't work");
+			return -1;
+		}
+		
+		File::Symlink("prueba3", "prueba5");
+		if (!File::Exists("prueba5")) {
+			StdOut::PrintLine("SymLink didn't work");
+			return -1;
+		}
+		
+		File::Delete("prueba4");
+		if (!File::Exists("prueba3") || File::Exists("prueba4")) {
+			StdOut::PrintLine("Delete didn't work");
+			return -1;
+		}
+		
+		File::Delete("prueba5");
+		if (!File::Exists("prueba3") || File::Exists("prueba5")) {
+			StdOut::PrintLine("Delete didn't work");
+			return -1;
+		}
+		
+		File::Delete("prueba");
+		File::Delete("prueba3");
+		if (File::Exists("prueba") || File::Exists("prueba3")) {
+			StdOut::PrintLine("Delete didn't work");
+			return -1;
+		}
+		
 	} catch (Exception *e) {
 		delete e;
 		return -1;
