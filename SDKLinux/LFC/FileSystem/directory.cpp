@@ -231,20 +231,19 @@ Collection<FileSystemObjectInfo *> Directory::GetDomainSocketLink(const Text &pa
 
 bool Directory::CheckFileSystemObject(const Text &t)
 {
-	try {
-		FileSystemObjectInfo i(t);
-		return true;
-	} catch (FileSystemException *e) {
-		delete e;
-		return false;
-	}
+	struct stat s;
+	char cadena[10001];
+	((Text *)&t)->GetAnsiString(cadena, 10000);
+	
+	int res = stat(cadena, &s);
+	return res == 0;
 }
 
 void Directory::CreateDirectory(const Text &t, int mode)
 {
 	char cadena[10001];	
 	Text pathToCheck;	
-	Text path = !((Text)t).StartsWith("/") ? CurrentDirectory() + "/" + t : t;
+	Text path = !((Text *)&t)->StartsWith("/") ? CurrentDirectory() + "/" + t : t;
 	Collection<Text *> folders = path.Split("/", false);
 	int result = 0;
 	
