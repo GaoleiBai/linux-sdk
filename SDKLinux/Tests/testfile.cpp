@@ -52,6 +52,13 @@ int TestFile::Perform()
 			return -1;
 		}
 		
+		File::Move("prueba2", "prueba3");
+		Buffer b4 = File::ReadAllBytes("prueba3");
+		if (b1 != b4) {
+			StdOut::PrintLine("Move didn't work");
+			return -1;
+		}
+		
 		Collection<Text *> lines = File::ReadAllLines(fileToTest);
 		
 		//for (int i=0; i<lines.Count(); i++)
