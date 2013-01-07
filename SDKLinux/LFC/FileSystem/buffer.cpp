@@ -154,6 +154,11 @@ bool Buffer::operator ==(const Buffer &b)
 	return true;
 }
 
+bool Buffer::operator !=(const Buffer &b)
+{
+	return !(*this == b);
+}
+
 Buffer Buffer::operator +(const Buffer &b)
 {
 	Buffer q = *this;

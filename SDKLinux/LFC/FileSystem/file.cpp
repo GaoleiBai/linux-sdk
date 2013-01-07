@@ -2,6 +2,7 @@
 #include "filesystemobjectinfo.h"
 #include "filesystemexception.h"
 #include "buffer.h"
+#include "directory.h"
 #include "../Text/text_exception.h"
 #include "../Text/text_buffer.h"
 #include <sys/types.h>
@@ -193,17 +194,59 @@ void File::WriteAllLines(const Text &filename, const Collection<Text *> &lines)
 	f.Close();
 }
 
+Buffer File::ReadAllBytes(const Text &filename)
+{
+	char buffer[100000];
+	Buffer b;
+	
+	File f(filename, FO_ReadOnly);
+	f.Open();
+	int leido = f.Read(buffer, 100000);
+	while (leido) {
+		b.Write(buffer, leido);
+		leido = f.Read(buffer, 100000);
+	}
+	
+	return b;
+}
+
+void File::WriteAllBytes(const Text &filename, const Buffer &buffer)
+{
+	char baux[100000];
+	File f(filename, FO_Create | FO_Truncate | FO_WriteOnly, S_IRUSR | S_IWUSR );
+	f.Open();
+	
+	int leido = ((Buffer *)&buffer)->Read(baux, 100000);
+	while (leido) {
+		f.Write(baux, leido);
+		leido = ((Buffer *)&buffer)->Read(baux, 100000);
+	}
+}
+
+mode_t File::Umask(mode_t mode)
+{
+	return umask(mode);
+}
+
+bool File::Exists(const Text &filename)
+{
+	return Directory::CheckFileSystemObject(filename);
+}
+
 void File::Copy(const Text &from, const Text &to)
 {
 	char buffer[100000];
 	File ffrom(from, FO_ReadOnly);
-	File fto(to, FO_WriteOnly);
+	File fto(to, FO_WriteOnly | FO_Create | FO_Truncate, S_IRUSR | S_IWUSR );
+	
+	ffrom.Open();
+	fto.Open();
 	
 	int leido = ffrom.Read(buffer, 100000);
 	while (leido > 0) {
 		fto.Write(buffer, leido);
 		leido = ffrom.Read(buffer, 100000);
-	}
+	} 
 }
 
 void File::Move(const Text &from, const Text &to)

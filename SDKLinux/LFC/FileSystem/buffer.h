@@ -29,6 +29,7 @@ public:
 	
 	char &operator[](int ix);
 	bool operator==(const Buffer &b);
+	bool operator!=(const Buffer &b);
 	Buffer operator+(const Buffer &b);
 	
 private:

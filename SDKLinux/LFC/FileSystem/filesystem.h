@@ -24,6 +24,15 @@
 #define	OTHERS_WRITE 2
 #define	OTHERS_EXEC 1
 
+// File open modes
+#define FO_Append O_APPEND
+#define FO_Create O_CREAT
+#define FO_Truncate O_TRUNC
+#define FO_ReadWrite O_RDWR
+#define FO_WriteOnly O_WRONLY
+#define FO_ReadOnly O_RDONLY
+
+
 
 
 #endif

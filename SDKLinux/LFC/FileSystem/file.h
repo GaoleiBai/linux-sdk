@@ -6,14 +6,8 @@
 #include "buffer.h"
 #include "../Text/text.h"
 #include "../Collections/collection.h"
-
-
-#define FO_Append O_APPEND
-#define FO_Create O_CREAT
-#define FO_Truncate O_TRUNC
-#define FO_ReadWrite O_RDWR
-#define FO_WriteOnly O_WRONLY
-#define FO_ReadOnly O_RDONLY
+#include <sys/types.h>
+#include <sys/stat.h>
 
 class File : public NObject, IFile {
 
@@ -39,6 +33,11 @@ public:
 	static void WriteAllText(const Text &filename, const Text &contents);
 	static void WriteAllLines(const Text &filename, const Collection<Text *> &lines);
 	
+	static Buffer ReadAllBytes(const Text &filename);
+	static void WriteAllBytes(const Text &filename, const Buffer &buffer);
+	
+	static mode_t Umask(mode_t mode);
+	static bool Exists(const Text &filename);
 	static void Copy(const Text &from, const Text &to);
 	static void Move(const Text &from, const Text &to);
 	static void Delete(const Text &filename);
