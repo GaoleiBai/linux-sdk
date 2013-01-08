@@ -49,6 +49,10 @@
       <File Name="LFC/FileSystem/ifile.cpp"/>
       <File Name="LFC/FileSystem/buffer.h"/>
       <File Name="LFC/FileSystem/buffer.cpp"/>
+      <File Name="LFC/FileSystem/binary_formatter.h"/>
+      <File Name="LFC/FileSystem/binary_formatter.cpp"/>
+      <File Name="LFC/FileSystem/iserializable.h"/>
+      <File Name="LFC/FileSystem/iserializable.cpp"/>
     </VirtualDirectory>
     <File Name="LFC/LFC.cpp"/>
     <VirtualDirectory Name="Time">
@@ -89,6 +93,8 @@
     <File Name="Tests/testfile.cpp"/>
     <File Name="Tests/test_buffer.h"/>
     <File Name="Tests/test_buffer.cpp"/>
+    <File Name="Tests/testcollection.h"/>
+    <File Name="Tests/testcollection.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">

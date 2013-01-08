@@ -6,5 +6,6 @@
 #include "testdatetime.h"
 #include "testadministration.h"
 #include "testfile.h"
+#include "testcollection.h"
 
 #endif

@@ -188,6 +188,8 @@ public:
 	bool operator>=(const wchar_t *t);
 	 */
 	wchar_t &operator[](const int ix);
+	
+	static int COMPARER(const void *u, const void *v);
 
 };
 

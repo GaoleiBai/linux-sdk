@@ -331,7 +331,6 @@ int TestText::PerformWide()
 		StdOut::PrintLine("Compare doesn't work!");
 		return -1;
 	}
-
 	
 	return 0;
 }

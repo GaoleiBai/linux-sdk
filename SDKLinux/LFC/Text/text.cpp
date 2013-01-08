@@ -1036,3 +1036,10 @@ wchar_t &Text::operator [](const int ix)
 	if (ix < 0 || ix >= length) throw new TextException("Índice fuera de límites", __FILE__, __LINE__, __func__);
 	return p[ix];
 }
+
+int Text::COMPARER(const void *u, const void *v)
+{
+	Text **uu = (Text **)u;
+	Text **vv = (Text **)v;
+	return (*uu)->Compare(**vv);
+}

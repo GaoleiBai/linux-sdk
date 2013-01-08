@@ -3,6 +3,7 @@
 
 #include "../n_object.h"
 #include "collection_exception.h"
+#include <stdlib.h>
 
 template <class T>
 class Collection : public NObject {
@@ -30,6 +31,7 @@ public:
 	void DeleteAndClear();
 	int Count();
 	bool Contains(T o);
+	void Sort(int (*COMPARER)(const void *u, const void *v));
 	
 	T &First();
 	T &Last();
@@ -254,6 +256,12 @@ bool Collection<T>::Contains(T o)
 	}
 	
 	return false;
+}
+
+template<class T>
+void Collection<T>::Sort(int (*COMPARER)(const void *u, const void *v))
+{
+	qsort(objects, numObjects, sizeof(objects[0]), COMPARER);
 }
 
 template<class T>
