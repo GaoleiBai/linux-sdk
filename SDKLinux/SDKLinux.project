@@ -12,6 +12,8 @@
       <File Name="LFC/Collections/collection_exception.h"/>
       <File Name="LFC/Collections/collection_exception.cpp"/>
       <File Name="LFC/Text/text_exception.h"/>
+      <File Name="LFC/Collections/dictionary.h"/>
+      <File Name="LFC/Collections/dictionary.cpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Text">
       <File Name="LFC/Text/text.cpp"/>

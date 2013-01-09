@@ -31,7 +31,9 @@ public:
 	void DeleteAndClear();
 	int Count();
 	bool Contains(T o);
-	void Sort(int (*COMPARER)(const void *u, const void *v));
+	void QuickSort(int (*COMPARER)(const void *u, const void *v));
+	int BinarySearchIx(T o, int (*COMPARER)(const void *u, const void *v));
+	
 	
 	T &First();
 	T &Last();
@@ -259,9 +261,17 @@ bool Collection<T>::Contains(T o)
 }
 
 template<class T>
-void Collection<T>::Sort(int (*COMPARER)(const void *u, const void *v))
+void Collection<T>::QuickSort(int (*COMPARER)(const void *u, const void *v))
 {
 	qsort(objects, numObjects, sizeof(objects[0]), COMPARER);
+}
+
+template<class T>
+int Collection<T>::BinarySearchIx(T o, int (*COMPARER)(const void *u, const void *v))
+{
+	void *p = bsearch(&o, objects, numObjects, sizeof(objects[0]), COMPARER);
+	if (p == NULL) return -1;
+	return ((unsigned long)p - (unsigned long)objects) / sizeof(objects[0]);
 }
 
 template<class T>

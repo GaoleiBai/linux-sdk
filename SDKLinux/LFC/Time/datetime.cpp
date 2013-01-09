@@ -365,7 +365,9 @@ DateTime DateTime::Parse(const wchar_t *format, const wchar_t *strDate)
 
 Text DateTime::ToText()
 {
-	return Text(asctime(&tmhelper));
+	char cadena[1001];
+	strftime(cadena, 1000, "%m/%d/%Y %H:%M:%S", &tmhelper);
+	return Text(cadena);
 }
 
 Text DateTime::ToText(const Text &format)
@@ -400,4 +402,11 @@ DateTime DateTime::RemoveGMTOffset()
 void DateTime::SetUtcDateTime(const DateTime &t)
 {
 	clock_settime(CLOCK_REALTIME, &t.currentTime);
+}
+
+int DateTime::COMPARER(const void *u, const void *v)
+{
+	DateTime **uu = (DateTime **)u;
+	DateTime **vv = (DateTime **)v;
+	return -((DateTime *)*uu)->Compare(**vv);
 }

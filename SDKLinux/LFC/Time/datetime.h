@@ -75,6 +75,8 @@ public:
 	DateTime AddGMTOffset();
 	DateTime RemoveGMTOffset();
 	static void SetUtcDateTime(const DateTime &d);
+	
+	static int COMPARER(const void *u, const void *v);	
 
 protected:
 
