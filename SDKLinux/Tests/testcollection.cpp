@@ -87,5 +87,9 @@ int TestCollection::Perform()
 		return -1;
 	}
 	
+	Collection<int> c3;
+	c3.Add(1);
+	c3.Clear();
+	
 	return 0;
 }

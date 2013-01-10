@@ -56,6 +56,8 @@ public:
 	bool ExistsKet(K key);
 	void Clear();
 	void Pack();
+	void DeleteAndClearKey(K key);
+	void DeleteAndClear();
 
 	Collection<K> Keys();
 	Collection<V> Values();
@@ -82,6 +84,7 @@ Dictionary<K, V>::Dictionary(int (*COMPARER)(const void *u, const void *v))
 	capacity = 0;
 	numEntries = 0;
 	KEY_COMPARER = COMPARER;
+	entries = NULL;
 	ensureCapacity(1000);
 }
 
@@ -101,7 +104,7 @@ void Dictionary<K, V>::ensureCapacity(int capacity)
 	DictionaryEntry<K, V> **q = new DictionaryEntry<K, V> *[newCapacity];
 	for (int i=0; i<numEntries; i++)
 		q[i] = entries[i];
-	delete entries;
+	if (entries != NULL) delete entries;
 	entries = q;
 	this->capacity = newCapacity;
 }
@@ -139,15 +142,10 @@ void Dictionary<K, V>::SetKey(K key, V value)
 		ensureCapacity(numEntries + 1);
 		
 		// Create and insert the new entry
-		K keys[2];
-		keys[0] = key;
-		
 		DictionaryEntry<K, V> *e = new DictionaryEntry<K, V>(key, value);
 		ix = numEntries;
 		for (int i=numEntries-1; i>=0; i--) {
-			keys[1] = entries[i]->Key;
-			
-			if (KEY_COMPARER(&keys[0], &keys[1]) > 0) break;
+			if (KEY_COMPARER(&key, &entries[i]->Key) > 0) break;
 			entries[i + 1] = entries[i];
 			ix--;
 		}
@@ -161,7 +159,7 @@ bool Dictionary<K, V>::GetKey(K key, V &value)
 {
 	int ix = binarySearchIx(key);
 	if (ix == -1) return false;
-	value = entries[ix].Value;
+	value = entries[ix]->Value;
 	return true;
 }
 
@@ -197,6 +195,32 @@ void Dictionary<K, V>::Pack()
 	DictionaryEntry<K, V> **q = new DictionaryEntry<K, V> *[numEntries];
 	for (int i=0; i<numEntries; i++) q[i] = entries[i];
 	capacity = numEntries;
+}
+
+template<class K, class V>
+void Dictionary<K, V>::DeleteAndClearKey(K key)
+{
+	int ix = binarySearchIx(key);
+	if (ix == -1) return;
+	
+	delete entries[ix]->Key;
+	delete entries[ix]->Value;
+	delete entries[ix];
+	
+	numEntries--;
+	for (int i = ix; i<numEntries; i++)
+		entries[i] = entries[i + 1];
+}
+
+template<class K, class V>
+void Dictionary<K, V>::DeleteAndClear()
+{
+	for (int i=0; i<numEntries; i++) {
+		delete entries[i]->Key;
+		delete entries[i]->Value;
+		delete entries[i];
+	}
+	numEntries = 0;
 }
 
 template<class K, class V>
