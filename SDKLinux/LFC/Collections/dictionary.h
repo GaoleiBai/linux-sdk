@@ -36,9 +36,10 @@ public:
 	Dictionary(int (*COMPARER)(const void *u, const void *v));
 	virtual ~Dictionary();
 	
-	void SetEntry(K key, V value);
-	bool GetEntry(K key, V &value);
-	void ClearEntry(K key);
+	void SetKey(K key, V value);
+	bool GetKey(K key, V &value);
+	void ClearKey(K key);
+	bool ExistsKet(K key);
 	void Clear();
 	void Pack();
 
@@ -114,7 +115,7 @@ int Dictionary<K, V>::ENTRY_COMPARER(const void *u, const void *v)
 }
 
 template<class K, class V>
-void Dictionary<K, V>::SetEntry(K key, V value)
+void Dictionary<K, V>::SetKey(K key, V value)
 {
 	int ix = binarySearchIx(key);
 	if (ix != -1) {
@@ -134,7 +135,7 @@ void Dictionary<K, V>::SetEntry(K key, V value)
 }
 
 template<class K, class V>
-bool Dictionary<K, V>::GetEntry(K key, V &value)
+bool Dictionary<K, V>::GetKey(K key, V &value)
 {
 	int ix = binarySearchIx(key);
 	if (ix == -1) return false;
@@ -143,7 +144,7 @@ bool Dictionary<K, V>::GetEntry(K key, V &value)
 }
 
 template<class K, class V>
-void Dictionary<K, V>::ClearEntry(K key)
+void Dictionary<K, V>::ClearKey(K key)
 {
 	int ix = binarySearchIx(key);
 	if (ix == -1) return;
@@ -152,6 +153,12 @@ void Dictionary<K, V>::ClearEntry(K key)
 	numEntries--;
 	for (int i=ix; i<numEntries; i++)
 		entries[i] = entries[i + 1];
+}
+
+template<class K, class V>
+bool Dictionary<K, V>::ExistsKet(K key)
+{
+	return binarySearchIx(key) != -1;
 }
 
 template<class K, class V>

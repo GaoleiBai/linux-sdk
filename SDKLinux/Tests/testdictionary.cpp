@@ -11,7 +11,8 @@ TestDictionary::~TestDictionary()
 
 int TestDictionary::Perform()
 {
-	Dictionary<Text *, int *> c1(Text::COMPARER);
+	Dictionary<Text *, int> d1(Text::COMPARER);
+	
 	return 0;
 }
 
