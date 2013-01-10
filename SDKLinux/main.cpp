@@ -48,5 +48,10 @@ int main(int argc, char **argv)
 		return -1;
 	}
 	
+	if (TestDictionary::Perform() != 0) {
+		StdOut::PrintLine("TestDictionary::Perform error!!!");
+		return -1;
+	}
+	
 	return 0;
 }

@@ -199,8 +199,8 @@ template<class T>
 void Collection<T>::InsertAt(int ix, T o)
 {
 	if (ix < 0 || ix > numObjects) throw new CollectionException("Index out of allowed bounds.", __FILE__, __LINE__, __func__);
-	ensureCapacity[numObjects + 1];
-	for (int i = ix; i<numObjects; i++) objects[i + 1] = objects[i];
+	ensureCapacity(numObjects + 1);
+	for (int i = numObjects-1; i>=ix; i--) objects[i + 1] = objects[i];
 	objects[ix] = o;
 	numObjects++;
 }

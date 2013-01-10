@@ -28,8 +28,6 @@ int TestCollection::Perform()
 	c1.Add(new Text("Camarilla"));
 	c1.Add(new Text("Cooperación"));
 	c1.QuickSort(Text::COMPARER);
-	for (int i=0; i<c1.Count(); i++)
-		StdOut::PrintLine(*c1[i]);
 	for (int i=1; i<c1.Count(); i++) {
 		if (*c1[i-1] > *c1[i]) {
 			StdOut::PrintLine("Collection<T>::Sort didn't work!!!");
@@ -51,6 +49,17 @@ int TestCollection::Perform()
 		return -1;
 	}
 	
+	c1.InsertAt(0, new Text("Primero"));
+	c1.InsertAt(c1.Count(), new Text("Ultimo"));
+	if ((Text)"Primero" != c1.First() ||
+		(Text)"Ultimo" != c1.Last()) 
+	{
+		StdOut::PrintLine("Collection<T>::InsertAt didn't work!!!");
+		return -1;
+	}
+	
+	for (int i=0; i<c1.Count(); i++)
+		StdOut::PrintLine(*c1[i]);
 	c1.DeleteAndClear();
 	if (c1.Count() != 0) {
 		StdOut::PrintLine("Collection<T>::DeleteAndClear didn't work!!!");
