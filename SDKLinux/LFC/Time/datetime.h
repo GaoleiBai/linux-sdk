@@ -7,7 +7,7 @@
 
 class Text;
 
-class DateTime : public NObject, IComparable {
+class DateTime : public NObject {
 
 public:
 	DateTime();
@@ -60,7 +60,7 @@ public:
 	bool operator<=(const DateTime &d);
 	
 	bool Equals(const DateTime &d);
-	int Compare(const NObject &o);
+	virtual int Compare(const NObject &o);
 	int Compare(const DateTime &d);
 	
 	static DateTime Parse(const Text &format, const Text &strDate);

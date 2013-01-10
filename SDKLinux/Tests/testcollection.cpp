@@ -91,5 +91,11 @@ int TestCollection::Perform()
 	c3.Add(1);
 	c3.Clear();
 	
+	NObjectCollection noc;
+	noc.Add(new Text("aaa"));
+	noc.Add(new DateTime());
+	for (int i=0; i<noc.Count(); i++)
+		StdOut::PrintLine(noc[i]->ToText());
+	
 	return 0;
 }

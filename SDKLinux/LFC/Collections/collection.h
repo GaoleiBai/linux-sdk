@@ -1,12 +1,11 @@
 #ifndef ARRAY_H
 #define ARRAY_H
 
-#include "../n_object.h"
 #include "collection_exception.h"
 #include <stdlib.h>
 
 template <class T>
-class Collection : public NObject {
+class Collection {
 
 public:
 	Collection();
@@ -45,7 +44,6 @@ public:
 protected:
 	void ensureCapacity(int capacity);
 
-private:
 	T *objects;
 	int size;
 	int numObjects;

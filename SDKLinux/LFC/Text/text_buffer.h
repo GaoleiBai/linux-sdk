@@ -17,6 +17,7 @@ public:
 	
 	void Append(const Text &t);
 	void AppendLine(const Text &t);
+	void AppendLine();
 	
 	Text ToText();
 	

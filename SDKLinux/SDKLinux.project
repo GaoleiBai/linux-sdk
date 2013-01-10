@@ -14,6 +14,10 @@
       <File Name="LFC/Text/text_exception.h"/>
       <File Name="LFC/Collections/dictionary.h"/>
       <File Name="LFC/Collections/dictionary.cpp"/>
+      <File Name="LFC/Collections/nobjectcollection.h"/>
+      <File Name="LFC/Collections/nobjectcollection.cpp"/>
+      <File Name="LFC/Collections/nobjectdictionary.h"/>
+      <File Name="LFC/Collections/nobjectdictionary.cpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Text">
       <File Name="LFC/Text/text.cpp"/>
@@ -64,7 +68,6 @@
       <File Name="LFC/Time/timeexception.cpp"/>
     </VirtualDirectory>
     <File Name="LFC/icomparable.h"/>
-    <File Name="LFC/icomparable.cpp"/>
     <VirtualDirectory Name="Administration">
       <File Name="LFC/Administration/administrationexception.cpp"/>
       <File Name="LFC/Administration/administrationexception.h"/>
@@ -75,6 +78,7 @@
       <File Name="LFC/Administration/administration.h"/>
       <File Name="LFC/Administration/administration.cpp"/>
     </VirtualDirectory>
+    <File Name="LFC/icomparable.cpp"/>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>

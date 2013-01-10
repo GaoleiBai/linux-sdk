@@ -2,7 +2,6 @@
 #define TEXT_H
 
 #include "../n_object.h"
-#include "../icomparable.h"
 #include "../exception.h"
 #include "../Collections/collection.h"
 
@@ -12,7 +11,7 @@ class Directory;
 class DateTime;
 class StdOut;
 
-class Text : public NObject, IComparable {
+class Text : public NObject {
 	
 	friend class Locale;
 	friend class TextBuffer;

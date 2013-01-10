@@ -73,7 +73,12 @@ void TextBuffer::Append(const Text &t)
 void TextBuffer::AppendLine(const Text &t)
 {
 	Append(t);
-	Append("\r\n");
+	Append("\n");
+}
+
+void TextBuffer::AppendLine()
+{
+	Append("\n");
 }
 
 Text TextBuffer::ToText()
