@@ -1,6 +1,7 @@
 #ifndef DICTIONARY_H
 #define DICTIONARY_H
 
+#include "collection_exception.h"
 #include "../n_object.h"
 #include <stdlib.h>
 
@@ -11,14 +12,22 @@ public:
 	V Value;
 	
 	DictionaryEntry(K key, V value);
+	~DictionaryEntry();
 	
 };
 
 template<class K, class V>
 DictionaryEntry<K, V>::DictionaryEntry(K key, V value)
 {
-	this->key = key;
-	this->value = value;
+	Key = key;
+	Value = value;
+}
+
+template<class K, class V>
+DictionaryEntry<K, V>::~DictionaryEntry()
+{
+	if (is_pointer<K>::value) delete Key;
+	if (is_pointer<V>::value) delete Value;
 }
 
 template<class K, class V>
@@ -29,30 +38,30 @@ public:
 	virtual ~Dictionary();
 	
 	void SetEntry(K key, V value);
+	bool GetEntry(K key, V &value);
 	void DeleteEntry(K key);
 	
-	V &operator[](K key);
-	
 private:
-	DictionaryEntry<K, V> *entries;
+	DictionaryEntry<K, V> **entries;
 	int numEntries;
 	int capacity;
-	bool isSorted;
 	static int (*KEY_COMPARER)(const void *u, const void *v);
 	
 	void ensureCapacity(int capacity);
-	void qsort();
 	int binarySearchIx(K key);
+	void deleteEntry(int ix);
 	static int ENTRY_COMPARER(const void *u, const void *v);
 
 };
+
+template<class K, class V>
+int (*Dictionary<K, V>::KEY_COMPARER)(const void *u, const void *v);
 
 template<class K, class V>
 Dictionary<K, V>::Dictionary(int (*COMPARER)(const void *u, const void *v))
 {
 	capacity = 0;
 	numEntries = 0;
-	isSorted = false;
 	KEY_COMPARER = COMPARER;
 	ensureCapacity(1000);
 }
@@ -60,6 +69,8 @@ Dictionary<K, V>::Dictionary(int (*COMPARER)(const void *u, const void *v))
 template<class K, class V>
 Dictionary<K, V>::~Dictionary()
 {
+	for (int i=0;i<numEntries; i++)
+		delete entries[i];
 	delete entries;
 }
 
@@ -69,7 +80,7 @@ void Dictionary<K, V>::ensureCapacity(int capacity)
 	if (this->capacity >= capacity) return;
 	
 	int newCapacity = capacity + 1000;
-	DictionaryEntry<K, V> *q = new DictionaryEntry<K, V>[newCapacity];
+	DictionaryEntry<K, V> **q = new DictionaryEntry<K, V> *[newCapacity];
 	for (int i=0; i<numEntries; i++)
 		q[i] = entries[i];
 	delete entries;
@@ -78,17 +89,8 @@ void Dictionary<K, V>::ensureCapacity(int capacity)
 }
 
 template<class K, class V>
-void Dictionary<K, V>::qsort()
-{
-	if (isSorted) return;
-	::qsort(entries, numEntries, sizeof(entries[0]), ENTRY_COMPARER);
-	isSorted = true;
-}
-
-template<class K, class V>
 int Dictionary<K, V>::binarySearchIx(K key)
 {
-	qsort();
 	DictionaryEntry<K, V> *e = new DictionaryEntry<K, V>[1];
 	void *q = bsearch(&e, entries, numEntries, sizeof(entries[0]), ENTRY_COMPARER);
 	delete e;
@@ -113,12 +115,20 @@ void Dictionary<K, V>::SetEntry(K key, V value)
 {
 	int ix = binarySearchIx(key);
 	if (ix != -1) {
+		if (is_pointer<K>::value) delete key;
+		if (is_pointer<V>::value) delete entries[ix]->Value;
 		entries[ix]->Value = value;
 	} else {
-		aaa
-		ensureCapacity(numEntries + 1);
-		entries[numEntries++] = new DictionaryEntry<K, V>(key, value);
-		isSorted = false;
+		// Create and insert the new entry
+		DictionaryEntry<K, V> *e = new DictionaryEntry<K, V>(key, value);
+		ix = numEntries;
+		for (int i=numEntries-1; i>=0; i--) {
+			if (KEY_COMPARER(&key, &entries[i].Key) > 0) break;
+			entries[i + 1] = entries[i];
+			ix--;
+		}
+		entries[ix] = e;
+		numEntries++;
 	}
 }
 
@@ -127,9 +137,20 @@ void Dictionary<K, V>::DeleteEntry(K key)
 {
 	int ix = binarySearchIx(key);
 	if (ix == -1) return;
+	
+	delete entries[ix];
 	numEntries--;
 	for (int i=ix; i<numEntries; i++)
 		entries[i] = entries[i + 1];
+}
+ 
+template<class K, class V>
+bool Dictionary<K, V>::GetEntry(K key, V &value)
+{
+	int ix = binarySearchIx(key);
+	if (ix == -1) return false;
+	value = entries[ix].Value;
+	return true;
 }
 
 #endif // DICTIONARY_H

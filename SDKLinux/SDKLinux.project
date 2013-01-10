@@ -97,6 +97,8 @@
     <File Name="Tests/test_buffer.cpp"/>
     <File Name="Tests/testcollection.h"/>
     <File Name="Tests/testcollection.cpp"/>
+    <File Name="Tests/testdictionary.h"/>
+    <File Name="Tests/testdictionary.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
