@@ -12,10 +12,24 @@ public:
 	K Key;
 	V Value;
 	
+	DictionaryEntry();
+	DictionaryEntry(K key);
 	DictionaryEntry(K key, V value);
 	~DictionaryEntry();
 	
 };
+
+template<class K, class V>
+DictionaryEntry<K, V>::DictionaryEntry()
+{
+	
+}
+
+template<class K, class V>
+DictionaryEntry<K, V>::DictionaryEntry(K key)
+{
+	Key = key;
+}
 
 template<class K, class V>
 DictionaryEntry<K, V>::DictionaryEntry(K key, V value)
@@ -95,9 +109,10 @@ void Dictionary<K, V>::ensureCapacity(int capacity)
 template<class K, class V>
 int Dictionary<K, V>::binarySearchIx(K key)
 {
-	DictionaryEntry<K, V> *e = new DictionaryEntry<K, V>[1];
+	DictionaryEntry<K, V> *e = new DictionaryEntry<K, V>(key);
 	void *q = bsearch(&e, entries, numEntries, sizeof(entries[0]), ENTRY_COMPARER);
 	delete e;
+	
 	if (q == NULL) return -1;
 	return ((unsigned long)q - (unsigned long)entries) / sizeof(entries[0]);
 }
@@ -109,9 +124,9 @@ int Dictionary<K, V>::ENTRY_COMPARER(const void *u, const void *v)
 	DictionaryEntry<K, V> **vv = (DictionaryEntry<K, V> **)v;
 	
 	K keys[2];
-	keys[0] = **uu.Key;
-	keys[1] = **vv.Key;
-	return KEY_COMPARER((const void *)&keys, (const void *)&(keys + 1));
+	keys[0] = (**uu).Key;
+	keys[1] = (**vv).Key;
+	return KEY_COMPARER((const void *)&keys[0], (const void *)&keys[1]);
 }
 
 template<class K, class V>
@@ -121,11 +136,18 @@ void Dictionary<K, V>::SetKey(K key, V value)
 	if (ix != -1) {
 		entries[ix]->Value = value;
 	} else {
+		ensureCapacity(numEntries + 1);
+		
 		// Create and insert the new entry
+		K keys[2];
+		keys[0] = key;
+		
 		DictionaryEntry<K, V> *e = new DictionaryEntry<K, V>(key, value);
 		ix = numEntries;
 		for (int i=numEntries-1; i>=0; i--) {
-			if (KEY_COMPARER(&key, &entries[i].Key) > 0) break;
+			keys[1] = entries[i]->Key;
+			
+			if (KEY_COMPARER(&keys[0], &keys[1]) > 0) break;
 			entries[i + 1] = entries[i];
 			ix--;
 		}
