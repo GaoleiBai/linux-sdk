@@ -1,6 +1,7 @@
 #ifndef DICTIONARY_H
 #define DICTIONARY_H
 
+#include "collection.h"
 #include "collection_exception.h"
 #include "../n_object.h"
 #include <stdlib.h>
@@ -26,8 +27,6 @@ DictionaryEntry<K, V>::DictionaryEntry(K key, V value)
 template<class K, class V>
 DictionaryEntry<K, V>::~DictionaryEntry()
 {
-	if (is_pointer<K>::value) delete Key;
-	if (is_pointer<V>::value) delete Value;
 }
 
 template<class K, class V>
@@ -39,7 +38,11 @@ public:
 	
 	void SetEntry(K key, V value);
 	bool GetEntry(K key, V &value);
-	void DeleteEntry(K key);
+	void ClearEntry(K key);
+	void Clear();
+
+	Collection<K> Keys();
+	Collection<V> Values();
 	
 private:
 	DictionaryEntry<K, V> **entries;
@@ -69,8 +72,7 @@ Dictionary<K, V>::Dictionary(int (*COMPARER)(const void *u, const void *v))
 template<class K, class V>
 Dictionary<K, V>::~Dictionary()
 {
-	for (int i=0;i<numEntries; i++)
-		delete entries[i];
+	Clear();
 	delete entries;
 }
 
@@ -115,8 +117,6 @@ void Dictionary<K, V>::SetEntry(K key, V value)
 {
 	int ix = binarySearchIx(key);
 	if (ix != -1) {
-		if (is_pointer<K>::value) delete key;
-		if (is_pointer<V>::value) delete entries[ix]->Value;
 		entries[ix]->Value = value;
 	} else {
 		// Create and insert the new entry
@@ -133,7 +133,16 @@ void Dictionary<K, V>::SetEntry(K key, V value)
 }
 
 template<class K, class V>
-void Dictionary<K, V>::DeleteEntry(K key)
+bool Dictionary<K, V>::GetEntry(K key, V &value)
+{
+	int ix = binarySearchIx(key);
+	if (ix == -1) return false;
+	value = entries[ix].Value;
+	return true;
+}
+
+template<class K, class V>
+void Dictionary<K, V>::ClearEntry(K key)
 {
 	int ix = binarySearchIx(key);
 	if (ix == -1) return;
@@ -143,14 +152,29 @@ void Dictionary<K, V>::DeleteEntry(K key)
 	for (int i=ix; i<numEntries; i++)
 		entries[i] = entries[i + 1];
 }
- 
+
 template<class K, class V>
-bool Dictionary<K, V>::GetEntry(K key, V &value)
+void Dictionary<K, V>::Clear()
 {
-	int ix = binarySearchIx(key);
-	if (ix == -1) return false;
-	value = entries[ix].Value;
-	return true;
+	for (int i=0; i<numEntries; i++)
+		delete entries[i];
+	numEntries = 0;
 }
 
+template<class K, class V>
+Collection<K> Dictionary<K, V>::Keys()
+{
+	Collection<K> res;
+	for (int i=0; i<numEntries; i++) res.Add(entries[i]->Key);
+	return res;
+}
+
+template<class K, class V>
+Collection<V> Dictionary<K, V>::Values()
+{
+	Collection<V> res;
+	for (int i=0; i<numEntries; i++) res.Add(entries[i]->Value);
+	return res;
+}
+ 
 #endif // DICTIONARY_H

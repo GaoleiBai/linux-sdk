@@ -42,7 +42,7 @@ public:
 	//int Compare(static Collection<T> &c)
 	
 protected:
-	void expandSize();
+	void ensureCapacity(int capacity);
 
 private:
 	T *objects;
@@ -101,21 +101,21 @@ Collection<T>::~Collection()
 }
 
 template<class T>
-void Collection<T>::expandSize()
+void Collection<T>::ensureCapacity(int capacity)
 {
-	if (numObjects < size) return;
+	if (capacity < size) return;
 	
-	T *p = new T[2 * size];
-	for (int i = 0; i < size; i++) p[i] = objects[i];
+	T *p = new T[2 * capacity];
+	for (int i = 0; i < numObjects; i++) p[i] = objects[i];
 	delete objects;
 	objects = p;
-	size *= 2;
+	size = 2 * capacity;
 }
 
 template<class T>
 void Collection<T>::Add(T o)
 {
-	expandSize();
+	ensureCapacity(numObjects + 1);
 	objects[numObjects++] = o;
 }
 
@@ -197,10 +197,11 @@ void Collection<T>::DeleteAndRemoveLast()
 template<class T>
 void Collection<T>::InsertAt(int ix, T o)
 {
-	expandSize();
-	numObjects++;
+	if (ix < 0 || ix > numObjects) throw new CollectionException("Index out of allowed bounds.", __FILE__, __LINE__, __func__);
+	ensureCapacity[numObjects + 1];
 	for (int i = ix; i<numObjects; i++) objects[i + 1] = objects[i];
 	objects[ix] = o;
+	numObjects++;
 }
 
 template<class T>
