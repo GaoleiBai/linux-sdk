@@ -33,6 +33,7 @@ public:
 	bool Contains(T o);
 	void QuickSort(int (*COMPARER)(const void *u, const void *v));
 	int BinarySearchIx(T o, int (*COMPARER)(const void *u, const void *v));
+	void Pack();
 	
 	
 	T &First();
@@ -273,6 +274,16 @@ int Collection<T>::BinarySearchIx(T o, int (*COMPARER)(const void *u, const void
 	void *p = bsearch(&o, objects, numObjects, sizeof(objects[0]), COMPARER);
 	if (p == NULL) return -1;
 	return ((unsigned long)p - (unsigned long)objects) / sizeof(objects[0]);
+}
+
+template<class T>
+void Collection<T>::Pack()
+{
+	T *p = new T[numObjects];
+	for (int i=0; i<numObjects; i++) p[i] = objects[i];
+	delete objects;
+	objects = p;
+	size = numObjects;
 }
 
 template<class T>

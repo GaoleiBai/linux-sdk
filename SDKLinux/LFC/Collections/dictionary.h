@@ -40,6 +40,7 @@ public:
 	bool GetEntry(K key, V &value);
 	void ClearEntry(K key);
 	void Clear();
+	void Pack();
 
 	Collection<K> Keys();
 	Collection<V> Values();
@@ -159,6 +160,14 @@ void Dictionary<K, V>::Clear()
 	for (int i=0; i<numEntries; i++)
 		delete entries[i];
 	numEntries = 0;
+}
+
+template<class K, class V>
+void Dictionary<K, V>::Pack()
+{
+	DictionaryEntry<K, V> **q = new DictionaryEntry<K, V> *[numEntries];
+	for (int i=0; i<numEntries; i++) q[i] = entries[i];
+	capacity = numEntries;
 }
 
 template<class K, class V>
