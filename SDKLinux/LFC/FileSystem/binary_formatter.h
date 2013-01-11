@@ -11,8 +11,8 @@ public:
 	BinaryFormatter(const IFile &file);
 	virtual ~BinaryFormatter();
 
-	ISerializable & Get();
-	void Put(const ISerializable &o);
+	NObject Get();
+	void Put(const NObject &o);
 
 };
 

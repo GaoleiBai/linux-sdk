@@ -2,7 +2,6 @@
 #define DATETIME_H
 
 #include "../n_object.h"
-#include "../icomparable.h"
 #include <time.h>
 
 class Text;

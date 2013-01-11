@@ -9,6 +9,8 @@ class NObjectDictionary : public Dictionary<NObject *, NObject *>, public NObjec
 public:
 	NObjectDictionary();
 	virtual ~NObjectDictionary();
+	
+	virtual Text ToText();
 
 protected:
 	static int compare(const void *u, const void *v);

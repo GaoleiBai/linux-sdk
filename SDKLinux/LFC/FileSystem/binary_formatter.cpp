@@ -8,12 +8,12 @@ BinaryFormatter::~BinaryFormatter()
 {
 }
 
-ISerializable &BinaryFormatter::Get()
+NObject BinaryFormatter::Get()
 {
 	
 }
 
-void BinaryFormatter::Put(const ISerializable &o)
+void BinaryFormatter::Put(const NObject &o)
 {
 	
 }

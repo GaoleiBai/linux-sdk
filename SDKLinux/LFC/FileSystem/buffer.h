@@ -20,7 +20,7 @@ public:
 	virtual void Write(char *buffer, int lonBuffer);
 	virtual int Read(char *buffer, int lonBuffer);
 	
-	Text ToText();
+	virtual Text ToText();
 	
 	int Length();
 	int FindIx(const Buffer &b);

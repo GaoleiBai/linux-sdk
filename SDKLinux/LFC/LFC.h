@@ -16,6 +16,7 @@
 #include "Collections/collection_exception.h"
 #include "Collections/dictionary.h"
 #include "Collections/nobjectcollection.h"
+#include "Collections/nobjectdictionary.h"
 #include "FileSystem/directory.h"
 #include "FileSystem/filesystemexception.h"
 #include "FileSystem/filesystemobjectinfo.h"

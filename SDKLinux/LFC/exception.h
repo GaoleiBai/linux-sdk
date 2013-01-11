@@ -13,7 +13,7 @@ public:
 	Exception(const Text &t, const char *file, int line, const char *func);
 	virtual ~Exception();
 	
-	Text ToText();
+	virtual Text ToText();
 
 protected:
 	Text *t;

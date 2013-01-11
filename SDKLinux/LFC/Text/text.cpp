@@ -127,6 +127,18 @@ Text::Text()
 	aquireText("", 0, false);
 }
 
+Text::Text(const NObject &o)
+{
+	Text t = ((NObject *)&o)->ToText();
+	aquireText(t.p, t.length, false);
+}
+
+Text::Text(const NObject *o)
+{
+	Text t = ((NObject *)o)->ToText();
+	aquireText(t.p, t.length, false);
+}
+
 Text::Text(const char *t)
 {
 	aquireText(t, strlen(t), false);

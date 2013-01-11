@@ -24,6 +24,16 @@ File::~File()
 	delete fileName;
 }
 
+Text File::FileName()
+{
+	return *fileName;
+}
+
+Text File::ToText()
+{
+	return *fileName;
+}
+
 void File::Open()
 {
 	char cadena[1001];

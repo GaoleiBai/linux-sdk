@@ -16,6 +16,7 @@ public:
 	virtual ~File();
 	
 	Text FileName();
+	virtual Text ToText();
 	
 	void Open();
 	void Close();

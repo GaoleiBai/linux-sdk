@@ -96,6 +96,7 @@ int TestCollection::Perform()
 	noc.Add(new DateTime());
 	for (int i=0; i<noc.Count(); i++)
 		StdOut::PrintLine(noc[i]->ToText());
+	noc.DeleteAndClear();
 	
 	return 0;
 }

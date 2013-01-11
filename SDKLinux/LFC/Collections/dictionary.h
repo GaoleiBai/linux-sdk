@@ -4,6 +4,7 @@
 #include "collection.h"
 #include "collection_exception.h"
 #include "../n_object.h"
+#include "../Text/text.h"
 #include <stdlib.h>
 
 template<class K, class V>
@@ -44,9 +45,10 @@ DictionaryEntry<K, V>::~DictionaryEntry()
 }
 
 template<class K, class V>
-class Dictionary : public NObject {
+class Dictionary {
 
 public:
+	Dictionary();
 	Dictionary(int (*COMPARER)(const void *u, const void *v));
 	virtual ~Dictionary();
 	
@@ -62,7 +64,7 @@ public:
 	Collection<K> Keys();
 	Collection<V> Values();
 	
-private:
+protected:
 	DictionaryEntry<K, V> **entries;
 	int numEntries;
 	int capacity;
@@ -77,6 +79,12 @@ private:
 
 template<class K, class V>
 int (*Dictionary<K, V>::KEY_COMPARER)(const void *u, const void *v);
+
+template<class K, class V>
+Dictionary<K, V>::Dictionary()
+{
+	throw new CollectionException("Not implemented", __FILE__, __LINE__, __func__);
+}
 
 template<class K, class V>
 Dictionary<K, V>::Dictionary(int (*COMPARER)(const void *u, const void *v))

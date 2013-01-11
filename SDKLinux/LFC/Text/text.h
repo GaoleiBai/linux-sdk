@@ -40,7 +40,8 @@ public:
 	static Text Join(const Collection<Text *> &tokens, const Text &separator);
 
 	Text();
-	Text(NObject &o);
+	Text(const NObject &o);
+	Text(const NObject *o);
 	Text(const char *t);
 	Text(const char *t, int len);
 	Text(const wchar_t *t);
