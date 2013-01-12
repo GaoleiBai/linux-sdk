@@ -7,7 +7,7 @@ template<typename T>
 struct is_pointer<T*> { static const bool value = true; };
 
 class Text;
-class IFile;
+class Serializator;
 
 class NObject {
 
@@ -17,8 +17,8 @@ public:
 	
 	virtual Text ToText();
 	virtual int Compare(const NObject &o);
-	virtual void Serialize(const IFile &file);
-	virtual NObject Deserialize(const IFile &file);
+	virtual void Serialize(const Serializator &s);
+	virtual NObject *Deserialize(const Serializator &s);
 	
 };
 

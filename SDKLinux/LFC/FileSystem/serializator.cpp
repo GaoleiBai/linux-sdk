@@ -15,6 +15,17 @@ Serializator::~Serializator()
 	
 }
 
+void Serializator::Put(char *buffer, int lonBuffer)
+{
+	int escrito = 0;
+	while (escrito < lonBuffer) {
+		int res = file->Write(buffer + escrito, lonBuffer - escrito > 1000 ? 1000 : lonBuffer - escrito);
+		if (res == 0)
+			throw new FileSystemException("It seems that the stream has suddently been closed.", __FILE__, __LINE__, __func__);
+		escrito += res;
+	}
+}
+
 void Serializator::Put(const NObject &o) 
 {
 	char strName[1000];
@@ -93,7 +104,7 @@ void Serializator::Put(long double n)
 	file->Write((char *)&n, sizeof(n));
 }
 
-void Serializator::ensureRead(char *buffer, int lonBuffer)
+void Serializator::Get(char *buffer, int lonBuffer)
 {
 	int leido = 0;
 	while (leido < lonBuffer) {
@@ -110,9 +121,9 @@ NObject *Serializator::GetNObject()
 	unsigned char namelen = strlen(strName);
 	unsigned char signature = 0;
 
-	ensureRead((char *)&signature, sizeof(signature));
-	ensureRead((char *)&namelen, sizeof(namelen));
-	ensureRead(strName, namelen);
+	Get((char *)&signature, sizeof(signature));
+	Get((char *)&namelen, sizeof(namelen));
+	Get(strName, namelen);
 	
 	NObject *o = NObjectRegistry::GetInstance(strName);
 	o->Deserialize(*this);
@@ -122,90 +133,90 @@ NObject *Serializator::GetNObject()
 char Serializator::GetChar()
 {
 	char n = 0;
-	ensureRead((char *)&n, sizeof(n));
+	Get((char *)&n, sizeof(n));
 	return n;
 }
 
 short Serializator::GetShort()
 {
 	short n = 0;
-	ensureRead((char *)&n, sizeof(n));
+	Get((char *)&n, sizeof(n));
 	return n;
 }
 
 int Serializator::GetInt()
 {
 	int n = 0;
-	ensureRead((char *)&n, sizeof(n));
+	Get((char *)&n, sizeof(n));
 	return n;	
 }
 
 long Serializator::GetLong()
 {
 	long n = 0;
-	ensureRead((char *)&n, sizeof(n));
+	Get((char *)&n, sizeof(n));
 	return n;
 }
 
 long long Serializator::GetLongLong()
 {
 	long long n = 0;
-	ensureRead((char *)&n, sizeof(n));
+	Get((char *)&n, sizeof(n));
 	return n;
 }
 
 unsigned char Serializator::GetUChar()
 {
 	unsigned char n = 0;
-	ensureRead((char *)&n, sizeof(n));
+	Get((char *)&n, sizeof(n));
 	return n;	
 }
 
 unsigned short Serializator::GetUShort()
 {
 	unsigned short n = 0;
-	ensureRead((char *)&n, sizeof(n));
+	Get((char *)&n, sizeof(n));
 	return n;
 }
 
 unsigned int Serializator::GetUInt()
 {
 	unsigned int n = 0;
-	ensureRead((char *)&n, sizeof(n));
+	Get((char *)&n, sizeof(n));
 	return n;
 }
 
 unsigned long Serializator::GetULong()
 {
 	unsigned long n = 0;
-	ensureRead((char *)&n, sizeof(n));
+	Get((char *)&n, sizeof(n));
 	return n;
 }
 
 unsigned long long Serializator::GetULongLong()
 {
 	unsigned long long n = 0;
-	ensureRead((char *)&n, sizeof(n));
+	Get((char *)&n, sizeof(n));
 	return n;
 }
 
 float Serializator::GetFloat()
 {
 	float n = 0;
-	ensureRead((char *)&n, sizeof(n));
+	Get((char *)&n, sizeof(n));
 	return n;
 }
 
 double Serializator::GetDouble()
 {
 	double n = 0;
-	ensureRead((char *)&n, sizeof(n));
+	Get((char *)&n, sizeof(n));
 	return n;
 }
 
 long double Serializator::GetLongDouble()
 {
 	long double n = 0;
-	ensureRead((char *)&n, sizeof(n));
+	Get((char *)&n, sizeof(n));
 	return n;
 }

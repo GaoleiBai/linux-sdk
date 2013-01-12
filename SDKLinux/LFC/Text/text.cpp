@@ -2,6 +2,7 @@
 #include "text_buffer.h"
 #include "text_exception.h"
 #include "../Encoding/locale_encoding.h"
+#include "../FileSystem/serializator.h"
 #include <string.h>
 #include <stdio.h>
 #include <wchar.h>
@@ -786,4 +787,19 @@ int Text::COMPARER(const void *u, const void *v)
 	Text **uu = (Text **)u;
 	Text **vv = (Text **)v;
 	return (*uu)->Compare(**vv);
+}
+
+void Text::Serialize(const Serializator &s)
+{
+	((Serializator *)&s)->Put(length);
+	((Serializator *)&s)->Put((char *)p, sizeof(wchar_t) * length);
+}
+
+NObject *Text::Deserialize(const Serializator &s)
+{
+	delete p;
+	length = ((Serializator *)&s)->GetInt();
+	p = new wchar_t[length + 1];
+	((Serializator *)&s)->Get((char *)p, sizeof(wchar_t) * length);
+	p[length] = 0;
 }

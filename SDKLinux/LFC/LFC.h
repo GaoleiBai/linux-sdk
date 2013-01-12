@@ -6,7 +6,6 @@
 
 
 #include "n_object.h"
-#include "icomparable.h"
 #include "exception.h"
 #include "nobjectregistry.h"
 #include "Text/text.h"
@@ -23,6 +22,7 @@
 #include "FileSystem/filesystemobjectinfo.h"
 #include "FileSystem/file.h"
 #include "FileSystem/ifile.h"
+#include "FileSystem/serializator.h"
 #include "FileSystem/buffer.h"
 #include "Time/datetime.h"
 #include "Time/timeexception.h"

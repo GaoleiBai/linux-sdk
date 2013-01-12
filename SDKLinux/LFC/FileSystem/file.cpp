@@ -104,7 +104,7 @@ int File::Read(char *buffer, int lonBuffer)
 	return leido;
 }
 
-void File::Write(char *buffer, int lonBuffer)
+int File::Write(char *buffer, int lonBuffer)
 {
 	if (file == -1) throw new FileSystemException("File not propertly open", __FILE__, __LINE__, __func__);
 
@@ -115,6 +115,8 @@ void File::Write(char *buffer, int lonBuffer)
 			throw new FileSystemException(Text::FromErrno(), __FILE__, __LINE__, __func__);
 		escrito += sss;
 	}
+	
+	return escrito;
 }
 
 Text File::ReadAllText(const Text &filename)

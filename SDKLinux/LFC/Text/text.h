@@ -63,7 +63,6 @@ public:
 	int Length();
 	int GetAnsiString(char *buffer, int len);
 	int GetWideString(wchar_t *buffer, int len);
-	int Compare(const NObject &o);
 	int Compare(const Text &t);
 	int Compare(const char *t);
 	int Compare(const wchar_t *t);
@@ -92,7 +91,6 @@ public:
 	Text Trim(const Collection<wchar_t> &c);
 	Text ToUpper();
 	Text ToLower();
-	Text ToText();
 	Collection<int> ExtractIndexes(Text &textToFind);
 	Collection<Text *> Split(const Collection<char> &splitChars, bool removeEmptyEntries);
 	Collection<Text *> Split(const Collection<wchar_t> &splitChars, bool removeEmptyEntries);
@@ -130,6 +128,11 @@ public:
 	wchar_t &operator[](const int ix);
 	
 	static int COMPARER(const void *u, const void *v);
+
+	virtual Text ToText();
+	virtual int Compare(const NObject &o);
+	virtual void Serialize(const Serializator &s);
+	virtual NObject *Deserialize(const Serializator &s);
 
 };
 

@@ -55,8 +55,8 @@
       <File Name="LFC/FileSystem/ifile.cpp"/>
       <File Name="LFC/FileSystem/buffer.h"/>
       <File Name="LFC/FileSystem/buffer.cpp"/>
-      <File Name="LFC/FileSystem/binary_formatter.h"/>
-      <File Name="LFC/FileSystem/binary_formatter.cpp"/>
+      <File Name="LFC/FileSystem/serializator.h"/>
+      <File Name="LFC/FileSystem/serializator.cpp"/>
     </VirtualDirectory>
     <File Name="LFC/LFC.cpp"/>
     <VirtualDirectory Name="Time">
@@ -65,7 +65,6 @@
       <File Name="LFC/Time/timeexception.h"/>
       <File Name="LFC/Time/timeexception.cpp"/>
     </VirtualDirectory>
-    <File Name="LFC/icomparable.h"/>
     <VirtualDirectory Name="Administration">
       <File Name="LFC/Administration/administrationexception.cpp"/>
       <File Name="LFC/Administration/administrationexception.h"/>
@@ -76,7 +75,6 @@
       <File Name="LFC/Administration/administration.h"/>
       <File Name="LFC/Administration/administration.cpp"/>
     </VirtualDirectory>
-    <File Name="LFC/icomparable.cpp"/>
     <File Name="LFC/nobjectregistry.h"/>
     <File Name="LFC/nobjectregistry.cpp"/>
   </VirtualDirectory>

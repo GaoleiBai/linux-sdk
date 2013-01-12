@@ -1,6 +1,7 @@
 #include <typeinfo>
 #include "n_object.h"
 #include "Text/text.h"
+#include "FileSystem/serializator.h"
 
 NObject::NObject()
 {
@@ -20,12 +21,12 @@ int NObject::Compare(const NObject &o)
 	return ToText().Compare(((NObject *)&o)->ToText());	
 }
 
-void NObject::Serialize(const IFile &file)
+void NObject::Serialize(const Serializator &s)
 {
-	
+	throw new Exception((Text)"Serialize() must be implemented in " + typeid(*this).name() + " to allow being serialized.", __FILE__, __LINE__, __func__);
 }
 
-NObject NObject::Deserialize(const IFile &file)
+NObject *NObject::Deserialize(const Serializator &s)
 {
-	
+	throw new Exception((Text)"Deserialize() must be implemented in " + typeid(*this).name() + " to allow being serialized.", __FILE__, __LINE__, __func__);
 }

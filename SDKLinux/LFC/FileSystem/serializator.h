@@ -9,7 +9,8 @@ class Serializator : public NObject {
 public:
 	Serializator(const IFile &file);
 	virtual ~Serializator();
-	
+
+	void Put(char *buffer, int lonBuffer);
 	void Put(const NObject &o);
 	void Put(char n);
 	void Put(short n);
@@ -25,6 +26,7 @@ public:
 	void Put(double n);
 	void Put(long double n);
 	
+	void Get(char *buffer, int lonBuffer);
 	NObject *GetNObject();
 	char GetChar();
 	short GetShort();
@@ -43,8 +45,6 @@ public:
 private:
 	IFile *file;
 	
-	void ensureRead(char *buffer, int lonBuffer);
-
 };
 
 #endif // SERIALIZATOR_H

@@ -54,13 +54,14 @@ Buffer::~Buffer()
 	delete buffer;
 }
 
-void Buffer::Write(char *buffer, int lonBuffer)
+int Buffer::Write(char *buffer, int lonBuffer)
 {
 	expandBuffer(position + lonBuffer);
 	memcpy(this->buffer + position, buffer, lonBuffer);
 	int newLonBuffer = position + lonBuffer;
 	if (this->lonBuffer < newLonBuffer) this->lonBuffer = newLonBuffer;
 	position += lonBuffer;
+	return lonBuffer;
 }
 
 int Buffer::Read(char *buffer, int lonBuffer)

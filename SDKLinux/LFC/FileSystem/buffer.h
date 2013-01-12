@@ -17,7 +17,7 @@ public:
 	virtual off_t FSetEnd();
 	virtual off_t FSet(int position);
 	virtual off_t FGet();
-	virtual void Write(char *buffer, int lonBuffer);
+	virtual int Write(char *buffer, int lonBuffer);
 	virtual int Read(char *buffer, int lonBuffer);
 	
 	virtual Text ToText();
