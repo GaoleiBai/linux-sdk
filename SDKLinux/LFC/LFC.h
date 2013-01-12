@@ -8,6 +8,7 @@
 #include "n_object.h"
 #include "icomparable.h"
 #include "exception.h"
+#include "nobjectregistry.h"
 #include "Text/text.h"
 #include "Text/text_buffer.h"
 #include "Text/text_exception.h"

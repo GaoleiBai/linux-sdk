@@ -57,8 +57,6 @@
       <File Name="LFC/FileSystem/buffer.cpp"/>
       <File Name="LFC/FileSystem/binary_formatter.h"/>
       <File Name="LFC/FileSystem/binary_formatter.cpp"/>
-      <File Name="LFC/FileSystem/iserializable.h"/>
-      <File Name="LFC/FileSystem/iserializable.cpp"/>
     </VirtualDirectory>
     <File Name="LFC/LFC.cpp"/>
     <VirtualDirectory Name="Time">
@@ -79,6 +77,8 @@
       <File Name="LFC/Administration/administration.cpp"/>
     </VirtualDirectory>
     <File Name="LFC/icomparable.cpp"/>
+    <File Name="LFC/nobjectregistry.h"/>
+    <File Name="LFC/nobjectregistry.cpp"/>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>

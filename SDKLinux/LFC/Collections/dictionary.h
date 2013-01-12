@@ -55,7 +55,7 @@ public:
 	void SetKey(K key, V value);
 	bool GetKey(K key, V &value);
 	void ClearKey(K key);
-	bool ExistsKet(K key);
+	bool ExistsKey(K key);
 	void Clear();
 	void Pack();
 	void DeleteAndClearKey(K key);
@@ -184,7 +184,7 @@ void Dictionary<K, V>::ClearKey(K key)
 }
 
 template<class K, class V>
-bool Dictionary<K, V>::ExistsKet(K key)
+bool Dictionary<K, V>::ExistsKey(K key)
 {
 	return binarySearchIx(key) != -1;
 }

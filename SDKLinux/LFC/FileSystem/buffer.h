@@ -4,7 +4,7 @@
 #include "../n_object.h"
 #include "ifile.h"
 
-class Buffer : NObject, IFile {
+class Buffer : public NObject, public IFile {
 
 public:
 	Buffer();

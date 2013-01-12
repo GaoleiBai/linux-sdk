@@ -36,7 +36,7 @@ int TestDictionary::Perform()
 	
 	Text t = "Luis";
 	d1.ClearKey(&t);
-	if (d1.ExistsKet(&t)) {
+	if (d1.ExistsKey(&t)) {
 		StdOut::PrintLine("ClearKey and ExistsKey doesn't work!!!");
 		return -1;
 	}

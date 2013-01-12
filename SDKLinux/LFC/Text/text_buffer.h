@@ -5,7 +5,7 @@
 
 class Text;
 
-class TextBuffer : NObject {
+class TextBuffer : public NObject {
 
 public:
 	TextBuffer();

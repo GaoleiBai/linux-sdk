@@ -39,8 +39,6 @@ public:
 	T &Last();
 	T &operator [](int ix);
 	
-	//int Compare(static Collection<T> &c)
-	
 protected:
 	void ensureCapacity(int capacity);
 

@@ -9,7 +9,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-class File : public NObject, IFile {
+class File : public NObject, public IFile {
 
 public:
 	File(const Text &filename, int mode);

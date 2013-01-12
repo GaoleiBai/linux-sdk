@@ -119,74 +119,14 @@ public:
 	bool Contains(const wchar_t *t, int len);
 	
 	Text operator+(const Text &t);
-	/*
-	Text operator+(const char *t);
-	Text operator+(const wchar_t *t);
-	Text operator+(bool b);
-	Text operator+(char c);
-	Text operator+(wchar_t c);
-	Text operator+(short int i);
-	Text operator+(int i);
-	Text operator+(long int i);
-	Text operator+(float f);
-	Text operator+(double d);
-	 */
 	Text &operator+=(const Text &t);
-	/*
-	Text &operator+=(const char *t);
-	Text &operator+=(const wchar_t *t);
-	Text &operator+=(bool b);
-	Text &operator+=(char c);
-	Text &operator+=(wchar_t c);
-	Text &operator+=(short int i);
-	Text &operator+=(int i);
-	Text &operator+=(long int i);
-	Text &operator+=(float f);
-	Text &operator+=(double d);
-	 */
 	Text &operator=(const Text &t);
-	 /*
-	Text &operator=(const char *t);
-	Text &operator=(const wchar_t *t);
-	Text &operator=(bool b);
-	Text &operator=(char c);
-	Text &operator=(wchar_t c);
-	Text &operator=(short int i);
-	Text &operator=(int i);
-	Text &operator=(long int i);
-	Text &operator=(float f);
-	Text &operator=(double d);
-	 * */
 	bool operator==(const Text &t);
-	/*
-	bool operator==(const char *t);
-	bool operator==(const wchar_t *t);
-	 */
 	bool operator!=(const Text &t);
-	/*
-	bool operator!=(const char *t);
-	bool operator!=(const wchar_t *t);
-	 */
 	bool operator<(const Text &t);
-	/*
-	bool operator<(const char *t);
-	bool operator<(const wchar_t *t);
-	 */
 	bool operator>(const Text &t);
-	/*
-	bool operator>(const char *t);
-	bool operator>(const wchar_t *t);
-	 */
 	bool operator<=(const Text &t);
-	/*
-	bool operator<=(const char *t);
-	bool operator<=(const wchar_t *t);
-	 */
 	bool operator>=(const Text &t);
-	/*
-	bool operator>=(const char *t);
-	bool operator>=(const wchar_t *t);
-	 */
 	wchar_t &operator[](const int ix);
 	
 	static int COMPARER(const void *u, const void *v);

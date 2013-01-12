@@ -731,153 +731,11 @@ Text Text::operator +(const Text &t)
 	tt.p = q;
 	return tt;
 }
-/*
-Text Text::operator +(const char *t)
-{
-	int tlength = strlen(t);
-	int qlength = length + tlength;
-	wchar_t *q = new wchar_t[qlength + 1];
-	write(0, q, qlength + 1, 0, p, length);
-	write(length, q, qlength + 1, 0, t, tlength);
-	
-	Text tt;
-	delete tt.p;
-	tt.length = qlength;
-	tt.p = q;
-	return tt;
-}
 
-Text Text::operator +(const wchar_t *t)
-{
-	int tlength = wcslen(t);
-	int qlength = length + tlength;
-	wchar_t *q = new wchar_t[qlength + 1];
-	write(0, q, qlength + 1, 0, p, length);
-	write(length, q, qlength + 1, 0, t, tlength);
-	
-	Text tt;
-	delete tt.p;
-	tt.length = qlength;
-	tt.p = q;
-	return tt;
-}
-
-Text Text::operator +(bool b)
-{
-	Text q = b;
-	return *this + q;
-}
-
-Text Text::operator +(char c)
-{
-	Text q = c;
-	return *this + c;
-}
-
-Text Text::operator +(wchar_t c)
-{
-	Text q = c;
-	return *this + c;
-}
-
-Text Text::operator +(short int i)
-{
-	Text q = i;
-	return *this + q;
-}
-
-Text Text::operator +(int i) 
-{
-	Text q = i;
-	return *this + q;
-}
-
-Text Text::operator +(long int i)
-{
-	Text q = i;
-	return *this + q;
-}
-
-Text Text::operator +(float f)
-{
-	Text q = f;
-	return *this + q;
-}
-
-Text Text::operator +(double d)
-{
-	Text q = d;
-	return *this + q;
-}
-*/
 Text &Text::operator +=(const Text &t)
 {
 	return appendText(t.p, t.length);
 }
-
-/*
-
-Text &Text::operator +=(const char *t)
-{
-	return appendText(t, strlen(t));
-}
-
-Text &Text::operator +=(const wchar_t *t)
-{
-	return appendText(t, wcslen(t));
-}
-
-Text &Text::operator +=(bool b)
-{
-	return appendText(b ? "true" : "false", b ? 4 : 5);
-}
-
-Text &Text::operator +=(char c)
-{
-	return appendText(&c, 1);
-}
-
-Text &Text::operator +=(wchar_t c)
-{
-	return appendText(&c, 1);
-}
-
-Text &Text::operator +=(short int i)
-{
-	char cadena[100];
-	sprintf(cadena, "%hi", i);
-	return *this += cadena;	
-}
-
-Text &Text::operator +=(int i)
-{
-	char cadena[100];
-	sprintf(cadena, "%i", i);
-	return *this += cadena;
-}
-
-Text &Text::operator +=(long int i)
-{
-	char cadena[100];
-	sprintf(cadena, "%li", i);
-	return *this += cadena;
-}
-
-Text &Text::operator +=(float f)
-{
-	char cadena[100];
-	sprintf(cadena, "%f", f);
-	return *this += cadena;
-}
-
-Text &Text::operator +=(double d)
-{
-	char cadena[100];
-	sprintf(cadena, "%f", d);
-	return *this += cadena;
-}
- * 
- * */
 
 Text &Text::operator =(const Text &t)
 {
@@ -885,67 +743,6 @@ Text &Text::operator =(const Text &t)
 	return aquireText(t.p, t.length, true);
 }
 
-/*
-Text &Text::operator =(const char *t)
-{
-	return aquireText(t, strlen(t), true);
-}
-
-Text &Text::operator =(const wchar_t *t)
-{
-	return aquireText(t, wcslen(t), true);
-}
-
-Text &Text::operator =(bool b)
-{
-	return aquireText(b ? "true" : "false", b ? 4 : 5, true);
-}
-
-Text &Text::operator =(char c)
-{
-	return aquireText(&c, 1, true);
-}
-
-Text &Text::operator =(wchar_t c)
-{
-	return aquireText(&c, 1, true);
-}
-
-Text &Text::operator =(short int i)
-{
-	char cadena[100];
-	sprintf(cadena, "%hi", i);
-	return aquireText(cadena, strlen(cadena), true);
-}
-
-Text &Text::operator =(int i)
-{
-	char cadena[100];
-	sprintf(cadena, "%i", i);
-	return aquireText(cadena, strlen(cadena), true);
-}
-
-Text &Text::operator =(long int i)
-{
-	char cadena[100];
-	sprintf(cadena, "%li", i);
-	return aquireText(cadena, strlen(cadena), true);
-}
-
-Text &Text::operator =(float f)
-{
-	char cadena[100];
-	sprintf(cadena, "%f", f);
-	return aquireText(cadena, strlen(cadena), true);
-}
-
-Text &Text::operator =(double d)
-{
-	char cadena[100];
-	sprintf(cadena, "%f", d);
-	return aquireText(cadena, strlen(cadena), true);
-}
-*/
 bool Text::operator ==(const Text &t)
 {
 	if (&t == this) return true;
@@ -953,96 +750,31 @@ bool Text::operator ==(const Text &t)
 	return Compare(t) == 0;
 }
 
-/*
-bool Text::operator ==(const char *t)
-{
-	Text q = t;
-	return *this == q;
-}
-
-bool Text::operator ==(const wchar_t *t)
-{
-	int lt = wcslen(t);
-	if (lt != length) return false;
-	return Compare(t, lt) == 0;
-}
- */
-
 bool Text::operator !=(const Text &t)
 {
 	return !(*this == t);
 }
-/*
-bool Text::operator !=(const char *t)
-{
-	return !(*this == t);
-}
 
-bool Text::operator !=(const wchar_t *t)
-{
-	return !(*this == t);
-}
-*/
 bool Text::operator <(const Text &t)
 {
 	return Compare(t) < 0;
 }
-/*
-bool Text::operator <(const char *t)
-{
-	return Compare(t) < 0;
-}
 
-bool Text::operator <(const wchar_t *t)
-{
-	return Compare(t) < 0;
-}
-*/
 bool Text::operator >(const Text &t)
 {
 	return Compare(t) > 0;
 }
-/*
-bool Text::operator >(const char *t)
-{
-	return Compare(t) > 0;
-}
 
-bool Text::operator >(const wchar_t *t)
-{
-	return Compare(t) > 0;
-}
-*/
 bool Text::operator <=(const Text &t)
 {
 	return Compare(t) <= 0;
 }
-/*
-bool Text::operator <=(const char *t)
-{
-	return Compare(t) <= 0;
-}
 
-bool Text::operator <=(const wchar_t *t)
-{
-	return Compare(t) <= 0;
-}
-*/
 bool Text::operator >=(const Text &t)
 {
 	return Compare(t) >= 0;
 }
-/*
-bool Text::operator >=(const char *t)
-{
-	return Compare(t) >= 0;
-}
 
-bool Text::operator >=(const wchar_t *t)
-{
-	return Compare(t) >= 0;
-}
-*/
 wchar_t &Text::operator [](const int ix)
 {
 	if (ix < 0 || ix >= length) throw new TextException("Índice fuera de límites", __FILE__, __LINE__, __func__);
