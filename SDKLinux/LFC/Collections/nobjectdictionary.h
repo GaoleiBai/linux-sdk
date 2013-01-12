@@ -10,6 +10,8 @@ public:
 	NObjectDictionary();
 	virtual ~NObjectDictionary();
 	
+	virtual NObject *operator[](const NObject *key);
+	
 	virtual Text ToText();
 
 protected:

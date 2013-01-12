@@ -2,6 +2,7 @@
 #include "datetime.h"
 #include "timeexception.h"
 #include "../Text/text.h"
+#include "../FileSystem/serializator.h"
 #include <time.h>
 #include <string.h>
 #include <stdio.h>
@@ -409,4 +410,14 @@ int DateTime::COMPARER(const void *u, const void *v)
 	DateTime **uu = (DateTime **)u;
 	DateTime **vv = (DateTime **)v;
 	return -((DateTime *)*uu)->Compare(**vv);
+}
+
+void DateTime::Serialize(const Serializator &s)
+{
+	((Serializator *)&s)->Put((char *)&currentTime, sizeof(currentTime));
+}
+
+NObject *DateTime::Deserialize(const Serializator &s)
+{
+	((Serializator *)&s)->Get((char *)&currentTime, sizeof(currentTime));
 }

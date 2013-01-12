@@ -59,14 +59,12 @@ public:
 	bool operator<=(const DateTime &d);
 	
 	bool Equals(const DateTime &d);
-	virtual int Compare(const NObject &o);
 	int Compare(const DateTime &d);
 	
 	static DateTime Parse(const Text &format, const Text &strDate);
 	static DateTime Parse(const wchar_t *format, const wchar_t *strDate);
 	static DateTime Parse(const char *format, const char *strDate);
 	
-	Text ToText();
 	Text ToText(const char *format);
 	Text ToText(const wchar_t *format);
 	Text ToText(const Text &format);
@@ -76,6 +74,11 @@ public:
 	static void SetUtcDateTime(const DateTime &d);
 	
 	static int COMPARER(const void *u, const void *v);	
+
+	virtual Text ToText();
+	virtual int Compare(const NObject &o);
+	virtual void Serialize(const Serializator &s);
+	virtual NObject *Deserialize(const Serializator &s);
 
 protected:
 

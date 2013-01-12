@@ -24,3 +24,10 @@ Text NObjectDictionary::ToText()
 	return b.ToText();
 }
 
+NObject *NObjectDictionary::operator [](const NObject *key)
+{
+	NObject *value = NULL;
+	if (!GetKey((NObject *)key, value)) return NULL;
+	return value;
+}
+
