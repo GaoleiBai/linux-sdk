@@ -56,6 +56,22 @@ int TestDictionary::Perform()
 	StdOut::PrintLine(d2.ToText());
 	d2.DeleteAndClear();
 	
+	try { 
+		d2.SetKey(NULL, new Text("aaa")); 
+		StdOut::PrintLine("Exception should have been raised.");
+		return -1;
+	} catch (Exception *e) {
+		delete e;
+	}
+	
+	try { 
+		d2.SetKey(new Text("aaa"), NULL); 
+		StdOut::PrintLine("Exception should have been raised.");
+		return -1;
+	} catch (Exception *e) {
+		delete e;
+	}
+	
 	return 0;
 }
 
