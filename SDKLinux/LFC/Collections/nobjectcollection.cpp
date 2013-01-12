@@ -72,5 +72,9 @@ void NObjectCollection::Serialize(const Serializator &s)
 
 NObject *NObjectCollection::Deserialize(const Serializator &s)
 {
-	dadsa
+	numObjects = ((Serializator *)&s)->GetInt();
+	size = numObjects;
+	objects = new NObject *[size];
+	for (int i = 0; i<numObjects; i++)
+		objects[i] = ((Serializator *)&s)->GetNObject();
 }

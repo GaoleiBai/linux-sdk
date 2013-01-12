@@ -52,7 +52,7 @@ public:
 	Dictionary(int (*COMPARER)(const void *u, const void *v));
 	virtual ~Dictionary();
 	
-	void SetKey(K key, V value);
+	virtual void SetKey(K key, V value);
 	bool GetKey(K key, V &value);
 	void ClearKey(K key);
 	bool ExistsKey(K key);
@@ -200,6 +200,8 @@ void Dictionary<K, V>::Clear()
 template<class K, class V>
 void Dictionary<K, V>::Pack()
 {
+	if (numEntries == capacity || numEntries < 1) return;
+	
 	DictionaryEntry<K, V> **q = new DictionaryEntry<K, V> *[numEntries];
 	for (int i=0; i<numEntries; i++) q[i] = entries[i];
 	capacity = numEntries;

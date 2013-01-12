@@ -25,7 +25,6 @@ public:
 	void DeleteAndRemoveFirst();
 	void DeleteAndRemoveLast();
 	void InsertAt(int ix, T o);
-	void Compact();
 	void Clear();
 	void DeleteAndClear();
 	int Count();
@@ -232,17 +231,6 @@ void Collection<T>::DeleteAndClear()
 }
 
 template<class T>
-void Collection<T>::Compact()
-{
-	if (size == numObjects || numObjects < 1) return;
-	T *q = new T[numObjects];
-	for (int i=0; i<numObjects; i++) q[i] = objects[i];
-	delete objects;
-	objects = q;
-	size = numObjects;
-}
-
-template<class T>
 int Collection<T>::Count()
 {
 	return numObjects;
@@ -275,6 +263,8 @@ int Collection<T>::BinarySearchIx(T o, int (*COMPARER)(const void *u, const void
 template<class T>
 void Collection<T>::Pack()
 {
+	if (size == numObjects || numObjects < 1) return;
+	
 	T *p = new T[numObjects];
 	for (int i=0; i<numObjects; i++) p[i] = objects[i];
 	delete objects;

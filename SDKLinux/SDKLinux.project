@@ -41,7 +41,7 @@
     </VirtualDirectory>
     <VirtualDirectory Name="Network"/>
     <VirtualDirectory Name="Threading"/>
-    <VirtualDirectory Name="Filesystem">
+    <VirtualDirectory Name="FileSystem">
       <File Name="LFC/FileSystem/directory.h"/>
       <File Name="LFC/FileSystem/directory.cpp"/>
       <File Name="LFC/FileSystem/filesystemobjectinfo.h"/>
