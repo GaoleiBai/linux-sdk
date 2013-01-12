@@ -2,6 +2,7 @@
 #include "collection.h"
 #include "../Text/text_buffer.h"
 #include "../Text/text.h"
+#include "../FileSystem/serializator.h"
 #include <typeinfo>
 
 NObjectCollection::NObjectCollection() : Collection<NObject *>()
@@ -61,4 +62,15 @@ int NObjectCollection::Compare(const NObjectCollection &c)
 		if (diff != 0) return diff;
 	}
 	return 0;
+}
+
+void NObjectCollection::Serialize(const Serializator &s)
+{
+	((Serializator *)&s)->Put(numObjects);
+	for (int i=0; i<numObjects; i++) ((Serializator *)&s)->Put(*objects[i]);
+}
+
+NObject *NObjectCollection::Deserialize(const Serializator &s)
+{
+	dadsa
 }

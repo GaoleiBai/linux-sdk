@@ -14,10 +14,12 @@ public:
 	
 	void QuickSort();
 	int BinarySearchIx(const NObject *o);
+	virtual int Compare(const NObjectCollection &c);
 	
 	virtual Text ToText();
 	virtual int Compare(const NObject &o);
-	virtual int Compare(const NObjectCollection &c);
+	virtual void Serialize(const Serializator &s);
+	virtual NObject *Deserialize(const Serializator &s);
 	
 protected:
 	static int compare(const void *u, const void *v);
