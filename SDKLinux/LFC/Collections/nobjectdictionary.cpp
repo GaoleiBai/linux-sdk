@@ -36,7 +36,15 @@ void NObjectDictionary::Serialize(const Serializator &s)
 
 NObject *NObjectDictionary::Deserialize(const Serializator &s)
 {
-	
+	numEntries = ((Serializator *)&s)->GetInt();
+	capacity = numEntries;
+	delete entries;
+	entries = new DictionaryEntry<NObject *, NObject *> *[capacity];
+	for (int i = 0; i < numEntries; i++) {
+		NObject *key = ((Serializator *)&s)->GetNObject();
+		NObject *value = ((Serializator *)&s)->GetNObject();
+		entries[i] = new DictionaryEntry<NObject *, NObject *>(key, value);
+	}
 }
 
 NObject *NObjectDictionary::operator [](const NObject *key)
