@@ -9,6 +9,10 @@ NObjectCollection::NObjectCollection() : Collection<NObject *>()
 {
 }
 
+NObjectCollection::NObjectCollection(const NObject *t[]) : Collection<NObject *>((NObject* const*)t)
+{
+}
+
 NObjectCollection::NObjectCollection(int size) : Collection<NObject *>(size)
 {
 }
@@ -19,6 +23,14 @@ NObjectCollection::NObjectCollection(const NObjectCollection &c) : Collection<NO
 
 NObjectCollection::~NObjectCollection()
 {
+}
+
+void NObjectCollection::Add(const NObject *o)
+{
+	if (o == NULL)
+		throw new CollectionException("Cannot add NULL references", __FILE__, __LINE__, __func__);
+		
+	Collection<NObject *>::Add((NObject *)o);
 }
 
 void NObjectCollection::QuickSort()

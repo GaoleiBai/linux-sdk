@@ -14,21 +14,21 @@ public:
 	Collection(const Collection<T> &c);
 	virtual ~Collection();
 
-	void Add(T o);
-	void AddRange(T t[]);
-	void AddRange(Collection<T> &c);
-	void Remove(T o);
+	virtual void Add(const T o);
+	virtual void AddRange(const T t[]);
+	virtual void AddRange(const Collection<T> &c);
+	void Remove(const T o);
 	void RemoveAt(int ix);
 	void RemoveFirst();
 	void RemoveLast();
 	void DeleteAndRemoveAt(int ix);
 	void DeleteAndRemoveFirst();
 	void DeleteAndRemoveLast();
-	void InsertAt(int ix, T o);
+	void InsertAt(int ix, const T o);
 	void Clear();
 	void DeleteAndClear();
 	int Count();
-	bool Contains(T o);
+	bool Contains(const T o);
 	void QuickSort(int (*COMPARER)(const void *u, const void *v));
 	int BinarySearchIx(T o, int (*COMPARER)(const void *u, const void *v));
 	void Pack();
@@ -109,21 +109,21 @@ void Collection<T>::ensureCapacity(int capacity)
 }
 
 template<class T>
-void Collection<T>::Add(T o)
+void Collection<T>::Add(const T o)
 {
 	ensureCapacity(numObjects + 1);
 	objects[numObjects++] = o;
 }
 
 template<class T>
-void Collection<T>::AddRange(T t[])
+void Collection<T>::AddRange(const T t[])
 {
-	T *tt = t;
+	T *tt = (T *)t;
 	while (*tt) Add(*tt++);
 }
 
 template<class T>
-void Collection<T>::AddRange(Collection<T> &c)
+void Collection<T>::AddRange(const Collection<T> &c)
 {
 	size = numObjects + c.numObjects;
 	if (size < 1) size = 1;
@@ -136,7 +136,7 @@ void Collection<T>::AddRange(Collection<T> &c)
 }
 
 template<class T>
-void Collection<T>::Remove(T o)
+void Collection<T>::Remove(const T o)
 {
 	for (int i=0; i<numObjects; i++) {
 		if (objects[i] != o) continue;
@@ -191,7 +191,7 @@ void Collection<T>::DeleteAndRemoveLast()
 }
 
 template<class T>
-void Collection<T>::InsertAt(int ix, T o)
+void Collection<T>::InsertAt(int ix, const T o)
 {
 	if (ix < 0 || ix > numObjects) throw new CollectionException("Index out of allowed bounds.", __FILE__, __LINE__, __func__);
 	ensureCapacity(numObjects + 1);
@@ -237,7 +237,7 @@ int Collection<T>::Count()
 }
 
 template<class T>
-bool Collection<T>::Contains(T o)
+bool Collection<T>::Contains(const T o)
 {
 	for (int i=0; i<numObjects; i++) {
 		if (o == objects[i]) return true;

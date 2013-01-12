@@ -9,9 +9,11 @@ class NObjectCollection : public Collection<NObject *>, public NObject {
 public:
 	NObjectCollection();
 	NObjectCollection(int size);
+	NObjectCollection(const NObject *t[]);
 	NObjectCollection(const NObjectCollection &c);
 	virtual ~NObjectCollection();
 	
+	virtual void Add(const NObject *o);
 	void QuickSort();
 	int BinarySearchIx(const NObject *o);
 	virtual int Compare(const NObjectCollection &c);
