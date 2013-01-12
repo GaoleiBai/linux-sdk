@@ -8,6 +8,7 @@
 #include "testfile.h"
 #include "testcollection.h"
 #include "testdictionary.h"
+#include "test_buffer.h"
 #include "testserialization.h"
 
 #endif

@@ -53,6 +53,11 @@ int main(int argc, char **argv)
 		return -1;
 	}
 	
+	if (TestBuffer::Perform() != 0) {
+		StdOut::PrintLine("TestBuffer::Perform error!!!");
+		return -1;
+	}
+	
 	if (TestSerialization::Perform() != 0) {
 		StdOut::PrintLine("TestSerialization::Perform error!!!");
 		return -1;

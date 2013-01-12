@@ -7,7 +7,7 @@ public:
 	TestBuffer();
 	virtual ~TestBuffer();
 
-	int Perform();
+	static int Perform();
 };
 
 #endif // TESTBUFFER_H
