@@ -19,7 +19,9 @@ public:
 	void AppendLine(const Text &t);
 	void AppendLine();
 	
-	Text ToText();
+	virtual Text ToText();
+	virtual void Serialize(const Serializator &s);
+	virtual NObject *Deserialize(const Serializator &s);
 	
 private:
 	void increaseBuffer(int newLen);

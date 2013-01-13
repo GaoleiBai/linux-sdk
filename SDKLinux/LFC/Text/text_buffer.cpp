@@ -1,6 +1,7 @@
 #include "text_buffer.h"
 #include "text_exception.h"
 #include "text.h"
+#include "../FileSystem/serializator.h"
 #include <string.h>
 #include <wchar.h>
 
@@ -84,4 +85,20 @@ void TextBuffer::AppendLine()
 Text TextBuffer::ToText()
 {
 	return Text(p, length);
+}
+
+void TextBuffer::Serialize(const Serializator &s)
+{
+	((Serializator *)&s)->Put(length);
+	((Serializator *)&s)->Put((char *)p, sizeof(wchar_t) * length);
+}
+
+NObject *TextBuffer::Deserialize(const Serializator &s)
+{
+	length = ((Serializator *)&s)->GetInt();
+	psize = length + 1;
+	delete p;
+	p = new wchar_t[psize];
+	((Serializator *)&s)->Get((char *)p, sizeof(wchar_t) * length);
+	p[length] = 0;
 }

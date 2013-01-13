@@ -20,8 +20,6 @@ public:
 	virtual int Write(char *buffer, int lonBuffer);
 	virtual int Read(char *buffer, int lonBuffer);
 	
-	virtual Text ToText();
-	
 	int Length();
 	int FindIx(const Buffer &b);
 	Buffer SubBuffer(int ix);
@@ -31,6 +29,10 @@ public:
 	bool operator==(const Buffer &b);
 	bool operator!=(const Buffer &b);
 	Buffer operator+(const Buffer &b);
+	
+	virtual Text ToText();
+	virtual void Serialize(const Serializator &s);
+	virtual NObject *Deserialize(const Serializator &s);
 	
 private:
 	char *buffer;

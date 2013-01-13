@@ -797,8 +797,8 @@ void Text::Serialize(const Serializator &s)
 
 NObject *Text::Deserialize(const Serializator &s)
 {
-	delete p;
 	length = ((Serializator *)&s)->GetInt();
+	delete p;
 	p = new wchar_t[length + 1];
 	((Serializator *)&s)->Get((char *)p, sizeof(wchar_t) * length);
 	p[length] = 0;

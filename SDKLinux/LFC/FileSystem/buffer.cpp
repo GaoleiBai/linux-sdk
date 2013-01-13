@@ -1,6 +1,7 @@
 #include "buffer.h"
 #include "filesystemexception.h"
 #include "../Text/text.h"
+#include "../FileSystem/serializator.h"
 #include <string.h>
 
 void Buffer::expandBuffer(int neededCapacity)
@@ -167,4 +168,19 @@ Buffer Buffer::operator +(const Buffer &b)
 	q.expandBuffer(q.lonBuffer + b.lonBuffer);
 	memcpy(q.buffer + q.lonBuffer, b.buffer, b.lonBuffer);
 	return q;
+}
+
+void Buffer::Serialize(const Serializator &s)
+{
+	((Serializator *)&s)->Put(lonBuffer);
+	((Serializator *)&s)->Put(buffer, lonBuffer);
+}
+
+NObject * Buffer::Deserialize(const Serializator &s)
+{
+	lonBuffer = ((Serializator *)&s)->GetInt();
+	capacity = lonBuffer;
+	delete buffer;
+	buffer = new char[capacity];
+	((Serializator *)&s)->Get(buffer, lonBuffer);
 }
