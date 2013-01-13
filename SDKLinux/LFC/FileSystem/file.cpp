@@ -104,7 +104,7 @@ int File::Read(char *buffer, int lonBuffer)
 	return leido;
 }
 
-int File::Write(char *buffer, int lonBuffer)
+int File::Write(const char *buffer, int lonBuffer)
 {
 	if (file == -1) throw new FileSystemException("File not propertly open", __FILE__, __LINE__, __func__);
 

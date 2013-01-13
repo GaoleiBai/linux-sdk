@@ -25,16 +25,16 @@ Buffer::Buffer()
 
 Buffer::Buffer(const char *buffer, int lonBuffer)
 {
-	position = 0;
 	capacity = lonBuffer;
 	this->lonBuffer = lonBuffer;
 	this->buffer = new char[capacity];
 	memcpy(this->buffer, buffer, lonBuffer);
+	position = lonBuffer;
 }
 
 Buffer::Buffer(const Buffer &b)
 {
-	position = 0;
+	position = b.position;
 	capacity = b.capacity;
 	lonBuffer = b.lonBuffer;
 	buffer = new char[capacity];
@@ -43,7 +43,7 @@ Buffer::Buffer(const Buffer &b)
 
 Buffer::Buffer(const Buffer *b)
 {
-	position = 0;
+	position = b->position;
 	capacity = b->capacity;
 	lonBuffer = b->lonBuffer;
 	buffer = new char[capacity];
@@ -55,7 +55,7 @@ Buffer::~Buffer()
 	delete buffer;
 }
 
-int Buffer::Write(char *buffer, int lonBuffer)
+int Buffer::Write(const char *buffer, int lonBuffer)
 {
 	expandBuffer(position + lonBuffer);
 	memcpy(this->buffer + position, buffer, lonBuffer);
@@ -82,7 +82,7 @@ off_t Buffer::FSetStart()
 
 off_t Buffer::FSetEnd()
 {
-	position = lonBuffer - 1;
+	position = lonBuffer;
 }
 
 off_t Buffer::FSet(int position)
