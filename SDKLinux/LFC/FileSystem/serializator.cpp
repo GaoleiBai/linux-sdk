@@ -122,6 +122,8 @@ NObject *Serializator::GetNObject()
 	unsigned char signature = 0;
 
 	Get((char *)&signature, sizeof(signature));
+	if (signature != 0x00CC) 
+		throw new FileSystemException((Text)"No valid class found in file.", __FILE__, __LINE__, __func__);
 	Get((char *)&namelen, sizeof(namelen));
 	Get(strName, namelen);
 	

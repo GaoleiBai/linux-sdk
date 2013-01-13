@@ -103,6 +103,10 @@
     <File Name="Tests/testdictionary.cpp"/>
     <File Name="Tests/testserialization.h"/>
     <File Name="Tests/testserialization.cpp"/>
+    <VirtualDirectory Name="SerializationHelpClasses">
+      <File Name="Tests/SerializationHelpClasses/helpclass.h"/>
+      <File Name="Tests/SerializationHelpClasses/helpclass.cpp"/>
+    </VirtualDirectory>
   </VirtualDirectory>
   <Settings Type="Executable">
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
