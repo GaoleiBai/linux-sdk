@@ -22,8 +22,8 @@ HelpClass::HelpClass()
 	Collection<Text *> variasPalabras = ((Text)"Esto es una prueba de varias palabras").Split(" ", false);
 	
 	nobjectcollection = new NObjectCollection();
-	nobjectcollection->Add(atext);
-	nobjectcollection->Add(adatetime);
+	nobjectcollection->Add(new Text(atext));
+	nobjectcollection->Add(new DateTime(adatetime));
 	nobjectcollection->Add(new Text("Pedro"));
 	nobjectcollection->Add(new Text("José Luis"));
 	nobjectcollection->AddRange((Collection<NObject *>&)variasPalabras);
@@ -72,8 +72,8 @@ void HelpClass::Serialize(const Serializator &s)
 	((Serializator *)&s)->Put(nulong);
 	((Serializator *)&s)->Put(nulonglong);
 	((Serializator *)&s)->Put(nfloat);
-	((Serializator *)&s)->Put(nlong);
-	((Serializator *)&s)->Put(nlonglong);
+	((Serializator *)&s)->Put(ndouble);
+	((Serializator *)&s)->Put(nlongdouble);
 	((Serializator *)&s)->Put(*atext);
 	((Serializator *)&s)->Put(*adatetime);
 	((Serializator *)&s)->Put(*nobjectcollection);
@@ -84,14 +84,12 @@ void HelpClass::Serialize(const Serializator &s)
 
 NObject *HelpClass::Deserialize(const Serializator &s)
 {
-	nobjectcollection->DeleteAndClear();
-	nobjectdictionary->DeleteAndClear();
-	delete atext;
-	delete adatetime;
-	delete nobjectcollection;
-	delete nobjectdictionary;
-	delete abuffer;
-	delete atextbuffer;
+	Text *oldtext = atext;
+	DateTime *olddatetime = adatetime;
+	NObjectCollection *oldnobjectcollection = nobjectcollection;
+	NObjectDictionary *oldnobjectdictionary = nobjectdictionary;
+	Buffer *oldbuffer = abuffer;
+	TextBuffer *oldtextbuffer = atextbuffer;
 	
 	nchar = ((Serializator *)&s)->GetChar();
 	nshort = ((Serializator *)&s)->GetShort();
@@ -112,5 +110,34 @@ NObject *HelpClass::Deserialize(const Serializator &s)
 	nobjectdictionary = (NObjectDictionary *)((Serializator *)&s)->GetNObject();
 	abuffer = (Buffer *)((Serializator *)&s)->GetNObject();
 	atextbuffer = (TextBuffer *)((Serializator *)&s)->GetNObject();
+	
+	if (nchar != 1 || nshort != 2 || nint != 3 || nlong != 4 || nlonglong != 5 ||
+		nuchar != 6 || nushort != 7 || nuint != 8 || nulong != 9 || nulonglong != 10 ||
+		nfloat != 11 || ndouble != 12 || nlongdouble != 13)
+		{
+			throw new Exception("Numbers not propertly deserializated", __FILE__, __LINE__, __func__);
+		}
+	
+	if (*oldtext != *atext) 
+		throw new Exception("Text not propertly deserializated", __FILE__, __LINE__, __func__);
+	if (*olddatetime != *adatetime)
+		throw new Exception("DateTime not propertly deserializated", __FILE__, __LINE__, __func__);
+	if (oldnobjectcollection->ToText() != nobjectcollection->ToText())
+		throw new Exception("NObjectCollection not propertly deserializated", __FILE__, __LINE__, __func__);
+	if (oldnobjectdictionary->ToText() != nobjectdictionary->ToText())
+		throw new Exception("NObjectDictionary not propertly deserializated", __FILE__, __LINE__, __func__);
+	if (*oldbuffer != *abuffer)
+		throw new Exception("Buffer not propertly deserializated", __FILE__, __LINE__, __func__);
+	if (oldtextbuffer->ToText() != atextbuffer->ToText())
+		throw new Exception("TextBuffer not propertly deserializated", __FILE__, __LINE__, __func__);
+		
+	oldnobjectcollection->DeleteAndClear();
+	oldnobjectdictionary->DeleteAndClear();
+	delete oldtext;
+	delete olddatetime;
+	delete oldnobjectcollection;
+	delete oldnobjectdictionary;
+	delete oldbuffer;
+	delete oldtextbuffer;
 }
 
