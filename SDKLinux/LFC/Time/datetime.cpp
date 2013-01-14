@@ -420,4 +420,5 @@ void DateTime::Serialize(const Serializator &s)
 NObject *DateTime::Deserialize(const Serializator &s)
 {
 	((Serializator *)&s)->Get((char *)&currentTime, sizeof(currentTime));
+	updatetmhelper();
 }

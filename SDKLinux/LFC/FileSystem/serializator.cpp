@@ -2,6 +2,7 @@
 #include "filesystemexception.h"
 #include "../Text/text.h"
 #include "../nobjectregistry.h"
+#include "../Devices/stdout.h"
 #include <string.h>
 #include <typeinfo>
 
@@ -118,7 +119,7 @@ void Serializator::Get(char *buffer, int lonBuffer)
 NObject *Serializator::GetNObject()
 {
 	char strName[1000];
-	unsigned char namelen = strlen(strName);
+	unsigned char namelen = 0;
 	unsigned char signature = 0;
 
 	Get((char *)&signature, sizeof(signature));
@@ -126,6 +127,7 @@ NObject *Serializator::GetNObject()
 		throw new FileSystemException((Text)"No valid class found in file.", __FILE__, __LINE__, __func__);
 	Get((char *)&namelen, sizeof(namelen));
 	Get(strName, namelen);
+	strName[namelen] = 0;
 	
 	NObject *o = NObjectRegistry::GetInstance(strName);
 	o->Deserialize(*this);

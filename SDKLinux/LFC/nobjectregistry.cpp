@@ -1,5 +1,6 @@
 #include "nobjectregistry.h"
 #include "Text/text.h"
+#include "Devices/stdout.h"
 #include <stdlib.h>
 #include <typeinfo>
 

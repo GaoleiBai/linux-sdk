@@ -3,7 +3,7 @@
 
 #include "../../LFC/LFC.h"
 
-class HelpClass {
+class HelpClass : public NObject {
 
 public:
 	HelpClass();
