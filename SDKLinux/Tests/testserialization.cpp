@@ -22,12 +22,14 @@ int TestSerialization::Perform()
 		
 		b.FSetStart();
 		Text *tt = (Text *)s.GetNObject();
+		delete tt;
 		
 		b.FSetStart();
 		s.Put(h);
 		
 		b.FSetStart();
 		HelpClass *hh = (HelpClass *)s.GetNObject();
+		delete hh;
 		
 		int kk = 0;
 	} catch (Exception *e) {
