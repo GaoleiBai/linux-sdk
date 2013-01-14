@@ -31,6 +31,13 @@ int TestSerialization::Perform()
 		HelpClass *hh = (HelpClass *)s.GetNObject();
 		delete hh;
 		
+		File::WriteAllBytes("SerializationTest.bin", b);
+		
+		File f("SerializationTest.bin", FO_ReadOnly);
+		f.Open();
+		Serializator ss(f);
+		f.Close();
+		
 		int kk = 0;
 	} catch (Exception *e) {
 		delete e;
