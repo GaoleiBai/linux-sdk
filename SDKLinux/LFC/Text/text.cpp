@@ -789,6 +789,11 @@ int Text::COMPARER(const void *u, const void *v)
 	return (*uu)->Compare(**vv);
 }
 
+NObject *Text::NewInstance()
+{
+	return new Text();
+}
+
 void Text::Serialize(const Serializator &s)
 {
 	((Serializator *)&s)->Put(length);

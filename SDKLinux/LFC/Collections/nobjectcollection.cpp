@@ -50,6 +50,11 @@ int NObjectCollection::compare(const void *u, const void *v)
 	return (*uu)->Compare(**vv);
 }
 
+NObject *NObjectCollection::NewInstance()
+{
+	return new NObjectCollection();
+}
+
 Text NObjectCollection::ToText()
 {
 	TextBuffer b;

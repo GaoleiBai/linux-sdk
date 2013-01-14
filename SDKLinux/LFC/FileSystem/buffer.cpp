@@ -99,6 +99,11 @@ off_t Buffer::FGet()
 	return position;
 }
 
+NObject *Buffer::NewInstance()
+{
+	return new Buffer();
+}
+
 Text Buffer::ToText()
 {
 	Text t(buffer, lonBuffer);

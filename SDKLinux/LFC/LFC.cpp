@@ -7,7 +7,6 @@ void lfc_init()
 	Locale::SetLocale("");
 	
 	// Register classes to allow byname instanciation
-	NObjectRegistry::Register(NObject());
 	NObjectRegistry::Register(Text());
 	NObjectRegistry::Register(DateTime());
 	NObjectRegistry::Register(NObjectCollection());

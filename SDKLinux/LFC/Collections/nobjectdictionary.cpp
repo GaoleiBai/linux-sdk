@@ -17,6 +17,11 @@ int NObjectDictionary::compare(const void *u, const void *v)
 	return (*uu)->Compare(**vv);
 }
 
+NObject *NObjectDictionary::NewInstance()
+{
+	return new NObjectDictionary();
+}
+
 Text NObjectDictionary::ToText()
 {
 	TextBuffer b;

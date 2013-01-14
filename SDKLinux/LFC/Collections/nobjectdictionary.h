@@ -13,6 +13,7 @@ public:
 	virtual void SetKey(NObject *key, NObject *value);
 	virtual NObject *operator[](const NObject *key);
 	
+	virtual NObject *NewInstance();
 	virtual Text ToText();
 	virtual void Serialize(const Serializator &s);
 	virtual NObject *Deserialize(const Serializator &s);

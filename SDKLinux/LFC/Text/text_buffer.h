@@ -19,6 +19,7 @@ public:
 	void AppendLine(const Text &t);
 	void AppendLine();
 	
+	virtual NObject *NewInstance();
 	virtual Text ToText();
 	virtual void Serialize(const Serializator &s);
 	virtual NObject *Deserialize(const Serializator &s);

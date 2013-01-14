@@ -82,6 +82,11 @@ void TextBuffer::AppendLine()
 	Append("\n");
 }
 
+NObject *TextBuffer::NewInstance()
+{
+	return new TextBuffer();
+}
+
 Text TextBuffer::ToText()
 {
 	return Text(p, length);

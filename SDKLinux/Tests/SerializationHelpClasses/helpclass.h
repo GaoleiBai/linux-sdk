@@ -9,6 +9,7 @@ public:
 	HelpClass();
 	virtual ~HelpClass();
 	
+	virtual NObject *NewInstance();
 	virtual void Serialize(const Serializator &s);
 	virtual NObject *Deserialize(const Serializator &s);
 	

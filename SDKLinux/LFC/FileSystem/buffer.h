@@ -30,6 +30,7 @@ public:
 	bool operator!=(const Buffer &b);
 	Buffer operator+(const Buffer &b);
 	
+	virtual NObject *NewInstance();
 	virtual Text ToText();
 	virtual void Serialize(const Serializator &s);
 	virtual NObject *Deserialize(const Serializator &s);

@@ -364,6 +364,11 @@ DateTime DateTime::Parse(const wchar_t *format, const wchar_t *strDate)
 	return Parse(str1, str2);
 }
 
+NObject *DateTime::NewInstance()
+{
+	return new DateTime();
+}
+
 Text DateTime::ToText()
 {
 	char cadena[1001];

@@ -11,6 +11,11 @@ NObject::~NObject()
 {
 }
 
+NObject *NObject::NewInstance()
+{
+	throw new Exception((Text)typeid(*this).name() + "::NewInstance() needs to be implemented to be able to deserializate a class.", __FILE__, __LINE__, __func__);
+}
+
 Text NObject::ToText()
 {
 	return Text(typeid(*this).name());
@@ -23,10 +28,10 @@ int NObject::Compare(const NObject &o)
 
 void NObject::Serialize(const Serializator &s)
 {
-	throw new Exception((Text)"Serialize() must be implemented in " + typeid(*this).name() + " to allow being serialized.", __FILE__, __LINE__, __func__);
+	throw new Exception((Text)typeid(*this).name() + "::Serialize() must be able to serialize.", __FILE__, __LINE__, __func__);
 }
 
 NObject *NObject::Deserialize(const Serializator &s)
 {
-	throw new Exception((Text)"Deserialize() must be implemented in " + typeid(*this).name() + " to allow being serialized.", __FILE__, __LINE__, __func__);
+	throw new Exception((Text)typeid(*this).name() + "Deserialize() must be implemented to be able to deserialize.", __FILE__, __LINE__, __func__);
 }

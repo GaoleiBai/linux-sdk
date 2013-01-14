@@ -15,6 +15,7 @@ public:
 	NObject();
 	virtual ~NObject();
 	
+	virtual NObject *NewInstance();
 	virtual Text ToText();
 	virtual int Compare(const NObject &o);
 	virtual void Serialize(const Serializator &s);

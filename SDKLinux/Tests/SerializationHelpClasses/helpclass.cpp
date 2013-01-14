@@ -52,6 +52,11 @@ HelpClass::~HelpClass()
 	delete atextbuffer;
 }
 
+NObject *HelpClass::NewInstance()
+{
+	return new HelpClass();
+}
+
 void HelpClass::Serialize(const Serializator &s)
 {
 	((Serializator *)&s)->Put(nchar);
@@ -77,6 +82,13 @@ void HelpClass::Serialize(const Serializator &s)
 
 NObject *HelpClass::Deserialize(const Serializator &s)
 {
+	delete atext;
+	delete adatetime;
+	delete nobjectcollection;
+	delete nobjectdictionary;
+	delete abuffer;
+	delete atextbuffer;
+	
 	nchar = ((Serializator *)&s)->GetChar();
 	nshort = ((Serializator *)&s)->GetShort();
 	nint = ((Serializator *)&s)->GetInt();

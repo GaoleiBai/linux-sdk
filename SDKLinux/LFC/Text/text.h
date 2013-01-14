@@ -129,6 +129,7 @@ public:
 	
 	static int COMPARER(const void *u, const void *v);
 
+	virtual NObject *NewInstance();
 	virtual Text ToText();
 	virtual int Compare(const NObject &o);
 	virtual void Serialize(const Serializator &s);
