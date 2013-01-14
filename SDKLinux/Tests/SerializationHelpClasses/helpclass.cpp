@@ -44,6 +44,8 @@ HelpClass::HelpClass()
 
 HelpClass::~HelpClass()
 {
+	nobjectcollection->DeleteAndClear();
+	nobjectdictionary->DeleteAndClear();
 	delete atext;
 	delete adatetime;
 	delete nobjectcollection;
@@ -82,6 +84,8 @@ void HelpClass::Serialize(const Serializator &s)
 
 NObject *HelpClass::Deserialize(const Serializator &s)
 {
+	nobjectcollection->DeleteAndClear();
+	nobjectdictionary->DeleteAndClear();
 	delete atext;
 	delete adatetime;
 	delete nobjectcollection;
@@ -99,6 +103,9 @@ NObject *HelpClass::Deserialize(const Serializator &s)
 	nuint = ((Serializator *)&s)->GetUInt();
 	nulong = ((Serializator *)&s)->GetULong();
 	nulonglong = ((Serializator *)&s)->GetULongLong();
+	nfloat = ((Serializator *)&s)->GetFloat();
+	ndouble = ((Serializator *)&s)->GetDouble();
+	nlongdouble = ((Serializator *)&s)->GetLongDouble();
 	atext = (Text *)((Serializator *)&s)->GetNObject();
 	adatetime = (DateTime *)((Serializator *)&s)->GetNObject();
 	nobjectcollection = (NObjectCollection *)((Serializator *)&s)->GetNObject();
