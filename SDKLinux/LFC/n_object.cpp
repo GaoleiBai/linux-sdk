@@ -31,7 +31,7 @@ void NObject::Serialize(const Serializator &s)
 	throw new Exception((Text)typeid(*this).name() + "::Serialize() must be able to serialize.", __FILE__, __LINE__, __func__);
 }
 
-NObject *NObject::Deserialize(const Serializator &s)
+void NObject::Deserialize(const Serializator &s)
 {
 	throw new Exception((Text)typeid(*this).name() + "Deserialize() must be implemented to be able to deserialize.", __FILE__, __LINE__, __func__);
 }

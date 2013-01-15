@@ -98,7 +98,7 @@ void TextBuffer::Serialize(const Serializator &s)
 	((Serializator *)&s)->Put((char *)p, sizeof(wchar_t) * length);
 }
 
-NObject *TextBuffer::Deserialize(const Serializator &s)
+void TextBuffer::Deserialize(const Serializator &s)
 {
 	length = ((Serializator *)&s)->GetInt();
 	psize = length + 1;

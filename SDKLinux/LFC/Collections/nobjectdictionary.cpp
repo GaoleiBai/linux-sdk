@@ -39,7 +39,7 @@ void NObjectDictionary::Serialize(const Serializator &s)
 	}
 }
 
-NObject *NObjectDictionary::Deserialize(const Serializator &s)
+void NObjectDictionary::Deserialize(const Serializator &s)
 {
 	numEntries = ((Serializator *)&s)->GetInt();
 	capacity = numEntries;

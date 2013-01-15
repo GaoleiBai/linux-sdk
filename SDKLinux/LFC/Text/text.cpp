@@ -800,7 +800,7 @@ void Text::Serialize(const Serializator &s)
 	((Serializator *)&s)->Put((char *)p, sizeof(wchar_t) * length);
 }
 
-NObject *Text::Deserialize(const Serializator &s)
+void Text::Deserialize(const Serializator &s)
 {
 	length = ((Serializator *)&s)->GetInt();
 	delete p;

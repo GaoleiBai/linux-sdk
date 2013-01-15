@@ -79,7 +79,7 @@ public:
 	virtual Text ToText();
 	virtual int Compare(const NObject &o);
 	virtual void Serialize(const Serializator &s);
-	virtual NObject *Deserialize(const Serializator &s);
+	virtual void Deserialize(const Serializator &s);
 
 protected:
 

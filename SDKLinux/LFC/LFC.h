@@ -15,6 +15,8 @@
 #include "n_object.h"
 #include "exception.h"
 #include "nobjectregistry.h"
+#include "nchar.h"
+#include "nshort.h"
 #include "Text/text.h"
 #include "Text/text_buffer.h"
 #include "Text/text_exception.h"

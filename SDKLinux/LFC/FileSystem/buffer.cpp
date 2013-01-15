@@ -181,7 +181,7 @@ void Buffer::Serialize(const Serializator &s)
 	((Serializator *)&s)->Put(buffer, lonBuffer);
 }
 
-NObject * Buffer::Deserialize(const Serializator &s)
+void Buffer::Deserialize(const Serializator &s)
 {
 	lonBuffer = ((Serializator *)&s)->GetInt();
 	capacity = lonBuffer;

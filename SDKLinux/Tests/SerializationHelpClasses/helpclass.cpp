@@ -82,7 +82,7 @@ void HelpClass::Serialize(const Serializator &s)
 	((Serializator *)&s)->Put(*atextbuffer);
 }
 
-NObject *HelpClass::Deserialize(const Serializator &s)
+void HelpClass::Deserialize(const Serializator &s)
 {
 	Text *oldtext = atext;
 	DateTime *olddatetime = adatetime;

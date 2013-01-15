@@ -77,6 +77,10 @@
     </VirtualDirectory>
     <File Name="LFC/nobjectregistry.h"/>
     <File Name="LFC/nobjectregistry.cpp"/>
+    <File Name="LFC/nchar.h"/>
+    <File Name="LFC/nchar.cpp"/>
+    <File Name="LFC/nshort.h"/>
+    <File Name="LFC/nshort.cpp"/>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>

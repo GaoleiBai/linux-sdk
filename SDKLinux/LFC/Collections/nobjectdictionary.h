@@ -16,7 +16,7 @@ public:
 	virtual NObject *NewInstance();
 	virtual Text ToText();
 	virtual void Serialize(const Serializator &s);
-	virtual NObject *Deserialize(const Serializator &s);
+	virtual void Deserialize(const Serializator &s);
 
 protected:
 	static int compare(const void *u, const void *v);
