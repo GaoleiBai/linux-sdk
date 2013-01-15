@@ -18,32 +18,37 @@
    02111-1307 USA. or see http://www.gnu.org/licenses/. */
    
    
-#ifndef GROUPINFO_H
-#define GROUPINFO_H
+#ifndef NLONGLONG_H
+#define NLONGLONG_H
 
-#include "../Collections/collection.h"
+#include "n_object.h"
 
 class Text;
 
-class GroupInfo : public NObject {
+class NLongLong : public NObject {
 
 public:
-	GroupInfo(int groupID);
-	GroupInfo(const Text &name, int groupID, const Collection<Text *> &users);
-	GroupInfo(const Text &groupName);
-	virtual ~GroupInfo();
+	NLongLong();
+	NLongLong(long long n);
+	virtual ~NLongLong();
+
+	static long long MaxValue();
+	static long long MinValue();
+	static long long Parse(const Text &text);
+	static bool TryParse(const Text &text, long long &n);
+	Text ToText(const Text &format);
 	
-	Text Name();
-	int GroupID();
-	Collection<Text *> Users();
+	long long &Value();
 	
+	virtual NObject *NewInstance();
 	virtual Text ToText();
-
-private:
-	Text *name;
-	int groupID;
-	Collection<Text *> *users;
-
+	virtual int Compare(const NObject &o);
+	virtual void Serialize(const Serializator &s);
+	virtual void Deserialize(const Serializator &s);
+	
+protected:
+	long long value;
+	
 };
 
-#endif // GROUPINFO_H
+#endif // NLONGLONG_H

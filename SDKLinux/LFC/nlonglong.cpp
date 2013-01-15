@@ -18,98 +18,97 @@
    02111-1307 USA. or see http://www.gnu.org/licenses/. */
    
    
-#include "nint.h"
+#include "nlonglong.h"
 #include "Text/text.h"
 #include "FileSystem/serializator.h"
 #include <limits.h>
-#include <stdlib.h>
 #include <stdio.h>
 #include <typeinfo>
 
-NInt::NInt()
+NLongLong::NLongLong()
 {
 	value = 0;
 }
 
-NInt::NInt(int n)
+NLongLong::NLongLong(long long n)
 {
 	value = n;
 }
 
-NInt::~NInt()
+NLongLong::~NLongLong()
 {
 }
 
-int NInt::MaxValue()
+long long NLongLong::MaxValue()
 {
-	return INT_MAX;
+	return LLONG_MAX;
 }
 
-int NInt::MinValue()
+long long NLongLong::MinValue()
 {
-	return INT_MIN;
+	return LLONG_MIN;
 }
 
-int &NInt::Value()
+long long NLongLong::Parse(const Text &text)
 {
-	return value;
+	long long ll = 0;
+	TryParse(text, ll);
+	return ll;
 }
 
-int NInt::Parse(const Text &text)
-{
-	int n = 0;
-	if (!TryParse(text, n))
-		throw new Exception("Number out of limits", __FILE__, __LINE__, __func__);
-	return n;
-}
-
-bool NInt::TryParse(const Text &text, int &n)
+bool NLongLong::TryParse(const Text &text, long long &n)
 {
 	char cadena[1001];
 	((Text *)&text)->GetAnsiString(cadena, 1000);
 	
-	long long ll = atoll(cadena);
-	if (ll > MaxValue() || ll < MinValue()) return false;
-	n = ll;
+	n = atoll(cadena);
 	return true;
 }
 
-Text NInt::ToText(const Text &format)
+Text NLongLong::ToText(const Text &format)
 {
 	char ff[1001];
 	((Text *)&format)->GetAnsiString(ff, 1000);
 	
 	char tt[1001];
-	sprintf(tt, ff, value);
+	sprintf(ff, tt, value);
 	return (Text)tt;
 }
 
-NObject *NInt::NewInstance()
+long long &NLongLong::Value()
 {
-	return new NInt();
+	return value;
 }
 
-Text NInt::ToText()
+NObject *NLongLong::NewInstance()
+{
+	return new NLongLong();
+}
+
+Text NLongLong::ToText()
 {
 	char cadena[1001];
-	sprintf(cadena, "%d", value);
+	sprintf(cadena, "%lld", value);
 	return (Text)cadena;
 }
 
-int NInt::Compare(const NObject &o)
+int NLongLong::Compare(const NObject &o)
 {
-	if (typeid(*this) == typeid(o))
-		return this->value - ((NInt *)&o)->value;
-	return NObject::Compare(o);
+	if (typeid(*this) != typeid(o))
+		throw new Exception("Not comparable", __FILE__, __LINE__, __func__);
+		
+	long long vo = ((NLongLong *)&o)->value;
+	if (value > vo) return 1;
+	else if (value < vo) return -1;
+	else return 0;
 }
 
-void NInt::Serialize(const Serializator &s) 
+void NLongLong::Serialize(const Serializator &s)
 {
 	((Serializator *)&s)->Put(value);
 }
 
-void NInt::Deserialize(const Serializator &s) 
+void NLongLong::Deserialize(const Serializator &s)
 {
-	value = ((Serializator *)&s)->GetInt();
+	value = ((Serializator *)&s)->GetLongLong();
 }
-

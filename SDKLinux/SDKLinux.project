@@ -11,7 +11,6 @@
       <File Name="LFC/Collections/collection.h"/>
       <File Name="LFC/Collections/collection_exception.h"/>
       <File Name="LFC/Collections/collection_exception.cpp"/>
-      <File Name="LFC/Text/text_exception.h"/>
       <File Name="LFC/Collections/dictionary.h"/>
       <File Name="LFC/Collections/dictionary.cpp"/>
       <File Name="LFC/Collections/nobjectcollection.h"/>
@@ -25,6 +24,7 @@
       <File Name="LFC/Text/text_exception.cpp"/>
       <File Name="LFC/Text/text_buffer.cpp"/>
       <File Name="LFC/Text/text_buffer.h"/>
+      <File Name="LFC/Text/text_exception.h"/>
     </VirtualDirectory>
     <File Name="LFC/n_object.cpp"/>
     <File Name="LFC/n_object.h"/>
@@ -85,6 +85,10 @@
     <File Name="LFC/nint.cpp"/>
     <File Name="LFC/nbool.h"/>
     <File Name="LFC/nbool.cpp"/>
+    <File Name="LFC/nlong.h"/>
+    <File Name="LFC/nlong.cpp"/>
+    <File Name="LFC/nlonglong.h"/>
+    <File Name="LFC/nlonglong.cpp"/>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>

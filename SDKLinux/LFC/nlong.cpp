@@ -18,52 +18,46 @@
    02111-1307 USA. or see http://www.gnu.org/licenses/. */
    
    
-#include "nint.h"
+#include "nlong.h"
 #include "Text/text.h"
 #include "FileSystem/serializator.h"
 #include <limits.h>
-#include <stdlib.h>
 #include <stdio.h>
 #include <typeinfo>
 
-NInt::NInt()
+NLong::NLong()
 {
 	value = 0;
 }
 
-NInt::NInt(int n)
+NLong::NLong(long n)
 {
 	value = n;
 }
 
-NInt::~NInt()
+NLong::~NLong()
 {
 }
 
-int NInt::MaxValue()
+long NLong::MaxValue()
 {
-	return INT_MAX;
+	return LONG_MAX;
 }
 
-int NInt::MinValue()
+long NLong::MinValue()
 {
-	return INT_MIN;
+	return LONG_MIN;
 }
 
-int &NInt::Value()
+long NLong::Parse(const Text &text)
 {
-	return value;
-}
-
-int NInt::Parse(const Text &text)
-{
-	int n = 0;
-	if (!TryParse(text, n))
+	long l = 0;
+	if (!TryParse(text, l))
 		throw new Exception("Number out of limits", __FILE__, __LINE__, __func__);
-	return n;
+	return l;
 }
 
-bool NInt::TryParse(const Text &text, int &n)
+bool NLong::TryParse(const Text &text, long &n)
 {
 	char cadena[1001];
 	((Text *)&text)->GetAnsiString(cadena, 1000);
@@ -74,7 +68,7 @@ bool NInt::TryParse(const Text &text, int &n)
 	return true;
 }
 
-Text NInt::ToText(const Text &format)
+Text NLong::ToText(const Text &format)
 {
 	char ff[1001];
 	((Text *)&format)->GetAnsiString(ff, 1000);
@@ -84,32 +78,41 @@ Text NInt::ToText(const Text &format)
 	return (Text)tt;
 }
 
-NObject *NInt::NewInstance()
+long &NLong::Value()
 {
-	return new NInt();
+	return value;
 }
 
-Text NInt::ToText()
+NObject *NLong::NewInstance()
+{
+	return new NLong();
+}
+
+Text NLong::ToText()
 {
 	char cadena[1001];
-	sprintf(cadena, "%d", value);
+	sprintf(cadena, "%ld", value);
 	return (Text)cadena;
 }
 
-int NInt::Compare(const NObject &o)
+int NLong::Compare(const NObject &o)
 {
-	if (typeid(*this) == typeid(o))
-		return this->value - ((NInt *)&o)->value;
+	if (typeid(*this) == typeid(o)) {
+		long vo = ((NLong *)&o)->value;
+		if (value > vo) return 1;
+		else if (value < vo) return -1;
+		else return 0;
+	}
+		
 	return NObject::Compare(o);
 }
 
-void NInt::Serialize(const Serializator &s) 
+void NLong::Serialize(const Serializator &s)
 {
 	((Serializator *)&s)->Put(value);
 }
 
-void NInt::Deserialize(const Serializator &s) 
+void NLong::Deserialize(const Serializator &s)
 {
-	value = ((Serializator *)&s)->GetInt();
+	value = ((Serializator *)&s)->GetLong();
 }
-
