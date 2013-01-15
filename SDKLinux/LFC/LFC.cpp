@@ -15,5 +15,7 @@ void lfc_init()
 	NObjectRegistry::Register(TextBuffer());
 	NObjectRegistry::Register(NChar());
 	NObjectRegistry::Register(NShort());
+	NObjectRegistry::Register(NInt());
+	NObjectRegistry::Register(NBool());
 	
 }

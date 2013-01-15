@@ -81,6 +81,10 @@
     <File Name="LFC/nchar.cpp"/>
     <File Name="LFC/nshort.h"/>
     <File Name="LFC/nshort.cpp"/>
+    <File Name="LFC/nint.h"/>
+    <File Name="LFC/nint.cpp"/>
+    <File Name="LFC/nbool.h"/>
+    <File Name="LFC/nbool.cpp"/>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>

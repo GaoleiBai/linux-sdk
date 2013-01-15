@@ -40,6 +40,11 @@ void Serializator::Put(const NObject &o)
 	((NObject *)&o)->Serialize(*this);
 }
 
+void Serializator::Put(bool b)
+{
+	file->Write((char *)&b, sizeof(b));	
+}
+
 void Serializator::Put(char n)
 {
 	file->Write((char *)&n, sizeof(n));
@@ -132,6 +137,13 @@ NObject *Serializator::GetNObject()
 	NObject *o = NObjectRegistry::GetInstance(strName);
 	o->Deserialize(*this);
 	return o;
+}
+
+bool Serializator::GetBool()
+{
+	bool n = 0;
+	Get((char *)&n, sizeof(n));
+	return n;
 }
 
 char Serializator::GetChar()

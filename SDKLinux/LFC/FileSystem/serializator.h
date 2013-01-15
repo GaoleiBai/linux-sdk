@@ -12,6 +12,7 @@ public:
 
 	void Put(char *buffer, int lonBuffer);
 	void Put(const NObject &o);
+	void Put(bool n);
 	void Put(char n);
 	void Put(short n);
 	void Put(int n);
@@ -28,6 +29,7 @@ public:
 	
 	void Get(char *buffer, int lonBuffer);
 	NObject *GetNObject();
+	bool GetBool();
 	char GetChar();
 	short GetShort();
 	int GetInt();
