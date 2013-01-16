@@ -18,31 +18,40 @@
    02111-1307 USA. or see http://www.gnu.org/licenses/. */
    
    
-#include "LFC.h"
+#ifndef NULONGLONG_H
+#define NULONGLONG_H
 
+#include "n_object.h"
 
-void lfc_init()
-{
-	// Set current locale
-	Locale::SetLocale("");
+class Text;
+
+class NULongLong : public NObject {
+
+public:
+	NULongLong();
+	NULongLong(unsigned long long n);
+	virtual ~NULongLong();
+
+	static unsigned long long MaxValue();
+	static unsigned long long MinValue();
+	static unsigned long long Parse(const Text &text);
+	static bool TryParse(const Text &text, unsigned long long &n);
+	Text ToText(const Text &format);
 	
-	// Register classes to allow byname instanciation
-	NObjectRegistry::Register(Text());
-	NObjectRegistry::Register(DateTime());
-	NObjectRegistry::Register(NObjectCollection());
-	NObjectRegistry::Register(NObjectDictionary());
-	NObjectRegistry::Register(Buffer());
-	NObjectRegistry::Register(TextBuffer());
-	NObjectRegistry::Register(NChar());
-	NObjectRegistry::Register(NShort());
-	NObjectRegistry::Register(NInt());
-	NObjectRegistry::Register(NBool());
-	NObjectRegistry::Register(NLong());
-	NObjectRegistry::Register(NLongLong());
-	NObjectRegistry::Register(NUChar());
-	NObjectRegistry::Register(NUShort());
-	NObjectRegistry::Register(NUInt());
-	NObjectRegistry::Register(NULong());
-	NObjectRegistry::Register(NULongLong());
+	unsigned long long &Value();
 	
-}
+	virtual NObject *NewInstance();
+	virtual Text ToText();
+	virtual int Compare(const NObject &o);
+	virtual void Serialize(const Serializator &s);
+	virtual void Deserialize(const Serializator &s);
+	
+	virtual long long ToLongLong();
+	virtual long double ToLongDouble();
+	
+protected:
+	unsigned long long value;
+	
+};
+
+#endif // NULONGLONG_H

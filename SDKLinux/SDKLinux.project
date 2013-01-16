@@ -95,6 +95,10 @@
     <File Name="LFC/nushort.cpp"/>
     <File Name="LFC/nuint.h"/>
     <File Name="LFC/nuint.cpp"/>
+    <File Name="LFC/nulong.h"/>
+    <File Name="LFC/nulong.cpp"/>
+    <File Name="LFC/nulonglong.h"/>
+    <File Name="LFC/nulonglong.cpp"/>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>

@@ -43,6 +43,8 @@
 #include "nuchar.h"
 #include "nushort.h"
 #include "nuint.h"
+#include "nulong.h"
+#include "nulonglong.h"
 #include "Text/text.h"
 #include "Text/text_buffer.h"
 #include "Text/text_exception.h"

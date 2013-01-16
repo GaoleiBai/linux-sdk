@@ -18,58 +18,57 @@
    02111-1307 USA. or see http://www.gnu.org/licenses/. */
    
    
-#include "nuint.h"
+#include "nulong.h"
 #include "exception.h"
 #include "Text/text.h"
 #include "FileSystem/serializator.h"
 #include <stdio.h>
 #include <limits.h>
-#include <typeinfo>
 
-NUInt::NUInt()
+NULong::NULong()
 {
 	value = 0;
 }
 
-NUInt::NUInt(unsigned int n)
+NULong::NULong(unsigned long n)
 {
 	value = n;
 }
 
-NUInt::~NUInt()
+NULong::~NULong()
 {
 }
 
-unsigned int NUInt::MaxValue()
+unsigned long NULong::MaxValue()
 {
-	return UINT_MAX;
+	return ULONG_MAX;
 }
 
-unsigned int NUInt::MinValue()
+unsigned long NULong::MinValue()
 {
 	return 0;
 }
 
-unsigned int NUInt::Parse(const Text &text)
+unsigned long NULong::Parse(const Text &text)
 {
-	unsigned int n = 0;
+	unsigned long n = 0;
 	if (!TryParse(text, n))
 		throw new Exception("Number out of limits", __FILE__, __LINE__, __func__);
 	return n;
 }
 
-bool NUInt::TryParse(const Text &text, unsigned int &n)
+bool NULong::TryParse(const Text &text, unsigned long &n)
 {
 	char tt[1001];
 	((Text *)&text)->GetAnsiString(tt, 1000);
 	
 	long long ll = atoll(tt);
-	if (ll > MaxValue() || ll < MinValue()) return false;
+	if (ll < MinValue() || ll > MaxValue()) return false;
 	n = ll;
 	return true;
 }
 
-Text NUInt::ToText(const Text &format)
+Text NULong::ToText(const Text &format)
 {
 	char ff[1001];
 	((Text *)&format)->GetAnsiString(ff, 1000);
@@ -79,24 +78,24 @@ Text NUInt::ToText(const Text &format)
 	return (Text)tt;
 }
 
-unsigned int &NUInt::Value()
+unsigned long &NULong::Value()
 {
 	return value;
 }
 
-NObject *NUInt::NewInstance()
+NObject *NULong::NewInstance()
 {
-	return new NUInt();
+	return new NULong();
 }
 
-Text NUInt::ToText()
+Text NULong::ToText()
 {
-	char cadena[1001];
-	sprintf(cadena, "%u", value);
-	return (Text)cadena;
+	char tt[1001];
+	sprintf(tt, "%lu", value);
+	return (Text)tt;
 }
 
-int NUInt::Compare(const NObject &o)
+int NULong::Compare(const NObject &o)
 {
 	long long vo = ((NObject *)&o)->ToLongLong();
 	if (value > vo) return 1;
@@ -104,22 +103,22 @@ int NUInt::Compare(const NObject &o)
 	else return 0;
 }
 
-void NUInt::Serialize(const Serializator &s)
+void NULong::Serialize(const Serializator &s)
 {
 	((Serializator *)&s)->Put(value);
 }
 
-void NUInt::Deserialize(const Serializator &s)
+void NULong::Deserialize(const Serializator &s)
 {
-	value = ((Serializator *)&s)->GetUInt();
+	value = ((Serializator *)&s)->GetULong();
 }
 
-long long NUInt::ToLongLong()
+long long NULong::ToLongLong()
 {
 	return value;
 }
 
-long double NUInt::ToLongDouble()
+long double NULong::ToLongDouble()
 {
 	return value;
 }

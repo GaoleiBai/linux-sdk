@@ -18,85 +18,86 @@
    02111-1307 USA. or see http://www.gnu.org/licenses/. */
    
    
-#include "nuint.h"
+#include "nulonglong.h"
 #include "exception.h"
 #include "Text/text.h"
 #include "FileSystem/serializator.h"
+#include <stdlib.h>
 #include <stdio.h>
 #include <limits.h>
-#include <typeinfo>
+#include <errno.h>
 
-NUInt::NUInt()
+NULongLong::NULongLong()
 {
 	value = 0;
 }
 
-NUInt::NUInt(unsigned int n)
+NULongLong::NULongLong(unsigned long long n)
 {
 	value = n;
 }
 
-NUInt::~NUInt()
+NULongLong::~NULongLong()
 {
 }
 
-unsigned int NUInt::MaxValue()
+unsigned long long NULongLong::MaxValue()
 {
-	return UINT_MAX;
+	return ULLONG_MAX;
 }
 
-unsigned int NUInt::MinValue()
+unsigned long long NULongLong::MinValue()
 {
 	return 0;
 }
 
-unsigned int NUInt::Parse(const Text &text)
+unsigned long long NULongLong::Parse(const Text &text)
 {
-	unsigned int n = 0;
-	if (!TryParse(text, n))
-		throw new Exception("Number out of limits", __FILE__, __LINE__, __func__);
+	unsigned long long n = 0;
+	TryParse(text, n);
 	return n;
 }
 
-bool NUInt::TryParse(const Text &text, unsigned int &n)
+bool NULongLong::TryParse(const Text &text, unsigned long long &n)
 {
 	char tt[1001];
 	((Text *)&text)->GetAnsiString(tt, 1000);
 	
-	long long ll = atoll(tt);
-	if (ll > MaxValue() || ll < MinValue()) return false;
+	unsigned long long ll = strtoull(tt, NULL, 10);
+	if (ll == ULLONG_MAX && errno != 0)
+		throw new Exception(Text::FromErrno(), __FILE__, __LINE__, __func__);
 	n = ll;
 	return true;
 }
 
-Text NUInt::ToText(const Text &format)
+Text NULongLong::ToText(const Text &format)
 {
 	char ff[1001];
 	((Text *)&format)->GetAnsiString(ff, 1000);
 	
 	char tt[1001];
-	sprintf(tt, ff, value);
+	sprintf(tt, ff, 1000);
 	return (Text)tt;
 }
 
-unsigned int &NUInt::Value()
+unsigned long long &NULongLong::Value()
 {
 	return value;
 }
 
-NObject *NUInt::NewInstance()
+NObject *NULongLong::NewInstance()
 {
-	return new NUInt();
+	return new NULongLong();
 }
 
-Text NUInt::ToText()
+Text NULongLong::ToText()
 {
-	char cadena[1001];
-	sprintf(cadena, "%u", value);
-	return (Text)cadena;
+	char tt[1001];
+	sprintf(tt, "%llu", value);
+	return (Text)tt;
 }
 
-int NUInt::Compare(const NObject &o)
+int NULongLong::Compare(const NObject &o)
 {
 	long long vo = ((NObject *)&o)->ToLongLong();
 	if (value > vo) return 1;
@@ -104,22 +105,24 @@ int NUInt::Compare(const NObject &o)
 	else return 0;
 }
 
-void NUInt::Serialize(const Serializator &s)
+void NULongLong::Serialize(const Serializator &s)
 {
 	((Serializator *)&s)->Put(value);
 }
 
-void NUInt::Deserialize(const Serializator &s)
+void NULongLong::Deserialize(const Serializator &s)
 {
-	value = ((Serializator *)&s)->GetUInt();
+	value = ((Serializator *)&s)->GetULongLong();
 }
 
-long long NUInt::ToLongLong()
+long long NULongLong::ToLongLong()
 {
+	if (value > LLONG_MAX)
+		throw new Exception("Value too big to be converted to long long", __FILE__, __LINE__, __func__);
 	return value;
 }
 
-long double NUInt::ToLongDouble()
+long double NULongLong::ToLongDouble()
 {
 	return value;
 }
