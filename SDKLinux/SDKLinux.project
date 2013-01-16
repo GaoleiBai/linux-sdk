@@ -99,6 +99,8 @@
     <File Name="LFC/nulong.cpp"/>
     <File Name="LFC/nulonglong.h"/>
     <File Name="LFC/nulonglong.cpp"/>
+    <File Name="LFC/nfloat.h"/>
+    <File Name="LFC/nfloat.cpp"/>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>
