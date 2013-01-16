@@ -18,57 +18,59 @@
    02111-1307 USA. or see http://www.gnu.org/licenses/. */
    
    
-#include "nlong.h"
+#include "nushort.h"
+#include "exception.h"
 #include "Text/text.h"
 #include "FileSystem/serializator.h"
-#include <limits.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
 #include <typeinfo>
 
-NLong::NLong()
+NUShort::NUShort()
 {
 	value = 0;
 }
 
-NLong::NLong(long n)
+NUShort::NUShort(unsigned short n)
 {
 	value = n;
 }
 
-NLong::~NLong()
+NUShort::~NUShort()
 {
 }
 
-long NLong::MaxValue()
+unsigned short NUShort::MinValue()
 {
-	return LONG_MAX;
+	return 0;
 }
 
-long NLong::MinValue()
+unsigned short NUShort::MaxValue()
 {
-	return LONG_MIN;
+	return USHRT_MAX;
 }
 
-long NLong::Parse(const Text &text)
+unsigned short NUShort::Parse(const Text &text)
 {
-	long l = 0;
-	if (!TryParse(text, l))
+	unsigned short n = 0;
+	if (!TryParse(text, n))
 		throw new Exception("Number out of limits", __FILE__, __LINE__, __func__);
-	return l;
+	return n;
 }
 
-bool NLong::TryParse(const Text &text, long &n)
+bool NUShort::TryParse(const Text &text, unsigned short &n)
 {
-	char cadena[1001];
-	((Text *)&text)->GetAnsiString(cadena, 1000);
+	char tt[1001];
+	((Text *)&text)->GetAnsiString(tt, 1000);
 	
-	long long ll = atoll(cadena);
-	if (ll > MaxValue() || ll < MinValue()) return false;
+	long long ll = atoll(tt);
+	if (ll < MinValue() || ll > MaxValue()) return false;
 	n = ll;
 	return true;
 }
 
-Text NLong::ToText(const Text &format)
+Text NUShort::ToText(const Text &format)
 {
 	char ff[1001];
 	((Text *)&format)->GetAnsiString(ff, 1000);
@@ -78,47 +80,47 @@ Text NLong::ToText(const Text &format)
 	return (Text)tt;
 }
 
-long &NLong::Value()
+unsigned short &NUShort::Value()
 {
 	return value;
 }
 
-NObject *NLong::NewInstance()
+NObject *NUShort::NewInstance()
 {
-	return new NLong();
+	return new NUShort();
 }
 
-Text NLong::ToText()
+Text NUShort::ToText()
 {
-	char cadena[1001];
-	sprintf(cadena, "%ld", value);
-	return (Text)cadena;
+	char tt[1001];
+	sprintf(tt, "%hu", value);
+	return (Text)tt;
 }
 
-int NLong::Compare(const NObject &o)
+int NUShort::Compare(const NObject &o)
 {
-	long long vo = ((NObject *)&o)->ToLongLong();		
+	long long vo = ((NObject *)&o)->ToLongLong();
 	if (value > vo) return 1;
 	else if (value < vo) return -1;
-	else return 0;	
+	else return 0;
 }
 
-void NLong::Serialize(const Serializator &s)
+void NUShort::Serialize(const Serializator &s)
 {
 	((Serializator *)&s)->Put(value);
 }
 
-void NLong::Deserialize(const Serializator &s)
+void NUShort::Deserialize(const Serializator &s)
 {
-	value = ((Serializator *)&s)->GetLong();
+	value = ((Serializator *)&s)->GetUShort();
 }
 
-long long NLong::ToLongLong()
+long long NUShort::ToLongLong()
 {
 	return value;
 }
 
-long double NLong::ToLongDouble()
+long double NUShort::ToLongDouble()
 {
 	return value;
 }

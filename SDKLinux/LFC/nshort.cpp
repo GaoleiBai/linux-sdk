@@ -96,9 +96,10 @@ Text NShort::ToText()
 
 int NShort::Compare(const NObject &o)
 {
-	if (typeid(*this) == typeid(o))
-		return value - ((NShort *)&o)->value;
-	return NObject::Compare(o);
+	long long vo = ((NObject *)&o)->ToLongLong();		
+	if (value > vo) return 1;
+	else if (value < vo) return -1;
+	else return 0;	
 }
 
 void NShort::Serialize(const Serializator &s)
@@ -111,4 +112,12 @@ void NShort::Deserialize(const Serializator &s)
 	value = ((Serializator *)&s)->GetShort();
 }
 
+long long NShort::ToLongLong()
+{
+	return value;
+}
 
+long double NShort::ToLongDouble()
+{
+	return value;
+}

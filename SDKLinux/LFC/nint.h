@@ -46,6 +46,9 @@ public:
 	virtual void Serialize(const Serializator &s);
 	virtual void Deserialize(const Serializator &s);
 	
+	virtual long long ToLongLong();
+	virtual long double ToLongDouble();
+	
 protected:
 	int value;
 	

@@ -39,5 +39,7 @@ void lfc_init()
 	NObjectRegistry::Register(NBool());
 	NObjectRegistry::Register(NLong());
 	NObjectRegistry::Register(NLongLong());
+	NObjectRegistry::Register(NUChar());
+	NObjectRegistry::Register(NUShort());
 	
 }

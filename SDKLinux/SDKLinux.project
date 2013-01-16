@@ -89,6 +89,10 @@
     <File Name="LFC/nlong.cpp"/>
     <File Name="LFC/nlonglong.h"/>
     <File Name="LFC/nlonglong.cpp"/>
+    <File Name="LFC/nuchar.h"/>
+    <File Name="LFC/nuchar.cpp"/>
+    <File Name="LFC/nushort.h"/>
+    <File Name="LFC/nushort.cpp"/>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>

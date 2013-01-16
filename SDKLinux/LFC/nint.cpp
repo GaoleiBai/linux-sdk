@@ -98,9 +98,10 @@ Text NInt::ToText()
 
 int NInt::Compare(const NObject &o)
 {
-	if (typeid(*this) == typeid(o))
-		return this->value - ((NInt *)&o)->value;
-	return NObject::Compare(o);
+	long long vo = ((NObject *)&o)->ToLongLong();		
+	if (value > vo) return 1;
+	else if (value < vo) return -1;
+	else return 0;	
 }
 
 void NInt::Serialize(const Serializator &s) 
@@ -111,5 +112,15 @@ void NInt::Serialize(const Serializator &s)
 void NInt::Deserialize(const Serializator &s) 
 {
 	value = ((Serializator *)&s)->GetInt();
+}
+
+long long NInt::ToLongLong()
+{
+	return value;
+}
+
+long double NInt::ToLongDouble()
+{
+	return value;
 }
 

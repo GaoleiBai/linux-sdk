@@ -18,57 +18,58 @@
    02111-1307 USA. or see http://www.gnu.org/licenses/. */
    
    
-#include "nlong.h"
+#include "nuchar.h"
+#include "exception.h"
 #include "Text/text.h"
 #include "FileSystem/serializator.h"
-#include <limits.h>
 #include <stdio.h>
+#include <limits.h>
 #include <typeinfo>
 
-NLong::NLong()
+NUChar::NUChar()
 {
 	value = 0;
 }
 
-NLong::NLong(long n)
+NUChar::NUChar(unsigned char n)
 {
 	value = n;
 }
 
-NLong::~NLong()
+NUChar::~NUChar()
 {
 }
 
-long NLong::MaxValue()
+unsigned char NUChar::MaxValue()
 {
-	return LONG_MAX;
+	UCHAR_MAX;
 }
 
-long NLong::MinValue()
+unsigned char NUChar::MinValue()
 {
-	return LONG_MIN;
+	return 0;
 }
 
-long NLong::Parse(const Text &text)
+unsigned char NUChar::Parse(const Text &text)
 {
-	long l = 0;
-	if (!TryParse(text, l))
+	unsigned char n = 0;
+	if (!TryParse(text, n))
 		throw new Exception("Number out of limits", __FILE__, __LINE__, __func__);
-	return l;
+	return n;
 }
 
-bool NLong::TryParse(const Text &text, long &n)
+bool NUChar::TryParse(const Text &text, unsigned char &c)
 {
 	char cadena[1001];
 	((Text *)&text)->GetAnsiString(cadena, 1000);
 	
 	long long ll = atoll(cadena);
 	if (ll > MaxValue() || ll < MinValue()) return false;
-	n = ll;
+	c = ll;
 	return true;
 }
 
-Text NLong::ToText(const Text &format)
+Text NUChar::ToText(const Text &format)
 {
 	char ff[1001];
 	((Text *)&format)->GetAnsiString(ff, 1000);
@@ -78,47 +79,50 @@ Text NLong::ToText(const Text &format)
 	return (Text)tt;
 }
 
-long &NLong::Value()
+unsigned char &NUChar::Value()
 {
 	return value;
 }
 
-NObject *NLong::NewInstance()
+NObject *NUChar::NewInstance()
 {
-	return new NLong();
+	return new NUChar();
 }
 
-Text NLong::ToText()
+Text NUChar::ToText()
 {
-	char cadena[1001];
-	sprintf(cadena, "%ld", value);
-	return (Text)cadena;
+	char tt[1001];
+	sprintf(tt, "%hhu", value);
+	return (Text)tt;
 }
 
-int NLong::Compare(const NObject &o)
+int NUChar::Compare(const NObject &o)
 {
-	long long vo = ((NObject *)&o)->ToLongLong();		
+	if (typeid(*this) != typeid(o))
+		throw new Exception("Not comparable", __FILE__, __LINE__, __func__);
+	
+	unsigned char vo = ((NUChar *)&o)->value;
 	if (value > vo) return 1;
 	else if (value < vo) return -1;
-	else return 0;	
+	else return 0;
 }
 
-void NLong::Serialize(const Serializator &s)
+void NUChar::Serialize(const Serializator &s)
 {
 	((Serializator *)&s)->Put(value);
 }
 
-void NLong::Deserialize(const Serializator &s)
+void NUChar::Deserialize(const Serializator &s)
 {
-	value = ((Serializator *)&s)->GetLong();
+	value = ((Serializator *)&s)->GetUChar();
 }
 
-long long NLong::ToLongLong()
+long long NUChar::ToLongLong()
 {
 	return value;
 }
 
-long double NLong::ToLongDouble()
+long double NUChar::ToLongDouble()
 {
 	return value;
 }

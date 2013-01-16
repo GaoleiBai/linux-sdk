@@ -19,6 +19,7 @@
    
    
 #include "nlonglong.h"
+#include "nlong.h"
 #include "Text/text.h"
 #include "FileSystem/serializator.h"
 #include <limits.h>
@@ -94,13 +95,10 @@ Text NLongLong::ToText()
 
 int NLongLong::Compare(const NObject &o)
 {
-	if (typeid(*this) != typeid(o))
-		throw new Exception("Not comparable", __FILE__, __LINE__, __func__);
-		
-	long long vo = ((NLongLong *)&o)->value;
+	long long vo = ((NObject *)&o)->ToLongLong();		
 	if (value > vo) return 1;
 	else if (value < vo) return -1;
-	else return 0;
+	else return 0;	
 }
 
 void NLongLong::Serialize(const Serializator &s)
@@ -111,4 +109,16 @@ void NLongLong::Serialize(const Serializator &s)
 void NLongLong::Deserialize(const Serializator &s)
 {
 	value = ((Serializator *)&s)->GetLongLong();
+}
+
+long long NLongLong::ToLongLong()
+{
+	if (value > NLong::MaxValue())
+		throw new Exception("Cannot convert to long long", __FILE__, __LINE__, __func__);
+	return value;
+}
+
+long double NLongLong::ToLongDouble()
+{
+	return value;
 }

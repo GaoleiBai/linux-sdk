@@ -18,31 +18,17 @@
    02111-1307 USA. or see http://www.gnu.org/licenses/. */
    
    
-#ifndef NOBJECT_H
-#define NOBJECT_H
+#ifndef INUMERABLE_H
+#define INUMERABLE_H
 
-template<typename T>
-struct is_pointer { static const bool value = false; };    
-template<typename T>
-struct is_pointer<T*> { static const bool value = true; };
-
-class Text;
-class Serializator;
-
-class NObject {
+class INumerable {
 
 public:
-	NObject();
-	virtual ~NObject();
+	INumerable();
+	virtual ~INumerable();
 	
-	virtual NObject *NewInstance();
-	virtual Text ToText();
-	virtual long long ToLongLong();
-	virtual long double ToLongDouble();
-	virtual int Compare(const NObject &o);
-	virtual void Serialize(const Serializator &s);
-	virtual void Deserialize(const Serializator &s);
-	
+	virtual long long ToLongLong() = 0;
+
 };
 
-#endif // NOBJECT_H
+#endif // INUMERABLE_H

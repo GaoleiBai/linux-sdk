@@ -71,12 +71,13 @@ Text NBool::ToText()
 
 int NBool::Compare(const NObject &o)
 {
-	if (typeid(*this) == typeid(o)){
-		if (value == ((NBool *)&o)->value) return 0;
-		else if (value) return 1;
-		else return 0;
-	}
-	return NObject::Compare(o);
+	long long vo = ((NObject *)&o)->ToLongLong();
+	if (vo != 0 && vo != 1)
+		throw new Exception("Not comparable", __FILE__, __LINE__, __func__);
+		
+	if (value > vo) return 1;
+	else if (value < vo) return -1;
+	else return 0;
 }
 
 void NBool::Serialize(const Serializator &s)
@@ -87,4 +88,14 @@ void NBool::Serialize(const Serializator &s)
 void NBool::Deserialize(const Serializator &s)
 {
 	value = ((Serializator *)&s)->GetBool();
+}
+
+long long NBool::ToLongLong()
+{
+	return value ? 1 : 0;
+}
+
+long double NBool::ToLongDouble()
+{
+	return value ? 1 : 0;
 }

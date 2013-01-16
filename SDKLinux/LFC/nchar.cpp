@@ -95,9 +95,10 @@ Text NChar::ToText()
 
 int NChar::Compare(const NObject &o)
 {
-	if (typeid(*this) == typeid(o)) 
-		return this->value - ((NChar *)&o)->value;
-	return NObject::Compare(o);
+	long long vo = ((NObject *)&o)->ToLongLong();		
+	if (value > vo) return 1;
+	else if (value < vo) return -1;
+	else return 0;	
 }
 
 void NChar::Serialize(const Serializator &s)
@@ -108,4 +109,14 @@ void NChar::Serialize(const Serializator &s)
 void NChar::Deserialize(const Serializator &s)
 {
 	((Serializator *)&s)->GetChar();
+}
+
+long long NChar::ToLongLong()
+{
+	return value;
+}
+
+long double NChar::ToLongDouble()
+{
+	return value;
 }

@@ -40,6 +40,8 @@
 #include "nbool.h"
 #include "nlong.h"
 #include "nlonglong.h"
+#include "nuchar.h"
+#include "nushort.h"
 #include "Text/text.h"
 #include "Text/text_buffer.h"
 #include "Text/text_exception.h"

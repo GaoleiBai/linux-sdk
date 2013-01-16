@@ -18,31 +18,40 @@
    02111-1307 USA. or see http://www.gnu.org/licenses/. */
    
    
-#ifndef NOBJECT_H
-#define NOBJECT_H
+#ifndef NUSHORT_H
+#define NUSHORT_H
 
-template<typename T>
-struct is_pointer { static const bool value = false; };    
-template<typename T>
-struct is_pointer<T*> { static const bool value = true; };
+#include "n_object.h"
 
 class Text;
-class Serializator;
 
-class NObject {
+class NUShort : public NObject {
 
 public:
-	NObject();
-	virtual ~NObject();
+	NUShort();
+	NUShort(unsigned short n);
+	virtual ~NUShort();
+
+	static unsigned short MaxValue();
+	static unsigned short MinValue();
+	static unsigned short Parse(const Text &text);
+	static bool TryParse(const Text &text, unsigned short &n);
+	Text ToText(const Text &format);
+	
+	unsigned short &Value();
 	
 	virtual NObject *NewInstance();
 	virtual Text ToText();
-	virtual long long ToLongLong();
-	virtual long double ToLongDouble();
 	virtual int Compare(const NObject &o);
 	virtual void Serialize(const Serializator &s);
 	virtual void Deserialize(const Serializator &s);
 	
+	virtual long long ToLongLong();
+	virtual long double ToLongDouble();
+	
+protected:
+	unsigned short value;
+	
 };
 
-#endif // NOBJECT_H
+#endif // NUSHORT_H
