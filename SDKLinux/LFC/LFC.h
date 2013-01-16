@@ -45,6 +45,8 @@
 #include "nuint.h"
 #include "nulong.h"
 #include "nulonglong.h"
+#include "nfloat.h"
+#include "ndouble.h"
 #include "Text/text.h"
 #include "Text/text_buffer.h"
 #include "Text/text_exception.h"

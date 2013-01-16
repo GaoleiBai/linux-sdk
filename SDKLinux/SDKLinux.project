@@ -101,6 +101,8 @@
     <File Name="LFC/nulonglong.cpp"/>
     <File Name="LFC/nfloat.h"/>
     <File Name="LFC/nfloat.cpp"/>
+    <File Name="LFC/ndouble.h"/>
+    <File Name="LFC/ndouble.cpp"/>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>

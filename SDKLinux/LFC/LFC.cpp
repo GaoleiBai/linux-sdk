@@ -44,5 +44,7 @@ void lfc_init()
 	NObjectRegistry::Register(NUInt());
 	NObjectRegistry::Register(NULong());
 	NObjectRegistry::Register(NULongLong());
+	NObjectRegistry::Register(NFloat());
+	NObjectRegistry::Register(NDouble());
 	
 }

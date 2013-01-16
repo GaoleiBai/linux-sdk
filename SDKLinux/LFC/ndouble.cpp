@@ -18,78 +18,78 @@
    02111-1307 USA. or see http://www.gnu.org/licenses/. */
    
    
-#include "nfloat.h"
+#include "ndouble.h"
 #include "exception.h"
 #include "Text/text.h"
 #include "FileSystem/serializator.h"
 #include <stdio.h>
-#include <float.h>
 #include <math.h>
+#include <float.h>
 
-NFloat::NFloat()
+NDouble::NDouble()
 {
 	value = 0;
 }
 
-NFloat::NFloat(float n)
+NDouble::NDouble(double n)
 {
 	value = n;
 }
 
-NFloat::~NFloat()
+NDouble::~NDouble()
 {
 }
 
-float NFloat::Epsilon()
+double NDouble::Epsilon()
 {
-	return FLT_EPSILON;
+	return DBL_EPSILON;
 }
 
-float NFloat::NaN()
+double NDouble::NaN()
 {
 	return NAN;
 }
 
-float NFloat::PositiveInfinity()
+double NDouble::PositiveInfinity()
 {
 	return INFINITY;
 }
 
-float NFloat::NegativeInfinity()
+double NDouble::NegativeInfinity()
 {
 	return -INFINITY;
 }
 
-float NFloat::MaxValue()
+double NDouble::MaxValue()
 {
-	return FLT_MAX;
+	return DBL_MAX;
 }
 
-float NFloat::MinValue()
+double NDouble::MinValue()
 {
-	return FLT_MIN;
+	return DBL_MIN;
 }
 
-float NFloat::Parse(const Text &text)
+double NDouble::Parse(const Text& text)
 {
-	float n = 0;
+	double n = 0;
 	if (!TryParse(text, n))
 		throw new Exception("Number out of limits", __FILE__, __LINE__, __func__);
 	return n;
 }
 
-bool NFloat::TryParse(const Text &text, float &n)
+bool NDouble::TryParse(const Text &text, double &n)
 {
 	char tt[1001];
 	((Text *)&text)->GetAnsiString(tt, 1000);
 	
-	long double ld = strtold(tt, NULL);
-	if (ld > MaxValue() || ld < MinValue()) return false;
-	n = ld;
-	return true;	
+	long double ll = strtod(tt, NULL);
+	if (ll > MaxValue() || ll < MinValue()) return false;
+	n = ll;
+	return true;
 }
 
-Text NFloat::ToText(const Text &format)
+Text NDouble::ToText(const Text &format)
 {
 	char ff[1001];
 	((Text *)&format)->GetAnsiString(ff, 1000);
@@ -99,62 +99,62 @@ Text NFloat::ToText(const Text &format)
 	return (Text)tt;
 }
 
-float &NFloat::Value()
+double &NDouble::Value()
 {
 	return value;
 }
 
-bool NFloat::IsNaN(float f)
+bool NDouble::IsNaN(double f)
 {
 	return isnan(f);
 }
 
-bool NFloat::IsInfinity(float f)
+bool NDouble::IsInfinity(double f)
 {
 	return isinf(f);
 }
 
-bool NFloat::IsFinite(float f)
+bool NDouble::IsFinite(double f)
 {
 	return isfinite(f);
 }
 
-NObject *NFloat::NewInstance()
+NObject *NDouble::NewInstance()
 {
-	return new NFloat();
+	return new NDouble();
 }
 
-Text NFloat::ToText()
+Text NDouble::ToText()
 {
 	char tt[1001];
 	sprintf(tt, "%f", value);
 	return (Text)tt;
 }
 
-int NFloat::Compare(const NObject &o)
+int NDouble::Compare(const NObject &o)
 {
 	long double vo = ((NObject *)&o)->ToLongDouble();
 	if (value > vo) return 1;
 	else if (value < vo) return -1;
-	return 0;
+	else return 0;
 }
 
-void NFloat::Serialize(const Serializator &s)
+void NDouble::Serialize(const Serializator &s)
 {
 	((Serializator *)&s)->Put(value);
 }
 
-void NFloat::Deserialize(const Serializator &s)
+void NDouble::Deserialize(const Serializator &s)
 {
-	value = ((Serializator *)&s)->GetFloat();
+	value = ((Serializator *)&s)->GetDouble();
 }
 
-long long NFloat::ToLongLong()
+long long NDouble::ToLongLong()
 {
 	return value;
 }
 
-long double NFloat::ToLongDouble()
+long double NDouble::ToLongDouble()
 {
 	return value;
 }
