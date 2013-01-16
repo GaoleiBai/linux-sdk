@@ -19,6 +19,7 @@
    
    
 #include "nlongdouble.h"
+#include "nlonglong.h"
 #include "exception.h"
 #include "Text/text.h"
 #include "FileSystem/serializator.h"
@@ -150,6 +151,9 @@ void NLongDouble::Deserialize(const Serializator &s)
 
 long long NLongDouble::ToLongLong()
 {
+	if (value > NLongLong::MaxValue() || value < NLongLong::MinValue())
+		throw new Exception("Cannot convert to long long", __FILE__, __LINE__, __func__);
+		
 	return value;
 }
 
