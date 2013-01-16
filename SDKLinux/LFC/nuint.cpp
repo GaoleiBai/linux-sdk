@@ -18,59 +18,57 @@
    02111-1307 USA. or see http://www.gnu.org/licenses/. */
    
    
-#include "nushort.h"
+#include "nuint.h"
 #include "exception.h"
 #include "Text/text.h"
 #include "FileSystem/serializator.h"
 #include <stdio.h>
-#include <stdlib.h>
 #include <limits.h>
 #include <typeinfo>
 
-NUShort::NUShort()
+NUInt::NUInt()
 {
-	value = 0;
 }
 
-NUShort::NUShort(unsigned short n)
+NUInt::NUInt(unsigned int n)
 {
 	value = n;
 }
 
-NUShort::~NUShort()
+NUInt::~NUInt()
 {
 }
 
-unsigned short NUShort::MinValue()
+unsigned int NUInt::MaxValue()
+{
+	return UINT_MAX;
+}
+
+unsigned int NUInt::MinValue()
 {
 	return 0;
 }
 
-unsigned short NUShort::MaxValue()
+unsigned int NUInt::Parse(const Text &text)
 {
-	return USHRT_MAX;
-}
-
-unsigned short NUShort::Parse(const Text &text)
-{
-	unsigned short n = 0;
+	unsigned int n = 0;
 	if (!TryParse(text, n))
 		throw new Exception("Number out of limits", __FILE__, __LINE__, __func__);
 	return n;
 }
 
-bool NUShort::TryParse(const Text &text, unsigned short &n)
+bool NUInt::TryParse(const Text &text, unsigned int &n)
 {
 	char tt[1001];
 	((Text *)&text)->GetAnsiString(tt, 1000);
 	
 	long long ll = atoll(tt);
-	if (ll < MinValue() || ll > MaxValue()) return false;
+	if (ll > MaxValue() || ll < MinValue()) return false;
 	n = ll;
 	return true;
 }
 
-Text NUShort::ToText(const Text &format)
+Text NUInt::ToText(const Text &format)
 {
 	char ff[1001];
 	((Text *)&format)->GetAnsiString(ff, 1000);
@@ -80,24 +78,24 @@ Text NUShort::ToText(const Text &format)
 	return (Text)tt;
 }
 
-unsigned short &NUShort::Value()
+unsigned int &NUInt::Value()
 {
 	return value;
 }
 
-NObject *NUShort::NewInstance()
+NObject *NUInt::NewInstance()
 {
-	return new NUShort();
+	return new NUInt();
 }
 
-Text NUShort::ToText()
+Text NUInt::ToText()
 {
-	char tt[1001];
-	sprintf(tt, "%hu", value);
-	return (Text)tt;
+	char cadena[1001];
+	sprintf(cadena, "%u", value);
+	return (Text)cadena;
 }
 
-int NUShort::Compare(const NObject &o)
+int NUInt::Compare(const NObject &o)
 {
 	long long vo = ((NObject *)&o)->ToLongLong();
 	if (value > vo) return 1;
@@ -105,22 +103,22 @@ int NUShort::Compare(const NObject &o)
 	else return 0;
 }
 
-void NUShort::Serialize(const Serializator &s)
+void NUInt::Serialize(const Serializator &s)
 {
 	((Serializator *)&s)->Put(value);
 }
 
-void NUShort::Deserialize(const Serializator &s)
+void NUInt::Deserialize(const Serializator &s)
 {
-	value = ((Serializator *)&s)->GetUShort();
+	value = ((Serializator *)&s)->GetUInt();
 }
 
-long long NUShort::ToLongLong()
+long long NUInt::ToLongLong()
 {
 	return value;
 }
 
-long double NUShort::ToLongDouble()
+long double NUInt::ToLongDouble()
 {
 	return value;
 }

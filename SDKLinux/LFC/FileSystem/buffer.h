@@ -1,5 +1,5 @@
 /* Copyright (C) 2012, 2013
-   Daniel Mosquera Villanueva
+   Daniel Mosquera Villanueva (daniel.m.v@terra.es)
    This file is part of LFC Library.
 
    LFC Library is free software; you can redistribute it and/or

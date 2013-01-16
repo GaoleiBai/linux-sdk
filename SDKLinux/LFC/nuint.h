@@ -18,25 +18,40 @@
    02111-1307 USA. or see http://www.gnu.org/licenses/. */
    
    
-#include "text_exception.h"
-#include "../LFC.h"
+#ifndef NUINT_H
+#define NUINT_H
 
-TextException::TextException() : Exception()
-{
+#include "n_object.h"
+
+class Text;
+
+class NUInt : public NObject {
+
+public:
+	NUInt();
+	NUInt(unsigned int n);
+	virtual ~NUInt();
+
+	static unsigned int MaxValue();
+	static unsigned int MinValue();
+	static unsigned int Parse(const Text &text);
+	static bool TryParse(const Text &text, unsigned int &n);
+	Text ToText(const Text &format);
 	
-}
-
-TextException::TextException(const char *t, const char *file, int line, const char *func) : Exception(t, file, line, func)
-{
+	unsigned int &Value();
 	
-}
-
-TextException::TextException(const Text &t, const char *file, int line, const char *func) : Exception(t, file, line, func)
-{
+	virtual NObject *NewInstance();
+	virtual Text ToText();
+	virtual int Compare(const NObject &o);
+	virtual void Serialize(const Serializator &s);
+	virtual void Deserialize(const Serializator &s);
 	
-}
+	virtual long long ToLongLong();
+	virtual long double ToLongDouble();
+	
+protected:
+	unsigned int value;
+	
+};
 
-TextException::~TextException()
-{
-}
-
+#endif // NUINT_H

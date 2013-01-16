@@ -1,5 +1,5 @@
 /* Copyright (C) 2012, 2013
-   Daniel Mosquera Villanueva
+   Daniel Mosquera Villanueva (daniel.m.v@terra.es)
    This file is part of LFC Library.
 
    LFC Library is free software; you can redistribute it and/or
@@ -42,6 +42,7 @@
 #include "nlonglong.h"
 #include "nuchar.h"
 #include "nushort.h"
+#include "nuint.h"
 #include "Text/text.h"
 #include "Text/text_buffer.h"
 #include "Text/text_exception.h"
