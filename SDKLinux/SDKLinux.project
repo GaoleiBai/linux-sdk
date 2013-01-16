@@ -103,6 +103,8 @@
     <File Name="LFC/nfloat.cpp"/>
     <File Name="LFC/ndouble.h"/>
     <File Name="LFC/ndouble.cpp"/>
+    <File Name="LFC/nlongdouble.h"/>
+    <File Name="LFC/nlongdouble.cpp"/>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>
