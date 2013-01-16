@@ -93,6 +93,8 @@
     <File Name="LFC/nuchar.cpp"/>
     <File Name="LFC/nushort.h"/>
     <File Name="LFC/nushort.cpp"/>
+    <File Name="LFC/nuint.h"/>
+    <File Name="LFC/nuint.cpp"/>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>
