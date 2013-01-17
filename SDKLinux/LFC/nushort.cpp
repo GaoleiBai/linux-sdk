@@ -37,6 +37,11 @@ NUShort::NUShort(unsigned short n)
 	value = n;
 }
 
+NUShort::NUShort(const NUShort &n)
+{
+	value = n.value;
+}
+
 NUShort::~NUShort()
 {
 }

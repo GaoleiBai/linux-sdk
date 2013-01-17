@@ -30,6 +30,7 @@ class NUChar : public NObject {
 public:
 	NUChar();
 	NUChar(unsigned char n);
+	NUChar(const NUChar &u);
 	virtual ~NUChar();
 
 	static unsigned char MaxValue();

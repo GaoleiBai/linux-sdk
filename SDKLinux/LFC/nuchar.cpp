@@ -36,6 +36,11 @@ NUChar::NUChar(unsigned char n)
 	value = n;
 }
 
+NUChar::NUChar(const NUChar &n)
+{
+	value = n.value;
+}
+
 NUChar::~NUChar()
 {
 }

@@ -36,6 +36,11 @@ NUInt::NUInt(unsigned int n)
 	value = n;
 }
 
+NUInt::NUInt(const NUInt &n)
+{
+	value = n.value;
+}
+
 NUInt::~NUInt()
 {
 }

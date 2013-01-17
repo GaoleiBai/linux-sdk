@@ -30,6 +30,7 @@ class NUInt : public NObject {
 public:
 	NUInt();
 	NUInt(unsigned int n);
+	NUInt(const NUInt &n);
 	virtual ~NUInt();
 
 	static unsigned int MaxValue();

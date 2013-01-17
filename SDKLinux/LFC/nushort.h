@@ -30,6 +30,7 @@ class NUShort : public NObject {
 public:
 	NUShort();
 	NUShort(unsigned short n);
+	NUShort(const NUShort &n);
 	virtual ~NUShort();
 
 	static unsigned short MaxValue();

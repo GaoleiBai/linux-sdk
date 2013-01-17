@@ -35,6 +35,11 @@ NULong::NULong(unsigned long n)
 	value = n;
 }
 
+NULong::NULong(const NULong &n)
+{
+	value = n.value;
+}
+
 NULong::~NULong()
 {
 }

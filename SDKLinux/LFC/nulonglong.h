@@ -30,6 +30,7 @@ class NULongLong : public NObject {
 public:
 	NULongLong();
 	NULongLong(unsigned long long n);
+	NULongLong(const NULongLong &n);
 	virtual ~NULongLong();
 
 	static unsigned long long MaxValue();
