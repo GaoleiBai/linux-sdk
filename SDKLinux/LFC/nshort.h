@@ -28,6 +28,7 @@ class NShort : public NObject {
 public:
 	NShort();
 	NShort(short s);
+	NShort(const NShort &s);
 	virtual ~NShort();
 	
 	static short MaxValue();

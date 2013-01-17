@@ -30,6 +30,7 @@ class NLong : public NObject {
 public:
 	NLong();
 	NLong(long n);
+	NLong(const NLong &l);
 	virtual ~NLong();
 
 	static long MaxValue();

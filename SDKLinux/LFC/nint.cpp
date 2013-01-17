@@ -31,6 +31,11 @@ NInt::NInt()
 	value = 0;
 }
 
+NInt::NInt(const NInt &i)
+{
+	value = i.value;
+}
+
 NInt::NInt(int n)
 {
 	value = n;

@@ -30,6 +30,7 @@ class NBool : public NObject {
 public:
 	NBool();
 	NBool(bool b);
+	NBool(const NBool &b);
 	virtual ~NBool();
 
 	static bool Parse(const Text &text);

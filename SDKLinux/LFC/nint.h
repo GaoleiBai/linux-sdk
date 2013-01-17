@@ -30,6 +30,7 @@ class NInt : public NObject {
 public:
 	NInt();
 	NInt(int n);
+	NInt(const NInt &i);
 	virtual ~NInt();
 
 	static int MaxValue();

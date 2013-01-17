@@ -29,6 +29,11 @@ NBool::NBool()
 	value = false;
 }
 
+NBool::NBool(const NBool &b)
+{
+	value = b.value;
+}
+
 NBool::NBool(bool b)
 {
 	value = b;

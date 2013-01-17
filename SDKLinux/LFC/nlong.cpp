@@ -30,6 +30,11 @@ NLong::NLong()
 	value = 0;
 }
 
+NLong::NLong(const NLong &l)
+{
+	value = l.value;
+}
+
 NLong::NLong(long n)
 {
 	value = n;

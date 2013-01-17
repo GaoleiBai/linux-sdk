@@ -36,6 +36,11 @@ NLongLong::NLongLong(long long n)
 	value = n;
 }
 
+NLongLong::NLongLong(const NLongLong &l)
+{
+	value = l.value;
+}
+
 NLongLong::~NLongLong()
 {
 }

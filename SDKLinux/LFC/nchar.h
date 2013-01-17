@@ -30,6 +30,7 @@ class NChar : public NObject {
 public:
 	NChar();
 	NChar(char c);
+	NChar(const NChar &c);
 	virtual ~NChar();
 
 	static char MaxValue();

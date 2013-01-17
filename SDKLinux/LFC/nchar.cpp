@@ -35,6 +35,11 @@ NChar::NChar(char c)
 	value = c;
 }
 
+NChar::NChar(const NChar &c)
+{
+	value = c.value;
+}
+
 NChar::~NChar()
 {
 }

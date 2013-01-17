@@ -30,6 +30,11 @@ NShort::NShort()
 	value = 0;
 }
 
+NShort::NShort(const NShort &s)
+{
+	value = s.value;
+}
+
 NShort::NShort(short s)
 {
 	value = s;
