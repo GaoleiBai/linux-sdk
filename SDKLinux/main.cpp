@@ -83,5 +83,10 @@ int main(int argc, char **argv)
 		return -1;
 	}
 	
+	if (TestNumeric::Perform() != 0) {
+		StdOut::PrintLine("TestNumeric::Perform error!!!");
+		return -1;
+	}
+	
 	return 0;
 }

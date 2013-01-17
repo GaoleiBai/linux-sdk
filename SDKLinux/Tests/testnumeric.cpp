@@ -32,9 +32,29 @@ TestNumeric::~TestNumeric()
 int TestNumeric::Perform()
 {
 	NBool b = false;
-	NChar c = 'c';
 	
-	NInt i = 0;
+	NChar c = 'c';
+	NShort s = 5001;
+	NInt i = 2345678;
+	NLong l = 200167896;
+	NLongLong ll = 200167896345;
+	
+	NUChar nc = 'c';
+	NUShort ns = 5001;
+	NUInt ni = 2345678;
+	NULong nl = 200167896;
+	NULongLong nll = 200167896345;
+
+	NChar mc = -'c';
+	NShort ms = -5001;
+	NInt mi = -2345678;
+	NLong ml = -200167896;
+	NLongLong mll = -200167896345;
+	
+	NFloat f = -1234.5f;
+	NDouble d = 128.765567;
+	NLongDouble ld = -1e900l;
+
 	return 0;
 }
 

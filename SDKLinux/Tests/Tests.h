@@ -30,5 +30,6 @@
 #include "testdictionary.h"
 #include "test_buffer.h"
 #include "testserialization.h"
+#include "testnumeric.h"
 
 #endif
