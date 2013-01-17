@@ -30,6 +30,7 @@ class NFloat : public NObject {
 public:
 	NFloat();
 	NFloat(float n);
+	NFloat(const NFloat &f);
 	virtual ~NFloat();
 
 	static float Epsilon();

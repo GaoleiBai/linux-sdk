@@ -37,6 +37,11 @@ NFloat::NFloat(float n)
 	value = n;
 }
 
+NFloat::NFloat(const NFloat &f)
+{
+	value = f.value;
+}
+
 NFloat::~NFloat()
 {
 }

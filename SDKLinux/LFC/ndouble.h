@@ -30,6 +30,7 @@ class NDouble : public NObject {
 public:
 	NDouble();
 	NDouble(double n);
+	NDouble(const NDouble &d);
 	virtual ~NDouble();
 
 	static double Epsilon();

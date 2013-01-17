@@ -37,6 +37,11 @@ NDouble::NDouble(double n)
 	value = n;
 }
 
+NDouble::NDouble(const NDouble &d)
+{
+	value = d.value;
+}
+
 NDouble::~NDouble()
 {
 }

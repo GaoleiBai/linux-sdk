@@ -38,6 +38,11 @@ NLongDouble::NLongDouble(long double n)
 	value = n;
 }
 
+NLongDouble::NLongDouble(const NLongDouble &l)
+{
+	value = l.value;
+}
+
 NLongDouble::~NLongDouble()
 {
 }

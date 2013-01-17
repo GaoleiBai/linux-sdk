@@ -30,6 +30,7 @@ class NLongDouble : public NObject {
 public:
 	NLongDouble();
 	NLongDouble(long double n);
+	NLongDouble(const NLongDouble &l);
 	virtual ~NLongDouble();
 
 	static long double Epsilon();
