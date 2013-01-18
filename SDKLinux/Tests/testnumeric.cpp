@@ -95,10 +95,11 @@ int TestNumeric::Perform()
 			c1 = NChar::Parse(nll1.ToText());
 			if (c1.ToText("%d") != nll1.ToText()) throw new Exception("NChar::ToText error", __FILE__, __LINE__, __func__);
 		}
-		try { c1 = NChar::Parse("-129"); StdOut::PrintLine("NChar cannot parse '-129'"); return -1; }
-		catch (Exception *e) { delete e; }
-		try { c1 = NChar::Parse("128"); StdOut::PrintLine("NChar cannot parse '128'"); return -1; }
-		catch (Exception *e) { delete e; }
+		char sc;
+		if (NChar::TryParse("-129", sc)) { StdOut::PrintLine("NChar cannot parse '-129'"); return -1; }
+		if (NChar::TryParse("128", sc)) { StdOut::PrintLine("NChar cannot parse '128'"); return -1; }
+		if (NChar::MaxValue() != 127) throw new Exception("NChar::MaxValue error", __FILE__, __LINE__, __func__);
+		if (NChar::MinValue() != -128) throw new Exception("NChar::MinValue error", __FILE__, __LINE__, __func__);
 		
 		NShort s1;
 		for (int i=-32768; i<=32767; i++) {
@@ -106,10 +107,12 @@ int TestNumeric::Perform()
 			s1 = NShort::Parse(nll1.ToText());
 			if (s1.ToText() != nll1.ToText()) throw new Exception("NShort::ToText error", __FILE__, __LINE__, __func__);
 		}
-		try { s1 = NShort::Parse("-32769"); StdOut::PrintLine("NShort cannot parse -32769"); return -1; }
-		catch (Exception *e) { delete e; }
-		try { s1 = NShort::Parse("32768"); StdOut::PrintLine("NShort cannot parse 32768"); return -1; }
-		catch (Exception *e) { delete e; }
+		short ss;
+		if (NShort::TryParse("-32769", ss)) { StdOut::PrintLine("NShort cannot parse -32769"); return -1; }
+		if (NShort::TryParse("32768", ss)) { StdOut::PrintLine("NShort cannot parse 32768"); return -1; }
+		if (NShort::MaxValue() != 32767) throw new Exception("NShort::MaxValue error", __FILE__, __LINE__, __func__);
+		if (NShort::MinValue() != -32768) throw new Exception("NShort::MinValue error", __FILE__, __LINE__, __func__);
+		
 		
 		int kk = 1;
 	} catch (Exception *e) {
