@@ -65,7 +65,7 @@ Collection<UserInfo *> Administration::Users()
 	struct passwd *u;
 	
 	setpwent();
-	while ((u = getpwent()) != NULL) {
+	while ((u = getpwent()) != NULL && errno == 0) {
 		cui.Add(new UserInfo((Text)u->pw_name, u->pw_uid, u->pw_gid, (Text)u->pw_dir, (Text)u->pw_shell));
 	}
 	endpwent();

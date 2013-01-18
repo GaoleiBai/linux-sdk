@@ -39,11 +39,11 @@ int TestNumeric::Perform()
 	NLong l = 200167896;
 	NLongLong ll = 200167896345;
 	
-	NUChar nc = 'c';
-	NUShort ns = 5001;
-	NUInt ni = 2345678;
-	NULong nl = 200167896;
-	NULongLong nll = 200167896345;
+	NUChar uc = 'c';
+	NUShort us = 5001;
+	NUInt ui = 2345678;
+	NULong ul = 200167896;
+	NULongLong ull = 200167896345;
 
 	NChar mc = -'c';
 	NShort ms = -5001;
@@ -53,7 +53,35 @@ int TestNumeric::Perform()
 	
 	NFloat f = -1234.5f;
 	NDouble d = 128.765567;
-	NLongDouble ld = -1e900l;
+	NLongDouble ld = -1e300l;
+	
+	try {
+		if (b.Value() != false) throw new Exception("NBool error", __FILE__, __LINE__, __func__);
+		
+		if (c.Value() != 'c') throw new Exception("NChar error", __FILE__, __LINE__, __func__);
+		if (s.Value() != 5001) throw new Exception("NShort error", __FILE__, __LINE__, __func__);
+		if (i.Value() != 2345678) throw new Exception("NInt error", __FILE__, __LINE__, __func__);
+		if (l.Value() != 200167896) throw new Exception("NLong error", __FILE__, __LINE__, __func__);
+		if (ll.Value() != 200167896345) throw new Exception("NLongLong error", __FILE__, __LINE__, __func__);
+
+		if (uc.Value() != 'c') throw new Exception("NUChar error", __FILE__, __LINE__, __func__);
+		if (us.Value() != 5001) throw new Exception("NUShort error", __FILE__, __LINE__, __func__);
+		if (ui.Value() != 2345678) throw new Exception("NUInt error", __FILE__, __LINE__, __func__);
+		if (ul.Value() != 200167896) throw new Exception("NULong error", __FILE__, __LINE__, __func__);
+		if (ull.Value() != 200167896345) throw new Exception("NULongLong error", __FILE__, __LINE__, __func__);
+		
+		if (mc.Value() != -'c') throw new Exception("NChar error", __FILE__, __LINE__, __func__);
+		if (ms.Value() != -5001) throw new Exception("NShort error", __FILE__, __LINE__, __func__);
+		if (mi.Value() != -2345678) throw new Exception("NInt error", __FILE__, __LINE__, __func__);
+		if (ml.Value() != -200167896) throw new Exception("NLong error", __FILE__, __LINE__, __func__);
+		if (mll.Value() != -200167896345) throw new Exception("NLongLong error", __FILE__, __LINE__, __func__);
+		
+		if (f.Value() != -1234.5f) throw new Exception("NFLoat error", __FILE__, __LINE__, __func__);
+		if (d.Value() != 128.765567) throw new Exception("NDouble error", __FILE__, __LINE__, __func__);
+		if (d.Value() != -1e300l) throw new Exception("NLongDouble error", __FILE__, __LINE__, __func__);
+	} catch (Exception *e) {
+		delete e;
+	}
 
 	return 0;
 }
