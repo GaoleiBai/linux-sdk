@@ -78,7 +78,7 @@ int TestNumeric::Perform()
 		
 		if (f.Value() != -1234.5f) throw new Exception("NFLoat error", __FILE__, __LINE__, __func__);
 		if (d.Value() != 128.765567) throw new Exception("NDouble error", __FILE__, __LINE__, __func__);
-		if (d.Value() != -1e300l) throw new Exception("NLongDouble error", __FILE__, __LINE__, __func__);
+		if (ld.Value() != -1e300l) throw new Exception("NLongDouble error", __FILE__, __LINE__, __func__);
 	} catch (Exception *e) {
 		delete e;
 	}
