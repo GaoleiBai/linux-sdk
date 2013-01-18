@@ -79,6 +79,39 @@ int TestNumeric::Perform()
 		if (f.Value() != -1234.5f) throw new Exception("NFLoat error", __FILE__, __LINE__, __func__);
 		if (d.Value() != 128.765567) throw new Exception("NDouble error", __FILE__, __LINE__, __func__);
 		if (ld.Value() != -1e300l) throw new Exception("NLongDouble error", __FILE__, __LINE__, __func__);
+		
+		NBool b1;
+		b1 = NBool::Parse("true");
+		if (b1.Value() != true) throw new Exception("NBool::Parse error", __FILE__, __LINE__, __func__);
+		b1 = NBool::Parse("false");
+		if (b1.Value() != false) throw new Exception("NBool::Parse error", __FILE__, __LINE__, __func__);
+		try { b1 = NBool::Parse("porca miseria!!!"); StdOut::PrintLine("NBool cannot parse wrong string"); return -1; }
+		catch (Exception *e) { delete e; }
+		
+		NLongLong nll1;
+		NChar c1;
+		for (int i=-128; i<=127; i++) {
+			nll1 = (NLongLong)i;
+			c1 = NChar::Parse(nll1.ToText());
+			if (c1.ToText("%d") != nll1.ToText()) throw new Exception("NChar::ToText error", __FILE__, __LINE__, __func__);
+		}
+		try { c1 = NChar::Parse("-129"); StdOut::PrintLine("NChar cannot parse '-129'"); return -1; }
+		catch (Exception *e) { delete e; }
+		try { c1 = NChar::Parse("128"); StdOut::PrintLine("NChar cannot parse '128'"); return -1; }
+		catch (Exception *e) { delete e; }
+		
+		NShort s1;
+		for (int i=-32768; i<=32767; i++) {
+			nll1 = (NLongLong)i;
+			s1 = NShort::Parse(nll1.ToText());
+			if (s1.ToText() != nll1.ToText()) throw new Exception("NShort::ToText error", __FILE__, __LINE__, __func__);
+		}
+		try { s1 = NShort::Parse("-32769"); StdOut::PrintLine("NShort cannot parse -32769"); return -1; }
+		catch (Exception *e) { delete e; }
+		try { s1 = NShort::Parse("32768"); StdOut::PrintLine("NShort cannot parse 32768"); return -1; }
+		catch (Exception *e) { delete e; }
+		
+		int kk = 1;
 	} catch (Exception *e) {
 		delete e;
 	}
