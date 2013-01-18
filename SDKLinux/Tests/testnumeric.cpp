@@ -93,6 +93,7 @@ int TestNumeric::Perform()
 		for (int i=-128; i<=127; i++) {
 			nll1 = (NLongLong)i;
 			c1 = NChar::Parse(nll1.ToText());
+			if (c1.Value() != nll1.Value()) throw new Exception("NChar::Value error", __FILE__, __LINE__, __func__);
 			if (c1.ToText("%d") != nll1.ToText()) throw new Exception("NChar::ToText error", __FILE__, __LINE__, __func__);
 		}
 		char sc;
@@ -105,6 +106,7 @@ int TestNumeric::Perform()
 		for (int i=-32768; i<=32767; i++) {
 			nll1 = (NLongLong)i;
 			s1 = NShort::Parse(nll1.ToText());
+			if (s1.Value() != nll1.Value()) throw new Exception("NShort::Value error", __FILE__, __LINE__, __func__);
 			if (s1.ToText() != nll1.ToText()) throw new Exception("NShort::ToText error", __FILE__, __LINE__, __func__);
 		}
 		short ss;
@@ -113,6 +115,13 @@ int TestNumeric::Perform()
 		if (NShort::MaxValue() != 32767) throw new Exception("NShort::MaxValue error", __FILE__, __LINE__, __func__);
 		if (NShort::MinValue() != -32768) throw new Exception("NShort::MinValue error", __FILE__, __LINE__, __func__);
 		
+		NInt i1;
+		for (int i=-2147483648; i<2147483647; i++) {
+			nll1 = (NLongLong)i;
+			i1 = NInt::Parse(nll1.ToText());
+			if (i1.Value() != nll1.Value()) throw new Exception("NInt::Value error", __FILE__, __LINE__, __func__);
+			if (i1.ToText() != nll1.ToText()) throw new Exception("NInt::ToText error", __FILE__, __LINE__, __func__);
+		}
 		
 		int kk = 1;
 	} catch (Exception *e) {
