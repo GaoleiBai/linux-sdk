@@ -117,11 +117,35 @@ int TestNumeric::Perform()
 		
 		NInt i1;
 		for (int i=-2147483648; i<2147483647; i++) {
+			if (i > NInt::MinValue() + 2000 && i < -2000 || i > 2000 && i < NInt::MaxValue() - 2000) continue;
 			nll1 = (NLongLong)i;
 			i1 = NInt::Parse(nll1.ToText());
 			if (i1.Value() != nll1.Value()) throw new Exception("NInt::Value error", __FILE__, __LINE__, __func__);
 			if (i1.ToText() != nll1.ToText()) throw new Exception("NInt::ToText error", __FILE__, __LINE__, __func__);
+			if (i == NInt::MinValue() + 2000) i = -2000;
+			if (i == 2000) i = NInt::MaxValue() - 2000;
 		}
+		int si;
+		if (NInt::TryParse("-2147483649", si)) { StdOut::PrintLine("NInt cannot parse -2147453649"); return -1; }
+		if (NInt::TryParse("2147483648", si)) { StdOut::PrintLine("NInt cannot parse 2147483648"); return -1; }
+		if (NInt::MaxValue() != 2147483647) throw new Exception("NInt::MaxValue error", __FILE__, __LINE__, __func__);
+		if (NInt::MinValue() != -2147483648) throw new Exception("NInt::MinValue error", __FILE__, __LINE__, __func__);
+		
+		NLong l1;
+		for (long i=NLong::MinValue(); i<NLong::MaxValue(); i++) {
+			if (i > NLong::MinValue() + 2000 && i < -2000 || i > 2000 && i < NLong::MaxValue() - 2000) continue;
+			nll1 = (NLongLong)i;
+			l1 = NLong::Parse(nll1.ToText());
+			if (l1.Value() != nll1.Value()) throw new Exception("NLong::Value error", __FILE__, __LINE__, __func__);
+			if (l1.ToText() != nll1.ToText()) throw new Exception("NLong::ToText error", __FILE__, __LINE__, __func__);
+			if (i == NLong::MinValue() + 2000) i = -2000;
+			if (i == 2000) i = NLong::MaxValue() - 2000;
+		}
+		long sl;
+		if (NLong::TryParse("-9223372036854775809L", sl)) { StdOut::PrintLine("NLong cannot parse -9223372036854775809"); }
+		if (NLong::TryParse("9223372036854775808", sl)) { StdOut::PrintLine("NLong cannot parse 9223372036854775808"); }
+		if (NLong::MaxValue() != 9223372036854775807L) throw new Exception("NLong::MaxValue error", __FILE__, __LINE__, __func__);
+		if (NLong::MinValue() != -NLong::MaxValue() -1L) throw new Exception("NLong::MinValue error", __FILE__, __LINE__, __func__);
 		
 		int kk = 1;
 	} catch (Exception *e) {
