@@ -91,6 +91,7 @@ bool NLongDouble::TryParse(const Text &text, long double &n)
 	char tt[1001];
 	((Text *)&text)->GetAnsiString(tt, 1000);
 	
+	errno = 0;
 	long double ll = strtold(tt, NULL);
 	if (errno != 0) return false;
 	n = ll;

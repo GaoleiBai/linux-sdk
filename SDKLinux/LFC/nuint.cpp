@@ -69,6 +69,7 @@ bool NUInt::TryParse(const Text &text, unsigned int &n)
 	char tt[1001];
 	((Text *)&text)->GetAnsiString(tt, 1000);
 	
+	errno = 0;
 	long long ll = atoll(tt);
 	if (errno != 0) return false;
 	if (ll > MaxValue() || ll < MinValue()) return false;

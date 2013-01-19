@@ -69,6 +69,7 @@ bool NLong::TryParse(const Text &text, long &n)
 	char cadena[1001];
 	((Text *)&text)->GetAnsiString(cadena, 1000);
 	
+	errno = 0;
 	long long ll = atoll(cadena);
 	if (errno != 0) return false;
 	if (ll > MaxValue() || ll < MinValue()) return false;

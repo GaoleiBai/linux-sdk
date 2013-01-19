@@ -68,6 +68,7 @@ bool NULong::TryParse(const Text &text, unsigned long &n)
 	char tt[1001];
 	((Text *)&text)->GetAnsiString(tt, 1000);
 	
+	errno = 0;
 	long long ll = atoll(tt);
 	if (errno != 0) return false;
 	if (ll < MinValue() || ll > MaxValue()) return false;

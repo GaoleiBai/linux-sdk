@@ -90,6 +90,7 @@ bool NFloat::TryParse(const Text &text, float &n)
 	char tt[1001];
 	((Text *)&text)->GetAnsiString(tt, 1000);
 	
+	errno = 0;
 	long double ld = strtold(tt, NULL);
 	if (errno != 0) return false;
 	if (ld > MaxValue() || ld < MinValue()) return false;

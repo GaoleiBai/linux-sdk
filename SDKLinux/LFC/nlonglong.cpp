@@ -70,6 +70,7 @@ bool NLongLong::TryParse(const Text &text, long long &n)
 	char cadena[1001];
 	((Text *)&text)->GetAnsiString(cadena, 1000);
 	
+	errno = 0;
 	n = atoll(cadena);
 	return errno == 0;
 }

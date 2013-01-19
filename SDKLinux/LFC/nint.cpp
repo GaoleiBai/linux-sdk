@@ -74,6 +74,7 @@ bool NInt::TryParse(const Text &text, int &n)
 	char cadena[1001];
 	((Text *)&text)->GetAnsiString(cadena, 1000);
 	
+	errno = 0;
 	long long ll = atol(cadena);
 	if (errno != 0) return false;
 	if (ll > MaxValue() || ll < MinValue()) return false;

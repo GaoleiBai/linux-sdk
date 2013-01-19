@@ -85,8 +85,8 @@ int TestNumeric::Perform()
 		if (b1.Value() != true) throw new Exception("NBool::Parse error", __FILE__, __LINE__, __func__);
 		b1 = NBool::Parse("false");
 		if (b1.Value() != false) throw new Exception("NBool::Parse error", __FILE__, __LINE__, __func__);
-		try { b1 = NBool::Parse("porca miseria!!!"); StdOut::PrintLine("NBool cannot parse wrong string"); return -1; }
-		catch (Exception *e) { delete e; }
+		bool sb;
+		if (NBool::TryParse("porca miseria!!!", sb)) throw new Exception("NBool cannot parse wrong string", __FILE__, __LINE__, __func__); 
 		
 		NLongLong nll1;
 		NChar c1;

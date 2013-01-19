@@ -90,6 +90,7 @@ bool NDouble::TryParse(const Text &text, double &n)
 	char tt[1001];
 	((Text *)&text)->GetAnsiString(tt, 1000);
 	
+	errno = 0;
 	long double ll = strtod(tt, NULL);
 	if (errno != 0) return false;
 	if (ll > MaxValue() || ll < MinValue()) return false;
