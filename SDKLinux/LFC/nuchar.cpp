@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <limits.h>
 #include <typeinfo>
+#include <errno.h>
 
 NUChar::NUChar()
 {
@@ -69,6 +70,7 @@ bool NUChar::TryParse(const Text &text, unsigned char &c)
 	((Text *)&text)->GetAnsiString(cadena, 1000);
 	
 	long long ll = atoll(cadena);
+	if (errno != 0) return false;
 	if (ll > MaxValue() || ll < MinValue()) return false;
 	c = ll;
 	return true;

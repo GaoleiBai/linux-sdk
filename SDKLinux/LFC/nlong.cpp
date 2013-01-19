@@ -20,10 +20,12 @@
    
 #include "nlong.h"
 #include "Text/text.h"
+#include "Devices/stdout.h"
 #include "FileSystem/serializator.h"
 #include <limits.h>
 #include <stdio.h>
 #include <typeinfo>
+#include <errno.h>
 
 NLong::NLong()
 {
@@ -68,6 +70,7 @@ bool NLong::TryParse(const Text &text, long &n)
 	((Text *)&text)->GetAnsiString(cadena, 1000);
 	
 	long long ll = atoll(cadena);
+	if (errno != 0) return false;
 	if (ll > MaxValue() || ll < MinValue()) return false;
 	n = ll;
 	return true;

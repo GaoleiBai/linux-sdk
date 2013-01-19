@@ -59,7 +59,8 @@ unsigned long long NULongLong::MinValue()
 unsigned long long NULongLong::Parse(const Text &text)
 {
 	unsigned long long n = 0;
-	TryParse(text, n);
+	if (!TryParse(text, n))
+		throw new Exception(Text::FromErrno(), __FILE__, __LINE__, __func__);
 	return n;
 }
 
@@ -69,8 +70,7 @@ bool NULongLong::TryParse(const Text &text, unsigned long long &n)
 	((Text *)&text)->GetAnsiString(tt, 1000);
 	
 	unsigned long long ll = strtoull(tt, NULL, 10);
-	if (ll == ULLONG_MAX && errno != 0)
-		throw new Exception(Text::FromErrno(), __FILE__, __LINE__, __func__);
+	if (errno != 0) return false;
 	n = ll;
 	return true;
 }

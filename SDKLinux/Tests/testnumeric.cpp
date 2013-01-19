@@ -142,10 +142,41 @@ int TestNumeric::Perform()
 			if (i == 2000) i = NLong::MaxValue() - 2000;
 		}
 		long sl;
-		if (NLong::TryParse("-9223372036854775809L", sl)) { StdOut::PrintLine("NLong cannot parse -9223372036854775809"); }
-		if (NLong::TryParse("9223372036854775808", sl)) { StdOut::PrintLine("NLong cannot parse 9223372036854775808"); }
+		
+		if (NLong::TryParse("-9223372036854775809", sl)) { StdOut::PrintLine("NLong cannot parse -9223372036854775809"); return -1; }
+		if (NLong::TryParse("9223372036854775808", sl)) { StdOut::PrintLine("NLong cannot parse 9223372036854775808"); return -1; }
 		if (NLong::MaxValue() != 9223372036854775807L) throw new Exception("NLong::MaxValue error", __FILE__, __LINE__, __func__);
 		if (NLong::MinValue() != -NLong::MaxValue() -1L) throw new Exception("NLong::MinValue error", __FILE__, __LINE__, __func__);
+		
+		NLongLong ll1;
+		for (long long i=NLongLong::MinValue(); i<NLongLong::MaxValue(); i++) {
+			if (i > NLongLong::MinValue() + 2000 && i < -2000) continue;
+			if (i > 2000 && i < NLongLong::MaxValue() - 2000) continue;
+			nll1 = (NLongLong)i;
+			ll1 = NLongLong::Parse(nll1.ToText());
+			if (ll1.Value() != nll1.Value()) throw new Exception("NLongLong::Value error", __FILE__, __LINE__, __func__);
+			if (ll1.ToText() != nll1.ToText()) throw new Exception("NLongLong::ToText error", __FILE__, __LINE__, __func__);
+			if (i == NLongLong::MinValue() + 2000) i = -2000;
+			if (i == 2000) i = NLongLong::MaxValue() - 2000;
+		}
+		long long sll;
+		if (NLongLong::TryParse("-9223372036854775809L", sll)) { StdOut::PrintLine("NLongLong cannot parse -9223372036854775809"); return -1; }
+		if (NLongLong::TryParse("9223372036854775808", sll)) { StdOut::PrintLine("NLongLong cannot parse 9223372036854775808"); return -1; }
+		if (NLongLong::MaxValue() != 9223372036854775807L) throw new Exception("NLongLong::Maxvalue error", __FILE__, __LINE__, __func__);
+		if (NLongLong::MinValue() != -NLongLong::MaxValue() - 1L) throw new Exception("NLongLong::MinValue error", __FILE__, __LINE__, __func__);
+		
+		NUChar uc1;
+		for (long i = 0; i<NUChar::MaxValue(); i++) {
+			nll1 = (NLongLong)i;
+			uc1 = NUChar::Parse(nll1.ToText());
+			if (uc1.Value() != nll1.Value()) throw new Exception("NUChar::Value error", __FILE__, __LINE__, __func__);
+			if (uc1.ToText() != nll1.ToText()) throw new Exception("NUChar::ToText error", __FILE__, __LINE__, __func__);			
+		}
+		unsigned char sc1;
+		if (NUChar::TryParse("-1", sc1)) { StdOut::PrintLine("NUChar cannot parse -1"); return -1; }
+		if (NUChar::TryParse("65536", sc1)) { StdOut::PrintLine("NUChar cannot parse 65536"); return -1; }
+		if (NUChar::MinValue() != 0) throw new Exception("NUChar::MinValue error", __FILE__, __LINE__, __func__);
+		if (NUChar::MaxValue() != 65535) throw new Exception("NUChar::MaxValue error", __FILE__, __LINE__, __func__);
 		
 		int kk = 1;
 	} catch (Exception *e) {

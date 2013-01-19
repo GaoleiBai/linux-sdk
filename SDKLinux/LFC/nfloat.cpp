@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <float.h>
 #include <math.h>
+#include <errno.h>
 
 NFloat::NFloat()
 {
@@ -90,6 +91,7 @@ bool NFloat::TryParse(const Text &text, float &n)
 	((Text *)&text)->GetAnsiString(tt, 1000);
 	
 	long double ld = strtold(tt, NULL);
+	if (errno != 0) return false;
 	if (ld > MaxValue() || ld < MinValue()) return false;
 	n = ld;
 	return true;	

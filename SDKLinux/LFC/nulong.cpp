@@ -24,6 +24,7 @@
 #include "FileSystem/serializator.h"
 #include <stdio.h>
 #include <limits.h>
+#include <errno.h>
 
 NULong::NULong()
 {
@@ -68,6 +69,7 @@ bool NULong::TryParse(const Text &text, unsigned long &n)
 	((Text *)&text)->GetAnsiString(tt, 1000);
 	
 	long long ll = atoll(tt);
+	if (errno != 0) return false;
 	if (ll < MinValue() || ll > MaxValue()) return false;
 	n = ll;
 	return true;

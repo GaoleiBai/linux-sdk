@@ -25,6 +25,7 @@
 #include <limits.h>
 #include <stdio.h>
 #include <typeinfo>
+#include <errno.h>
 
 NLongLong::NLongLong()
 {
@@ -59,6 +60,8 @@ long long NLongLong::Parse(const Text &text)
 {
 	long long ll = 0;
 	TryParse(text, ll);
+	if (errno != 0) 
+		throw new Exception(Text::FromErrno(), __FILE__, __LINE__, __func__);
 	return ll;
 }
 
@@ -68,7 +71,7 @@ bool NLongLong::TryParse(const Text &text, long long &n)
 	((Text *)&text)->GetAnsiString(cadena, 1000);
 	
 	n = atoll(cadena);
-	return true;
+	return errno == 0;
 }
 
 Text NLongLong::ToText(const Text &format)

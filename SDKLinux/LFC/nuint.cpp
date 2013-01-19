@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <limits.h>
 #include <typeinfo>
+#include <errno.h>
 
 NUInt::NUInt()
 {
@@ -69,6 +70,7 @@ bool NUInt::TryParse(const Text &text, unsigned int &n)
 	((Text *)&text)->GetAnsiString(tt, 1000);
 	
 	long long ll = atoll(tt);
+	if (errno != 0) return false;
 	if (ll > MaxValue() || ll < MinValue()) return false;
 	n = ll;
 	return true;

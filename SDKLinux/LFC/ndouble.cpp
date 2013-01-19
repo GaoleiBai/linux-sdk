@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <float.h>
+#include <errno.h>
 
 NDouble::NDouble()
 {
@@ -90,6 +91,7 @@ bool NDouble::TryParse(const Text &text, double &n)
 	((Text *)&text)->GetAnsiString(tt, 1000);
 	
 	long double ll = strtod(tt, NULL);
+	if (errno != 0) return false;
 	if (ll > MaxValue() || ll < MinValue()) return false;
 	n = ll;
 	return true;

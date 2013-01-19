@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <typeinfo>
+#include <errno.h>
 
 NInt::NInt()
 {
@@ -73,7 +74,8 @@ bool NInt::TryParse(const Text &text, int &n)
 	char cadena[1001];
 	((Text *)&text)->GetAnsiString(cadena, 1000);
 	
-	long long ll = atoll(cadena);
+	long long ll = atol(cadena);
+	if (errno != 0) return false;
 	if (ll > MaxValue() || ll < MinValue()) return false;
 	n = ll;
 	return true;

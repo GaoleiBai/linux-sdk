@@ -24,6 +24,7 @@
 #include <limits.h>
 #include <typeinfo>
 #include <stdio.h>
+#include <errno.h>
 
 NChar::NChar()
 {
@@ -67,6 +68,7 @@ bool NChar::TryParse(const Text &text, char &c)
 	char cadena[1001];
 	((Text *)&text)->GetAnsiString(cadena, 1000);
 	long long l = atoll(cadena);
+	if (errno != 0) return false;
 	if (l > MaxValue() || l < MinValue()) return false;
 	c = l;
 	return true;

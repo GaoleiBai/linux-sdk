@@ -27,6 +27,7 @@
 #include <stdio.h>
 #include <float.h>
 #include <math.h>
+#include <errno.h>
 
 NLongDouble::NLongDouble()
 {
@@ -80,7 +81,8 @@ long double NLongDouble::MinValue()
 long double NLongDouble::Parse(const Text &text)
 {
 	long double n = 0;
-	TryParse(text, n);
+	if (!TryParse(text, n))
+		throw new Exception(Text::FromErrno(), __FILE__, __LINE__, __func__);
 	return n;
 }
 
@@ -90,6 +92,7 @@ bool NLongDouble::TryParse(const Text &text, long double &n)
 	((Text *)&text)->GetAnsiString(tt, 1000);
 	
 	long double ll = strtold(tt, NULL);
+	if (errno != 0) return false;
 	n = ll;
 	return true;
 }

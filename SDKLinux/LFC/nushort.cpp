@@ -26,6 +26,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <typeinfo>
+#include <errno.h>
 
 NUShort::NUShort()
 {
@@ -70,6 +71,7 @@ bool NUShort::TryParse(const Text &text, unsigned short &n)
 	((Text *)&text)->GetAnsiString(tt, 1000);
 	
 	long long ll = atoll(tt);
+	if (errno != 0) return false;
 	if (ll < MinValue() || ll > MaxValue()) return false;
 	n = ll;
 	return true;

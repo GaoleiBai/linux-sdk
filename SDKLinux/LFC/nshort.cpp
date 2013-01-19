@@ -24,6 +24,7 @@
 #include <limits.h>
 #include <stdio.h>
 #include <typeinfo>
+#include <errno.h>
 
 NShort::NShort()
 {
@@ -67,6 +68,7 @@ bool NShort::TryParse(const Text &text, short &c)
 	char cadena[1001];
 	((Text *)&text)->GetAnsiString(cadena, 1000);
 	long long ll = atoll(cadena);
+	if (errno != 0) return false;
 	if (ll > MaxValue() || ll < MinValue()) return false;
 	c = ll;
 	return true;
