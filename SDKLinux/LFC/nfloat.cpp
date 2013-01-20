@@ -21,6 +21,7 @@
 #include "nfloat.h"
 #include "nlonglong.h"
 #include "exception.h"
+#include "Devices/stdout.h"
 #include "Text/text.h"
 #include "FileSystem/serializator.h"
 #include <stdio.h>
@@ -74,7 +75,7 @@ float NFloat::MaxValue()
 
 float NFloat::MinValue()
 {
-	return FLT_MIN;
+	return -FLT_MAX;
 }
 
 float NFloat::Parse(const Text &text)
@@ -91,10 +92,10 @@ bool NFloat::TryParse(const Text &text, float &n)
 	((Text *)&text)->GetAnsiString(tt, 1000);
 	
 	errno = 0;
-	long double ld = strtold(tt, NULL);
+	float ff = strtof(tt, NULL);
 	if (errno != 0) return false;
-	if (ld > MaxValue() || ld < MinValue()) return false;
-	n = ld;
+	if (ff > MaxValue() || ff < MinValue()) return false;
+	n = ff;
 	return true;	
 }
 

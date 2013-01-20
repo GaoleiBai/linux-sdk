@@ -229,6 +229,23 @@ int TestNumeric::Perform()
 		if (NULongLong::MinValue() != 0) throw new Exception("NULongLong::MinValue error", __FILE__, __LINE__, __func__);
 		if (NULongLong::MaxValue() != 18446744073709551615UL) throw new Exception("NULongLong::MaxValue error", __FILE__, __LINE__, __func__);
 		
+		NFloat nf1;
+		NFloat nf2;
+		for (float i = -1e37; i<1e37; i += 1e30) {
+			nf1 = (NFloat)i;
+			nf2 = NFloat::Parse(nf1.ToText("%10.10e"));
+			if (nf1.Value() != nf2.Value()) throw new Exception("NFloat::Value error", __FILE__, __LINE__, __func__);
+			if (nf1.ToText("%10.10e") != nf2.ToText("%10.10e")) throw new Exception("NFloat::ToText error", __FILE__, __LINE__, __func__);
+			if (i > -1e37 + 2000e30 && i < -2000e30) i = -2000e30;
+			if (i > 2000e30 && i < 1e37 - 2000e30) i = 1e37 - 2000e30;
+		}
+		float sf1;
+		StdOut::PrintLine(((NFloat)NFloat::MaxValue()).ToText("%10.40e"));
+		if (NFloat::TryParse("-1e39", sf1)) { StdOut::PrintLine("NFloat cannot parse 1e-38"); return -1; }
+		if (NFloat::TryParse("1e39", sf1)) { StdOut::PrintLine("NFloat cannot parse 1e38"); return -1; }
+		if (NFloat::MinValue() != -3.4028234663852885981170418348451692544000e+38) throw new Exception("NFloat::MinValue error", __FILE__, __LINE__, __func__);
+		if (NFloat::MaxValue() != 3.4028234663852885981170418348451692544000e+38) throw new Exception("NFloat::MaxValue error", __FILE__, __LINE__, __func__);
+		
 		int kk = 1;
 	} catch (Exception *e) {
 		delete e;
