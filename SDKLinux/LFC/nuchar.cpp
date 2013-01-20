@@ -48,7 +48,7 @@ NUChar::~NUChar()
 
 unsigned char NUChar::MaxValue()
 {
-	UCHAR_MAX;
+	return UCHAR_MAX;
 }
 
 unsigned char NUChar::MinValue()
