@@ -65,14 +65,15 @@ unsigned long NULong::Parse(const Text &text)
 
 bool NULong::TryParse(const Text &text, unsigned long &n)
 {
+	if (((Text *)&text)->StartsWith("-")) return false;
 	char tt[1001];
 	((Text *)&text)->GetAnsiString(tt, 1000);
 	
 	errno = 0;
-	long long ll = atoll(tt);
+	unsigned long long ull = strtoull(tt, NULL, 10);
 	if (errno != 0) return false;
-	if (ll < MinValue() || ll > MaxValue()) return false;
-	n = ll;
+	if (ull < MinValue() || ull > MaxValue()) return false;
+	n = ull;
 	return true;
 }
 

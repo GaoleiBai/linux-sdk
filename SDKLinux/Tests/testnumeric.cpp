@@ -201,6 +201,34 @@ int TestNumeric::Perform()
 		if (NUInt::MinValue() != 0) throw new Exception("NUInt::MinValue error", __FILE__, __LINE__, __func__);
 		if (NUInt::MaxValue() != 4294967295U) throw new Exception("NUInt::MaxValue error", __FILE__, __LINE__, __func__);
 		
+		NULong ul1;
+		for (unsigned long i = 0; i<NULong::MaxValue(); i++) {
+			ull1 = (NULongLong)i;
+			ul1 = NULong::Parse(ull1.ToText());
+			if (ul1.Value() != ull1.Value()) throw new Exception("NULong::Value error", __FILE__, __LINE__, __func__);
+			if (ul1.ToText() != ull1.ToText()) throw new Exception("NULong::ToText error", __FILE__, __LINE__, __func__);
+			if (i == 2000) i = NULong::MaxValue() - 2000;
+		}
+		unsigned long sul1;
+		if (NULong::TryParse("-1", sul1)) { StdOut::PrintLine("NULong cannot parse -1"); return -1; }
+		if (NULong::TryParse("18446744073709551616", sul1)) { StdOut::PrintLine("NULong cannot parse "); return -1; }
+		if (NULong::MinValue() != 0) throw new Exception("NULong::MinValue error", __FILE__, __LINE__, __func__);
+		if (NULong::MaxValue() != 18446744073709551615UL) throw new Exception("NULong::MaxValue error", __FILE__, __LINE__, __func__);
+		
+		NULongLong null1;
+		for (unsigned long i = 0; i<NULongLong::MaxValue(); i++) {
+			ull1 = (NULongLong)i;
+			null1 = NULongLong::Parse(ull1.ToText());
+			if (null1.Value() != ull1.Value()) throw new Exception("NULongLong::Value error", __FILE__, __LINE__, __func__);
+			if (null1.ToText() != ull1.ToText()) throw new Exception("NULongLong::ToText error", __FILE__, __LINE__, __func__);
+			if (i == 2000) i = NULong::MaxValue() - 2000;
+		}
+		unsigned long long sull1;
+		if (NULongLong::TryParse("-1", sull1)) { StdOut::PrintLine("NULongLong cannot parse -1"); return -1; }
+		if (NULongLong::TryParse("18446744073709551617", sull1)) { StdOut::PrintLine("NULongLong cannot parse 18446744073709551617"); return -1; }
+		if (NULongLong::MinValue() != 0) throw new Exception("NULongLong::MinValue error", __FILE__, __LINE__, __func__);
+		if (NULongLong::MaxValue() != 18446744073709551615UL) throw new Exception("NULongLong::MaxValue error", __FILE__, __LINE__, __func__);
+		
 		int kk = 1;
 	} catch (Exception *e) {
 		delete e;

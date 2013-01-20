@@ -66,6 +66,7 @@ unsigned long long NULongLong::Parse(const Text &text)
 
 bool NULongLong::TryParse(const Text &text, unsigned long long &n)
 {
+	if (((Text *)&text)->StartsWith("-")) return false;
 	char tt[1001];
 	((Text *)&text)->GetAnsiString(tt, 1000);
 	
