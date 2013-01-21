@@ -74,7 +74,7 @@ double NDouble::MaxValue()
 
 double NDouble::MinValue()
 {
-	return DBL_MIN;
+	return -DBL_MAX;
 }
 
 double NDouble::Parse(const Text& text)

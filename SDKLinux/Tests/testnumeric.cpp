@@ -20,6 +20,7 @@
    
 #include "testnumeric.h"
 #include "../LFC/LFC.h"
+#include <float.h>
 
 TestNumeric::TestNumeric()
 {
@@ -237,13 +238,13 @@ int TestNumeric::Perform()
 			if (nf1.Value() != nf2.Value()) throw new Exception("NFloat::Value error", __FILE__, __LINE__, __func__);
 			if (nf1.ToText("%10.10e") != nf2.ToText("%10.10e")) throw new Exception("NFloat::ToText error", __FILE__, __LINE__, __func__);
 			if (i > -1e37 + 2000e30 && i < -2000e30) i = -2000e30;
-			if (i > 2000e30 && i < 1e37 - 2000e30) i = 1e37 - 2000e30;
+			else if (i > 2000e30 && i < 1e37 - 2000e30) i = 1e37 - 2000e30;
 		}
 		for (float i = -1000; i<1000; i += 1) {
 			nf1 = (NFloat)i;
-			nf2 = NFloat::Parse(nf1.ToText("%10.10e"));
+			nf2 = NFloat::Parse(nf1.ToText());
 			if (nf1.Value() != nf2.Value()) throw new Exception("NFloat::Value error", __FILE__, __LINE__, __func__);
-			if (nf1.ToText("%10.10e") != nf2.ToText("%10.10e")) throw new Exception("NFloat::ToText error", __FILE__, __LINE__, __func__);
+			if (nf1.ToText() != nf2.ToText()) throw new Exception("NFloat::ToText error", __FILE__, __LINE__, __func__);
 		}
 		float sf1;
 		StdOut::PrintLine(((NFloat)NFloat::MaxValue()).ToText("%10.40e"));
@@ -251,6 +252,29 @@ int TestNumeric::Perform()
 		if (NFloat::TryParse("1e39", sf1)) { StdOut::PrintLine("NFloat cannot parse 1e38"); return -1; }
 		if (NFloat::MinValue() != -3.4028234663852885981170418348451692544000e+38) throw new Exception("NFloat::MinValue error", __FILE__, __LINE__, __func__);
 		if (NFloat::MaxValue() != 3.4028234663852885981170418348451692544000e+38) throw new Exception("NFloat::MaxValue error", __FILE__, __LINE__, __func__);
+		
+		NDouble nd1;
+		NDouble nd2;
+		StdOut::PrintLine(((NDouble)NDouble::MaxValue()).ToText("%10.60e"));
+		for (double i=-1e308; i<1e308; i+=1e293) {
+			nd2 = (NDouble)i;
+			nd1 = NDouble::Parse(nd2.ToText("%10.20e"));
+			if (nd1.Value() != nd2.Value()) throw new Exception("NDouble::Value error", __FILE__, __LINE__, __func__);
+			if (nd1.ToText("%10.20e") != nd2.ToText("%10.20e")) throw new Exception("NDouble::ToText error", __FILE__, __LINE__, __func__);
+			if (i > -1e308 + 2000e293 && i < -2000e293) i = -2000e293;
+			else if (i > 2000e293 && i < 1e308 - 2000e293) i = 1e308 - 2000e293;
+		}
+		for (double i=-2000; i<2000; i++) {
+			nd2 = (NDouble)i;
+			nd1 = NDouble::Parse(nd2.ToText());
+			if (nd1.Value() != nd2.Value()) throw new Exception("NDouble::Value error", __FILE__, __LINE__, __func__);
+			if (nd1.ToText() != nd2.ToText()) throw new Exception("NDouble::ToText error", __FILE__, __LINE__, __func__);
+		}
+		double sd1;
+		if (NDouble::TryParse("-2e308", sd1)) { StdOut::PrintLine("NDouble cannot parse -2e308"); return -1; }
+		if (NDouble::TryParse("2e308", sd1)) { StdOut::PrintLine("NDouble cannot parse 2e308"); return -1; }
+		if (NDouble::MaxValue() != DBL_MAX) throw new Exception("NDouble::MaxValue error", __FILE__, __LINE__, __func__);
+		if (NDouble::MinValue() != -DBL_MAX) throw new Exception("NDouble::MinValue error", __FILE__, __LINE__, __func__);
 		
 		int kk = 1;
 	} catch (Exception *e) {

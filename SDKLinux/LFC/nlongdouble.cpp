@@ -75,7 +75,7 @@ long double NLongDouble::MaxValue()
 
 long double NLongDouble::MinValue()
 {
-	return LDBL_MIN;
+	return -LDBL_MAX;
 }
 
 long double NLongDouble::Parse(const Text &text)
