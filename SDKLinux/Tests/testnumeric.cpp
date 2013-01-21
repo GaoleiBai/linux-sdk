@@ -239,6 +239,12 @@ int TestNumeric::Perform()
 			if (i > -1e37 + 2000e30 && i < -2000e30) i = -2000e30;
 			if (i > 2000e30 && i < 1e37 - 2000e30) i = 1e37 - 2000e30;
 		}
+		for (float i = -1000; i<1000; i += 1) {
+			nf1 = (NFloat)i;
+			nf2 = NFloat::Parse(nf1.ToText("%10.10e"));
+			if (nf1.Value() != nf2.Value()) throw new Exception("NFloat::Value error", __FILE__, __LINE__, __func__);
+			if (nf1.ToText("%10.10e") != nf2.ToText("%10.10e")) throw new Exception("NFloat::ToText error", __FILE__, __LINE__, __func__);
+		}
 		float sf1;
 		StdOut::PrintLine(((NFloat)NFloat::MaxValue()).ToText("%10.40e"));
 		if (NFloat::TryParse("-1e39", sf1)) { StdOut::PrintLine("NFloat cannot parse 1e-38"); return -1; }
