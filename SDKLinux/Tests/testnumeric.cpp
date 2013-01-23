@@ -279,13 +279,13 @@ int TestNumeric::Perform()
 		NLongDouble nld1;
 		NLongDouble nld2;
 		StdOut::PrintLine(((NLongDouble)NLongDouble::MaxValue()).ToText("%10.60Le"));
-		for (long double i=-1e4932L; i<1e4932L; i+=1^4899) {
+		for (long double i=-1e4932L; i<1e4932L; i+=1e4915L) {
 			nld2 = (NLongDouble)i;
 			nld1 = NLongDouble::Parse(nld2.ToText("%10.60Le"));
 			if (nld1.Value() != nld2.Value()) throw new Exception("NLongDouble::Value error", __FILE__, __LINE__, __func__);
 			if (nld1.ToText("%10.60Le") != nld2.ToText("%10.60Le")) throw new Exception("NLongDouble::ToText error", __FILE__, __LINE__, __func__);
-			if (i > -1e4932L + 2000e4899L && i<2000e4899L) i = 2000e4899L;
-			else if (i > 2000e4899L && i < 1e4932L - 2000e4899L) i = 1e4932L - 2000e4899L;
+			if (i > -1e4932L + 2000e4915L && i<2000e4915L) i = 2000e4915L;
+			else if (i > 2000e4915L && i < 1e4932L - 2000e4915L) i = 1e4932L - 2000e4915L;
 		}
 		for (long double i=-2000; i<2000; i+=1) {
 			nld2 = (NLongDouble)i;
