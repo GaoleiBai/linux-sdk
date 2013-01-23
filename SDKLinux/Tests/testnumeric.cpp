@@ -276,6 +276,29 @@ int TestNumeric::Perform()
 		if (NDouble::MaxValue() != DBL_MAX) throw new Exception("NDouble::MaxValue error", __FILE__, __LINE__, __func__);
 		if (NDouble::MinValue() != -DBL_MAX) throw new Exception("NDouble::MinValue error", __FILE__, __LINE__, __func__);
 		
+		NLongDouble nld1;
+		NLongDouble nld2;
+		StdOut::PrintLine(((NLongDouble)NLongDouble::MaxValue()).ToText("%10.60Le"));
+		for (long double i=-1e4932L; i<1e4932L; i+=1^4899) {
+			nld2 = (NLongDouble)i;
+			nld1 = NLongDouble::Parse(nld2.ToText("%10.60Le"));
+			if (nld1.Value() != nld2.Value()) throw new Exception("NLongDouble::Value error", __FILE__, __LINE__, __func__);
+			if (nld1.ToText("%10.60Le") != nld2.ToText("%10.60Le")) throw new Exception("NLongDouble::ToText error", __FILE__, __LINE__, __func__);
+			if (i > -1e4932L + 2000e4899L && i<2000e4899L) i = 2000e4899L;
+			else if (i > 2000e4899L && i < 1e4932L - 2000e4899L) i = 1e4932L - 2000e4899L;
+		}
+		for (long double i=-2000; i<2000; i+=1) {
+			nld2 = (NLongDouble)i;
+			nld1 = NLongDouble::Parse(nld2.ToText());
+			if (nld1.Value() != nld2.Value()) throw new Exception("NLongDouble::Value error", __FILE__, __LINE__, __func__);
+			if (nld1.ToText() != nld2.ToText()) throw new Exception("NLongDouble::ToText error", __FILE__, __LINE__, __func__);
+		}
+		long double sld1;
+		if (NLongDouble::TryParse("-2e4932", sld1)) throw new Exception("NLongDouble cannot parse -2e4932", __FILE__, __LINE__, __func__);
+		if (NLongDouble::TryParse("2e4932", sld1)) throw new Exception("NLongDouble cannot parse 2e4932", __FILE__, __LINE__, __func__);
+		if (NLongDouble::MaxValue() != LDBL_MAX) throw new Exception("NLongDouble::MaxValue error", __FILE__, __LINE__, __func__);
+		if (NLongDouble::MinValue() != -LDBL_MAX) throw new Exception("NLongDouble::MinValue error", __FILE__, __LINE__, __func__);
+		
 		int kk = 1;
 	} catch (Exception *e) {
 		delete e;
