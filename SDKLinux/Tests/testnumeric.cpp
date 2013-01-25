@@ -248,10 +248,15 @@ int TestNumeric::Perform()
 		}
 		float sf1;
 		StdOut::PrintLine(((NFloat)NFloat::MaxValue()).ToText("%10.40e"));
-		if (NFloat::TryParse("-1e39", sf1)) { StdOut::PrintLine("NFloat cannot parse 1e-38"); return -1; }
-		if (NFloat::TryParse("1e39", sf1)) { StdOut::PrintLine("NFloat cannot parse 1e38"); return -1; }
+		if (NFloat::TryParse("-1e39", sf1)) throw new Exception("NFloat cannot parse 1e-38", __FILE__, __LINE__, __func__);
+		if (NFloat::TryParse("1e39", sf1)) throw new Exception("NFloat cannot parse 1e38", __FILE__, __LINE__, __func__);
 		if (NFloat::MinValue() != -3.4028234663852885981170418348451692544000e+38) throw new Exception("NFloat::MinValue error", __FILE__, __LINE__, __func__);
 		if (NFloat::MaxValue() != 3.4028234663852885981170418348451692544000e+38) throw new Exception("NFloat::MaxValue error", __FILE__, __LINE__, __func__);
+		if (!NFloat::IsFinite(4)) throw new Exception("NFloat::IsFinite error", __FILE__, __LINE__, __func__);
+		if (NFloat::IsFinite(NFloat::PositiveInfinity())) throw new Exception("NFloat::IsFinite PI error", __FILE__, __LINE__, __func__);
+		if (NFloat::IsFinite(NFloat::NegativeInfinity())) throw new Exception("NFloat::IsFinite NI error", __FILE__, __LINE__, __func__);
+		if (NFloat::IsNaN(4)) throw new Exception("NFloat::IsNaN error", __FILE__, __LINE__, __func__);
+		if (!NFloat::IsNaN(NFloat::NaN())) throw new Exception("NFloat::NaN error", __FILE__, __LINE__, __func__);
 		
 		NDouble nd1;
 		NDouble nd2;
