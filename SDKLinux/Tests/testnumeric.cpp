@@ -280,6 +280,11 @@ int TestNumeric::Perform()
 		if (NDouble::TryParse("2e308", sd1)) { StdOut::PrintLine("NDouble cannot parse 2e308"); return -1; }
 		if (NDouble::MaxValue() != DBL_MAX) throw new Exception("NDouble::MaxValue error", __FILE__, __LINE__, __func__);
 		if (NDouble::MinValue() != -DBL_MAX) throw new Exception("NDouble::MinValue error", __FILE__, __LINE__, __func__);
+		if (!NDouble::IsFinite(4)) throw new Exception("NFloat::IsFinite error", __FILE__, __LINE__, __func__);
+		if (NDouble::IsFinite(NDouble::PositiveInfinity())) throw new Exception("NFloat::IsFinite PI error", __FILE__, __LINE__, __func__);
+		if (NDouble::IsFinite(NDouble::NegativeInfinity())) throw new Exception("NFloat::IsFinite NI error", __FILE__, __LINE__, __func__);
+		if (NDouble::IsNaN(4)) throw new Exception("NFloat::IsNaN error", __FILE__, __LINE__, __func__);
+		if (!NDouble::IsNaN(NDouble::NaN())) throw new Exception("NFloat::NaN error", __FILE__, __LINE__, __func__);
 		
 		NLongDouble nld1;
 		NLongDouble nld2;
@@ -303,6 +308,11 @@ int TestNumeric::Perform()
 		if (NLongDouble::TryParse("2e4932", sld1)) throw new Exception("NLongDouble cannot parse 2e4932", __FILE__, __LINE__, __func__);
 		if (NLongDouble::MaxValue() != LDBL_MAX) throw new Exception("NLongDouble::MaxValue error", __FILE__, __LINE__, __func__);
 		if (NLongDouble::MinValue() != -LDBL_MAX) throw new Exception("NLongDouble::MinValue error", __FILE__, __LINE__, __func__);
+		if (!NLongDouble::IsFinite(4)) throw new Exception("NFloat::IsFinite error", __FILE__, __LINE__, __func__);
+		if (NLongDouble::IsFinite(NLongDouble::PositiveInfinity())) throw new Exception("NFloat::IsFinite PI error", __FILE__, __LINE__, __func__);
+		if (NLongDouble::IsFinite(NLongDouble::NegativeInfinity())) throw new Exception("NFloat::IsFinite NI error", __FILE__, __LINE__, __func__);
+		if (NLongDouble::IsNaN(4)) throw new Exception("NFloat::IsNaN error", __FILE__, __LINE__, __func__);
+		if (!NLongDouble::IsNaN(NLongDouble::NaN())) throw new Exception("NFloat::NaN error", __FILE__, __LINE__, __func__);
 		
 		int kk = 1;
 	} catch (Exception *e) {
