@@ -34,6 +34,7 @@ public:
 	virtual void Deserialize(const Serializator &s);
 	
 private:
+	bool nbool;
 	char nchar;
 	short nshort;
 	int nint;
@@ -53,6 +54,20 @@ private:
 	NObjectDictionary *nobjectdictionary;
 	Buffer *abuffer;
 	TextBuffer *atextbuffer;
+	NBool *nnbool;
+	NChar *nnchar;
+	NShort *nnshort;
+	NInt *nnint;
+	NLong *nnlong;
+	NLongLong *nnlonglong;
+	NUChar *nnuchar;
+	NUShort *nnushort;
+	NUInt *nnuint;
+	NULong *nnulong;
+	NULongLong *nnulonglong;
+	NFloat *nnfloat;
+	NDouble *nndouble;
+	NLongDouble *nnlongdouble;
 	
 };
 
