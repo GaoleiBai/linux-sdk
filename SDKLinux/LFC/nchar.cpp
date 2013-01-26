@@ -117,7 +117,7 @@ void NChar::Serialize(const Serializator &s)
 
 void NChar::Deserialize(const Serializator &s)
 {
-	((Serializator *)&s)->GetChar();
+	value = ((Serializator *)&s)->GetChar();
 }
 
 long long NChar::ToLongLong()

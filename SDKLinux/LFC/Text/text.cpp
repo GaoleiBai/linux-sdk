@@ -51,7 +51,10 @@ int Text::write(int posdest, wchar_t *dest, int ldest, int possrc, const char *s
 	int size = 0;
 	for (int i = posdest; i<lldest; i += size) {
 		size = mbtowc(dd, ss, 10);
-		if (size == -1) throw new TextException("The current locale doesn't allow to translate the characters.", __FILE__, __LINE__, __func__);
+		if (size == -1) 
+		{
+			throw new TextException("The current locale doesn't allow to translate the characters.", __FILE__, __LINE__, __func__);
+		}
 		dd++;
 		ss += size;
 		written++;

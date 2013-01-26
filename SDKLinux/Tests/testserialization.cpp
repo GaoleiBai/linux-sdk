@@ -31,7 +31,8 @@ TestSerialization::~TestSerialization()
 
 int TestSerialization::Perform()
 {
-	try {
+	try 
+	{
 		Text t("Hola mundo");
 		HelpClass h;
 		NObjectRegistry::Register(h);
@@ -61,8 +62,14 @@ int TestSerialization::Perform()
 		delete hhh;
 		
 		int kk = 0;
-	} catch (Exception *e) {
+	} 
+	catch (Exception *e) 
+	{
 		delete e;
+	}
+	catch (...)
+	{
+		int kk = 1;
 	}
 	
 	return 0;

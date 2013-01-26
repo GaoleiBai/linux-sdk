@@ -41,7 +41,7 @@ HelpClass::HelpClass()
 	adatetime = new DateTime(1977, 06, 03);
 	
 	nnbool = new NBool(true);
-	nnchar = new NChar(-'c');
+	nnchar = new NChar('c');
 	nnshort = new NShort(-22000);
 	nnint = new NInt(-34000);
 	nnlong = new NLong(-22000000000);
@@ -63,7 +63,7 @@ HelpClass::HelpClass()
 	nobjectcollection->Add(new Text("Pedro"));
 	nobjectcollection->Add(new Text("José Luis"));
 	nobjectcollection->Add(new NBool(true));
-	nobjectcollection->Add(new NChar(-'c'));
+	nobjectcollection->Add(new NChar('c'));
 	nobjectcollection->Add(new NShort(-22000));
 	nobjectcollection->Add(new NInt(-34000));
 	nobjectcollection->Add(new NLong(-22000000000));
@@ -202,8 +202,6 @@ void HelpClass::Deserialize(const Serializator &s)
 	nfloat = ((Serializator *)&s)->GetFloat();
 	ndouble = ((Serializator *)&s)->GetDouble();
 	nlongdouble = ((Serializator *)&s)->GetLongDouble();
-	atext = (Text *)((Serializator *)&s)->GetNObject();
-	adatetime = (DateTime *)((Serializator *)&s)->GetNObject();
 	
 	nnbool = (NBool *)((Serializator *)&s)->GetNObject();
 	nnchar = (NChar *)((Serializator *)&s)->GetNObject();
@@ -220,6 +218,9 @@ void HelpClass::Deserialize(const Serializator &s)
 	nndouble = (NDouble *)((Serializator *)&s)->GetNObject();
 	nnlongdouble = (NLongDouble *)((Serializator *)&s)->GetNObject();
 	
+	atext = (Text *)((Serializator *)&s)->GetNObject();
+	adatetime = (DateTime *)((Serializator *)&s)->GetNObject();
+
 	nobjectcollection = (NObjectCollection *)((Serializator *)&s)->GetNObject();
 	nobjectdictionary = (NObjectDictionary *)((Serializator *)&s)->GetNObject();
 	abuffer = (Buffer *)((Serializator *)&s)->GetNObject();
@@ -234,7 +235,7 @@ void HelpClass::Deserialize(const Serializator &s)
 		}
 	
 	if (nnbool->Value() != true) throw new Exception("NBool::Deserialize error", __FILE__, __LINE__, __func__);
-	if (nnchar->Value() != -'c') throw new Exception("NChar::Deserialize error", __FILE__, __LINE__, __func__);
+	if (nnchar->Value() != 'c') throw new Exception("NChar::Deserialize error", __FILE__, __LINE__, __func__);
 	if (nnshort->Value() != -22000) throw new Exception("NShort::Deserialize error", __FILE__, __LINE__, __func__);
 	if (nnint->Value() != -34000) throw new Exception("NInt::Deserialize error", __FILE__, __LINE__, __func__);
 	if (nnlong->Value() != -22000000000) throw new Exception("NLong::Deserialize error", __FILE__, __LINE__, __func__);
