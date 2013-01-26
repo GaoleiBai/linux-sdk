@@ -249,6 +249,21 @@ void HelpClass::Deserialize(const Serializator &s)
 	if (nndouble->Value() != -1e40) throw new Exception("NDouble::Deserialize error", __FILE__, __LINE__, __func__);
 	if (nnlongdouble->Value() != -1e400L) throw new Exception("NLongDouble::Deserialize error", __FILE__, __LINE__, __func__);
 	
+	if (oldnnbool->Value() != nnbool->Value()) throw new Exception("NBool::Deserialize error", __FILE__, __LINE__, __func__);
+	if (oldnnchar->Value() != nnchar->Value()) throw new Exception("NChar::Deserialize error", __FILE__, __LINE__, __func__);
+	if (oldnnshort->Value() != nnshort->Value()) throw new Exception("NShort::Deserialize error", __FILE__, __LINE__, __func__);
+	if (oldnnint->Value() != nnint->Value()) throw new Exception("NInt::Deserialize error", __FILE__, __LINE__, __func__);
+	if (oldnnlong->Value() != nnlong->Value()) throw new Exception("NLong::Deserialize error", __FILE__, __LINE__, __func__);
+	if (oldnnlonglong->Value() != nnlonglong->Value()) throw new Exception("NLongLong::Deserialize error", __FILE__, __LINE__, __func__);
+	if (oldnnuchar->Value() != nnuchar->Value()) throw new Exception("NUChar::Deserialize error", __FILE__, __LINE__, __func__);
+	if (oldnnushort->Value() != nnushort->Value()) throw new Exception("NUShort::Deserialize error", __FILE__, __LINE__, __func__);
+	if (oldnnuint->Value() != nnuint->Value()) throw new Exception("NUInt::Deserialize error", __FILE__, __LINE__, __func__);
+	if (oldnnulong->Value() != nnulong->Value()) throw new Exception("NULong::Deserialize error", __FILE__, __LINE__, __func__);
+	if (oldnnulonglong->Value() != nnulonglong->Value()) throw new Exception("NULongLong::Deserialize error", __FILE__, __LINE__, __func__);
+	if (oldnnfloat->Value() != nnfloat->Value()) throw new Exception("NFloat::Deserialize error", __FILE__, __LINE__, __func__);
+	if (oldnndouble->Value() != nndouble->Value()) throw new Exception("NDouble::Deserialize error", __FILE__, __LINE__, __func__);
+	if (oldnnlongdouble->Value() != nnlongdouble->Value()) throw new Exception("NLongDouble::Deserialize error", __FILE__, __LINE__, __func__);
+	
 	if (*oldtext != *atext) 
 		throw new Exception("Text not propertly deserializated", __FILE__, __LINE__, __func__);
 	if (*olddatetime != *adatetime)
