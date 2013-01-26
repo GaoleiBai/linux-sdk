@@ -155,6 +155,7 @@ int TestDateTime::Perform()
 	}
 	
 	DateTime tudt = cmpl2.AddGMTOffset();
+	StdOut::PrintLine(cmpl2.ToText("%d/%m/%Y %H:%M:%S"));
 	StdOut::PrintLine(tudt.ToText("%d/%m/%Y %H:%M:%S"));
 	if (tudt != DateTime::Parse("%d/%m/%Y %H:%M:%S", "06/12/1981 23:04:05")) {
 		StdOut::PrintLine("ToUtcDateTime doesn't work!");
