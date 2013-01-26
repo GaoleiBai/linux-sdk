@@ -38,7 +38,7 @@ public:
 	DateTime(int year, int month, int day, int hour, int minute, int second);
 	virtual ~DateTime();
 	
-	long double GMTOFF();
+	int GMTOFF();
 	
 	DateTime DatePart();
 	int Year();
@@ -105,9 +105,8 @@ protected:
 
 	void init(int year, int month, int day, int hour, int minute, int second);
 	void updatetmhelper();
-	void prepareGMTOFF();
 
-	static long double gmtoff;
+	int gmtoff;
 	struct timespec currentTime;
 	struct tm tmhelper;
 

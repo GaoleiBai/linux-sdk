@@ -28,8 +28,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-long double DateTime::gmtoff = -5000;
-
 void DateTime::init(int year, int month, int day, int hour, int minute, int second)
 {
 	if (year < 1970) throw new TimeException("Cannot build dates before 1970", __FILE__, __LINE__, __func__);
@@ -45,7 +43,9 @@ void DateTime::init(int year, int month, int day, int hour, int minute, int seco
 	tt.tm_min = minute;
 	tt.tm_sec = second;
 	time_t ttt = mktime(&tt);
-	ttt += tt.tm_gmtoff;
+	gmtoff = tt.tm_gmtoff;
+	ttt += gmtoff;
+	if (tt.tm_isdst == 1) ttt -= 3600;
 	if (ttt < 0) throw new TimeException("Can't form DateTime with the current data.", __FILE__, __LINE__, __func__);
 	currentTime.tv_sec = ttt;
 	currentTime.tv_nsec = 0;
@@ -58,15 +58,6 @@ void DateTime::updatetmhelper()
 	tmhelper = *t;
 }
 
-void DateTime::prepareGMTOFF()
-{
-	if (gmtoff == -5000) {
-		time_t tt = time(NULL);
-		struct tm *ttt = localtime(&tt);
-		gmtoff = ttt->tm_gmtoff / 86400.0l;
-	}
-}
-
 /**
  * @brief Builds a DateTime object with the current DateTime
  */
@@ -74,7 +65,6 @@ DateTime::DateTime()
 {
 	clock_gettime(CLOCK_REALTIME, &currentTime);
 	updatetmhelper();
-	prepareGMTOFF();
 }
 
 /**
@@ -84,14 +74,12 @@ DateTime::DateTime(const DateTime &t)
 {
 	currentTime = t.currentTime;
 	updatetmhelper();
-	prepareGMTOFF();
 }
 
 DateTime::DateTime(const DateTime *t)
 {
 	currentTime = t->currentTime;
 	updatetmhelper();
-	prepareGMTOFF();
 }
 
 /**
@@ -103,7 +91,6 @@ DateTime::DateTime(long double totalDays)
 	currentTime.tv_sec = secs;
 	currentTime.tv_nsec = (secs - currentTime.tv_sec) * 1000000000.0;
 	updatetmhelper();
-	prepareGMTOFF();
 }
 
 DateTime::DateTime(time_t t)
@@ -111,21 +98,18 @@ DateTime::DateTime(time_t t)
 	currentTime.tv_sec = t;
 	currentTime.tv_nsec = 0;
 	updatetmhelper();
-	prepareGMTOFF();
 }
 
 DateTime::DateTime(int year, int month, int day)
 {
 	init(year, month, day, 0, 0 , 0);
 	updatetmhelper();
-	prepareGMTOFF();
 }
 
 DateTime::DateTime(int year, int month, int day, int hour, int minute, int second)
 {
 	init(year, month, day, hour, minute, second);
 	updatetmhelper();
-	prepareGMTOFF();
 }
 
 DateTime::~DateTime()
@@ -133,7 +117,7 @@ DateTime::~DateTime()
 	
 }
 
-long double DateTime::GMTOFF()
+int DateTime::GMTOFF()
 {
 	return gmtoff;
 }

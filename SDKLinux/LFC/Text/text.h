@@ -78,6 +78,7 @@ public:
 	Text(unsigned long int i);
 	Text(float f);
 	Text(double d);
+	Text(long double d);
 	virtual ~Text();
 
 	int Length();

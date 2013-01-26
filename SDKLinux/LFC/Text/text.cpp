@@ -257,6 +257,13 @@ Text::Text(double d)
 	aquireText(cadena, strlen(cadena), false);
 }
 
+Text::Text(long double d)
+{
+	char cadena[100];
+	sprintf(cadena, "%Lf", d);
+	aquireText(cadena, strlen(cadena), false);
+}
+
 Text::~Text()
 {
 	delete p;

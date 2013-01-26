@@ -32,6 +32,10 @@ TestDateTime::~TestDateTime()
 
 int TestDateTime::Perform()
 {
+	DateTime dtm(1975, 8, 21);
+	StdOut::PrintLine(dtm.ToText("%d/%m/%Y %H:%M:%S"));
+	StdOut::PrintLine(dtm.GMTOFF());
+	
 	DateTime t;
 	StdOut::PrintLine(t.AddGMTOffset().ToText());
 	StdOut::PrintLine(t.ToText());
