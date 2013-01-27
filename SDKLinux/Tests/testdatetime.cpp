@@ -39,6 +39,7 @@ int TestDateTime::Perform()
 	DateTime t;
 	StdOut::PrintLine(t.AddGMTOffset().ToText());
 	StdOut::PrintLine(t.ToText());
+	StdOut::PrintLine(DateTime::LocalDateTime().ToText());
 	
 	DateTime cmpl(1977, 03, 06);
 	StdOut::PrintLine(cmpl.ToText("%d/%m/%Y %H:%M:%S"));
@@ -157,7 +158,7 @@ int TestDateTime::Perform()
 	DateTime tudt = cmpl2.AddGMTOffset();
 	StdOut::PrintLine(cmpl2.ToText("%d/%m/%Y %H:%M:%S"));
 	StdOut::PrintLine(tudt.ToText("%d/%m/%Y %H:%M:%S"));
-	if (tudt != DateTime::Parse("%d/%m/%Y %H:%M:%S", "06/12/1981 23:04:05")) {
+	if (tudt != DateTime::Parse("%d/%m/%Y %H:%M:%S", "07/12/1981 01:04:05")) {
 		StdOut::PrintLine("ToUtcDateTime doesn't work!");
 		return -1;
 	}

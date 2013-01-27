@@ -92,6 +92,7 @@ public:
 	DateTime AddGMTOffset();
 	DateTime RemoveGMTOffset();
 	static void SetUtcDateTime(const DateTime &d);
+	static DateTime LocalDateTime();
 	
 	static int COMPARER(const void *u, const void *v);	
 
@@ -106,7 +107,6 @@ protected:
 	void init(int year, int month, int day, int hour, int minute, int second);
 	void updatetmhelper();
 
-	int gmtoff;
 	struct timespec currentTime;
 	struct tm tmhelper;
 

@@ -43,8 +43,7 @@ void DateTime::init(int year, int month, int day, int hour, int minute, int seco
 	tt.tm_min = minute;
 	tt.tm_sec = second;
 	time_t ttt = mktime(&tt);
-	gmtoff = tt.tm_gmtoff;
-	ttt += gmtoff;
+	ttt += tt.tm_gmtoff;
 	if (tt.tm_isdst == 1) ttt -= 3600;
 	if (ttt < 0) throw new TimeException("Can't form DateTime with the current data.", __FILE__, __LINE__, __func__);
 	currentTime.tv_sec = ttt;
@@ -64,8 +63,6 @@ void DateTime::updatetmhelper()
 DateTime::DateTime()
 {
 	clock_gettime(CLOCK_REALTIME, &currentTime);
-	gmtoff = -timezone;
-	if (daylight == 1) currentTime.tv_sec -= 3600;
 	updatetmhelper();
 }
 
@@ -75,15 +72,13 @@ DateTime::DateTime()
 DateTime::DateTime(const DateTime &t)
 {
 	currentTime = t.currentTime;
-	gmtoff = t.gmtoff;
-	updatetmhelper();
+	tmhelper = t.tmhelper;
 }
 
 DateTime::DateTime(const DateTime *t)
 {
 	currentTime = t->currentTime;
-	gmtoff = t->gmtoff;
-	updatetmhelper();
+	tmhelper = t->tmhelper;
 }
 
 /**
@@ -94,8 +89,6 @@ DateTime::DateTime(long double totalDays)
 	long double secs = totalDays * 86400.0;
 	currentTime.tv_sec = secs;
 	currentTime.tv_nsec = (secs - currentTime.tv_sec) * 1000000000.0;
-	gmtoff = -timezone;
-	if (daylight == 1) currentTime.tv_sec -= 3600;
 	updatetmhelper();
 }
 
@@ -103,8 +96,6 @@ DateTime::DateTime(time_t t)
 {
 	currentTime.tv_sec = t;
 	currentTime.tv_nsec = 0;
-	gmtoff = -timezone;
-	if (daylight == 1) currentTime.tv_sec -= 3600;
 	updatetmhelper();
 }
 
@@ -127,7 +118,8 @@ DateTime::~DateTime()
 
 int DateTime::GMTOFF()
 {
-	return gmtoff;
+	struct tm *tt = localtime(&currentTime.tv_sec);
+	return tt->tm_gmtoff;
 }
 
 DateTime DateTime::DatePart()
@@ -409,19 +401,24 @@ Text DateTime::ToText(const wchar_t *format)
 
 DateTime DateTime::AddGMTOffset()
 {
-	double to_add = 1.0 * gmtoff / 86400.0;
-	return DateTime(TotalDays() - to_add);
+	double to_add = 1.0 * GMTOFF() / 86400.0;
+	return DateTime(TotalDays() + to_add);
 }
 
 DateTime DateTime::RemoveGMTOffset()
 {
-	double to_add = 1.0 * gmtoff / 86400.0;
-	return DateTime(TotalDays() + to_add);
+	double to_add = 1.0 * GMTOFF() / 86400.0;
+	return DateTime(TotalDays() - to_add);
 }
 
 void DateTime::SetUtcDateTime(const DateTime &t)
 {
 	clock_settime(CLOCK_REALTIME, &t.currentTime);
+}
+
+DateTime DateTime::LocalDateTime()
+{
+	return DateTime().AddGMTOffset();
 }
 
 int DateTime::COMPARER(const void *u, const void *v)
@@ -434,12 +431,10 @@ int DateTime::COMPARER(const void *u, const void *v)
 void DateTime::Serialize(const Serializator &s)
 {
 	((Serializator *)&s)->Put((char *)&currentTime, sizeof(currentTime));
-	((Serializator *)&s)->Put(gmtoff);
 }
 
 void DateTime::Deserialize(const Serializator &s)
 {
 	((Serializator *)&s)->Get((char *)&currentTime, sizeof(currentTime));
-	gmtoff = ((Serializator *)&s)->GetInt();
 	updatetmhelper();
 }
