@@ -105,6 +105,12 @@
     <File Name="LFC/ndouble.cpp"/>
     <File Name="LFC/nlongdouble.h"/>
     <File Name="LFC/nlongdouble.cpp"/>
+    <VirtualDirectory Name="Math">
+      <File Name="LFC/Math/math.h"/>
+      <File Name="LFC/Math/math.cpp"/>
+      <File Name="LFC/Math/mathexception.h"/>
+      <File Name="LFC/Math/mathexception.cpp"/>
+    </VirtualDirectory>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>

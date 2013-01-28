@@ -71,6 +71,7 @@
 #include "Administration/administrationexception.h"
 #include "Administration/groupinfo.h"
 #include "Administration/userinfo.h"
+#include "Math/math.h"
 
 void lfc_init();
 
