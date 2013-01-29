@@ -167,6 +167,21 @@ int TestText::PerformAnsi()
 		StdOut::PrintLine("Text::CheckRegExpr error");
 		return -1;
 	}
+	if (treg.CheckRegExpr("^a.[0-9].[0-9].[0-9]$", true)) {
+		StdOut::PrintLine("Text::CheckRegExpr error");
+		return -1;
+	}
+	
+	Collection<Text *> creg = treg.GetRegExprMatches("[0-9]", true);
+	for (int i=0; i<creg.Count(); i++) StdOut::PrintLine(*creg[i]);
+	if (creg.Count() != 4) {
+		StdOut::PrintLine("Text::GetRegExprMatches error");
+		return -1;
+	}
+	if (*creg[0] != "4" || *creg[1] != "5" || *creg[2] != "6" || *creg[3] != "7") {
+		StdOut::PrintLine("Text::GetRegExptMatches error");
+		return -1;
+	}
 	
 	return 0;
 }

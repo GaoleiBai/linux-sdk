@@ -851,7 +851,7 @@ bool Text::CheckRegExpr(const Text &expr, bool ignoreCase)
 	
 	bool res = regcomp(&re, ee, ignoreCase ? REG_EXTENDED | REG_NOSUB | REG_ICASE : REG_EXTENDED | REG_NOSUB ) == 0;
 	if (res) {
-		res = regexec(&re, pp, 0, NULL, 0);
+		res = regexec(&re, pp, 0, NULL, 0) == 0;
 	}
 	regfree(&re);
 	
@@ -871,10 +871,12 @@ Collection<Text *> Text::GetRegExprMatches(const Text &expr, bool ignoreCase)
 	((Text *)&expr)->GetAnsiString(ee, 2 * ((Text *)&expr)->Length() + 1);
 	GetAnsiString(pp, 2 * length + 1);
 
+	int ix = 0;
 	bool res = regcomp(&re, ee, ignoreCase ? REG_EXTENDED | REG_ICASE : REG_EXTENDED ) == 0;
 	while (res) {
-		res = regexec(&re, pp, 1, &rm, 0);
-		col.Add(new Text(pp + rm.rm_so, rm.rm_eo - rm.rm_so));
+		res = regexec(&re, pp + ix, 1, &rm, 0) == 0;
+		if (res) col.Add(new Text(pp + ix + rm.rm_so, rm.rm_eo - rm.rm_so));
+		ix += rm.rm_eo;
 	}
 	regfree(&re);
 	
