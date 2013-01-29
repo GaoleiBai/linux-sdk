@@ -846,13 +846,14 @@ bool Text::CheckRegExpr(const Text &expr, bool ignoreCase)
 	char *ee = new char[2 * ((Text *)&expr)->Length() + 2];
 	char *pp = new char[2 * length + 2];
 	
-	((Text *)&expr)->GetAnsiString(ee, ((Text *)&expr)->Length());
-	GetAnsiString(pp, length);
+	((Text *)&expr)->GetAnsiString(ee, 2 * ((Text *)&expr)->Length() + 1);
+	GetAnsiString(pp, 2 * length + 1);
 	
 	bool res = regcomp(&re, ee, ignoreCase ? REG_EXTENDED | REG_NOSUB | REG_ICASE : REG_EXTENDED | REG_NOSUB ) == 0;
-	if (res) res = regexec(&re, pp, 0, NULL, 0);
-	regfree
-	(&re);
+	if (res) {
+		res = regexec(&re, pp, 0, NULL, 0);
+	}
+	regfree(&re);
 	
 	delete ee;
 	delete pp;
@@ -867,8 +868,8 @@ Collection<Text *> Text::GetRegExprMatches(const Text &expr, bool ignoreCase)
 	char *ee = new char[2 * ((Text *)&expr)->Length() + 2];
 	char *pp = new char[2 * length + 2];
 	
-	((Text *)&expr)->GetAnsiString(ee, ((Text *)&expr)->Length());
-	GetAnsiString(pp, length);
+	((Text *)&expr)->GetAnsiString(ee, 2 * ((Text *)&expr)->Length() + 1);
+	GetAnsiString(pp, 2 * length + 1);
 
 	bool res = regcomp(&re, ee, ignoreCase ? REG_EXTENDED | REG_ICASE : REG_EXTENDED ) == 0;
 	while (res) {

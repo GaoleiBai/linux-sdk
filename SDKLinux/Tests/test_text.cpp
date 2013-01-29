@@ -162,6 +162,12 @@ int TestText::PerformAnsi()
 		return -1;
 	}
 	
+	Text treg = "4.5.6.7";
+	if (!treg.CheckRegExpr("^[0-9].[0-9].[0-9].[0-9]$", true)) {
+		StdOut::PrintLine("Text::CheckRegExpr error");
+		return -1;
+	}
+	
 	return 0;
 }
 
