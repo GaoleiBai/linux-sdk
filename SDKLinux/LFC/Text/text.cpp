@@ -29,6 +29,7 @@
 #include <wctype.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <regex.h>
 
 int Text::write(int posdest, char *dest, int ldest, int possrc, const char *src, int lsrc)
 {
@@ -837,4 +838,46 @@ void Text::Deserialize(const Serializator &s)
 	p = new wchar_t[length + 1];
 	((Serializator *)&s)->Get((char *)p, sizeof(wchar_t) * length);
 	p[length] = 0;
+}
+
+bool Text::CheckRegExpr(const Text &expr, bool ignoreCase)
+{
+	regex_t re;
+	char *ee = new char[2 * ((Text *)&expr)->Length() + 2];
+	char *pp = new char[2 * length + 2];
+	
+	((Text *)&expr)->GetAnsiString(ee, ((Text *)&expr)->Length());
+	GetAnsiString(pp, length);
+	
+	bool res = regcomp(&re, ee, ignoreCase ? REG_EXTENDED | REG_NOSUB | REG_ICASE : REG_EXTENDED | REG_NOSUB ) == 0;
+	if (res) res = regexec(&re, pp, 0, NULL, 0);
+	regfree
+	(&re);
+	
+	delete ee;
+	delete pp;
+	return res;
+}
+
+Collection<Text *> Text::GetRegExprMatches(const Text &expr, bool ignoreCase)
+{
+	Collection<Text *> col(10);
+	regex_t re;
+	regmatch_t rm;
+	char *ee = new char[2 * ((Text *)&expr)->Length() + 2];
+	char *pp = new char[2 * length + 2];
+	
+	((Text *)&expr)->GetAnsiString(ee, ((Text *)&expr)->Length());
+	GetAnsiString(pp, length);
+
+	bool res = regcomp(&re, ee, ignoreCase ? REG_EXTENDED | REG_ICASE : REG_EXTENDED ) == 0;
+	while (res) {
+		res = regexec(&re, pp, 1, &rm, 0);
+		col.Add(new Text(pp + rm.rm_so, rm.rm_eo - rm.rm_so));
+	}
+	regfree(&re);
+	
+	delete ee;
+	delete pp;
+	return col;
 }

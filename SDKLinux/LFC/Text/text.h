@@ -155,6 +155,9 @@ public:
 	virtual int Compare(const NObject &o);
 	virtual void Serialize(const Serializator &s);
 	virtual void Deserialize(const Serializator &s);
+	
+	bool CheckRegExpr(const Text &expr, bool ignoreCase);
+	Collection<Text *> GetRegExprMatches(const Text &expr, bool ignoreCase);
 
 };
 
