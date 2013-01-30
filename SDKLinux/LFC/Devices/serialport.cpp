@@ -4,7 +4,7 @@
 SerialPort::SerialPort(const Text &deviceName)
 {
 	portDeviceName = new Text(deviceName);
-	f = -1;
+	fd = -1;
 }
 
 SerialPort::~SerialPort()
@@ -20,7 +20,7 @@ Text SerialPort::ToText()
 
 void SerialPort::Open()
 {
-	
+	//if (fd != -1) throw 
 }
 
 void SerialPort::Close()

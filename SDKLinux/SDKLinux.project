@@ -40,6 +40,8 @@
       <File Name="LFC/Devices/stdout.cpp"/>
       <File Name="LFC/Devices/serialport.h"/>
       <File Name="LFC/Devices/serialport.cpp"/>
+      <File Name="LFC/Devices/deviceexception.h"/>
+      <File Name="LFC/Devices/deviceexception.cpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Network"/>
     <VirtualDirectory Name="Threading"/>

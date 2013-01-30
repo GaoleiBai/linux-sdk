@@ -16,7 +16,7 @@ public:
 	Text ToText();
 
 private:
-	int f;
+	int fd;
 	Text *portDeviceName;
 	int portSpeed;
 	int portDataBits;
