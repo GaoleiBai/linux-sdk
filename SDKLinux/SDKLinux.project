@@ -38,6 +38,8 @@
     <VirtualDirectory Name="Devices">
       <File Name="LFC/Devices/stdout.h"/>
       <File Name="LFC/Devices/stdout.cpp"/>
+      <File Name="LFC/Devices/serialport.h"/>
+      <File Name="LFC/Devices/serialport.cpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Network"/>
     <VirtualDirectory Name="Threading"/>
