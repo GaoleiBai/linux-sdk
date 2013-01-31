@@ -48,6 +48,7 @@ int TestCollection::Perform()
 	c1.Add(new Text("Camarilla"));
 	c1.Add(new Text("Cooperación"));
 	c1.QuickSort(Text::COMPARER);
+	for (int i=0; i<c1.Count(); i++) StdOut::PrintLine(*c1[i]);
 	for (int i=1; i<c1.Count(); i++) {
 		if (*c1[i-1] > *c1[i]) {
 			StdOut::PrintLine("Collection<T>::Sort didn't work!!!");
