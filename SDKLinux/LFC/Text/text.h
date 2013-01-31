@@ -51,10 +51,8 @@ private:
 
 public:
 
-	static int write(int posdest, char *dest, int ldest, int possrc, const char *src, int lsrc);
 	static int write(int posdest, wchar_t *dest, int ldest, int possrc, const char *src, int lsrc);
 	static int write(int posdest, wchar_t *dest, int ldest, int possrc, const wchar_t *src, int lsrc);
-	static int findIx(int strpos, const wchar_t *str, int strlen, int findpos, const char *find, int findlen);
 	static int findIx(int strpos, const wchar_t *str, int strlen, int findpos, const wchar_t *find, int findlen);
 	static Text FromErrno();
 	static Text Join(const Collection<Text *> &tokens, const Text &separator);
@@ -85,23 +83,13 @@ public:
 	int GetAnsiString(char *buffer, int len);
 	int GetWideString(wchar_t *buffer, int len);
 	int Compare(const Text &t);
-	int Compare(const char *t);
-	int Compare(const wchar_t *t);
-	int Compare(const char *t, int len);
-	int Compare(const wchar_t *t, int len);
 	Text SubText(int ix);
 	Text SubText(int ix, int length);
-	Text Replace(Text &search, Text &replacement);
-	Text Replace(const wchar_t *search, const wchar_t *replacement);
-	Text Replace(const char *search, const char *replacement);
+	Text Replace(const Text &search, const Text &replacement);
 	int FindIx(const Text &t);
-	int FindIx(const char *t);
-	int FindIx(const wchar_t *t);
 	int FindIx(const Collection<char> &c);
 	int FindIx(const Collection<wchar_t> &c);
 	int FindIx(int startIndex, const Text &t);
-	int FindIx(int startIndex, const char *t);
-	int FindIx(int startIndex, const wchar_t *t);
 	int FindIx(int startIndex, const Collection<char> &c);
 	int FindIx(int startIndex, const Collection<wchar_t> &c);
 	Text TrimLeft(const Collection<char> &c);
@@ -113,29 +101,11 @@ public:
 	Text ToUpper();
 	Text ToLower();
 	Collection<int> ExtractIndexes(Text &textToFind);
-	Collection<Text *> Split(const Collection<char> &splitChars, bool removeEmptyEntries);
-	Collection<Text *> Split(const Collection<wchar_t> &splitChars, bool removeEmptyEntries);
 	Collection<Text *> Split(const Text &splitChars, bool removeEmptyEntries);
-	Collection<Text *> Split(const char *splitChars, bool removeEmptyEntries);
-	Collection<Text *> Split(const wchar_t *splitChars, bool removeEmptyEntries);
 	bool Equals(const Text &t);
-	bool Equals(const char *c);
-	bool Equals(const wchar_t *c);
-	bool StartsWith(Text &t);
-	bool StartsWith(const char *c);
-	bool StartsWith(const wchar_t *c);
-	bool StartsWith(const char *c, int len);
-	bool StartsWith(const wchar_t *c, int len);
+	bool StartsWith(const Text &t);
 	bool EndsWith(const Text &t);
-	bool EndsWith(const char *t);
-	bool EndsWith(const wchar_t *t);
-	bool EndsWith(const char *t, int len);
-	bool EndsWith(const wchar_t *t, int len);
 	bool Contains(const Text &t);
-	bool Contains(const char *t);
-	bool Contains(const wchar_t *t);
-	bool Contains(const char *t, int len);
-	bool Contains(const wchar_t *t, int len);
 	
 	Text operator+(const Text &t);
 	Text &operator+=(const Text &t);

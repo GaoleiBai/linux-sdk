@@ -31,17 +31,6 @@
 #include <errno.h>
 #include <regex.h>
 
-int Text::write(int posdest, char *dest, int ldest, int possrc, const char *src, int lsrc)
-{
-	int lldest = ldest;
-	if (lsrc < ldest - posdest) lldest = posdest + lsrc;
-	char *dd = dest + posdest;
-	char *ss = (char *)src;
-	for (int i=posdest; i<lldest; i++) *dd++ = *ss++;
-	*dd = 0;
-	return lldest - posdest;
-}
-
 int Text::write(int posdest, wchar_t *dest, int ldest, int possrc, const char *src, int lsrc)
 {
 	int lldest = ldest;
@@ -73,23 +62,6 @@ int Text::write(int posdest, wchar_t *dest, int ldest, int possrc, const wchar_t
 	for (int i=posdest; i<lldest; i++) *dd++ = *ss++;
 	*dd = 0;
 	return lldest - posdest;
-}
-
-int Text::findIx(int strpos, const wchar_t *str, int strlen, int findpos, const char *find, int findlen)
-{
-	if (findlen > strlen) return -1;
-	int maxFindLen = findlen - 1;
-	int maxlen = strlen - findlen;
-	for (int i=strpos; i<strlen; i++) {
-		wchar_t *ss = (wchar_t *)(str + i);
-		char *ff = (char *)find;
-		for (int j = findpos; j<findlen; j++) {
-			if (*ss++ != *ff++) break;
-			if (j == maxFindLen) return i;
-		}
-	}
-	
-	return -1;
 }
 
 int Text::findIx(int strpos, const wchar_t *str, int strlen, int findpos, const wchar_t *find, int findlen)
@@ -304,30 +276,9 @@ int Text::Compare(const NObject &o)
 	return Compare(((NObject *)&o)->ToText());
 }
 
-int Text::Compare(const char *t)
-{
-	return Compare(t, strlen(t));
-}
-
-int Text::Compare(const wchar_t *t)
-{
-	return Compare(t, wcslen(t));
-}
-
-int Text::Compare(const char *t, int len) 
-{
-	Text tt(t, len);
-	return this->Compare(tt);
-}
-
-int Text::Compare(const wchar_t *t, int len)
-{
-	return wcscoll(p, t);
-}
-
 int Text::Compare(const Text &t)
 {
-	return Compare(t.p, t.length);
+	return wcscoll(p, t.p);
 }
 
 Text Text::SubText(int ix)
@@ -344,41 +295,11 @@ Text Text::SubText(int ix, int length)
 	return q.aquireText(p + ix, length, true);
 }
 
-Text Text::Replace(Text &search, Text &replacement)
+Text Text::Replace(const Text &search, const Text &replacement)
 {
 	TextBuffer tb(10000);
 	int ix = 0;
 	while (ix != -1 && ix < length) {
-		int ixNow = FindIx(ix, search);
-		if (ixNow == -1) ix = length;
-		Text s = SubText(ix, ixNow - ix);
-		tb.Append(s);
-		if (ixNow < length) tb.Append(replacement);
-		ix = ixNow + 1;
-	}
-	return tb.ToText();
-}
-
-Text Text::Replace(const wchar_t *search, const wchar_t *replacement)
-{
-	TextBuffer tb(10000);
-	int ix = 0;
-	while (ix < length) {
-		int ixNow = FindIx(ix, search);
-		if (ixNow == -1) ix = length;
-		Text s = SubText(ix, ixNow - ix);
-		tb.Append(s);
-		if (ixNow < length) tb.Append(replacement);
-		ix = ixNow + 1;
-	}
-	return tb.ToText();
-}
-
-Text Text::Replace(const char *search, const char *replacement)
-{
-	TextBuffer tb(10000);
-	int ix = 0;
-	while (ix < length) {
 		int ixNow = FindIx(ix, search);
 		if (ixNow == -1) ixNow = length;
 		Text s = SubText(ix, ixNow - ix);
@@ -394,18 +315,6 @@ int Text::FindIx(const Text &t)
 	return findIx(0, p, length, 0, t.p, t.length);
 }
 
-int Text::FindIx(const char *t)
-{
-	int tlen = strlen(t);
-	return findIx(0, p, length, 0, t, tlen);
-}
-
-int Text::FindIx(const wchar_t *t)
-{
-	int tlen = wcslen(t);
-	return findIx(0, p, length, 0, t, tlen);
-}
-
 int Text::FindIx(const Collection<char> &c)
 {
 	return FindIx(0, c);
@@ -419,18 +328,6 @@ int Text::FindIx(const Collection<wchar_t> &c)
 int Text::FindIx(int startIndex, const Text &t)
 {
 	return findIx(startIndex, p, length, 0, t.p, t.length);
-}
-
-int Text::FindIx(int startIndex, const char *t)
-{
-	int tlen = strlen(t);
-	return findIx(startIndex, p, length, 0, t, tlen);
-}
-
-int Text::FindIx(int startIndex, const wchar_t *t)
-{
-	int tlen = wcslen(t);
-	return findIx(startIndex, p, length, 0, t, tlen);
 }
 
 int Text::FindIx(int startIndex, const Collection<char> &c) 
@@ -559,28 +456,9 @@ Collection<int> Text::ExtractIndexes(Text &textToFind)
 	return result;
 }
 
-Collection<Text *> Text::Split(const Collection<char> &splitChars, bool removeEmptyEntries)
+Collection<Text *> Text::Split(const Text &splitChars, bool removeEmptyEntries)
 {
-	Collection<Text *> result;
-	int ix = 0, previx = 0;
-	
-	while (ix <= length) {
-		ix = FindIx(ix, splitChars);
-		if (ix == -1) ix = length;
-		if (ix == previx) {
-			if (!removeEmptyEntries) result.Add(new Text());
-		} else {
-			result.Add(new Text(p + previx, (int)(ix - previx)));
-		}
-		ix++;
-		previx = ix;
-	}
-	
-	return result;
-}
-
-Collection<Text *> Text::Split(const Collection<wchar_t> &splitChars, bool removeEmptyEntries)
-{
+	Collection<wchar_t> cSplitChars(splitChars.p);
 	Collection<Text *> result;
 	int ix = 0, previx = 0;
 	
@@ -598,24 +476,6 @@ Collection<Text *> Text::Split(const Collection<wchar_t> &splitChars, bool remov
 	}
 	
 	return result;
-}
-
-Collection<Text *> Text::Split(const Text &splitChars, bool removeEmptyEntries)
-{
-	Collection<wchar_t> cSplitChars(splitChars.p);
-	return Split(cSplitChars, removeEmptyEntries);
-}
-
-Collection<Text *> Text::Split(const char *splitChars, bool removeEmptyEntries)
-{
-	Collection<char> cSplitChars(splitChars);
-	return Split(cSplitChars, removeEmptyEntries);
-}
-
-Collection<Text *> Text::Split(const wchar_t *splitChars, bool removeEmptyEntries)
-{
-	Collection<wchar_t> cSplitChars(splitChars);
-	return Split(cSplitChars, removeEmptyEntries);
 }
 
 Text Text::Join(const Collection<Text *> &tokens, const Text &separator)
@@ -636,96 +496,25 @@ bool Text::Equals(const Text &t)
 	return *this == t;
 }
 
-bool Text::Equals(const char *c)
+bool Text::StartsWith(const Text &t)
 {
-	return *this == c;
-}
-
-bool Text::Equals(const wchar_t *c)
-{
-	return *this == c;
-}
-
-bool Text::StartsWith(Text &t)
-{
-	return StartsWith(t.p, t.length);
-}
-
-bool Text::StartsWith(const char *t)
-{
-	return StartsWith(t, strlen(t));
-}
-
-bool Text::StartsWith(const wchar_t *t)
-{
-	return StartsWith(t, wcslen(t));
-}
-
-bool Text::StartsWith(const char *t, int len)
-{
-	return findIx(0, p, length, 0, t, len) == 0;
-}
-
-bool Text::StartsWith(const wchar_t *t, int len)
-{
-	return findIx(0, p, length, 0, t, len) == 0;
+	if (t.length > length) return false;
+	for (int i=0; i<t.length; i++)
+		if (p[i] != t.p[i]) return false;
+	return true;
 }
 
 bool Text::EndsWith(const Text &t)
 {
-	if (length < t.length) return -1;
-	return findIx(length - t.length, p, length, 0, t.p, t.length) == length - t.length;
-}
-
-bool Text::EndsWith(const wchar_t *t)
-{
-	int tlen = wcslen(t);
-	if (length < tlen) return false;
-	return EndsWith(t, wcslen(t));
-}
-
-bool Text::EndsWith(const char *t)
-{
-	int tlen = strlen(t);
-	if (length < tlen) return false;
-	return EndsWith(t, strlen(t));
-}
-
-bool Text::EndsWith(const char *t, int len)
-{
-	if (length < len) return false;
-	return findIx(length - len, p, length, 0, t, len) == length - len;
-}
-
-bool Text::EndsWith(const wchar_t *t, int len)
-{
-	if (length < len) return false;
-	return findIx(length - len, p, length, 0, t, len) == length - len;
+	if (t.length > length) return false;
+	for (int i=length - t.length, j=0; i<length; i++, j++)
+		if (p[i] != t.p[j]) return false;
+	return true;
 }
 
 bool Text::Contains(const Text &t)
 {
 	return findIx(0, p, length, 0, t.p, t.length) != -1;
-}
-
-bool Text::Contains(const char *t)
-{
-	return findIx(0, p, length, 0, t, strlen(t)) != -1;
-}
-
-bool Text::Contains(const char *t, int len)
-{
-	return findIx(0, p, length, 0, t, len) != -1;
-}
-
-bool Text::Contains(const wchar_t *t)
-{
-	return findIx(0, p, length, 0, t, wcslen(t)) != -1;
-}
-
-bool Text::Contains(const wchar_t *t, int len)
-{
-	return findIx(0, p, length, 0, t, len) != -1;
 }
 
 Text Text::FromErrno()

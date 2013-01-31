@@ -161,7 +161,7 @@ Text File::ReadAllText(const Text &filename)
 Collection<Text *> File::ReadAllLines(const Text &filename)
 {
 	Collection<char> rtrim = "\r";
-	Collection<Text *> lines = ReadAllText(filename).Split((Collection<char>)"\n", false);
+	Collection<Text *> lines = ReadAllText(filename).Split("\n", false);
 	for (int i=0; i<lines.Count(); i++) {
 		Text *t = new Text(lines[i]->Trim(rtrim));
 		delete lines[i];

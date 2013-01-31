@@ -264,7 +264,7 @@ void Directory::CreateDirectory(const Text &t)
 	char cadena[10001];	
 	Text pathToCheck;	
 	Text path = !((Text *)&t)->StartsWith("/") ? CurrentDirectory() + "/" + t : t;
-	Collection<Text *> folders = path.Split("/", false);
+	Collection<Text *> folders = path.Split((Text)"/", false);
 	int result = 0;
 	
 	for (int i=1; i<folders.Count(); i++) {
