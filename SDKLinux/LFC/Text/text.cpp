@@ -316,30 +316,13 @@ int Text::Compare(const wchar_t *t)
 
 int Text::Compare(const char *t, int len) 
 {
-	int minLen = len < length ? len : length;
-	wchar_t *pp = p;
-	char *tt = (char *)t;
-	for (int i=0; i<minLen; i++) {
-		int dist = *pp++ - *tt++;
-		if (dist) return dist;
-	}
-	
-	int lenDiff = len - length;
-	if (lenDiff) return lenDiff;
+	Text tt(t, len);
+	return this->Compare(tt);
 }
 
 int Text::Compare(const wchar_t *t, int len)
 {
-	int minLen = len < length ? len : length;
-	wchar_t *pp = p;
-	wchar_t *tt = (wchar_t *)t;
-	for (int i=0; i<minLen; i++) {
-		int dist = *pp++ - *tt++;
-		if (dist) return dist;
-	}
-	
-	int lenDiff = len - length;
-	return lenDiff;
+	return wcscoll(p, t);
 }
 
 int Text::Compare(const Text &t)
