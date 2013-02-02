@@ -9,10 +9,10 @@ class SerialPort : public NObject, public IFile {
 
 public:
 	SerialPort(const Text &deviceName, int speed, int dataBits, int parity, int stopBits, int flowControl);
+	SerialPort(const Text &config);
+	SerialPort(const SerialPort &port);
 	virtual ~SerialPort();
 	
-	static SerialPort FromTextConfiguration(const Text &config);
-
 	void Open();
 	void Close();
 
@@ -55,6 +55,8 @@ public:
 	static const int FlowControlSoftware = 2;
 
 private:
+	void init(const Text &deviceName, int speed, int dataBits, int parity, int stopBits, int flowControl);
+
 	int fd;
 	Text *portDeviceName;
 	speed_t portSpeed;

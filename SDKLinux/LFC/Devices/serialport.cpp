@@ -9,7 +9,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-SerialPort::SerialPort(const Text &deviceName, int speed, int dataBits, int parity, int stopBits, int flowControl)
+void SerialPort::init(const Text &deviceName, int speed, int dataBits, int parity, int stopBits, int flowControl)
 {
 	speed_t s = -1;
 	if (speed == 50) s = B50;
@@ -61,29 +61,12 @@ SerialPort::SerialPort(const Text &deviceName, int speed, int dataBits, int pari
 	fd = -1;
 }
 
-SerialPort::~SerialPort()
+SerialPort::SerialPort(const Text &deviceName, int speed, int dataBits, int parity, int stopBits, int flowControl)
 {
-	Close();
-	delete portDeviceName;
+	init(deviceName, speed, dataBits, parity, stopBits, flowControl);
 }
 
-Text SerialPort::ToText()
-{
-	Text strPar;
-	if (portParity == 0) strPar = "N";
-	else if (portParity == 1) strPar = "O";
-	else if (portParity == 2) strPar = "E";
-	else if (portParity == 3) strPar = "S";
-	
-	Text strFlowControl;
-	if (portFlowControl == 0) strFlowControl = "None";
-	else if (portFlowControl == 1) strFlowControl = "Hardware";
-	else if (portFlowControl == 2) strFlowControl = "XON/XOFF";
-
-	return *portDeviceName + " " + portSpeed + " " + portDataBits + strPar + portStopBits + " " + strFlowControl;
-}
-
-SerialPort SerialPort::FromTextConfiguration(const Text &config) 
+SerialPort::SerialPort(const Text &config)
 {
 	Collection<Text *> params = ((Text *)&config)->Split(" ", false);
 	
@@ -151,8 +134,40 @@ SerialPort SerialPort::FromTextConfiguration(const Text &config)
 	else if (*params[3] == "Hardware") flowControl = 1;
 	else if (*params[3] == "XON/XOFF") flowControl = 2;
 	
+	init(*params[0], speed, dataBits, parity, stopBits, flowControl);
 	params.DeleteAndClear();
-	return SerialPort(*params[0], speed, dataBits, parity, stopBits, flowControl);	
+}
+
+SerialPort::SerialPort(const SerialPort &port)
+{
+	portDeviceName = new Text(*port.portDeviceName);
+	portSpeed = port.portSpeed;
+	portDataBits = port.portDataBits;
+	portParity = port.portParity;
+	portStopBits = port.portStopBits;
+	portFlowControl = port.portFlowControl;
+}
+
+SerialPort::~SerialPort()
+{
+	Close();
+	delete portDeviceName;
+}
+
+Text SerialPort::ToText()
+{
+	Text strPar;
+	if (portParity == 0) strPar = "N";
+	else if (portParity == 1) strPar = "O";
+	else if (portParity == 2) strPar = "E";
+	else if (portParity == 3) strPar = "S";
+	
+	Text strFlowControl;
+	if (portFlowControl == 0) strFlowControl = "None";
+	else if (portFlowControl == 1) strFlowControl = "Hardware";
+	else if (portFlowControl == 2) strFlowControl = "XON/XOFF";
+
+	return *portDeviceName + " " + portSpeed + " " + portDataBits + strPar + portStopBits + " " + strFlowControl;
 }
 
 void SerialPort::Open()
@@ -251,4 +266,14 @@ void SerialPort::Close()
 	errno = 0;
 	if (close(fd) == -1) 
 		throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+}
+
+int SerialPort::Read(char *buffer, int lonBuffer)
+{
+	
+}
+
+int SerialPort::Write(const char *buffer, int lonBuffer)
+{
+	
 }
