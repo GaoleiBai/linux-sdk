@@ -11,10 +11,15 @@ public:
 	SerialPort(const Text &deviceName, int speed, int dataBits, int parity, int stopBits, int flowControl);
 	virtual ~SerialPort();
 	
+	static SerialPort FromTextConfiguration(const Text &config);
+
 	void Open();
 	void Close();
 
 	Text ToText();
+	
+	virtual int Read(char *buffer, int lonBuffer);
+	virtual int Write(const char *buffer, int lonBuffer);
 	
 	static const int Speed50 = 50;
 	static const int Speed75 = 75;

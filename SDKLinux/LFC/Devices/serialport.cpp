@@ -1,6 +1,8 @@
 #include "serialport.h"
 #include "deviceexception.h"
 #include "../Text/text.h"
+#include "../Collections/collection.h"
+#include "../nint.h"
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -67,7 +69,89 @@ SerialPort::~SerialPort()
 
 Text SerialPort::ToText()
 {
-	return *portDeviceName;
+	Text strPar;
+	if (portParity == 0) strPar = "N";
+	else if (portParity == 1) strPar = "O";
+	else if (portParity == 2) strPar = "E";
+	else if (portParity == 3) strPar = "S";
+	
+	Text strFlowControl;
+	if (portFlowControl == 0) strFlowControl = "None";
+	else if (portFlowControl == 1) strFlowControl = "Hardware";
+	else if (portFlowControl == 2) strFlowControl = "XON/XOFF";
+
+	return *portDeviceName + " " + portSpeed + " " + portDataBits + strPar + portStopBits + " " + strFlowControl;
+}
+
+SerialPort SerialPort::FromTextConfiguration(const Text &config) 
+{
+	Collection<Text *> params = ((Text *)&config)->Split(" ", false);
+	
+	if (params.Count() != 4) 
+	{
+		params.DeleteAndClear();
+		throw new DeviceException("An example of accepted format is '/dev/ttyX 115200 8N1 None'", __FILE__, __LINE__, __func__);		
+	}
+	if (!params[0]->StartsWith("/dev/tty")) 
+	{
+		params.DeleteAndClear();
+		throw new DeviceException("Serial device must be of the kind '/dev/ttyX'", __FILE__, __LINE__, __func__);				
+	}
+	
+	int speed = NInt::Parse(*params[1]);
+	if (speed != 50 && speed != 75 && speed != 110 && speed != 134 && speed != 150 && speed != 200 &&
+		speed != 300 && speed != 600 && speed != 1200 && speed != 1800 && speed != 2400 && speed != 4800 &&
+		speed != 9600 && speed != 19200 && speed != 38400 && speed != 57600 && speed != 115200 &&
+		speed != 230400) 
+	{
+		params.DeleteAndClear();
+		throw new DeviceException("Speed must be one of 50, 75, 110, 134, 150, 200, 300, 600, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200, 230400", __FILE__, __LINE__, __func__);
+	}
+	
+	if (!params[2]->Length() != 3) 
+	{
+		params.DeleteAndClear();
+		throw new DeviceException("DataBits, Parity and Stop bits must be indicated like '8N1'", __FILE__, __LINE__, __func__);				
+	}
+	
+	int dataBits = NInt::Parse(params[2]->SubText(0, 1));
+	if (dataBits != 8 && dataBits != 7 && dataBits != 6 && dataBits != 5) 
+	{
+		params.DeleteAndClear();
+		throw new DeviceException("Data bits must be 8, 7, 6 or 5", __FILE__, __LINE__, __func__);
+	}
+	
+	Text strParity = params[2]->SubText(1, 1);
+	if (strParity != "N" && strParity != "O" && strParity != "E" && strParity != "S") 
+	{
+		params.DeleteAndClear();
+		throw new DeviceException("Parity must be N, O, E or S", __FILE__, __LINE__, __func__);
+	}
+	int parity = 0;
+	if (strParity == "N") parity = 0;
+	else if (strParity == "O") parity = 1;
+	else if (strParity == "E") parity = 2;
+	else if (strParity == "S") parity = 3;
+	
+	Text strStopBits = params[2]->SubText(3, 1);
+	if (strStopBits != "1" && strStopBits != "2") 
+	{
+		params.DeleteAndClear();
+		throw new DeviceException("Stop bits must be 1 or 2", __FILE__, __LINE__, __func__);
+	}
+	int stopBits = NInt::Parse(strStopBits);
+	
+	if (*params[3] != "None" && *params[3] != "Hardware" && *params[3] != "XON/XOFF") {
+		params.DeleteAndClear();
+		throw new DeviceException("Flow control must be None, Hardware of XOF/XOFF", __FILE__, __LINE__, __func__);
+	}
+	int flowControl = 0;
+	if (*params[3] == "None") flowControl = 0;
+	else if (*params[3] == "Hardware") flowControl = 1;
+	else if (*params[3] == "XON/XOFF") flowControl = 2;
+	
+	params.DeleteAndClear();
+	return SerialPort(*params[0], speed, dataBits, parity, stopBits, flowControl);	
 }
 
 void SerialPort::Open()
@@ -147,6 +231,10 @@ void SerialPort::Open()
 	if (portParity == 1 || portParity == 2) {
 		pattr.c_iflag |= (INPCK | ISTRIP);
 	}
+	
+	// Minimum characters to read = 0
+	pattr.c_cc[VMIN] = 0;
+	pattr.c_cc[VTIME] = 0;
 	
 	// Set port attributes
 	if (tcsetattr(fd, TCSANOW, &pattr) == -1) {
