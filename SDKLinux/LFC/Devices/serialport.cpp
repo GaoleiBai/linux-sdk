@@ -141,7 +141,8 @@ SerialPort SerialPort::FromTextConfiguration(const Text &config)
 	}
 	int stopBits = NInt::Parse(strStopBits);
 	
-	if (*params[3] != "None" && *params[3] != "Hardware" && *params[3] != "XON/XOFF") {
+	if (*params[3] != "None" && *params[3] != "Hardware" && *params[3] != "XON/XOFF") 
+	{
 		params.DeleteAndClear();
 		throw new DeviceException("Flow control must be None, Hardware of XOF/XOFF", __FILE__, __LINE__, __func__);
 	}
