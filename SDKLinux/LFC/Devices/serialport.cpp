@@ -344,4 +344,15 @@ void SerialPort::SetSignalBits(bool DTR, bool RTS, bool DSR, bool CTS, bool DCD,
 	else status &= ~TIOCM_RI;
 	if (ioctl(fd, TIOCMSET, &status) == -1)
 		throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+		
+	// Syncing changes
+	tcdrain(fd);
+}
+
+int SerialPort::GetBytesAvaliable()
+{
+	int avaliable = 0;
+	if (ioctl(fd, FIONREAD, &avaliable) == -1)
+		throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+	return avaliable;
 }

@@ -43,6 +43,7 @@ public:
 	
 	void GetSignalBits(bool &DTR, bool &RTS, bool &DSR, bool &CTS, bool &DCD, bool &RING);
 	void SetSignalBits(bool DTR, bool RTS, bool DSR, bool CTS, bool DCD, bool RING);
+	int GetBytesAvaliable();
 	
 	static const int Speed50 = 50;
 	static const int Speed75 = 75;
