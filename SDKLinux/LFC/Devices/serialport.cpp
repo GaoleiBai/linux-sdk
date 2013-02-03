@@ -112,7 +112,7 @@ SerialPort::SerialPort(const Text &config)
 		throw new DeviceException("Speed must be one of 50, 75, 110, 134, 150, 200, 300, 600, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200, 230400", __FILE__, __LINE__, __func__);
 	}
 	
-	if (!params[2]->Length() != 3) 
+	if (params[2]->Length() != 3) 
 	{
 		params.DeleteAndClear();
 		throw new DeviceException("DataBits, Parity and Stop bits must be indicated like '8N1'", __FILE__, __LINE__, __func__);				
@@ -137,7 +137,7 @@ SerialPort::SerialPort(const Text &config)
 	else if (strParity == "E") parity = 2;
 	else if (strParity == "S") parity = 3;
 	
-	Text strStopBits = params[2]->SubText(3, 1);
+	Text strStopBits = params[2]->SubText(2, 1);
 	if (strStopBits != "1" && strStopBits != "2") 
 	{
 		params.DeleteAndClear();

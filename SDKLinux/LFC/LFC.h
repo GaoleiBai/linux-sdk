@@ -72,6 +72,7 @@
 #include "Administration/groupinfo.h"
 #include "Administration/userinfo.h"
 #include "Math/math.h"
+#include "Devices/serialport.h"
 
 void lfc_init();
 

@@ -147,6 +147,8 @@
     </VirtualDirectory>
     <File Name="Tests/testnumeric.cpp"/>
     <File Name="Tests/testnumeric.h"/>
+    <File Name="Tests/testserialport.h"/>
+    <File Name="Tests/testserialport.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
