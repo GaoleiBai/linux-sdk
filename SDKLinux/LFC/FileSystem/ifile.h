@@ -31,8 +31,11 @@ public:
 	IFile();
 	virtual ~IFile();
 
-	virtual int Read(char *buffer, int lonBuffer) = 0;
-	virtual int Write(const char *buffer, int lonBuffer) = 0;
+	virtual int Read(char *buffer, int lonBuffer);
+	virtual int Write(const char *buffer, int lonBuffer);
+	
+protected:
+	int fd;
 	
 };
 

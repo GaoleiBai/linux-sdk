@@ -19,6 +19,10 @@
    
    
 #include "ifile.h"
+#include "../Text/text.h"
+#include "../exception.h"
+#include <unistd.h>
+
 
 IFile::IFile()
 {
@@ -26,5 +30,29 @@ IFile::IFile()
 
 IFile::~IFile()
 {
+}
+
+int IFile::Read(char *buffer, int lonBuffer)
+{
+	if (fd == -1)
+		throw new Exception("Cannot read from a closed device or file", __FILE__, __LINE__, __func__);
+	size_t leido = read(fd, buffer, lonBuffer);
+	if (leido == -1)
+		throw new Exception(Text::FromErrno(), __FILE__, __LINE__, __func__);
+	return leido;
+}
+
+int IFile::Write(const char *buffer, int lonBuffer)
+{
+	if (fd == -1)
+		throw new Exception("Cannot write in a closed device or file", __FILE__, __LINE__, __func__);
+	size_t escrito = 0;
+	while (escrito < lonBuffer) {
+		int quedan = lonBuffer - escrito;
+		size_t res = write(fd, buffer + escrito, quedan > 1000 ? 1000 : quedan);
+		if (res == -1) throw new Exception(Text::FromErrno(), __FILE__, __LINE__, __func__);
+		escrito += res;
+	}
+	return escrito;
 }
 

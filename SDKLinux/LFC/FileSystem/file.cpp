@@ -59,84 +59,59 @@ void File::Open()
 	char cadena[1001];
 	
 	fileName->GetAnsiString(cadena, 1000);
-	file = open(cadena, mode, S_IRUSR | S_IWUSR );
-	if (file == -1)
+	fd = open(cadena, mode, S_IRUSR | S_IWUSR );
+	if (fd == -1)
 		throw new FileSystemException(Text::FromErrno(), __FILE__, __LINE__, __func__);	
 }
 
 void File::Close()
 {
-	if (file != -1) 
-		if (close(file) == -1)
+	if (fd != -1) 
+		if (close(fd) == -1)
 			throw new FileSystemException(Text::FromErrno(), __FILE__, __LINE__, __func__);
-	file = -1;
+	fd = -1;
 }
 
 void File::Flush()
 {
-	if (file == -1) throw new FileSystemException("File not propertly open", __FILE__, __LINE__, __func__);
+	if (fd == -1) throw new FileSystemException("File not propertly open", __FILE__, __LINE__, __func__);
 
-	if (fsync(file) == -1)
+	if (fsync(fd) == -1)
 		throw new FileSystemException(Text::FromErrno(), __FILE__, __LINE__, __func__);
 }
 
 off_t File::FSetStart()
 {
-	if (file == -1) throw new FileSystemException("File not propertly open", __FILE__, __LINE__, __func__);
+	if (fd == -1) throw new FileSystemException("File not propertly open", __FILE__, __LINE__, __func__);
 
-	if (lseek(file, SEEK_SET, 0) == -1)
+	if (lseek(fd, SEEK_SET, 0) == -1)
 		throw new FileSystemException(Text::FromErrno(), __FILE__, __LINE__, __func__);
 }
 
 off_t File::FSetEnd()
 {
-	if (file == -1) throw new FileSystemException("File not propertly open", __FILE__, __LINE__, __func__);
+	if (fd == -1) throw new FileSystemException("File not propertly open", __FILE__, __LINE__, __func__);
 
-	if (lseek(file, SEEK_END, 0) == -1)
+	if (lseek(fd, SEEK_END, 0) == -1)
 		throw new FileSystemException(Text::FromErrno(), __FILE__, __LINE__, __func__);
 }
 
 off_t File::FSet(int position)
 {
-	if (file == -1) throw new FileSystemException("File not propertly open", __FILE__, __LINE__, __func__);
+	if (fd == -1) throw new FileSystemException("File not propertly open", __FILE__, __LINE__, __func__);
 
-	if (lseek(file, SEEK_SET, position) == -1)
+	if (lseek(fd, SEEK_SET, position) == -1)
 		throw new FileSystemException(Text::FromErrno(), __FILE__, __LINE__, __func__);
 }
 
 off_t File::FGet()
 {
-	if (file == -1) throw new FileSystemException("File not propertly open", __FILE__, __LINE__, __func__);
+	if (fd == -1) throw new FileSystemException("File not propertly open", __FILE__, __LINE__, __func__);
 
-	off_t pos = lseek(file, SEEK_CUR, 0);
+	off_t pos = lseek(fd, SEEK_CUR, 0);
 	if (pos == -1)
 		throw new FileSystemException(Text::FromErrno(), __FILE__, __LINE__, __func__);
 	return pos;
-}
-
-int File::Read(char *buffer, int lonBuffer)
-{
-	if (file == -1) throw new FileSystemException("File not propertly open", __FILE__, __LINE__, __func__);
-
-	ssize_t leido = read(file, buffer, lonBuffer);
-	if (leido == -1)
-		throw new FileSystemException(Text::FromErrno(), __FILE__, __LINE__, __func__);
-	return leido;
-}
-
-int File::Write(const char *buffer, int lonBuffer)
-{
-	if (file == -1) throw new FileSystemException("File not propertly open", __FILE__, __LINE__, __func__);
-
-	ssize_t escrito = 0;
-	while (escrito < lonBuffer) {
-		ssize_t sss = write(file, buffer + escrito, lonBuffer - escrito);
-		if (sss == -1)
-			throw new FileSystemException(Text::FromErrno(), __FILE__, __LINE__, __func__);
-		escrito += sss;
-	}
-	
-	return escrito;
 }
 
 Text File::ReadAllText(const Text &filename)

@@ -45,8 +45,6 @@ public:
 	virtual off_t FSetEnd();
 	virtual off_t FSet(int position);
 	virtual off_t FGet();
-	virtual int Read(char *buffer, int lonBuffer);
-	virtual int Write(const char *buffer, int lonBuffer);
 	
 	static Text ReadAllText(const Text &filename);
 	static Collection<Text *> ReadAllLines(const Text &filename);
@@ -66,7 +64,6 @@ public:
 	static void Chmod(const Text &filename, mode_t mode);
 	
 private:
-	int file;
 	Text *fileName;
 	int mode;
 

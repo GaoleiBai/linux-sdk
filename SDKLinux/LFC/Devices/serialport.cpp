@@ -191,6 +191,15 @@ Text SerialPort::ToText()
 	return *portDeviceName + " " + portSpeed + " " + portDataBits + strPar + portStopBits + " " + strFlowControl;
 }
 
+void SerialPort::SetBlockUntilReadComplete(bool block)
+{
+	if (fcntl(fd, F_SETFL, block ? 0 : FNDELAY) == -1) {
+		close(fd);
+		fd = -1;
+		throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+	}	
+}
+
 void SerialPort::Open()
 {
 	if (fd != -1) return;
@@ -208,7 +217,7 @@ void SerialPort::Open()
 		close(fd);
 		fd = -1;
 		throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
-	}
+	}	
 	
 	// Se configura el puerto serie
 	struct termios pattr;
@@ -287,29 +296,6 @@ void SerialPort::Close()
 	errno = 0;
 	if (close(fd) == -1) 
 		throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
-}
-
-int SerialPort::Read(char *buffer, int lonBuffer)
-{
-	if (fd == -1)
-		throw new DeviceException("Cannot read from a closed com port", __FILE__, __LINE__, __func__);
-	size_t leido = read(fd, buffer, lonBuffer);
-	if (leido == -1)
-		throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
-	return leido;
-}
-
-int SerialPort::Write(const char *buffer, int lonBuffer)
-{
-	if (fd == -1)
-		throw new DeviceException("Cannot write in a closed com port", __FILE__, __LINE__, __func__);
-	size_t escrito = 0;
-	while (escrito < lonBuffer) {
-		size_t res = write(fd, buffer + escrito, lonBuffer - escrito);
-		if (res == -1) throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
-		escrito += res;
-	}
-	return escrito;
 }
 
 void SerialPort::GetSignalBits(bool &DTR, bool &RTS, bool &DSR, bool &CTS, bool &DCD, bool &RING)

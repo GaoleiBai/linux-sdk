@@ -33,13 +33,11 @@ public:
 	SerialPort(const SerialPort &port);
 	virtual ~SerialPort();
 	
+	void SetBlockUntilReadComplete(bool block);
 	void Open();
 	void Close();
 
-	Text ToText();
-	
-	virtual int Read(char *buffer, int lonBuffer);
-	virtual int Write(const char *buffer, int lonBuffer);
+	virtual Text ToText();
 	
 	void GetSignalBits(bool &DTR, bool &RTS, bool &DSR, bool &CTS, bool &DCD, bool &RING);
 	void SetSignalBits(bool DTR, bool RTS, bool DSR, bool CTS, bool DCD, bool RING);
@@ -82,7 +80,6 @@ public:
 private:
 	void init(const Text &deviceName, int speed, int dataBits, int parity, int stopBits, int flowControl);
 
-	int fd;
 	Text *portDeviceName;
 	speed_t portSpeed;
 	tcflag_t portDataBits;
