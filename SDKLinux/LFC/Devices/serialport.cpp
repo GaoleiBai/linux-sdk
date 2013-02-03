@@ -1,3 +1,23 @@
+/* Copyright (C) 2012, 2013
+   Daniel Mosquera Villanueva (daniel.m.v@terra.es)
+   This file is part of LFC Library.
+
+   LFC Library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
+
+   LFC Library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+
+   You should have received a copy of the GNU Lesser General Public
+   License along with LFC Library; if not, write to the Free
+   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+   02111-1307 USA. or see http://www.gnu.org/licenses/. */
+   
+   
 #include "serialport.h"
 #include "deviceexception.h"
 #include "../Text/text.h"
@@ -6,6 +26,7 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/ioctl.h>
 #include <fcntl.h>
 #include <unistd.h>
 
@@ -270,10 +291,57 @@ void SerialPort::Close()
 
 int SerialPort::Read(char *buffer, int lonBuffer)
 {
-	
+	if (fd == -1)
+		throw new DeviceException("Cannot read from a closed com port", __FILE__, __LINE__, __func__);
+	size_t leido = read(fd, buffer, lonBuffer);
+	if (leido == -1)
+		throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+	return leido;
 }
 
 int SerialPort::Write(const char *buffer, int lonBuffer)
 {
-	
+	if (fd == -1)
+		throw new DeviceException("Cannot write in a closed com port", __FILE__, __LINE__, __func__);
+	size_t escrito = 0;
+	while (escrito < lonBuffer) {
+		size_t res = write(fd, buffer + escrito, lonBuffer - escrito);
+		if (res == -1) throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+		escrito += res;
+	}
+	return escrito;
+}
+
+void SerialPort::GetSignalBits(bool &DTR, bool &RTS, bool &DSR, bool &CTS, bool &DCD, bool &RING)
+{
+	int status = 0;
+	if (ioctl(fd, TIOCMGET, &status) == -1)
+		throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+	DTR = status & TIOCM_DTR != 0;
+	RTS = status & TIOCM_RTS != 0;
+	DSR = status & TIOCM_LE != 0;
+	CTS = status & TIOCM_CTS != 0;
+	DCD = status & TIOCM_CAR != 0;
+	RING = status & TIOCM_RI != 0;
+}
+
+void SerialPort::SetSignalBits(bool DTR, bool RTS, bool DSR, bool CTS, bool DCD, bool RING)
+{
+	int status = 0;
+	if (ioctl(fd, TIOCMGET, &status) == -1)
+		throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+	if (DTR) status |= TIOCM_DTR;
+	else status &= ~TIOCM_DTR;
+	if (RTS) status |= TIOCM_RTS;
+	else status &= ~TIOCM_RTS;
+	if (DSR) status |= TIOCM_LE;
+	else status &= ~TIOCM_LE;
+	if (CTS) status |= TIOCM_CTS;
+	else status &= ~TIOCM_LE;
+	if (DCD) status |= TIOCM_CAR;
+	else status &= ~TIOCM_CAR;
+	if (RING) status |= TIOCM_RI;
+	else status &= ~TIOCM_RI;
+	if (ioctl(fd, TIOCMSET, &status) == -1)
+		throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
 }
