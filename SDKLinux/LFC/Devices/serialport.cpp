@@ -349,6 +349,19 @@ void SerialPort::SetSignalBits(bool DTR, bool RTS, bool DSR, bool CTS, bool DCD,
 	tcdrain(fd);
 }
 
+void SerialPort::WaitForSignalBits(bool DTR, bool RTS, bool DSR, bool CTS, bool DCD, bool RING)
+{
+	int waitfor = 0;
+	if (DTR) waitfor |= TIOCM_DTR;
+	if (RTS) waitfor |= TIOCM_RTS;
+	if (DSR) waitfor |= TIOCM_LE;
+	if (CTS) waitfor |= TIOCM_CTS;
+	if (DCD) waitfor |= TIOCM_CAR;
+	if (RING) waitfor |= TIOCM_RI;
+	if (ioctl(fd, TIOCMIWAIT, waitfor) == -1)
+		throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+}
+
 int SerialPort::GetBytesAvaliable()
 {
 	int avaliable = 0;
