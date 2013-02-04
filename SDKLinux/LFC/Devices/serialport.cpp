@@ -32,6 +32,9 @@
 
 void SerialPort::init(const Text &deviceName, int speed, int dataBits, int parity, int stopBits, int flowControl)
 {
+	if (!((Text *)&deviceName)->StartsWith("/dev/")) 
+		throw new DeviceException("Serial device must be of the kind '/dev/X'", __FILE__, __LINE__, __func__);				
+		
 	speed_t s = -1;
 	if (speed == 50) s = B50;
 	else if (speed == 75) s = B75;
@@ -94,12 +97,12 @@ SerialPort::SerialPort(const Text &config)
 	if (params.Count() != 4) 
 	{
 		params.DeleteAndClear();
-		throw new DeviceException("An example of accepted format is '/dev/ttyX 115200 8N1 None'", __FILE__, __LINE__, __func__);		
+		throw new DeviceException("An example of accepted format is '/dev/X 115200 8N1 None'", __FILE__, __LINE__, __func__);		
 	}
-	if (!params[0]->StartsWith("/dev/tty")) 
+	if (!params[0]->StartsWith("/dev/")) 
 	{
 		params.DeleteAndClear();
-		throw new DeviceException("Serial device must be of the kind '/dev/ttyX'", __FILE__, __LINE__, __func__);				
+		throw new DeviceException("Serial device must be of the kind '/dev/X'", __FILE__, __LINE__, __func__);				
 	}
 	
 	int speed = NInt::Parse(*params[1]);
@@ -167,6 +170,7 @@ SerialPort::SerialPort(const SerialPort &port)
 	portParity = port.portParity;
 	portStopBits = port.portStopBits;
 	portFlowControl = port.portFlowControl;
+	fd = -1;
 }
 
 SerialPort::~SerialPort()
@@ -187,20 +191,42 @@ Text SerialPort::ToText()
 	if (portFlowControl == 0) strFlowControl = "None";
 	else if (portFlowControl == 1) strFlowControl = "Hardware";
 	else if (portFlowControl == 2) strFlowControl = "XON/XOFF";
+	
+	Text strSpeed;
+	if (portSpeed == B50) strSpeed = "50";
+	else if (portSpeed == B75) strSpeed = "75";
+	else if (portSpeed == B110) strSpeed = "110";
+	else if (portSpeed == B134) strSpeed = "134";
+	else if (portSpeed == B150) strSpeed = "150";
+	else if (portSpeed == B200) strSpeed = "200";
+	else if (portSpeed == B300) strSpeed = "300";
+	else if (portSpeed == B600) strSpeed = "600";
+	else if (portSpeed == B1200) strSpeed = "1200";
+	else if (portSpeed == B1800) strSpeed = "1800";
+	else if (portSpeed == B2400) strSpeed = "2400";
+	else if (portSpeed == B4800) strSpeed = "4800";
+	else if (portSpeed == B9600) strSpeed = "9600";
+	else if (portSpeed == B19200) strSpeed = "19200";
+	else if (portSpeed == B38400) strSpeed = "38400";
+	else if (portSpeed == B57600) strSpeed = "57600";
+	else if (portSpeed == B115200) strSpeed = "115200";
+	else if (portSpeed == B230400) strSpeed = "230400";
+	
+	Text strDataBits;
+	if (portDataBits == CS8) strDataBits = "8";
+	else if (portDataBits == CS7) strDataBits = "7";
+	else if (portDataBits == CS6) strDataBits = "6";
+	else if (portDataBits == CS5) strDataBits = "5";
 
-	return *portDeviceName + " " + portSpeed + " " + portDataBits + strPar + portStopBits + " " + strFlowControl;
-}
-
-void SerialPort::SetBlockUntilReadComplete(bool block)
-{
-	if (fcntl(fd, F_SETFL, block ? 0 : FNDELAY) == -1) {
-		close(fd);
-		fd = -1;
-		throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
-	}	
+	return *portDeviceName + " " + strSpeed + " " + strDataBits + strPar + portStopBits + " " + strFlowControl;
 }
 
 void SerialPort::Open()
+{
+	Open(false);
+}
+
+void SerialPort::Open(bool blockReadCalls)
 {
 	if (fd != -1) return;
 	
@@ -213,7 +239,7 @@ void SerialPort::Open()
 	if (fd == -1) throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
 	
 	// Se configura el puerto serie para no bloquearse si no hay datos en el buffer de entrada
-	if (fcntl(fd, F_SETFL, FNDELAY) == -1) {
+	if (fcntl(fd, F_SETFL, blockReadCalls ? 0 : FNDELAY) == -1) {
 		close(fd);
 		fd = -1;
 		throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
@@ -277,6 +303,9 @@ void SerialPort::Open()
 	if (portParity == 1 || portParity == 2) {
 		pattr.c_iflag |= (INPCK | ISTRIP);
 	}
+	
+	// Don't map input CR to NL
+	pattr.c_iflag &= ~ICRNL;
 	
 	// Minimum characters to read = 0
 	pattr.c_cc[VMIN] = 0;
@@ -354,4 +383,10 @@ int SerialPort::GetBytesAvaliable()
 	if (ioctl(fd, FIONREAD, &avaliable) == -1)
 		throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
 	return avaliable;
+}
+
+void SerialPort::SetBlockReadCalls(bool block)
+{
+	if (fcntl(fd, F_SETFL, block ? 0 : FNDELAY) == -1)
+		throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
 }

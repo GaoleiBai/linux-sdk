@@ -32,9 +32,45 @@ int TestSerialPort::Perform()
 {
 	try 
 	{
-		SerialPort pstr("/dev/ttyS0 9600 8N1 None");
-		SerialPort pparam("/dev/ttyS0", 9600, 8, SerialPort::ParityNone, 1, SerialPort::FlowControlNone);
-		SerialPort pcpy = pstr;
+		char buffer[10000];
+		
+		// To test serial ports start a virtual serial loop with the command
+		// socat -d -d PTY: PTY:
+		SerialPort pstr("/dev/pts/0 9600 8N1 None");
+		SerialPort pparam("/dev/pts/4", 9600, 8, SerialPort::ParityNone, 1, SerialPort::FlowControlNone);
+		SerialPort pcpy = pparam;
+		
+		StdOut::PrintLine(pcpy.ToText());
+		StdOut::PrintLine(pparam.ToText());
+		if (pcpy.ToText() != pparam.ToText())
+			throw new Exception("SerialPort::ToText error", __FILE__, __LINE__, __func__);
+		
+		pstr.Open();
+		pparam.Open(true);
+		
+		//pparam.SetBlockReadCalls(true);
+		
+		pstr.Write("Hola\r\n", 6);
+		memset(buffer, 0, sizeof(buffer));
+		int leido = pparam.Read(buffer, 10000);
+		if (leido != 6) {
+			int kk = 1;
+		}
+		if (((Text)buffer) != "Hola\r\n") 
+			throw new Exception("Serial port Read Write error", __FILE__, __LINE__, __func__);
+			
+		Text strSerialize = "Serial port test\r\n";
+		Serializator s(pstr);
+		Serializator t(pparam);
+		s.Put(strSerialize);
+		Text *pStrDeserialize = (Text *)t.GetNObject();
+		if (strSerialize != *pStrDeserialize) 
+			throw new Exception("Serialization over SerialPort doesn't work", __FILE__, __LINE__, __func__);
+			
+		
+		
+		pstr.Close();
+		pparam.Close();
 	
 		int kk = 1;
 	} 

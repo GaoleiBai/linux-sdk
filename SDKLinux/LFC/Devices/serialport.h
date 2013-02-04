@@ -33,8 +33,8 @@ public:
 	SerialPort(const SerialPort &port);
 	virtual ~SerialPort();
 	
-	void SetBlockUntilReadComplete(bool block);
 	void Open();
+	void Open(bool blockReadCalls);
 	void Close();
 
 	virtual Text ToText();
@@ -43,6 +43,7 @@ public:
 	void SetSignalBits(bool DTR, bool RTS, bool DSR, bool CTS, bool DCD, bool RING);
 	void WaitForSignalBits(bool DTR, bool RTS, bool DSR, bool CTS, bool CDC, bool RING);
 	int GetBytesAvaliable();
+	void SetBlockReadCalls(bool block);
 	
 	static const int Speed50 = 50;
 	static const int Speed75 = 75;
