@@ -25,10 +25,13 @@
 #include "../Devices/stdout.h"
 #include <string.h>
 #include <typeinfo>
+#include <unistd.h>
+
 
 Serializator::Serializator(const IFile &file)
 {
 	this->file = (IFile *)&file;
+	readTimeout = 60000000;
 }
 
 Serializator::~Serializator()
@@ -132,12 +135,18 @@ void Serializator::Put(long double n)
 
 void Serializator::Get(char *buffer, int lonBuffer)
 {
+	int timecount = readTimeout;
 	int leido = 0;
 	while (leido < lonBuffer) {
 		int res = file->Read(buffer + leido, lonBuffer - leido);
-		if (res == 0) 
-			throw new FileSystemException((Text)"End of file reached before reading " + lonBuffer + " requested bytes.", __FILE__, __LINE__, __func__);
-		leido += res;
+		if (res == 0) {	// Waits until timeout goes
+			timecount -= READ_TIMEOUT_STEP;
+			if (timecount < 0)
+				throw new FileSystemException("Read timeout exception", __FILE__, __LINE__, __func__);
+			usleep(READ_TIMEOUT_STEP);
+		} else {
+			leido += res;
+		}
 	}
 }
 

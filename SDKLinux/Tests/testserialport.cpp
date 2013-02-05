@@ -36,8 +36,8 @@ int TestSerialPort::Perform()
 		
 		// To test serial ports start a virtual serial loop with the command
 		// socat -d -d PTY: PTY:
-		SerialPort pstr("/dev/pts/0 9600 8N1 None");
-		SerialPort pparam("/dev/pts/4", 9600, 8, SerialPort::ParityNone, 1, SerialPort::FlowControlNone);
+		SerialPort pstr("/dev/pts/5 9600 8N1 None");
+		SerialPort pparam("/dev/pts/6", 9600, 8, SerialPort::ParityNone, 1, SerialPort::FlowControlNone);
 		SerialPort pcpy = pparam;
 		
 		StdOut::PrintLine(pcpy.ToText());
@@ -46,23 +46,37 @@ int TestSerialPort::Perform()
 			throw new Exception("SerialPort::ToText error", __FILE__, __LINE__, __func__);
 		
 		pstr.Open();
-		pparam.Open(true);
+		pparam.Open();
 		
 		//pparam.SetBlockReadCalls(true);
 		
 		pstr.Write("Hola\r\n", 6);
 		memset(buffer, 0, sizeof(buffer));
+		usleep(10000);
 		int leido = pparam.Read(buffer, 10000);
-		if (leido != 6) {
-			int kk = 1;
-		}
+		if (leido != 6) 
+			throw new Exception("SerialPort::Read Write error", __FILE__, __LINE__, __func__);
 		if (((Text)buffer) != "Hola\r\n") 
 			throw new Exception("Serial port Read Write error", __FILE__, __LINE__, __func__);
 			
+		/*
+		for (int i=0; i<256; i++) buffer[i] = i;
+		pstr.Write(buffer, 256);
+		memset(buffer, 0, sizeof(buffer));
+		usleep(1000000);
+		leido = pparam.Read(buffer, 10000);
+		if (leido != 256) 
+			throw new Exception("SerialPort::Read error", __FILE__, __LINE__, __func__);
+		for (int i=0; i<256; i++)
+			if (buffer[i] != i)
+				throw new Exception("SerialPort::Read error", __FILE__, __LINE__, __func__);
+		*/
+		
 		Text strSerialize = "Serial port test\r\n";
 		Serializator s(pstr);
 		Serializator t(pparam);
 		s.Put(strSerialize);
+		//usleep(1000000);
 		Text *pStrDeserialize = (Text *)t.GetNObject();
 		if (strSerialize != *pStrDeserialize) 
 			throw new Exception("Serialization over SerialPort doesn't work", __FILE__, __LINE__, __func__);

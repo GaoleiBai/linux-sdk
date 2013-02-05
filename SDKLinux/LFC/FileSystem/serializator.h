@@ -21,6 +21,8 @@
 #ifndef SERIALIZATOR_H
 #define SERIALIZATOR_H
 
+#define READ_TIMEOUT_STEP 20000
+
 #include "../n_object.h"
 #include "ifile.h"
 
@@ -64,8 +66,12 @@ public:
 	double GetDouble();
 	long double GetLongDouble();
 	
+	int GetReadTimeout();
+	void SetReadTimeout(int microseconds);
+	
 private:
 	IFile *file;
+	int readTimeout;
 	
 };
 

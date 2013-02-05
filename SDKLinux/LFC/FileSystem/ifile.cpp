@@ -23,7 +23,6 @@
 #include "../exception.h"
 #include <unistd.h>
 
-
 IFile::IFile()
 {
 }
