@@ -104,3 +104,13 @@ long double NBool::ToLongDouble()
 {
 	return value ? 1 : 0;
 }
+
+int NBool::COMPARER(const void *u, const void *v)
+{
+	bool *uu = (bool *)u;
+	bool *vv = (bool *)v;
+	
+	if (*uu && !*vv) return 1;
+	else if (!*uu && *vv) return -1;
+	else 0;
+}

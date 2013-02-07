@@ -131,3 +131,13 @@ long double NUInt::ToLongDouble()
 {
 	return value;
 }
+
+int NUInt::COMPARER(const void *u, const void *v) 
+{
+	unsigned int *uu = (unsigned int *)u;
+	unsigned int *vv = (unsigned int *)v;
+	
+	if (*uu > *vv) return 1;
+	else if (*uu < *vv) return -1;
+	else return 0;
+}

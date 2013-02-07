@@ -129,3 +129,12 @@ long double NChar::ToLongDouble()
 {
 	return value;
 }
+
+int NChar::COMPARER(const void *u, const void *v)
+{
+	char *uu = (char *)u;
+	char *vv = (char *)v;
+	if (*uu > *vv) return 1;
+	else if (*uu < *vv) return -1;
+	return 0;
+}

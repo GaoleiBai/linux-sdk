@@ -132,3 +132,12 @@ long double NInt::ToLongDouble()
 	return value;
 }
 
+int NInt::COMPARER(const void *u, const void *v)
+{
+	int *uu = (int *)u;
+	int *vv = (int *)v;
+	
+	if (*uu > *vv) return 1;
+	else if (*uu < *vv) return -1;
+	return 0;
+}

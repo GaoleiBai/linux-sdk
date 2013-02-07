@@ -131,3 +131,13 @@ long double NULong::ToLongDouble()
 {
 	return value;
 }
+
+int NULong::COMPARER(const void *u, const void *v)
+{
+	unsigned long *uu = (unsigned long *)u;
+	unsigned long *vv = (unsigned long *)v;
+	
+	if (*uu > *vv) return 1;
+	else if (*uu < *vv) return -1;
+	else return 0;
+}

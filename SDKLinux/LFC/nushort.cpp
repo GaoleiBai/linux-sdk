@@ -132,3 +132,13 @@ long double NUShort::ToLongDouble()
 {
 	return value;
 }
+
+int NUShort::COMPARER(const void *u, const void *v)
+{
+	unsigned short *uu = (unsigned short *)u;
+	unsigned short *vv = (unsigned short *)v;
+	
+	if (*uu > *vv) return 1;
+	else if (*uu < *vv) return -1;
+	else return 0;
+}

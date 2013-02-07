@@ -47,6 +47,8 @@ public:
 	virtual long long ToLongLong();
 	virtual long double ToLongDouble();
 	
+	static int COMPARER(const void *u, const void *v);
+
 protected:
 	bool value;
 	

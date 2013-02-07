@@ -131,3 +131,13 @@ long double NLongLong::ToLongDouble()
 {
 	return value;
 }
+
+int NLongLong::COMPARER(const void *u, const void *v)
+{
+	long long *uu = (long long *)u;
+	long long *vv = (long long *)v;
+	
+	if (*uu > *vv) return 1;
+	else if (*uu < *vv) return -1;
+	else return 0;
+}

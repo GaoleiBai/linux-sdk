@@ -134,3 +134,13 @@ long double NUChar::ToLongDouble()
 {
 	return value;
 }
+
+int NUChar::COMPARER(const void *u, const void *v)
+{
+	unsigned char *uu = (unsigned char *)u;
+	unsigned char *vv = (unsigned char *)v;
+	
+	if (*uu > *vv) return 1;
+	else if (*uu < *vv) return -1;
+	else return 0;
+}

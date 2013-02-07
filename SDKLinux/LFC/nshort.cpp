@@ -129,3 +129,13 @@ long double NShort::ToLongDouble()
 {
 	return value;
 }
+
+int NShort::COMPARER(const void *u, const void *v)
+{
+	short *uu = (short *)u;
+	short *vv = (short *)v;
+	
+	if (*uu > *vv) return 1;
+	else if (*uu < *vv) return -1;
+	else return 0;
+}
