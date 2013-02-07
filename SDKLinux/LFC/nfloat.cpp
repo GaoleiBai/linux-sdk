@@ -171,3 +171,13 @@ long double NFloat::ToLongDouble()
 {
 	return value;
 }
+
+int NFloat::COMPARER(const void *u, const void *v)
+{
+	float *uu = (float *)u;
+	float *vv = (float *)v;
+	
+	if (*uu > *vv) return 1;
+	else if (*uu < *vv) return -1;
+	else return 0;
+}
