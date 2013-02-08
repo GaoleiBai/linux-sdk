@@ -94,6 +94,9 @@ int TestSerialPort::Perform()
 			throw new Exception("Serialization over SerialPort doesn't work", __FILE__, __LINE__, __func__);
 		StdOut::PrintLine(*pStrDeserialize);
 		
+		//bool A, B, C, D, E, F;
+		//pparam.GetSignalBits(A, B, C, D, E, F);
+		//pstr.SetSignalBits(true, false, false, false, false, false);
 		
 		pstr.Close();
 		pparam.Close();

@@ -60,9 +60,7 @@
       <File Name="LFC/FileSystem/buffer.cpp"/>
       <File Name="LFC/FileSystem/serializator.h"/>
       <File Name="LFC/FileSystem/serializator.cpp"/>
-      <File Name="LFC/LFC.h"/>
     </VirtualDirectory>
-    <File Name="LFC/LFC.cpp"/>
     <VirtualDirectory Name="Time">
       <File Name="LFC/Time/datetime.h"/>
       <File Name="LFC/Time/datetime.cpp"/>
@@ -115,6 +113,8 @@
       <File Name="LFC/Math/mathexception.h"/>
       <File Name="LFC/Math/mathexception.cpp"/>
     </VirtualDirectory>
+    <File Name="LFC/LFC.cpp"/>
+    <File Name="LFC/LFC.h"/>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>
