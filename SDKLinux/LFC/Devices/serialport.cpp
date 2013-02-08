@@ -27,6 +27,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
+#include <sys/select.h>
 #include <fcntl.h>
 #include <unistd.h>
 
@@ -329,6 +330,9 @@ void SerialPort::Close()
 
 void SerialPort::GetSignalBits(bool &DTR, bool &RTS, bool &DSR, bool &CTS, bool &DCD, bool &RING)
 {
+	if (fd == -1)
+		throw new DeviceException("Can only perform actions on an open port", __FILE__, __LINE__, __func__);
+		
 	int status = 0;
 	if (ioctl(fd, TIOCMGET, &status) == -1)
 		throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
@@ -342,6 +346,9 @@ void SerialPort::GetSignalBits(bool &DTR, bool &RTS, bool &DSR, bool &CTS, bool 
 
 void SerialPort::SetSignalBits(bool DTR, bool RTS, bool DSR, bool CTS, bool DCD, bool RING)
 {
+	if (fd == -1)
+		throw new DeviceException("Can only perform actions on an open port", __FILE__, __LINE__, __func__);
+		
 	int status = 0;
 	if (ioctl(fd, TIOCMGET, &status) == -1)
 		throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
@@ -366,6 +373,9 @@ void SerialPort::SetSignalBits(bool DTR, bool RTS, bool DSR, bool CTS, bool DCD,
 
 void SerialPort::WaitForSignalBits(bool DTR, bool RTS, bool DSR, bool CTS, bool DCD, bool RING)
 {
+	if (fd == -1)
+		throw new DeviceException("Can only perform actions on an open port", __FILE__, __LINE__, __func__);
+		
 	int waitfor = 0;
 	if (DTR) waitfor |= TIOCM_DTR;
 	if (RTS) waitfor |= TIOCM_RTS;
@@ -379,6 +389,9 @@ void SerialPort::WaitForSignalBits(bool DTR, bool RTS, bool DSR, bool CTS, bool 
 
 int SerialPort::GetBytesAvaliable()
 {
+	if (fd == -1)
+		throw new DeviceException("Can only perform actions on an open port", __FILE__, __LINE__, __func__);
+		
 	int avaliable = 0;
 	if (ioctl(fd, FIONREAD, &avaliable) == -1)
 		throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
@@ -387,6 +400,10 @@ int SerialPort::GetBytesAvaliable()
 
 void SerialPort::SetBlockReadCalls(bool block)
 {
+	if (fd == -1)
+		throw new DeviceException("Can only perform actions on an open port", __FILE__, __LINE__, __func__);
+		
 	if (fcntl(fd, F_SETFL, block ? 0 : FNDELAY) == -1)
 		throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
 }
+

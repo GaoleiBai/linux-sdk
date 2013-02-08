@@ -48,39 +48,45 @@ int TestSerialPort::Perform()
 		pstr.Open();
 		pparam.Open();
 		
-		//pparam.SetBlockReadCalls(true);
-		
 		pstr.Write("Hola\r\n", 6);
 		memset(buffer, 0, sizeof(buffer));
-		usleep(10000);
-		int leido = pparam.Read(buffer, 10000);
+		int leido = 0;
+		while (leido < 6) {
+			int res = pparam.Read(buffer + leido, 6 - leido);
+			leido += res;
+			if (res == 0) pparam.WaitForDataComming(20000);
+		}
 		if (leido != 6) 
 			throw new Exception("SerialPort::Read Write error", __FILE__, __LINE__, __func__);
 		if (((Text)buffer) != "Hola\r\n") 
 			throw new Exception("Serial port Read Write error", __FILE__, __LINE__, __func__);
 			
-		/*
 		for (int i=0; i<256; i++) buffer[i] = i;
 		pstr.Write(buffer, 256);
 		memset(buffer, 0, sizeof(buffer));
-		usleep(1000000);
-		leido = pparam.Read(buffer, 10000);
+		//usleep(1000000);
+		leido = 0;
+		while (leido < 256) {
+			int res = pparam.Read(buffer, 10000);
+			leido += res;
+			if (res == 0) pparam.WaitForDataComming(20000);
+		}
 		if (leido != 256) 
 			throw new Exception("SerialPort::Read error", __FILE__, __LINE__, __func__);
-		for (int i=0; i<256; i++)
-			if (buffer[i] != i)
+		for (int i=0; i<256; i++) {
+			char c = i;
+			if (buffer[i] != c)
 				throw new Exception("SerialPort::Read error", __FILE__, __LINE__, __func__);
-		*/
+		}
 		
 		Text strSerialize = "Serial port test\r\n";
 		Serializator s(pstr);
 		Serializator t(pparam);
 		s.Put(strSerialize);
-		//usleep(1000000);
 		Text *pStrDeserialize = (Text *)t.GetNObject();
 		if (strSerialize != *pStrDeserialize) 
 			throw new Exception("Serialization over SerialPort doesn't work", __FILE__, __LINE__, __func__);
-			
+		StdOut::PrintLine(*pStrDeserialize);
 		
 		
 		pstr.Close();
