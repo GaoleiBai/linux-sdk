@@ -143,7 +143,7 @@ void Serializator::Get(char *buffer, int lonBuffer)
 			timecount -= READ_TIMEOUT_STEP;
 			if (timecount < 0)
 				throw new FileSystemException("Read timeout exception", __FILE__, __LINE__, __func__);
-			usleep(READ_TIMEOUT_STEP);
+			file->WaitForDataComming(READ_TIMEOUT_STEP);
 		} else {
 			leido += res;
 		}
