@@ -224,11 +224,6 @@ Text SerialPort::ToText()
 
 void SerialPort::Open()
 {
-	Open(false);
-}
-
-void SerialPort::Open(bool blockReadCalls)
-{
 	if (fd != -1) return;
 	
 	char cadena[1001];
@@ -240,7 +235,7 @@ void SerialPort::Open(bool blockReadCalls)
 	if (fd == -1) throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
 	
 	// Se configura el puerto serie para no bloquearse si no hay datos en el buffer de entrada
-	if (fcntl(fd, F_SETFL, blockReadCalls ? 0 : FNDELAY) == -1) {
+	if (fcntl(fd, F_SETFL, FNDELAY) == -1) {
 		close(fd);
 		fd = -1;
 		throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
@@ -398,12 +393,4 @@ int SerialPort::GetBytesAvaliable()
 	return avaliable;
 }
 
-void SerialPort::SetBlockReadCalls(bool block)
-{
-	if (fd == -1)
-		throw new DeviceException("Can only perform actions on an open port", __FILE__, __LINE__, __func__);
-		
-	if (fcntl(fd, F_SETFL, block ? 0 : FNDELAY) == -1)
-		throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
-}
 
