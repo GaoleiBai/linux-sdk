@@ -54,7 +54,10 @@ int TestSerialPort::Perform()
 		while (leido < 6) {
 			int res = pparam.Read(buffer + leido, 6 - leido);
 			leido += res;
-			if (res == 0) pparam.WaitForDataComming(20000);
+			if (res != 0) continue;
+			pparam.WaitForDataComming(20000);
+			int bytesAvaliable = pparam.GetBytesAvaliable();
+			if (bytesAvaliable == 0) throw new Exception("SerialPort::WaitForDataComming", __FILE__, __LINE__, __func__);		
 		}
 		if (leido != 6) 
 			throw new Exception("SerialPort::Read Write error", __FILE__, __LINE__, __func__);
@@ -69,7 +72,10 @@ int TestSerialPort::Perform()
 		while (leido < 256) {
 			int res = pparam.Read(buffer, 10000);
 			leido += res;
-			if (res == 0) pparam.WaitForDataComming(20000);
+			if (res != 0) continue;
+			pparam.WaitForDataComming(20000);
+			int bytesAvaliable = pparam.GetBytesAvaliable();
+			if (bytesAvaliable == 0) throw new Exception("SerialPort::WaitForDataComming", __FILE__, __LINE__, __func__);		
 		}
 		if (leido != 256) 
 			throw new Exception("SerialPort::Read error", __FILE__, __LINE__, __func__);
