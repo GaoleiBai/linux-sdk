@@ -83,6 +83,7 @@ public:
 	static void Umount(const Text &path);
 	static void Umount(const Text &path, int UMF_UmountFlags);
 	
+	static unsigned long GetNanoTicks();
 };
 
 #endif // ADMINISTRATION_H

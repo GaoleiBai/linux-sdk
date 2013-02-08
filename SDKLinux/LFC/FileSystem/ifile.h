@@ -33,7 +33,7 @@ public:
 
 	virtual int Read(char *buffer, int lonBuffer);
 	virtual int Write(const char *buffer, int lonBuffer);
-	virtual bool WaitForDataComming(int microseconds);
+	virtual bool WaitForDataComming(unsigned long nanoseconds);
 
 	
 protected:

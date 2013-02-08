@@ -55,14 +55,14 @@ int IFile::Write(const char *buffer, int lonBuffer)
 	return escrito;
 }
 
-bool IFile::WaitForDataComming(int microseconds)
+bool IFile::WaitForDataComming(unsigned long nanoseconds)
 {
 	if (fd == -1)
 		throw new Exception("Can only perform actions on an open device", __FILE__, __LINE__, __func__);
 		
 	struct timeval timeout;
-	timeout.tv_sec = microseconds / 1000000;
-	timeout.tv_usec = microseconds % 1000000;
+	timeout.tv_sec = nanoseconds / 1000000000;
+	timeout.tv_usec = nanoseconds % 1000000000;
 	fd_set readSet;
 	FD_ZERO(&readSet);
 	FD_SET(fd, &readSet);

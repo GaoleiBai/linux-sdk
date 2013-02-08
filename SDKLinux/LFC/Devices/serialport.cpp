@@ -321,6 +321,7 @@ void SerialPort::Close()
 	errno = 0;
 	if (close(fd) == -1) 
 		throw new DeviceException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+	fd = -1;
 }
 
 void SerialPort::GetSignalBits(bool &DTR, bool &RTS, bool &DSR, bool &CTS, bool &DCD, bool &RING)

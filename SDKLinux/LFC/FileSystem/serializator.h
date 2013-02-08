@@ -66,12 +66,12 @@ public:
 	double GetDouble();
 	long double GetLongDouble();
 	
-	int GetReadTimeout();
-	void SetReadTimeout(int microseconds);
+	unsigned long GetReadTimeout();
+	void SetReadTimeout(unsigned long nanoseconds);
 	
 private:
 	IFile *file;
-	int readTimeout;
+	unsigned long readTimeout;
 	
 };
 

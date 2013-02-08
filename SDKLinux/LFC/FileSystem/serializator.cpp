@@ -23,6 +23,7 @@
 #include "../Text/text.h"
 #include "../nobjectregistry.h"
 #include "../Devices/stdout.h"
+#include "../System/system.h"
 #include <string.h>
 #include <typeinfo>
 #include <unistd.h>
@@ -136,15 +137,15 @@ void Serializator::Put(long double n)
 
 void Serializator::Get(char *buffer, int lonBuffer)
 {
-	int timecount = readTimeout;
+	unsigned long tstart = System::GetNanoTicks();
 	int leido = 0;
 	while (leido < lonBuffer) {
 		int res = file->Read(buffer + leido, lonBuffer - leido);
 		if (res == 0) {	// Waits until timeout goes
-			timecount -= READ_TIMEOUT_STEP;
-			if (timecount < 0)
+			unsigned long telapsed = System::GetNanoTicks() - tstart;
+			if (telapsed > readTimeout)
 				throw new FileSystemException("Read timeout exception", __FILE__, __LINE__, __func__);
-			file->WaitForDataComming(READ_TIMEOUT_STEP);
+			file->WaitForDataComming(readTimeout - telapsed);
 		} else {
 			leido += res;
 		}
@@ -265,4 +266,14 @@ long double Serializator::GetLongDouble()
 	long double n = 0;
 	Get((char *)&n, sizeof(n));
 	return n;
+}
+
+unsigned long Serializator::GetReadTimeout()
+{
+	return readTimeout;
+}
+
+void Serializator::SetReadTimeout(unsigned long nanoseconds)
+{
+	readTimeout = nanoseconds;
 }

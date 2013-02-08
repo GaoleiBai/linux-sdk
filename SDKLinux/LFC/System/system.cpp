@@ -30,6 +30,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/mount.h>
+#include <time.h>
 
 System::System()
 {
@@ -190,4 +191,11 @@ void System::Umount(const Text &path, int UMF_UMountFlags)
 	
 	if (umount2(cadena, UMF_UMountFlags))
 		throw new SystemException(Text::FromErrno(), __FILE__, __LINE__, __func__);		
+}
+
+unsigned long System::GetNanoTicks()
+{
+	struct timespec ticks;
+	clock_gettime(CLOCK_MONOTONIC, &ticks);
+	return (unsigned long)ticks.tv_sec * 1000000000 + ticks.tv_nsec;
 }

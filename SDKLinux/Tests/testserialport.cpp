@@ -36,8 +36,8 @@ int TestSerialPort::Perform()
 		
 		// To test serial ports start a virtual serial loop with the command
 		// socat -d -d PTY: PTY:
-		SerialPort pstr("/dev/pts/5 9600 8N1 None");
-		SerialPort pparam("/dev/pts/6", 9600, 8, SerialPort::ParityNone, 1, SerialPort::FlowControlNone);
+		SerialPort pstr("/dev/pts/3 9600 8N1 None");
+		SerialPort pparam("/dev/pts/4", 9600, 8, SerialPort::ParityNone, 1, SerialPort::FlowControlNone);
 		SerialPort pcpy = pparam;
 		
 		StdOut::PrintLine(pcpy.ToText());
