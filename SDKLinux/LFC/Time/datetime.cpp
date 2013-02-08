@@ -438,3 +438,10 @@ void DateTime::Deserialize(const Serializator &s)
 	((Serializator *)&s)->Get((char *)&currentTime, sizeof(currentTime));
 	updatetmhelper();
 }
+
+unsigned long long DateTime::SystemTicks()
+{
+	struct timespec tini;
+	clock_gettime(CLOCK_MONOTONIC, &tini);
+	return (unsigned long long) tini.tv_sec * 1000000000 + tini.tv_nsec;
+}

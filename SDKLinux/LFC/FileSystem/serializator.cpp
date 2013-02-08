@@ -26,6 +26,7 @@
 #include <string.h>
 #include <typeinfo>
 #include <unistd.h>
+#include <time.h>
 
 
 Serializator::Serializator(const IFile &file)

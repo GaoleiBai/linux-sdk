@@ -101,6 +101,8 @@ public:
 	virtual int Compare(const NObject &o);
 	virtual void Serialize(const Serializator &s);
 	virtual void Deserialize(const Serializator &s);
+	
+	static unsigned long long SystemTicks();
 
 protected:
 
