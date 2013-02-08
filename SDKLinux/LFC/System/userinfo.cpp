@@ -19,7 +19,7 @@
    
    
 #include "userinfo.h"
-#include "administrationexception.h"
+#include "systemexception.h"
 #include "../Text/text.h"
 #include "../Text/text_buffer.h"
 #include <pwd.h>
@@ -28,7 +28,7 @@
 UserInfo::UserInfo(int userID)
 {
 	struct passwd *p = getpwuid(userID);
-	if (p == NULL) throw new AdministrationException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+	if (p == NULL) throw new SystemException(Text::FromErrno(), __FILE__, __LINE__, __func__);
 	
 	name = new Text(p->pw_name);
 	userID = p->pw_uid;
@@ -51,7 +51,7 @@ UserInfo::UserInfo(const Text &username)
 	char cadena[1001];
 	((Text)username).GetAnsiString(cadena, 1000);
 	struct passwd *p = getpwnam(cadena);
-	if (p == NULL) throw new AdministrationException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+	if (p == NULL) throw new SystemException(Text::FromErrno(), __FILE__, __LINE__, __func__);
 	
 	name = new Text(p->pw_name);
 	userID = p->pw_uid;

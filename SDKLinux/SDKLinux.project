@@ -28,7 +28,6 @@
     </VirtualDirectory>
     <File Name="LFC/n_object.cpp"/>
     <File Name="LFC/n_object.h"/>
-    <File Name="LFC/LFC.h"/>
     <File Name="LFC/exception.cpp"/>
     <File Name="LFC/exception.h"/>
     <VirtualDirectory Name="Encoding">
@@ -61,6 +60,7 @@
       <File Name="LFC/FileSystem/buffer.cpp"/>
       <File Name="LFC/FileSystem/serializator.h"/>
       <File Name="LFC/FileSystem/serializator.cpp"/>
+      <File Name="LFC/LFC.h"/>
     </VirtualDirectory>
     <File Name="LFC/LFC.cpp"/>
     <VirtualDirectory Name="Time">
@@ -69,15 +69,15 @@
       <File Name="LFC/Time/timeexception.h"/>
       <File Name="LFC/Time/timeexception.cpp"/>
     </VirtualDirectory>
-    <VirtualDirectory Name="Administration">
-      <File Name="LFC/Administration/administrationexception.cpp"/>
-      <File Name="LFC/Administration/administrationexception.h"/>
-      <File Name="LFC/Administration/userinfo.h"/>
-      <File Name="LFC/Administration/userinfo.cpp"/>
-      <File Name="LFC/Administration/groupinfo.h"/>
-      <File Name="LFC/Administration/groupinfo.cpp"/>
-      <File Name="LFC/Administration/administration.h"/>
-      <File Name="LFC/Administration/administration.cpp"/>
+    <VirtualDirectory Name="System">
+      <File Name="LFC/System/groupinfo.cpp"/>
+      <File Name="LFC/System/groupinfo.h"/>
+      <File Name="LFC/System/system.cpp"/>
+      <File Name="LFC/System/system.h"/>
+      <File Name="LFC/System/systemexception.cpp"/>
+      <File Name="LFC/System/systemexception.h"/>
+      <File Name="LFC/System/userinfo.cpp"/>
+      <File Name="LFC/System/userinfo.h"/>
     </VirtualDirectory>
     <File Name="LFC/nobjectregistry.h"/>
     <File Name="LFC/nobjectregistry.cpp"/>

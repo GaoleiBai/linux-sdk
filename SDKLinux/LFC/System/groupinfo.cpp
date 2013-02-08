@@ -19,7 +19,7 @@
    
    
 #include "groupinfo.h"
-#include "administrationexception.h"
+#include "systemexception.h"
 #include "../Text/text.h"
 #include "../Text/text_buffer.h"
 #include <grp.h>
@@ -28,7 +28,7 @@
 GroupInfo::GroupInfo(int groupID)
 {
 	struct group *g = getgrgid(groupID);
-	if (g == NULL) throw new AdministrationException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+	if (g == NULL) throw new SystemException(Text::FromErrno(), __FILE__, __LINE__, __func__);
 	
 	name = new Text(g->gr_name);
 	groupID = g->gr_gid;
@@ -48,7 +48,7 @@ GroupInfo::GroupInfo(const Text &groupName)
 	char cadena[1001];
 	((Text)groupName).GetAnsiString(cadena, 1000);
 	struct group *g = getgrnam(cadena);
-	if (g == NULL) throw new AdministrationException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+	if (g == NULL) throw new SystemException(Text::FromErrno(), __FILE__, __LINE__, __func__);
 	
 	name = new Text(g->gr_name);
 	groupID = g->gr_gid;

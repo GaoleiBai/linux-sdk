@@ -18,17 +18,17 @@
    02111-1307 USA. or see http://www.gnu.org/licenses/. */
    
    
-#ifndef ADMINISTRATIONEXCEPTION_H
-#define ADMINISTRATIONEXCEPTION_H
+#ifndef SYSTEMEXCEPTION_H
+#define SYSTEMEXCEPTION_H
 
 #include "../exception.h"
 
-class AdministrationException : public Exception {
+class SystemException : public Exception {
 
 public:
-	AdministrationException();
-	AdministrationException(const Text &t, const char *file, int line, const char *func);
-	virtual ~AdministrationException();
+	SystemException();
+	SystemException(const Text &t, const char *file, int line, const char *func);
+	virtual ~SystemException();
 
 };
 

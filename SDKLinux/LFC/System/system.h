@@ -18,8 +18,8 @@
    02111-1307 USA. or see http://www.gnu.org/licenses/. */
    
    
-#ifndef ADMINISTRATION_H
-#define ADMINISTRATION_H
+#ifndef SYSTEM_H
+#define SYSTEM_H
 
 #include "../Collections/collection.h"
 #include <pwd.h>
@@ -54,11 +54,11 @@ class Text;
 #define MF_Synchronous MS_SYNCHRONOUS
 
 
-class Administration : public NObject{
+class System : public NObject{
 
 public:
-	Administration();
-	virtual ~Administration();
+	System();
+	virtual ~System();
 
 	static Collection<UserInfo *> Users();
 	static Collection<GroupInfo *> Groups();

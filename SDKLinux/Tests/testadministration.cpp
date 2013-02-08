@@ -31,8 +31,8 @@ TestAdministration::~TestAdministration()
 
 int TestAdministration::Perform()
 {
-	Collection<UserInfo *> users = Administration::Users();
-	Collection<GroupInfo *> groups = Administration::Groups();
+	Collection<UserInfo *> users = System::Users();
+	Collection<GroupInfo *> groups = System::Groups();
 	
 	for (int i=0; i<users.Count(); i++) 
 		StdOut::PrintLine(users[i]->ToText());
@@ -42,28 +42,34 @@ int TestAdministration::Perform()
 		StdOut::PrintLine(groups[i]->ToText());
 	StdOut::PrintLine();
 	
-	StdOut::PrintLine(Administration::GetRealUser().ToText());
+	StdOut::PrintLine(System::GetRealUser().ToText());
 	StdOut::PrintLine();
-	StdOut::PrintLine(Administration::GetEffectiveUser().ToText());
+	StdOut::PrintLine(System::GetEffectiveUser().ToText());
 	StdOut::PrintLine();
-	StdOut::PrintLine(Administration::GetRealGroup().ToText());
+	StdOut::PrintLine(System::GetRealGroup().ToText());
 	StdOut::PrintLine();
-	StdOut::PrintLine(Administration::GetEffectiveGroup().ToText());
+	StdOut::PrintLine(System::GetEffectiveGroup().ToText());
 	StdOut::PrintLine();
 	
 	users.DeleteAndClear();
 	groups.DeleteAndClear();
 	
-	try { Administration::Mount("/dev/sda3", "test", "fuseblk", 0, ""); } 
-	catch (AdministrationException *e) { delete e; }
-	try { Administration::Umount("test"); }
-	catch (AdministrationException *e) { delete e; }
+	try { 
+		System::Mount("/dev/sda3", "test", "fuseblk", 0, ""); 
+	} catch (SystemException *e) { 
+		delete e; 
+	}
+	try { 
+		System::Umount("test"); 
+	} catch (SystemException *e) { 
+		delete e; 
+	}
 	
-	Text hostname = Administration::GetHostName();
-	try { Administration::SetHostName("pepito"); }
+	Text hostname = System::GetHostName();
+	try { System::SetHostName("pepito"); }
 	catch (Exception *e) { delete e; }
-	Text hostnamePepito = Administration::GetHostName();
-	try { Administration::SetHostName(hostname); }
+	Text hostnamePepito = System::GetHostName();
+	try { System::SetHostName(hostname); }
 	catch (Exception *e) { delete e; }
 	
 	return 0;

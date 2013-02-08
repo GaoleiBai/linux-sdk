@@ -18,18 +18,18 @@
    02111-1307 USA. or see http://www.gnu.org/licenses/. */
    
    
-#include "administrationexception.h"
+#include "systemexception.h"
 
-AdministrationException::AdministrationException()
+SystemException::SystemException()
 {
 }
 
-AdministrationException::AdministrationException(const Text &t, const char *file, int line, const char *func) : Exception(t, file, line, func)
+SystemException::SystemException(const Text &t, const char *file, int line, const char *func) : Exception(t, file, line, func)
 {
 	
 }
 
-AdministrationException::~AdministrationException()
+SystemException::~SystemException()
 {
 }
 
