@@ -73,6 +73,7 @@
 #include "System/userinfo.h"
 #include "Math/math.h"
 #include "Devices/serialport.h"
+#include "Threading/thread.h"
 
 void lfc_init();
 

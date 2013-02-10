@@ -43,7 +43,10 @@
       <File Name="LFC/Devices/deviceexception.cpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Network"/>
-    <VirtualDirectory Name="Threading"/>
+    <VirtualDirectory Name="Threading">
+      <File Name="LFC/Threading/thread.h"/>
+      <File Name="LFC/Threading/thread.cpp"/>
+    </VirtualDirectory>
     <VirtualDirectory Name="FileSystem">
       <File Name="LFC/FileSystem/directory.h"/>
       <File Name="LFC/FileSystem/directory.cpp"/>
@@ -149,6 +152,12 @@
     <File Name="Tests/testnumeric.h"/>
     <File Name="Tests/testserialport.h"/>
     <File Name="Tests/testserialport.cpp"/>
+    <File Name="Tests/testthread.h"/>
+    <File Name="Tests/testthread.cpp"/>
+    <VirtualDirectory Name="ThreadHelpClasses">
+      <File Name="Tests/ThreadHelpClasses/classforthreading.h"/>
+      <File Name="Tests/ThreadHelpClasses/classforthreading.cpp"/>
+    </VirtualDirectory>
   </VirtualDirectory>
   <Settings Type="Executable">
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">

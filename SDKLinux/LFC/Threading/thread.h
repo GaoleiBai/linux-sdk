@@ -2,8 +2,11 @@
 #define THREAD_H
 
 #include "../n_object.h"
+#include <pthread.h>ř
 
-class Thread {
+typedef void (NObject::*THREAD_DELEGATE)() ;
+
+class Thread : public NObject {
 
 public:
 	Thread();
@@ -11,12 +14,16 @@ public:
 	Thread(const Text &name, bool joinable);
 	virtual ~Thread();
 	
-	void Launch(void *(*function)(void *params), void *paramsForTheThreadFunction);
+	void Launch(NObject *nobject, void (NObject::*method)());
 	void *Join();
+	static void Sleep(unsigned long microseconds);
 	
 private:
 	Text *name;
 	bool joinable;
+	
+	pthread_t thread;
+	static void *threadFunction(void *params);
 
 };
 
