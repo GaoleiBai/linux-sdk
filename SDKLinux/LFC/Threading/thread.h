@@ -2,7 +2,7 @@
 #define THREAD_H
 
 #include "../n_object.h"
-#include <pthread.h>ř
+#include <pthread.h>
 
 typedef void (NObject::*THREAD_DELEGATE)() ;
 

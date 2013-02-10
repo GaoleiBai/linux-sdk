@@ -23,8 +23,8 @@ void Thread::Launch(NObject *nobject, void (NObject::*method)())
 {
 	void **params = new void *[2];
 	params[0] = nobject;
-	params[1] = (void*)method;
-	pthread_create(&thread, NULL, threadFunction, params);
+	//params[1] = (void*)method;
+	//pthread_create(&thread, NULL, threadFunction, params);
 	//((*nobject).*method)();
 }
 
