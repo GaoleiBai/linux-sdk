@@ -55,6 +55,12 @@ void Thread::Launch(NObject *nobject, Delegate method, void *param)
 	char strname[10001];
 	name->GetAnsiString(strname, 10000);
 	pthread_setname_np(thread, strname);
+	
+	if (!joinable) {
+		i = pthread_detach(thread);
+		if (i == EINVAL) throw new ThreadingException("Thread is not joinable.", __FILE__, __LINE__, __func__);
+		else if (i == ESRCH) throw new ThreadingException("Specified thread not found", __FILE__, __LINE__, __func__);
+	}
 }
 
 void Thread::Launch(const NDelegation &delegation)
@@ -67,6 +73,12 @@ void Thread::Launch(const NDelegation &delegation)
 	char strname[10001];
 	name->GetAnsiString(strname, 10000);
 	pthread_setname_np(thread, strname);
+
+	if (!joinable) {
+		i = pthread_detach(thread);
+		if (i == EINVAL) throw new ThreadingException("Thread is not joinable.", __FILE__, __LINE__, __func__);
+		else if (i == ESRCH) throw new ThreadingException("Specified thread not found", __FILE__, __LINE__, __func__);
+	}
 }
 
 void *Thread::Join()
