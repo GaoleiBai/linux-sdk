@@ -46,6 +46,8 @@
     <VirtualDirectory Name="Threading">
       <File Name="LFC/Threading/thread.h"/>
       <File Name="LFC/Threading/thread.cpp"/>
+      <File Name="LFC/Threading/threadingexception.h"/>
+      <File Name="LFC/Threading/threadingexception.cpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="FileSystem">
       <File Name="LFC/FileSystem/directory.h"/>

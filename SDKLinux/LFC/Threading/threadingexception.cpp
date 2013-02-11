@@ -18,20 +18,18 @@
    02111-1307 USA. or see http://www.gnu.org/licenses/. */
    
    
-#include "text_exception.h"
-#include "../LFC.h"
+#include "threadingexception.h"
 
-TextException::TextException() : Exception()
+ThreadingException::ThreadingException() : Exception()
 {
-	
 }
 
-TextException::TextException(const Text &t, const char *file, int line, const char *func) : Exception(t, file, line, func)
+ThreadingException::ThreadingException(const Text &description, const char *file, int line, const char *func)
+	: Exception(description, file, line, func)
 {
-	
 }
 
-TextException::~TextException()
+ThreadingException::~ThreadingException()
 {
 }
 

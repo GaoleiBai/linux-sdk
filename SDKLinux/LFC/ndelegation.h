@@ -29,6 +29,7 @@ class NDelegation : public NObject {
 
 public:
 	NDelegation(const NObject *o, void *(NObject::*method)(void *param), void *param);
+	NDelegation(const NDelegation &delegation);
 	virtual ~NDelegation();
 
 	void *Exec();

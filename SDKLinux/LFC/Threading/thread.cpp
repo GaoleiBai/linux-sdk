@@ -19,38 +19,65 @@
    
    
 #include "thread.h"
+#include "threadingexception.h"
+#include "../Text/text.h"
 #include <unistd.h>
+#include <errno.h>
 
 Thread::Thread()
 {
+	name = new Text();
 }
 
 Thread::Thread(const Text &name)
 {
-	
+	this->name = new Text(name);
 }
 
 Thread::Thread(const Text &name, bool joinable)
 {
-	
+	this->name = new Text(name);
+	this->joinable = joinable;
 }
 
 Thread::~Thread()
 {
+	delete name;
 }
 
-void Thread::Launch(NObject *nobject, void (NObject::*method)())
+void Thread::Launch(NObject *nobject, Delegate method, void *param)
 {
-	void **params = new void *[2];
-	params[0] = nobject;
-	//params[1] = (void*)method;
-	//pthread_create(&thread, NULL, threadFunction, params);
-	//((*nobject).*method)();
+	int i = pthread_create(&thread, NULL, threadFunction, new NDelegation(nobject, method, param));
+	if (i == EAGAIN) throw new ThreadingException("Insuficient resources to create another thread", __FILE__, __LINE__, __func__);
+	else if (i == EINVAL) throw new ThreadingException("Invalid attributes", __FILE__, __LINE__, __func__);
+	else if (i == EPERM) throw new ThreadingException("No permission to set attributes and scheduling policy", __FILE__, __LINE__, __func__);
+	
+	char strname[10001];
+	name->GetAnsiString(strname, 10000);
+	pthread_setname_np(thread, strname);
+}
+
+void Thread::Launch(const NDelegation &delegation)
+{
+	int i = pthread_create(&thread, NULL, threadFunction, new NDelegation(delegation));
+	if (i == EAGAIN) throw new ThreadingException("Insuficient resources to create another thread", __FILE__, __LINE__, __func__);
+	else if (i == EINVAL) throw new ThreadingException("Invalid attributes", __FILE__, __LINE__, __func__);
+	else if (i == EPERM) throw new ThreadingException("No permission to set attributes and scheduling policy", __FILE__, __LINE__, __func__);
+	
+	char strname[10001];
+	name->GetAnsiString(strname, 10000);
+	pthread_setname_np(thread, strname);
 }
 
 void *Thread::Join()
 {
-	
+	void *results = NULL;
+	int i = pthread_join(thread, &results);
+	if (i == 0) return results;
+	else if (i == EDEADLK) throw new ThreadingException("A deadlock was detected.", __FILE__, __LINE__, __func__);
+	else if (i == EINVAL) throw new ThreadingException("Thread is not joinable or another thread is waitingo to join", __FILE__, __LINE__, __func__);
+	else if (i == ESRCH) throw new ThreadingException("Specified thread not found", __FILE__, __LINE__, __func__);
+	else throw new ThreadingException("Unspecified error", __FILE__, __LINE__, __func__);
 }
 
 void Thread::Sleep(unsigned long microseconds)
@@ -60,6 +87,9 @@ void Thread::Sleep(unsigned long microseconds)
 
 void *Thread::threadFunction(void *params)
 {
-	
+	NDelegation *d = (NDelegation *)params;
+	void *results = d->Exec();
+	delete d;
+	return results;
 }
 

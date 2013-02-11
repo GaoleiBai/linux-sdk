@@ -21,7 +21,7 @@
 #ifndef THREAD_H
 #define THREAD_H
 
-#include "../n_object.h"
+#include "../ndelegation.h"
 #include <pthread.h>
 
 typedef void (NObject::*THREAD_DELEGATE)() ;
@@ -34,7 +34,8 @@ public:
 	Thread(const Text &name, bool joinable);
 	virtual ~Thread();
 	
-	void Launch(NObject *nobject, void (NObject::*method)());
+	void Launch(NObject *nobject, Delegate method, void *param);
+	void Launch(const NDelegation &delegation);
 	void *Join();
 	static void Sleep(unsigned long microseconds);
 	

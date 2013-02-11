@@ -27,6 +27,13 @@ NDelegation::NDelegation(const NObject *o, void *(NObject::*method)(void *param)
 	this->param = param;
 }
 
+NDelegation::NDelegation(const NDelegation &delegation)
+{
+	o = delegation.o;
+	method = delegation.method;
+	param = delegation.param;
+}
+
 NDelegation::~NDelegation()
 {
 }
