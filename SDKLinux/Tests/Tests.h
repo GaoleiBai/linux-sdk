@@ -32,5 +32,7 @@
 #include "testserialization.h"
 #include "testnumeric.h"
 #include "testserialport.h"
+#include "testthread.h"
+#include "testdelegation.h"
 
 #endif

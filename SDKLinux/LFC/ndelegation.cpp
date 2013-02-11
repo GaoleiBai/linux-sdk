@@ -18,33 +18,21 @@
    02111-1307 USA. or see http://www.gnu.org/licenses/. */
    
    
-#ifndef THREAD_H
-#define THREAD_H
+#include "ndelegation.h"
 
-#include "../n_object.h"
-#include <pthread.h>
+NDelegation::NDelegation(const NObject *o, void *(NObject::*method)(void *param), void *param)
+{
+	this->o = (NObject *)o;
+	this->method = method;
+	this->param = param;
+}
 
-typedef void (NObject::*THREAD_DELEGATE)() ;
+NDelegation::~NDelegation()
+{
+}
 
-class Thread : public NObject {
+void *NDelegation::Exec()
+{
+	return (o->*method)(param);
+}
 
-public:
-	Thread();
-	Thread(const Text &name);
-	Thread(const Text &name, bool joinable);
-	virtual ~Thread();
-	
-	void Launch(NObject *nobject, void (NObject::*method)());
-	void *Join();
-	static void Sleep(unsigned long microseconds);
-	
-private:
-	Text *name;
-	bool joinable;
-	
-	pthread_t thread;
-	static void *threadFunction(void *params);
-
-};
-
-#endif // THREAD_H

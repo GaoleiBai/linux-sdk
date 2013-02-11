@@ -118,6 +118,8 @@
     </VirtualDirectory>
     <File Name="LFC/LFC.cpp"/>
     <File Name="LFC/LFC.h"/>
+    <File Name="LFC/ndelegation.h"/>
+    <File Name="LFC/ndelegation.cpp"/>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>
@@ -158,6 +160,8 @@
       <File Name="Tests/ThreadHelpClasses/classforthreading.h"/>
       <File Name="Tests/ThreadHelpClasses/classforthreading.cpp"/>
     </VirtualDirectory>
+    <File Name="Tests/testdelegation.h"/>
+    <File Name="Tests/testdelegation.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">

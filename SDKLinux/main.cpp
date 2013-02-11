@@ -28,6 +28,11 @@ int main(int argc, char **argv)
 	
 	StdOut::PrintLine("hello world");
 	
+	if (TestDelegation::Perform() != 0) {
+		StdOut::PrintLine("TestDelegation::Perform error");
+		return -1;
+	}
+	
 	if (TestText::PerformAnsi() != 0) {
 		StdOut::PrintLine("PerformAnsi error!");
 		return -1;
