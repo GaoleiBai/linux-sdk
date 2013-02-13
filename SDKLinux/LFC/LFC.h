@@ -75,6 +75,7 @@
 #include "Math/math.h"
 #include "Devices/serialport.h"
 #include "Threading/thread.h"
+#include "Threading/mutex.h"
 
 void lfc_init();
 
