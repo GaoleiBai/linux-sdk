@@ -48,6 +48,8 @@
       <File Name="LFC/Threading/thread.cpp"/>
       <File Name="LFC/Threading/threadingexception.h"/>
       <File Name="LFC/Threading/threadingexception.cpp"/>
+      <File Name="LFC/Threading/mutex.h"/>
+      <File Name="LFC/Threading/mutex.cpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="FileSystem">
       <File Name="LFC/FileSystem/directory.h"/>

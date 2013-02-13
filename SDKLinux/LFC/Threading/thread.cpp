@@ -47,25 +47,17 @@ Thread::~Thread()
 
 void Thread::Launch(NObject *nobject, Delegate method, void *param)
 {
-	int i = pthread_create(&thread, NULL, threadFunction, new NDelegation(nobject, method, param));
-	if (i == EAGAIN) throw new ThreadingException("Insuficient resources to create another thread", __FILE__, __LINE__, __func__);
-	else if (i == EINVAL) throw new ThreadingException("Invalid attributes", __FILE__, __LINE__, __func__);
-	else if (i == EPERM) throw new ThreadingException("No permission to set attributes and scheduling policy", __FILE__, __LINE__, __func__);
-	
-	char strname[10001];
-	name->GetAnsiString(strname, 10000);
-	pthread_setname_np(thread, strname);
-	
-	if (!joinable) {
-		i = pthread_detach(thread);
-		if (i == EINVAL) throw new ThreadingException("Thread is not joinable.", __FILE__, __LINE__, __func__);
-		else if (i == ESRCH) throw new ThreadingException("Specified thread not found", __FILE__, __LINE__, __func__);
-	}
+	NDelegation d(nobject, method, param);
+	Launch(d);
 }
 
 void Thread::Launch(const NDelegation &delegation)
 {
+	pthread_attr_t attrs;
+	pthread_attr_init(&attrs);
+	pthread_attr_setdetachstate(&attrs, joinable ? PTHREAD_CREATE_JOINABLE : PTHREAD_CREATE_DETACHED);
 	int i = pthread_create(&thread, NULL, threadFunction, new NDelegation(delegation));
+	pthread_attr_destroy(&attrs);
 	if (i == EAGAIN) throw new ThreadingException("Insuficient resources to create another thread", __FILE__, __LINE__, __func__);
 	else if (i == EINVAL) throw new ThreadingException("Invalid attributes", __FILE__, __LINE__, __func__);
 	else if (i == EPERM) throw new ThreadingException("No permission to set attributes and scheduling policy", __FILE__, __LINE__, __func__);
@@ -73,12 +65,6 @@ void Thread::Launch(const NDelegation &delegation)
 	char strname[10001];
 	name->GetAnsiString(strname, 10000);
 	pthread_setname_np(thread, strname);
-
-	if (!joinable) {
-		i = pthread_detach(thread);
-		if (i == EINVAL) throw new ThreadingException("Thread is not joinable.", __FILE__, __LINE__, __func__);
-		else if (i == ESRCH) throw new ThreadingException("Specified thread not found", __FILE__, __LINE__, __func__);
-	}
 }
 
 void *Thread::Join()
