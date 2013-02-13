@@ -18,38 +18,28 @@
    02111-1307 USA. or see http://www.gnu.org/licenses/. */
    
    
-#ifndef THREAD_H
-#define THREAD_H
+#ifndef WAITCONDITION_H
+#define WAITCONDITION_H
 
-#include "../ndelegation.h"
+#include "../n_object.h"
 #include <pthread.h>
 
-class Text;
+class Mutex;
 
-typedef void (NObject::*THREAD_DELEGATE)() ;
-
-class Thread : public NObject {
+class WaitCondition : public NObject {
 
 public:
-	Thread();
-	Thread(const Text &name);
-	Thread(const Text &name, bool joinable);
-	virtual ~Thread();
+	WaitCondition();
+	virtual ~WaitCondition();
 	
-	void Launch(NObject *nobject, Delegate method, void *param);
-	void Launch(const NDelegation &delegation);
-	void *Join();
-	static void Sleep(unsigned long microseconds);
+	void Wait(const Mutex &lockedmutex);
+	bool Wait(const Mutex &lockedmutex, unsigned long nanoseconds);
+	void Signal();
+	void SignalAll();
 	
-private:
-	Text *name;
-	bool joinable;
-	
-	pthread_t thread;
-	static void *threadFunction(void *params);
-	
-	Text ToText();
+protected:
+	pthread_cond_t cond;
 
 };
 
-#endif // THREAD_H
+#endif // WAITCONDITION_H

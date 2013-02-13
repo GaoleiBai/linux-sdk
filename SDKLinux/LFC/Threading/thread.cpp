@@ -58,6 +58,7 @@ void Thread::Launch(const NDelegation &delegation)
 	pthread_attr_setdetachstate(&attrs, joinable ? PTHREAD_CREATE_JOINABLE : PTHREAD_CREATE_DETACHED);
 	int i = pthread_create(&thread, NULL, threadFunction, new NDelegation(delegation));
 	pthread_attr_destroy(&attrs);
+	
 	if (i == EAGAIN) throw new ThreadingException("Insuficient resources to create another thread", __FILE__, __LINE__, __func__);
 	else if (i == EINVAL) throw new ThreadingException("Invalid attributes", __FILE__, __LINE__, __func__);
 	else if (i == EPERM) throw new ThreadingException("No permission to set attributes and scheduling policy", __FILE__, __LINE__, __func__);
@@ -71,6 +72,7 @@ void *Thread::Join()
 {
 	void *results = NULL;
 	int i = pthread_join(thread, &results);
+	
 	if (i == 0) return results;
 	else if (i == EDEADLK) throw new ThreadingException("A deadlock was detected.", __FILE__, __LINE__, __func__);
 	else if (i == EINVAL) throw new ThreadingException("Thread is not joinable or another thread is waitingo to join", __FILE__, __LINE__, __func__);
@@ -91,3 +93,7 @@ void *Thread::threadFunction(void *params)
 	return results;
 }
 
+Text Thread::ToText()
+{
+	return *name;
+}

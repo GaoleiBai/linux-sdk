@@ -50,6 +50,8 @@
       <File Name="LFC/Threading/threadingexception.cpp"/>
       <File Name="LFC/Threading/mutex.h"/>
       <File Name="LFC/Threading/mutex.cpp"/>
+      <File Name="LFC/Threading/waitcondition.h"/>
+      <File Name="LFC/Threading/waitcondition.cpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="FileSystem">
       <File Name="LFC/FileSystem/directory.h"/>

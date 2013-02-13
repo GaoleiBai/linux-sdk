@@ -25,6 +25,8 @@
 #include <pthread.h>
 
 class Mutex : public NObject {
+	
+	friend class WaitCondition;
 
 public:
 	Mutex();

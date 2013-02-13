@@ -68,14 +68,18 @@
 #include "Time/datetime.h"
 #include "Time/timeexception.h"
 #include "Devices/stdout.h"
+#include "Devices/serialport.h"
+#include "Devices/deviceexception.h"
 #include "System/system.h"
 #include "System/systemexception.h"
 #include "System/groupinfo.h"
 #include "System/userinfo.h"
 #include "Math/math.h"
-#include "Devices/serialport.h"
+#include "Math/mathexception.h"
 #include "Threading/thread.h"
 #include "Threading/mutex.h"
+#include "Threading/waitcondition.h"
+#include "Threading/threadingexception.h"
 
 void lfc_init();
 
