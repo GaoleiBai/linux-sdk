@@ -26,16 +26,19 @@
 
 Thread::Thread()
 {
+	thread = 0;
 	name = new Text();
 }
 
 Thread::Thread(const Text &name)
 {
+	thread = 0;
 	this->name = new Text(name);
 }
 
 Thread::Thread(const Text &name, bool joinable)
 {
+	thread = 0;
 	this->name = new Text(name);
 	this->joinable = joinable;
 }
@@ -53,6 +56,9 @@ void Thread::Launch(NObject *nobject, Delegate method, void *param)
 
 void Thread::Launch(const NDelegation &delegation)
 {
+	if (thread != 0)
+		throw new ThreadingException("A thread can only be launched once", __FILE__, __LINE__, __func__);
+		
 	pthread_attr_t attrs;
 	pthread_attr_init(&attrs);
 	pthread_attr_setdetachstate(&attrs, joinable ? PTHREAD_CREATE_JOINABLE : PTHREAD_CREATE_DETACHED);

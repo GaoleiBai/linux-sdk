@@ -27,7 +27,6 @@ int TestDelegation::Perform()
 	Text wolomolo = (char *)d.Exec();
 	StdOut::PrintLine(wolomolo);
 	
-	int kk = 0;
-	return 1;
+	return 0;
 }
 

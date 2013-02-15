@@ -28,6 +28,11 @@ int main(int argc, char **argv)
 	
 	StdOut::PrintLine("hello world");
 	
+	if (TestThread::Perform() != 0) {
+		StdOut::PrintLine("TestThread::Perform error");
+		return -1;
+	}
+	
 	if (TestDelegation::Perform() != 0) {
 		StdOut::PrintLine("TestDelegation::Perform error");
 		return -1;

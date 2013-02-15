@@ -2,7 +2,7 @@
 <CodeLite_Workspace Name="SDKLinux" Database="./SDKLinux.tags">
   <Project Name="SDKLinux" Path="SDKLinux.project" Active="Yes"/>
   <BuildMatrix>
-    <WorkspaceConfiguration Name="Debug" Selected="yes">
+    <WorkspaceConfiguration Name="Debug" Selected="no">
       <Project Name="SDKLinux" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">

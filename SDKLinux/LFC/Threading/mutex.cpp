@@ -74,7 +74,7 @@ bool Mutex::TryLock()
 
 void Mutex::Unlock()
 {
-	int i = pthread_mutex_lock(&mutex);
+	int i = pthread_mutex_unlock(&mutex);
 	if (i == EPERM) throw new ThreadingException("Current thread haven't locked the mutex yet", __FILE__, __LINE__, __func__);
 	else if (i == EINVAL) throw new ThreadingException("Thread priority higher than mutex priority or mutex not initialized", __FILE__, __LINE__, __func__);
 	else if (i == EAGAIN) throw new ThreadingException("Maximum recursive locks may be exceeded", __FILE__, __LINE__, __func__);
