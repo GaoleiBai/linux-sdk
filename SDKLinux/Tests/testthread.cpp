@@ -69,6 +69,7 @@ int TestThread::Perform()
 	tR.Launch(&r, (Delegate)&R::Perform, &i);
 	while (i != 0) Thread::Sleep(1000);
 	
+	
 	class Work : public NObject {
 		int bullets;
 		Mutex *m;
@@ -103,6 +104,7 @@ int TestThread::Perform()
 			StdOut::PrintLine("I've run out of bullets");
 		}
 	};
+	
 	
 	bool trigger = false;
 	Work w;
