@@ -80,6 +80,7 @@
 #include "Threading/mutex.h"
 #include "Threading/waitcondition.h"
 #include "Threading/threadingexception.h"
+#include "Threading/mutexlock.h"
 
 void lfc_init();
 

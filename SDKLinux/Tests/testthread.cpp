@@ -45,17 +45,16 @@ int TestThread::Perform()
 		R(const Mutex *m) { this->m = (Mutex *)m; }
 		void *Perform(void *r) {
 			while (true) {
-				m->Lock();
-				int *rr = (int *)r; 
-				if (*rr == 0) {
-					m->Unlock();
-					break;
+				{
+					MutexLock L(m);
+					
+					int *rr = (int *)r; 
+					if (*rr == 0) break;
+					if (*rr % 2 == 0) {
+						StdOut::PrintLine((Text)"i = " + *rr);
+						*rr = *rr - 1;
+					}
 				}
-				if (*rr % 2 == 0) {
-					StdOut::PrintLine((Text)"i = " + *rr);
-					*rr = *rr - 1;
-				}
-				m->Unlock();
 			}
 			StdOut::PrintLine("R ends");
 		}
@@ -92,9 +91,11 @@ int TestThread::Perform()
 		
 		void *Perform(void *param) {
 			while (bullets != 0) {
-				m->Lock();
-				w->Wait(*m);
-				m->Unlock();
+				{
+					MutexLock L(m);
+					
+					w->Wait(*m);
+				}
 				StdOut::PrintLine((Text)bullets-- + " bullets");
 				bool *trigger = (bool *)param;
 				*trigger = true;
