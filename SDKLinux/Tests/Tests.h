@@ -35,4 +35,11 @@
 #include "testthread.h"
 #include "testdelegation.h"
 
+class Tests {
+public:
+	Tests();
+	~Tests();
+	static int Perform();
+};
+
 #endif

@@ -19,36 +19,51 @@ int TestThread::Perform()
 	
 	
 	class Q : public NObject {
+		Mutex *m;
 	public:
+		Q(const Mutex *m) { this->m = (Mutex *)m; }
 		void *Perform(void *q) {
 			while (true) {
+				m->Lock();
 				int *qq = (int *)q; 
-				if (*qq == 0) break;
+				if (*qq == 0) {
+					m->Unlock();
+					break;
+				}
 				if (*qq % 2 == 1) {
 					StdOut::PrintLine((Text)"i = " + *qq);
 					*qq = *qq - 1;
 				}
+				m->Unlock();
 			}
 			StdOut::PrintLine("Q ends");
 		}
 	};
 	class R : public NObject {
+		Mutex *m;
 	public:
+		R(const Mutex *m) { this->m = (Mutex *)m; }
 		void *Perform(void *r) {
 			while (true) {
+				m->Lock();
 				int *rr = (int *)r; 
-				if (*rr == 0) break;
+				if (*rr == 0) {
+					m->Unlock();
+					break;
+				}
 				if (*rr % 2 == 0) {
 					StdOut::PrintLine((Text)"i = " + *rr);
 					*rr = *rr - 1;
 				}
+				m->Unlock();
 			}
 			StdOut::PrintLine("R ends");
 		}
 	};
+	Mutex m;
 	int i = 500;
-	Q q;
-	R r;
+	Q q(&m);
+	R r(&m);
 	Thread tQ;
 	Thread tR;
 	tQ.Launch(&q, (Delegate)&Q::Perform, &i);

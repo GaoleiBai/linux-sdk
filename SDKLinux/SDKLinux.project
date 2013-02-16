@@ -168,6 +168,7 @@
     </VirtualDirectory>
     <File Name="Tests/testdelegation.h"/>
     <File Name="Tests/testdelegation.cpp"/>
+    <File Name="Tests/Tests.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">

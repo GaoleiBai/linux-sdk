@@ -24,84 +24,12 @@
 
 int main(int argc, char **argv)
 {
-	lfc_init(); // lfc initialization
-	
-	StdOut::PrintLine("hello world");
-	
-	if (TestThread::Perform() != 0) {
-		StdOut::PrintLine("TestThread::Perform error");
-		return -1;
+	try {
+		if (!Tests::Perform())
+			StdOut::PrintLine("Error in any test.");		
+	} catch (Exception *e) {
+		delete e;
+	} catch (...) {
+		StdOut::PrintLine("Catched unknown exception.");
 	}
-	
-	if (TestDelegation::Perform() != 0) {
-		StdOut::PrintLine("TestDelegation::Perform error");
-		return -1;
-	}
-	
-	if (TestText::PerformAnsi() != 0) {
-		StdOut::PrintLine("PerformAnsi error!");
-		return -1;
-	}
-	StdOut::PrintLine();
-	
-	if (TestText::PerformWide() != 0) {
-		StdOut::PrintLine("PerformWide error!");
-		return -1;
-	}
-	StdOut::PrintLine();
-	
-	if (TestDirectory::Perform() != 0) {
-		StdOut::PrintLine("TestDirectory::Perform error!");
-		return -1;
-	}
-	StdOut::PrintLine();
-	
-	if (TestDateTime::Perform() != 0) {
-		StdOut::PrintLine("TestDateTime::Perform error!");
-		return -1;
-	}
-	StdOut::PrintLine();
-	
-	if (TestAdministration::Perform() != 0) {
-		StdOut::PrintLine("TestAdministration::Perform error!!!");
-		return -1;
-	}
-	StdOut::PrintLine();
-	
-	if (TestFile::Perform() != 0) {
-		StdOut::PrintLine("TestFile::Perform error!!!");
-		return -1;
-	}
-	
-	if (TestCollection::Perform() != 0) {
-		StdOut::PrintLine("TestCollection::Perform error!!!");
-		return -1;
-	}
-	
-	if (TestDictionary::Perform() != 0) {
-		StdOut::PrintLine("TestDictionary::Perform error!!!");
-		return -1;
-	}
-	
-	if (TestBuffer::Perform() != 0) {
-		StdOut::PrintLine("TestBuffer::Perform error!!!");
-		return -1;
-	}
-	
-	if (TestSerialization::Perform() != 0) {
-		StdOut::PrintLine("TestSerialization::Perform error!!!");
-		return -1;
-	}
-	
-	if (TestSerialPort::Perform() != 0) {
-		StdOut::PrintLine("TestSerialPort::Perform error!!!");
-		return -1;
-	}
-	
-	if (TestNumeric::Perform() != 0) {
-		StdOut::PrintLine("TestNumeric::Perform error!!!");
-		return -1;
-	}
-	
-	return 0;
 }
