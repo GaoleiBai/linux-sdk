@@ -20,26 +20,29 @@
    
 #include "stdout.h"
 #include "stdio.h"
+#include <stdlib.h>
+
+StdOut *StdOut::defaultStdOut = NULL;
 
 StdOut::StdOut()
 {
-}
-
-StdOut::~StdOut()
-{
+	fd = 1;
 }
 
 void StdOut::Print(const Text &t)
 {
-	printf("%S", t.p);
+	if (defaultStdOut == NULL) defaultStdOut = new StdOut();
+	defaultStdOut->Write(t);
 }
 
 void StdOut::PrintLine(const Text &t)
 {
-	printf("%S\r\n", t.p);
+	if (defaultStdOut == 0) defaultStdOut = new StdOut();
+	defaultStdOut->WriteLine(t);
 }
 
 void StdOut::PrintLine()
 {
-	printf("\r\n");
+	if (defaultStdOut == 0) defaultStdOut = new StdOut();
+	defaultStdOut->WriteLine();
 }

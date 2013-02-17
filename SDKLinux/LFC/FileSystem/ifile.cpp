@@ -21,7 +21,9 @@
 #include "ifile.h"
 #include "../Text/text.h"
 #include "../exception.h"
+#include "buffer.h"
 #include <unistd.h>
+#include <string.h>
 
 IFile::IFile()
 {
@@ -95,4 +97,51 @@ bool IFile::WaitForDataGoing(long nanoseconds)
 	
 	FD_CLR(fd, &writeSet);
 	return canWrite;	
+}
+
+Text IFile::ReadLine()
+{
+	Buffer b;
+	char c;
+	
+	while (b.Length() == 0 || b[b.Length() - 1] != '\n') {
+		WaitForDataComming(-1);
+		Read(&c, 1);
+		b.Write(&c, 1);
+	}
+}
+
+void IFile::Write(const Text &text)
+{
+	Text *tt = (Text *)&text;
+	int lont = 2 * tt->Length() + 2;
+	char *t = new char[lont];
+	
+	try {
+		tt->GetAnsiString(t, lont);
+		int escrito = 0;
+		int reallont = strlen(t);
+		while (escrito < reallont) {
+			int res = Write(t + escrito, reallont - escrito);
+			if (res == 0) WaitForDataGoing(-1);
+			escrito += res;
+		}
+	} catch (Exception *e) {
+		delete t;
+		throw e;
+	} catch (...) {
+		delete t;
+	}
+}
+
+void IFile::WriteLine(const Text &text)
+{
+	Write(text);
+	WriteLine();
+}
+
+void IFile::WriteLine()
+{
+	 const char *t = "\n";
+	 Write(t, 1);
 }

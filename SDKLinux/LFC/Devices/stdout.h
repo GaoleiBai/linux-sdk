@@ -21,14 +21,15 @@
 #ifndef STDOUT_H
 #define STDOUT_H
 
-#include "../Text/text.h"
+#include "../FileSystem/ifile.h"
 
-class StdOut {
+class Text;
 
-public:
+class StdOut : public IFile {
+	static StdOut *defaultStdOut;
 	StdOut();
-	virtual ~StdOut();
 	
+public:
 	static void Print(const Text &t);
 	static void PrintLine(const Text &t);
 	static void PrintLine();

@@ -35,6 +35,12 @@ public:
 	virtual int Write(const char *buffer, int lonBuffer);
 	virtual bool WaitForDataComming(long nanoseconds);
 	virtual bool WaitForDataGoing(long nanoseconds);
+	
+	virtual Text ReadLine();
+	virtual void Write(const Text &text);
+	virtual void WriteLine(const Text &text);
+	virtual void WriteLine();
+	
 
 	
 protected:
