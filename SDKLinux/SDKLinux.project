@@ -42,7 +42,10 @@
       <File Name="LFC/Devices/deviceexception.h"/>
       <File Name="LFC/Devices/deviceexception.cpp"/>
     </VirtualDirectory>
-    <VirtualDirectory Name="Network"/>
+    <VirtualDirectory Name="Network">
+      <File Name="LFC/Network/socket.h"/>
+      <File Name="LFC/Network/socket.cpp"/>
+    </VirtualDirectory>
     <VirtualDirectory Name="Threading">
       <File Name="LFC/Threading/thread.h"/>
       <File Name="LFC/Threading/thread.cpp"/>
@@ -128,6 +131,7 @@
     <File Name="LFC/LFC.h"/>
     <File Name="LFC/ndelegation.h"/>
     <File Name="LFC/ndelegation.cpp"/>
+    <VirtualDirectory Name="Data"/>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>
