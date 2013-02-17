@@ -41,6 +41,8 @@
       <File Name="LFC/Devices/serialport.cpp"/>
       <File Name="LFC/Devices/deviceexception.h"/>
       <File Name="LFC/Devices/deviceexception.cpp"/>
+      <File Name="LFC/Devices/stdin.h"/>
+      <File Name="LFC/Devices/stdin.cpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Network">
       <File Name="LFC/Network/socket.h"/>

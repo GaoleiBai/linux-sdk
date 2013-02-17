@@ -68,6 +68,7 @@
 #include "Time/datetime.h"
 #include "Time/timeexception.h"
 #include "Devices/stdout.h"
+#include "Devices/stdin.h"
 #include "Devices/serialport.h"
 #include "Devices/deviceexception.h"
 #include "System/system.h"
@@ -81,6 +82,10 @@
 #include "Threading/waitcondition.h"
 #include "Threading/threadingexception.h"
 #include "Threading/mutexlock.h"
+#include "Network/ipv4socketaddress.h"
+#include "Network/isocketaddress.h"
+#include "Network/networkexception.h"
+#include "Network/socket.h"
 
 void lfc_init();
 
