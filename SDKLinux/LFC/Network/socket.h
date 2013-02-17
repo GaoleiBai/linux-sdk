@@ -55,6 +55,7 @@ public:
 	
 	void Bind(const ISocketAddress &address);
 	void Connect(const ISocketAddress &address);
+	void Connect(const ISocketAddress &address, long nanoseconds_timeout);
 	void Listen(int backlog);
 	void Accept(ISocketAddress &address);
 	void Close();

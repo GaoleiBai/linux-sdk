@@ -69,6 +69,11 @@ void Socket::Bind(const ISocketAddress &address)
 
 void Socket::Connect(const ISocketAddress &address)
 {
+	Connect(address, 60000000000L);
+}
+
+void Socket::Connect(const ISocketAddress &address, long nanoseconds_timeout)
+{
 	if (fd == -1)
 		throw new NetworkException("Cannot Connect a closed socket", __FILE__, __LINE__, __func__);
 		
@@ -76,7 +81,10 @@ void Socket::Connect(const ISocketAddress &address)
 		IPV4SocketAddress *a = (IPV4SocketAddress *)&address;
 		if (connect(fd, a->GetAddressData(), a->GetAddressLen()) == -1)
 			throw new NetworkException(Text::FromErrno(), __FILE__, __LINE__, __func__);
-		WaitForDataGoing(-1);
+		if (!WaitForDataGoing(nanoseconds_timeout)) {
+			Close();
+			throw new NetworkException("Connection timeout. Socket closed.", __FILE__, __LINE__, __func__);
+		}
 	} else {
 		throw new NetworkException("Not implemented", __FILE__, __LINE__, __func__);
 	}
