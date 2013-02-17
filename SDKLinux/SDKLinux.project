@@ -45,6 +45,12 @@
     <VirtualDirectory Name="Network">
       <File Name="LFC/Network/socket.h"/>
       <File Name="LFC/Network/socket.cpp"/>
+      <File Name="LFC/Network/networkexception.h"/>
+      <File Name="LFC/Network/networkexception.cpp"/>
+      <File Name="LFC/Network/isocketaddress.h"/>
+      <File Name="LFC/Network/isocketaddress.cpp"/>
+      <File Name="LFC/Network/ipv4socketaddress.h"/>
+      <File Name="LFC/Network/ipv4socketaddress.cpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Threading">
       <File Name="LFC/Threading/thread.h"/>

@@ -29,7 +29,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-class File : public NObject, public IFile {
+class File : public IFile {
 
 public:
 	File(const Text &filename, int mode);
