@@ -89,7 +89,7 @@ void Socket::Accept(ISocketAddress &address)
 		int clientSocket = accept(fd, (sockaddr *)&addr, &socklen);
 		if (clientSocket == -1)
 			throw new NetworkException(Text::FromErrno(), __FILE__, __LINE__, __func__);
-		(IPV4SocketAddress &)address = IPV4SocketAddress(&addr);
+		(IPV4SocketAddress &)address = &addr;
 	} else {
 		throw new NetworkException("Not implemented", __FILE__, __LINE__, __func__);
 	}
