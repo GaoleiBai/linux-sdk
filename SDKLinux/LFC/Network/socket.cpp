@@ -42,11 +42,6 @@ Socket::~Socket()
 	Close();
 }
 
-Text Socket::ToText()
-{
-	return NObject::ToText();
-}
-
 void Socket::Close()
 {
 	if (fd == -1)

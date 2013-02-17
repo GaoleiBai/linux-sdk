@@ -53,8 +53,6 @@ public:
 	Socket(int sock_domain, int sock_type, int sock_protocol);
 	virtual ~Socket();
 	
-	virtual Text ToText();
-	
 	void Bind(const ISocketAddress &address);
 	void Connect(const ISocketAddress &address);
 	void Listen(int backlog);

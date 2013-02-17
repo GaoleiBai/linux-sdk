@@ -65,6 +65,11 @@ int IPV4SocketAddress::Port()
 	return port;
 }
 
+Text IPV4SocketAddress::ToText()
+{
+	return *hostname + ":" + port;
+}
+
 struct sockaddr *IPV4SocketAddress::GetAddressData()
 {
 	static sockaddr_in addr;

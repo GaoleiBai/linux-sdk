@@ -42,6 +42,8 @@ public:
 	
 	Text Hostname();
 	int Port();
+	
+	virtual Text ToText();
 
 	static IPV4SocketAddress AnyLocal();
 	virtual struct sockaddr *GetAddressData();
