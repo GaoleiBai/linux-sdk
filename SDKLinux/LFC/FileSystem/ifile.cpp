@@ -55,7 +55,7 @@ int IFile::Write(const char *buffer, int lonBuffer)
 	return escrito;
 }
 
-bool IFile::WaitForDataComming(unsigned long nanoseconds)
+bool IFile::WaitForDataComming(long nanoseconds)
 {
 	if (fd == -1)
 		throw new Exception("Can only perform actions on an open device", __FILE__, __LINE__, __func__);
@@ -63,12 +63,36 @@ bool IFile::WaitForDataComming(unsigned long nanoseconds)
 	struct timeval timeout;
 	timeout.tv_sec = nanoseconds / 1000000000;
 	timeout.tv_usec = nanoseconds % 1000000000;
+	
 	fd_set readSet;
 	FD_ZERO(&readSet);
 	FD_SET(fd, &readSet);
-	if (select(fd + 1, &readSet, NULL, NULL, &timeout) == -1)
+	
+	if (select(fd + 1, &readSet, NULL, NULL, nanoseconds < 0 ? NULL : &timeout) == -1)
 		throw new Exception(Text::FromErrno(), __FILE__, __LINE__, __func__);
 	bool thereIsData = FD_ISSET(fd, &readSet);	
+	
 	FD_CLR(fd, &readSet);
 	return thereIsData;
+}
+
+bool IFile::WaitForDataGoing(long nanoseconds)
+{
+	if (fd == -1)
+		throw new Exception("Can only performa actions on an open device", __FILE__, __LINE__, __func__);
+		
+	struct timeval timeout;
+	timeout.tv_sec = nanoseconds / 1000000000;
+	timeout.tv_usec = nanoseconds % 1000000000;
+	
+	fd_set writeSet;
+	FD_ZERO(&writeSet);
+	FD_SET(fd, &writeSet);
+	
+	if (select(fd + 1, NULL, &writeSet, NULL, nanoseconds < 0 ? NULL : &timeout) == -1)
+		throw new Exception(Text::FromErrno(), __FILE__, __LINE__, __func__);
+	bool canWrite = FD_ISSET(fd, &writeSet);	
+	
+	FD_CLR(fd, &writeSet);
+	return canWrite;	
 }

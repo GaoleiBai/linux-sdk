@@ -27,8 +27,8 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 
-class Socket : public IFile, public NObject {
-	
+class Socket : public IFile, public NObject 
+{	
 public:
 
 	static const int SockDomainLocal = AF_LOCAL;

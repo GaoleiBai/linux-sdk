@@ -55,6 +55,9 @@ void Socket::Close()
 
 void Socket::Bind(const ISocketAddress &address)
 {
+	if (fd == -1)
+		throw new NetworkException("Cannot Bind a closed socket", __FILE__, __LINE__, __func__);
+		
 	if (typeid(address) == typeid(IPV4SocketAddress)) {
 		IPV4SocketAddress *a = (IPV4SocketAddress *)&address;
 		if (bind(fd, a->GetAddressData(), a->GetAddressLen()) == -1)
@@ -66,10 +69,14 @@ void Socket::Bind(const ISocketAddress &address)
 
 void Socket::Connect(const ISocketAddress &address)
 {
+	if (fd == -1)
+		throw new NetworkException("Cannot Connect a closed socket", __FILE__, __LINE__, __func__);
+		
 	if (typeid(address) == typeid(IPV4SocketAddress)) {
 		IPV4SocketAddress *a = (IPV4SocketAddress *)&address;
 		if (connect(fd, a->GetAddressData(), a->GetAddressLen()) == -1)
 			throw new NetworkException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+		WaitForDataGoing(-1);
 	} else {
 		throw new NetworkException("Not implemented", __FILE__, __LINE__, __func__);
 	}
@@ -77,18 +84,28 @@ void Socket::Connect(const ISocketAddress &address)
 
 void Socket::Listen(int backlog)
 {
+	if (fd == -1)
+		throw new NetworkException("Cannot Listen a closed socket", __FILE__, __LINE__, __func__);
+		
 	if (listen(fd, backlog) == -1)
 		throw new NetworkException(Text::FromErrno(), __FILE__, __LINE__, __func__);
 }
 
 void Socket::Accept(ISocketAddress &address)
 {
+	if (fd == -1)
+		throw new NetworkException("Cannot Accept a closed socket", __FILE__, __LINE__, __func__);
+		
 	if (typeid(address) == typeid(IPV4SocketAddress)) {
 		struct sockaddr_in addr;
 		socklen_t socklen = sizeof(addr);
+		
+		// El socket se crea como no bloqueante, por lo que se espera a que lleguen los datos de la nueva conexión
+		WaitForDataComming(-1);
 		int clientSocket = accept(fd, (sockaddr *)&addr, &socklen);
 		if (clientSocket == -1)
 			throw new NetworkException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+			
 		(IPV4SocketAddress &)address = &addr;
 	} else {
 		throw new NetworkException("Not implemented", __FILE__, __LINE__, __func__);
