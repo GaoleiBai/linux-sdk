@@ -40,7 +40,7 @@ int TestText::PerformAnsi()
 	StdOut::PrintLine((Text)"Hola " + 5.25);
 	
 	NObject o;
-	Text compnobject = "7NObject";
+	Text compnobject = "NObject";
 	StdOut::PrintLine(o.ToText());
 	if (compnobject != o.ToText()) {
 		StdOut::PrintLine("NObject::ToText() error!!!");
