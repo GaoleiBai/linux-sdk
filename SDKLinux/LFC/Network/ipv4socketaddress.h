@@ -30,12 +30,18 @@ class IPV4SocketAddress : ISocketAddress
 	Text *hostname;
 	int port;
 	
+	
 public:
 	static const int PortAny = 0;
 	
 	IPV4SocketAddress();
+	IPV4SocketAddress(const IPV4SocketAddress &addr);
+	IPV4SocketAddress(struct sockaddr_in *saddr);
 	IPV4SocketAddress(const Text &hostname, int port);
 	virtual ~IPV4SocketAddress();
+	
+	Text Hostname();
+	int Port();
 
 	static IPV4SocketAddress AnyLocal();
 	virtual struct sockaddr *GetAddressData();

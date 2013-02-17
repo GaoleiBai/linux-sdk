@@ -32,6 +32,18 @@ IPV4SocketAddress::IPV4SocketAddress()
 	port = 0;
 }
 
+IPV4SocketAddress::IPV4SocketAddress(const IPV4SocketAddress &addr)
+{
+	hostname = new Text(addr.hostname);
+	port = addr.port;
+}
+
+IPV4SocketAddress::IPV4SocketAddress(struct sockaddr_in *s)
+{
+	s->sin_port;
+	hostname = new Text(inet_ntoa(s->sin_addr));
+}
+
 IPV4SocketAddress::IPV4SocketAddress(const Text &hostname, int port)
 {
 	this->hostname = new Text(hostname);
@@ -41,6 +53,16 @@ IPV4SocketAddress::IPV4SocketAddress(const Text &hostname, int port)
 IPV4SocketAddress::~IPV4SocketAddress()
 {
 	if (hostname != NULL) delete hostname;
+}
+
+Text IPV4SocketAddress::Hostname()
+{
+	return *hostname;
+}
+
+int IPV4SocketAddress::Port()
+{
+	return port;
 }
 
 struct sockaddr *IPV4SocketAddress::GetAddressData()

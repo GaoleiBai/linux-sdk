@@ -55,10 +55,10 @@ public:
 	
 	virtual Text ToText();
 	
-	void Bind(const IPV4SocketAddress &address);
-	void Connect(const IPV4SocketAddress &address);
+	void Bind(const ISocketAddress &address);
+	void Connect(const ISocketAddress &address);
 	void Listen(int backlog);
-	void Accept();
+	void Accept(ISocketAddress &address);
 	void Close();
 
 };

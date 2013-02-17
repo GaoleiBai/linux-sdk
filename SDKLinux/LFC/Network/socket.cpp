@@ -19,9 +19,12 @@
    
    
 #include "socket.h"
+#include "isocketaddress.h"
 #include "networkexception.h"
 #include "../Text/text.h"
 #include <unistd.h>
+#include <netinet/in.h>
+#include <typeinfo>
 
 Socket::Socket(int sock_domain, int sock_type, int sock_protocol)
 {
@@ -55,22 +58,44 @@ void Socket::Close()
 	fd = -1;
 }
 
-void Socket::Bind(const IPV4SocketAddress &address)
+void Socket::Bind(const ISocketAddress &address)
 {
-	IPV4SocketAddress *a = (IPV4SocketAddress *)&address;
-	if (bind(fd, a->GetAddressData(), a->GetAddressLen()) == -1)
-		throw new NetworkException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+	if (typeid(address) == typeid(IPV4SocketAddress)) {
+		IPV4SocketAddress *a = (IPV4SocketAddress *)&address;
+		if (bind(fd, a->GetAddressData(), a->GetAddressLen()) == -1)
+			throw new NetworkException(Text::FromErrno(), __FILE__, __LINE__, __func__);		
+	} else {
+		throw new NetworkException("Not implemented", __FILE__, __LINE__, __func__);
+	}
 }
 
-void Socket::Connect(const IPV4SocketAddress &address)
+void Socket::Connect(const ISocketAddress &address)
 {
-	IPV4SocketAddress *a = (IPV4SocketAddress *)&address;
-	if (connect(fd, a->GetAddressData(), a->GetAddressLen()) == -1)
-		throw new NetworkException(Text::FromErrno(), __FILE__, __LINE__, __func__);	
+	if (typeid(address) == typeid(IPV4SocketAddress)) {
+		IPV4SocketAddress *a = (IPV4SocketAddress *)&address;
+		if (connect(fd, a->GetAddressData(), a->GetAddressLen()) == -1)
+			throw new NetworkException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+	} else {
+		throw new NetworkException("Not implemented", __FILE__, __LINE__, __func__);
+	}
 }
 
 void Socket::Listen(int backlog)
 {
 	if (listen(fd, backlog) == -1)
 		throw new NetworkException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+}
+
+void Socket::Accept(ISocketAddress &address)
+{
+	if (typeid(address) == typeid(IPV4SocketAddress)) {
+		struct sockaddr_in addr;
+		socklen_t socklen = sizeof(addr);
+		int clientSocket = accept(fd, (sockaddr *)&addr, &socklen);
+		if (clientSocket == -1)
+			throw new NetworkException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+		(IPV4SocketAddress &)address = IPV4SocketAddress(&addr);
+	} else {
+		throw new NetworkException("Not implemented", __FILE__, __LINE__, __func__);
+	}
 }
