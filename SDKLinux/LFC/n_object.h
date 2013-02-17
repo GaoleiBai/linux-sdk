@@ -35,6 +35,8 @@ public:
 	NObject();
 	virtual ~NObject();
 	
+	Text ClassName();
+	
 	virtual NObject *NewInstance();
 	virtual Text ToText();
 	virtual long long ToLongLong();

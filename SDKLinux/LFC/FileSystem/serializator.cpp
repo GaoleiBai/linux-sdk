@@ -28,6 +28,7 @@
 #include <typeinfo>
 #include <unistd.h>
 #include <time.h>
+#include <ctype.h>
 
 
 Serializator::Serializator(const IFile &file)
@@ -55,7 +56,8 @@ void Serializator::Put(char *buffer, int lonBuffer)
 void Serializator::Put(const NObject &o) 
 {
 	char strName[1000];
-	strcpy(strName, typeid(o).name());
+	((NObject *)&o)->ClassName().GetAnsiString(strName, 1000);
+	
 	unsigned char namelen = strlen(strName);
 	unsigned char signature = 0x000000CC;
 

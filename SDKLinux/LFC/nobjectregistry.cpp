@@ -43,7 +43,7 @@ void NObjectRegistry::Register(const NObject &o)
 	if (registry == NULL) 
 		registry = new NObjectRegistry();
 		
-	Text classname = typeid(o).name();
+	Text classname = ((NObject *)&o)->ClassName();
 	if (!registry->classes->ExistsKey(&classname))
 		registry->classes->SetKey(new Text(classname), ((NObject *)&o)->NewInstance());
 }

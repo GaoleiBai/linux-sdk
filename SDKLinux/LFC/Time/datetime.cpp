@@ -329,7 +329,7 @@ int DateTime::Compare(const NObject &o)
 {
 	if (typeid(o) != typeid(DateTime)) 
 		throw new TimeException(
-			(Text)"Cannot compare a DateTime object with a object of type " + typeid(o).name(), 
+			(Text)"Cannot compare a DateTime object with a object of type " + ((NObject *)&o)->ClassName(), 
 			__FILE__, __LINE__, __func__);
 	
 	return Compare((DateTime &)o);

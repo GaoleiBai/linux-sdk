@@ -22,6 +22,7 @@
 #include "n_object.h"
 #include "Text/text.h"
 #include "FileSystem/serializator.h"
+#include <ctype.h>
 
 NObject::NObject()
 {
@@ -31,14 +32,21 @@ NObject::~NObject()
 {
 }
 
+Text NObject::ClassName()
+{
+	char *p = (char *)typeid(*this).name();
+	while (isdigit(*p)) p++;
+	return Text(p);
+}
+
 NObject *NObject::NewInstance()
 {
-	throw new Exception((Text)typeid(*this).name() + "::NewInstance() needs to be implemented to be able to deserializate a class.", __FILE__, __LINE__, __func__);
+	throw new Exception(ClassName() + "::NewInstance() needs to be implemented to be able to deserializate a class.", __FILE__, __LINE__, __func__);
 }
 
 Text NObject::ToText()
 {
-	return Text(typeid(*this).name());
+	return ClassName();
 }
 
 int NObject::Compare(const NObject &o)
@@ -48,12 +56,12 @@ int NObject::Compare(const NObject &o)
 
 void NObject::Serialize(const Serializator &s)
 {
-	throw new Exception((Text)typeid(*this).name() + "::Serialize() must be able to serialize.", __FILE__, __LINE__, __func__);
+	throw new Exception(ClassName() + "::Serialize() must be able to serialize.", __FILE__, __LINE__, __func__);
 }
 
 void NObject::Deserialize(const Serializator &s)
 {
-	throw new Exception((Text)typeid(*this).name() + "Deserialize() must be implemented to be able to deserialize.", __FILE__, __LINE__, __func__);
+	throw new Exception(ClassName() + "Deserialize() must be implemented to be able to deserialize.", __FILE__, __LINE__, __func__);
 }
 
 long long NObject::ToLongLong()
