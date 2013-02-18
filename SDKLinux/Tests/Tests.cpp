@@ -35,6 +35,8 @@ int Tests::Perform()
 {
 	lfc_init(); // lfc initialization
 	
+	//Text t = StdIn::GetLine();
+	
 	StdOut::PrintLine("hello world");
 	
 	if (TestThread::Perform() != 0) {
