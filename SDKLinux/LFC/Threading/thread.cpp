@@ -84,6 +84,7 @@ void *Thread::Join()
 	else if (i == EINVAL) throw new ThreadingException("Thread is not joinable or another thread is waitingo to join", __FILE__, __LINE__, __func__);
 	else if (i == ESRCH) throw new ThreadingException("Specified thread not found", __FILE__, __LINE__, __func__);
 	else throw new ThreadingException("Unspecified error", __FILE__, __LINE__, __func__);
+	return results;
 }
 
 void Thread::Sleep(unsigned long microseconds)

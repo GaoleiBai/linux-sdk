@@ -110,11 +110,28 @@ int TestThread::Perform()
 	Work w;
 	Thread tW;
 	tW.Launch(&w, (Delegate)&Work::Perform, &trigger);
+	Thread::Sleep(100000);
 	for (int i=0; i<500; i++) {
 		trigger = false;
 		w.Shot();
 		while(!trigger) Thread::Sleep(100);
 	}
+	
+	class JoinableWork : public NObject {
+		long item;
+	public:
+		JoinableWork(int itemnumber) { item = itemnumber; }
+		void *DoWork(void *param) {
+			for (int i=0; i<5; i++) StdOut::PrintLine((Text)"Done " + item + ":" + i);
+			delete this;
+			return (void *)item;
+		}
+	};
+	Collection<Thread *> threadcol;
+	for (int i=0; i<100; i++) threadcol.Add(new Thread((Text)"JoinableWork " + i, true));
+	for (int i=0; i<100; i++) threadcol[i]->Launch(new JoinableWork(i), (Delegate)&JoinableWork::DoWork, NULL);
+	for (int i=0; i<100; i++) StdOut::PrintLine((Text)"Finished " + (long)threadcol[i]->Join());
+	threadcol.DeleteAndClear();
 	
 	return 0;
 }
