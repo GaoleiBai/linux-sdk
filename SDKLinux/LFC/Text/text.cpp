@@ -422,6 +422,21 @@ Text Text::Trim(const Collection<wchar_t> &c)
 	return *this;
 }
 
+Text Text::TrimLeft()
+{
+	return TrimLeft("\t\r\n ");
+}
+
+Text Text::TrimRight()
+{
+	return TrimRight("\t\r\n ");
+}
+
+Text Text::Trim()
+{
+	return Trim("\t\r\n ");
+}
+
 Text Text::ToUpper()
 {
 	Text t = *this;

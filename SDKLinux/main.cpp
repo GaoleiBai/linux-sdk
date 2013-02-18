@@ -24,6 +24,8 @@
 
 int main(int argc, char **argv)
 {
+	Text t = StdIn::GetLine();
+	
 	try {
 		if (!Tests::Perform())
 			StdOut::PrintLine("Error in any test.");		

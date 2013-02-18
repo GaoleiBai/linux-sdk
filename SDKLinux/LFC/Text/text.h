@@ -98,6 +98,9 @@ public:
 	Text TrimLeft(const Collection<wchar_t> &c);
 	Text TrimRight(const Collection<wchar_t> &c);
 	Text Trim(const Collection<wchar_t> &c);
+	Text TrimLeft();
+	Text TrimRight();
+	Text Trim();
 	Text ToUpper();
 	Text ToLower();
 	Collection<int> ExtractIndexes(Text &textToFind);

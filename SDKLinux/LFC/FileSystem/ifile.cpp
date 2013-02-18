@@ -109,6 +109,8 @@ Text IFile::ReadLine()
 		Read(&c, 1);
 		b.Write(&c, 1);
 	}
+	
+	return b.ToText().Trim();
 }
 
 void IFile::Write(const Text &text)
