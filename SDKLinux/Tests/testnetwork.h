@@ -18,29 +18,17 @@
    02111-1307 USA. or see http://www.gnu.org/licenses/. */
    
    
-#ifndef TESTS_H
-#define TESTS_H
+#ifndef TESTNETWORK_H
+#define TESTNETWORK_H
 
-#include "test_text.h"
-#include "testdirectory.h"
-#include "testdatetime.h"
-#include "testadministration.h"
-#include "testfile.h"
-#include "testcollection.h"
-#include "testdictionary.h"
-#include "test_buffer.h"
-#include "testserialization.h"
-#include "testnumeric.h"
-#include "testserialport.h"
-#include "testthread.h"
-#include "testdelegation.h"
-#include "testnetwork.h"
+class TestNetwork {
 
-class Tests {
 public:
-	Tests();
-	~Tests();
+	TestNetwork();
+	virtual ~TestNetwork();
+	
 	static int Perform();
+
 };
 
-#endif
+#endif // TESTNETWORK_H

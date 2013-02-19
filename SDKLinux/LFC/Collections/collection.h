@@ -295,9 +295,8 @@ void Collection<T>::Pack()
 template<class T>
 T &Collection<T>::operator[](int ix)
 {
-	if (ix < 0 || ix > numObjects) {
+	if (ix < 0 || ix > numObjects) 
 		new CollectionException("Index out of bounds", __FILE__, __LINE__, __func__);
-	}
 	return objects[ix];
 }
 

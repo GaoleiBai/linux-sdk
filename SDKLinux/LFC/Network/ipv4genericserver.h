@@ -18,29 +18,32 @@
    02111-1307 USA. or see http://www.gnu.org/licenses/. */
    
    
-#ifndef TESTS_H
-#define TESTS_H
+#ifndef IPV4GENERICSERVER_H
+#define IPV4GENERICSERVER_H
 
-#include "test_text.h"
-#include "testdirectory.h"
-#include "testdatetime.h"
-#include "testadministration.h"
-#include "testfile.h"
-#include "testcollection.h"
-#include "testdictionary.h"
-#include "test_buffer.h"
-#include "testserialization.h"
-#include "testnumeric.h"
-#include "testserialport.h"
-#include "testthread.h"
-#include "testdelegation.h"
-#include "testnetwork.h"
+#include "socket.h"
+#include "../Collections/collection.h"
+#include "../Threading/mutex.h"
+#include "../ndelegation.h"
 
-class Tests {
+class IPV4GenericServer : public NObject {
+	Mutex *mutex;
+	Socket *socket;
+	Collection<Socket *> *clientSockets;
+	
+	NDelegation *delegationOnManageNewConnection;
+	NDelegation *delegationOnManageClient;
+	
+	void *serverAcceptFunction(void *params);
+	void *clientFunction(void *params);
+	
 public:
-	Tests();
-	~Tests();
-	static int Perform();
+	IPV4GenericServer(int port);
+	virtual ~IPV4GenericServer();
+	
+	void OnNewCollection(const NDelegation &action);
+	void OnManageClient(const NDelegation &action);
+
 };
 
-#endif
+#endif // IPV4GENERICSERVER_H

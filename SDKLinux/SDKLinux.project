@@ -53,6 +53,8 @@
       <File Name="LFC/Network/isocketaddress.cpp"/>
       <File Name="LFC/Network/ipv4socketaddress.h"/>
       <File Name="LFC/Network/ipv4socketaddress.cpp"/>
+      <File Name="LFC/Network/ipv4genericserver.h"/>
+      <File Name="LFC/Network/ipv4genericserver.cpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Threading">
       <File Name="LFC/Threading/thread.h"/>
@@ -183,6 +185,8 @@
     <File Name="Tests/testdelegation.h"/>
     <File Name="Tests/testdelegation.cpp"/>
     <File Name="Tests/Tests.cpp"/>
+    <File Name="Tests/testnetwork.h"/>
+    <File Name="Tests/testnetwork.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">

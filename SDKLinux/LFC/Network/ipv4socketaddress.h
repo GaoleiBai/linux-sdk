@@ -25,7 +25,7 @@
 
 class Text;
 
-class IPV4SocketAddress : ISocketAddress 
+class IPV4SocketAddress : public ISocketAddress 
 {
 	Text *hostname;
 	int port;
