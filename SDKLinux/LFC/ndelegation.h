@@ -28,16 +28,15 @@ typedef void *(NObject::*Delegate)(void *param);
 class NDelegation : public NObject {
 
 public:
-	NDelegation(const NObject *o, void *(NObject::*method)(void *param), void *param);
+	NDelegation(const NObject *o, void *(NObject::*method)(void *param));
 	NDelegation(const NDelegation &delegation);
 	virtual ~NDelegation();
 
-	void *Exec();
+	void *Execute(void *params);
 	
 protected:
 	NObject *o;
 	void *(NObject::*method)(void *param);
-	void *param;
 	
 };
 

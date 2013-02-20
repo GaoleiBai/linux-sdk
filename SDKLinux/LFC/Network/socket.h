@@ -29,6 +29,8 @@
 
 class Socket : public IFile, public NObject 
 {	
+	Socket(int socket);
+
 public:
 
 	static const int SockDomainLocal = AF_LOCAL;
@@ -57,7 +59,7 @@ public:
 	void Connect(const ISocketAddress &address);
 	void Connect(const ISocketAddress &address, long nanoseconds_timeout);
 	void Listen(int backlog);
-	void Accept(ISocketAddress &address);
+	Socket *Accept(ISocketAddress &address);
 	void Close();
 
 };

@@ -23,8 +23,8 @@ int TestDelegation::Perform()
 	};
 	
 	A aa;
-	NDelegation d(&aa, (Delegate)&A::amethod, (char *)"Aparam");
-	Text wolomolo = (char *)d.Exec();
+	NDelegation d(&aa, (Delegate)&A::amethod);
+	Text wolomolo = (char *)d.Execute((char *)"Aparam");
 	StdOut::PrintLine(wolomolo);
 	
 	return 0;

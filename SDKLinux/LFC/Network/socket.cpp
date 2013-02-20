@@ -26,6 +26,11 @@
 #include <netinet/in.h>
 #include <typeinfo>
 
+Socket::Socket(int socket)
+{
+	fd = socket;
+}
+
 Socket::Socket(int sock_domain, int sock_type, int sock_protocol)
 {
 	fd = ::socket(sock_domain, sock_type | SOCK_NONBLOCK, sock_protocol);
@@ -99,7 +104,7 @@ void Socket::Listen(int backlog)
 		throw new NetworkException(Text::FromErrno(), __FILE__, __LINE__, __func__);
 }
 
-void Socket::Accept(ISocketAddress &address)
+Socket *Socket::Accept(ISocketAddress &address)
 {
 	if (fd == -1)
 		throw new NetworkException("Cannot Accept a closed socket", __FILE__, __LINE__, __func__);
@@ -114,7 +119,9 @@ void Socket::Accept(ISocketAddress &address)
 		if (clientSocket == -1)
 			throw new NetworkException(Text::FromErrno(), __FILE__, __LINE__, __func__);
 			
+		// Return results
 		(IPV4SocketAddress &)address = &addr;
+		return new Socket(clientSocket);
 	} else {
 		throw new NetworkException("Not implemented", __FILE__, __LINE__, __func__);
 	}

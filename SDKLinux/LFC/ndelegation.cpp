@@ -20,26 +20,24 @@
    
 #include "ndelegation.h"
 
-NDelegation::NDelegation(const NObject *o, void *(NObject::*method)(void *param), void *param)
+NDelegation::NDelegation(const NObject *o, void *(NObject::*method)(void *param))
 {
 	this->o = (NObject *)o;
 	this->method = method;
-	this->param = param;
 }
 
 NDelegation::NDelegation(const NDelegation &delegation)
 {
 	o = delegation.o;
 	method = delegation.method;
-	param = delegation.param;
 }
 
 NDelegation::~NDelegation()
 {
 }
 
-void *NDelegation::Exec()
+void *NDelegation::Execute(void *params)
 {
-	return (o->*method)(param);
+	return (o->*method)(params);
 }
 

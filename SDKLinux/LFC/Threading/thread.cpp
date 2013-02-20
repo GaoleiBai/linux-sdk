@@ -50,11 +50,11 @@ Thread::~Thread()
 
 void Thread::Launch(NObject *nobject, Delegate method, void *param)
 {
-	NDelegation d(nobject, method, param);
-	Launch(d);
+	NDelegation d(nobject, method);
+	Launch(d, param);
 }
 
-void Thread::Launch(const NDelegation &delegation)
+void Thread::Launch(const NDelegation &delegation, void *params)
 {
 	if (thread != 0)
 		throw new ThreadingException("A thread can only be launched once", __FILE__, __LINE__, __func__);
@@ -62,7 +62,8 @@ void Thread::Launch(const NDelegation &delegation)
 	pthread_attr_t attrs;
 	pthread_attr_init(&attrs);
 	pthread_attr_setdetachstate(&attrs, joinable ? PTHREAD_CREATE_JOINABLE : PTHREAD_CREATE_DETACHED);
-	int i = pthread_create(&thread, NULL, threadFunction, new NDelegation(delegation));
+	void *threadParams[2] = { new NDelegation(delegation), params };
+	int i = pthread_create(&thread, NULL, threadFunction, threadParams);
 	pthread_attr_destroy(&attrs);
 	
 	if (i == EAGAIN) throw new ThreadingException("Insuficient resources to create another thread", __FILE__, __LINE__, __func__);
@@ -94,8 +95,15 @@ void Thread::Sleep(unsigned long microseconds)
 
 void *Thread::threadFunction(void *params)
 {
-	NDelegation *d = (NDelegation *)params;
-	void *results = d->Exec();
+	// Read parameters
+	void **vparams = (void **)params;
+	NDelegation *d = (NDelegation *)vparams[0];
+	void *delegateParams = vparams[1];
+	
+	// Execute delegate
+	void *results = d->Execute(delegateParams);
+	
+	// Delete and return 
 	delete d;
 	return results;
 }

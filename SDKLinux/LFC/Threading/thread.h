@@ -37,7 +37,7 @@ public:
 	virtual ~Thread();
 	
 	void Launch(NObject *nobject, Delegate method, void *param);
-	void Launch(const NDelegation &delegation);
+	void Launch(const NDelegation &delegation, void *param);
 	void *Join();
 	static void Sleep(unsigned long microseconds);
 	
