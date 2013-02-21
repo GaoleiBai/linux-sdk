@@ -44,6 +44,7 @@ int TestThread::Perform()
 		Q(const Mutex *m) { this->m = (Mutex *)m; }
 		void *Perform(void *q) {
 			while (true) {
+				Thread::Sleep(1);
 				m->Lock();
 				int *qq = (int *)q; 
 				if (*qq == 0) {
@@ -65,16 +66,18 @@ int TestThread::Perform()
 		R(const Mutex *m) { this->m = (Mutex *)m; }
 		void *Perform(void *r) {
 			while (true) {
-				{
-					MutexLock L(m);
-					
-					int *rr = (int *)r; 
-					if (*rr == 0) break;
-					if (*rr % 2 == 0) {
-						StdOut::PrintLine((Text)"i = " + *rr);
-						*rr = *rr - 1;
-					}
+				Thread::Sleep(1);
+				m->Lock();
+				int *rr = (int *)r; 
+				if (*rr == 0) {
+					m->Unlock();
+					break;
 				}
+				if (*rr % 2 == 0) {
+					StdOut::PrintLine((Text)"i = " + *rr);
+					*rr = *rr - 1;
+				}
+				m->Unlock();
 			}
 			StdOut::PrintLine("R ends");
 		}
@@ -138,19 +141,17 @@ int TestThread::Perform()
 	}
 	
 	class JoinableWork : public NObject {
-		long item;
 	public:
-		JoinableWork(int itemnumber) { item = itemnumber; }
 		void *DoWork(void *param) {
-			for (int i=0; i<5; i++) StdOut::PrintLine((Text)"Done " + item + ":" + i);
-			delete this;
-			return (void *)item;
+			for (int i=0; i<5; i++) StdOut::PrintLine((Text)"Done " + (long)param + ":" + i);
+			return param;
 		}
 	};
+	JoinableWork jw;
 	Collection<Thread *> threadcol;
-	for (int i=0; i<100; i++) threadcol.Add(new Thread((Text)"JoinableWork " + i, true));
-	for (int i=0; i<100; i++) threadcol[i]->Launch(new JoinableWork(i), (Delegate)&JoinableWork::DoWork, NULL);
-	for (int i=0; i<100; i++) StdOut::PrintLine((Text)"Finished " + (long)threadcol[i]->Join());
+	for (long i=0; i<100; i++) threadcol.Add(new Thread((Text)"JoinableWork " + i, true));
+	for (long i=0; i<100; i++) threadcol[i]->Launch(&jw, (Delegate)&JoinableWork::DoWork, (void *)i);
+	for (long i=0; i<100; i++) StdOut::PrintLine((Text)"Finished " + (long)threadcol[i]->Join());
 	threadcol.DeleteAndClear();
 	
 	return 0;

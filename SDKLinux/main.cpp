@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 {
 	try {
 		if (!Tests::Perform())
-			StdOut::PrintLine("Error in any test.");		
+			StdOut::PrintLine("Error in a test.");		
 	} catch (Exception *e) {
 		delete e;
 	} catch (...) {
