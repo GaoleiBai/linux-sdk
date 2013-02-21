@@ -66,6 +66,7 @@ int TestThread::Perform()
 		R(const Mutex *m) { this->m = (Mutex *)m; }
 		void *Perform(void *r) {
 			while (true) {
+				StdOut::PrintLine("RR");
 				Thread::Sleep(1);
 				m->Lock();
 				int *rr = (int *)r; 
@@ -144,13 +145,14 @@ int TestThread::Perform()
 	public:
 		void *DoWork(void *param) {
 			for (int i=0; i<5; i++) StdOut::PrintLine((Text)"Done " + (long)param + ":" + i);
+			delete this;
 			return param;
 		}
 	};
 	JoinableWork jw;
 	Collection<Thread *> threadcol;
 	for (long i=0; i<100; i++) threadcol.Add(new Thread((Text)"JoinableWork " + i, true));
-	for (long i=0; i<100; i++) threadcol[i]->Launch(&jw, (Delegate)&JoinableWork::DoWork, (void *)i);
+	for (long i=0; i<100; i++) threadcol[i]->Launch(new JoinableWork(), (Delegate)&JoinableWork::DoWork, (void *)i);
 	for (long i=0; i<100; i++) StdOut::PrintLine((Text)"Finished " + (long)threadcol[i]->Join());
 	threadcol.DeleteAndClear();
 	

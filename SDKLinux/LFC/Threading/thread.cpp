@@ -62,7 +62,9 @@ void Thread::Launch(const NDelegation &delegation, void *params)
 	pthread_attr_t attrs;
 	pthread_attr_init(&attrs);
 	pthread_attr_setdetachstate(&attrs, joinable ? PTHREAD_CREATE_JOINABLE : PTHREAD_CREATE_DETACHED);
-	void *threadParams[2] = { new NDelegation(delegation), params };
+	void **threadParams = new void *[2];
+	threadParams[0] = new NDelegation(delegation);
+	threadParams[1] = params;
 	int i = pthread_create(&thread, NULL, threadFunction, threadParams);
 	pthread_attr_destroy(&attrs);
 	
@@ -85,7 +87,6 @@ void *Thread::Join()
 	else if (i == EINVAL) throw new ThreadingException("Thread is not joinable or another thread is waitingo to join", __FILE__, __LINE__, __func__);
 	else if (i == ESRCH) throw new ThreadingException("Specified thread not found", __FILE__, __LINE__, __func__);
 	else throw new ThreadingException("Unspecified error", __FILE__, __LINE__, __func__);
-	return results;
 }
 
 void Thread::Sleep(unsigned long microseconds)
@@ -105,6 +106,7 @@ void *Thread::threadFunction(void *params)
 	
 	// Delete and return 
 	delete d;
+	delete vparams;
 	return results;
 }
 
