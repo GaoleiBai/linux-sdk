@@ -149,7 +149,6 @@ int TestThread::Perform()
 			return param;
 		}
 	};
-	JoinableWork jw;
 	Collection<Thread *> threadcol;
 	for (long i=0; i<100; i++) threadcol.Add(new Thread((Text)"JoinableWork " + i, true));
 	for (long i=0; i<100; i++) threadcol[i]->Launch(new JoinableWork(), (Delegate)&JoinableWork::DoWork, (void *)i);
