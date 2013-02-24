@@ -32,16 +32,6 @@ TestNetwork::~TestNetwork()
 int TestNetwork::Perform()
 {
 	class SimpleServerController : public IPV4GenericServerController {
-		void Read(Socket *s, char *buffer, int lonBuffer, long nanoseconds_timeout) {
-			int leido = 0;
-			while (leido < lonBuffer) {
-				// All socket operations are unblocking, so wait and then read
-				if (!s->WaitForDataComming(nanoseconds_timeout))
-					throw new Exception("No data comming from buffer", __FILE__, __LINE__, __func__);
-				leido += s->Read(buffer + leido, lonBuffer - leido);
-			}
-		}
-		
 	public:
 		virtual void *OnManageClientConnection(IPV4SocketAddress *clientAddress) { 
 			StdOut::PrintLine(clientAddress->ToText()); 
@@ -50,7 +40,7 @@ int TestNetwork::Perform()
 		virtual void *OnManageClientSocket(Socket *clientSocket) {
 			int operation = 0;
 			while (true) {
-				Read(clientSocket, (char *)&operation, sizeof(operation), -1);
+				clientSocket->Read((char *)&operation, sizeof(operation), -1);
 				if (operation == 0) break;
 				else if (operation == 1) clientSocket->WriteLine("GenericServer example");
 				else StdOut::PrintLine((Text)"Unknown " + operation + " operation.");
@@ -58,8 +48,23 @@ int TestNetwork::Perform()
 		}
 	};
 	
-	SimpleServerController c;
-	IPV4GenericServer server(30001);
-	server.OnManageClientConnection(&c, (Delegate)&SimpleServerController::OnManageClientConnection);
-	server.OnManageClientSocket(&c, (Delegate)&SimpleServerController::OnManageClientSocket);
+	try {
+		SimpleServerController c;
+		IPV4GenericServer server(30001);
+		server.OnManageClientConnection(&c, (Delegate)&SimpleServerController::OnManageClientConnection);
+		server.OnManageClientSocket(&c, (Delegate)&SimpleServerController::OnManageClientSocket);
+
+		Thread::Sleep(1000000);
+		Socket s(Socket::SockDomainInetV4, Socket::SockTypeStream, Socket::SockProtocolNone);
+		s.Bind(IPV4SocketAddress("localhost", IPV4SocketAddress::PortAny));
+		s.Connect(IPV4SocketAddress("localhost", 30001));
+		int operation = 1;
+		s.Write((char *)&operation, sizeof(operation));
+		Text t = s.ReadLine();
+		if (t != "GenericServer example")
+			throw new Exception("Server not responding to the demanded operation", __FILE__, __LINE__, __func__);		
+	} catch (Exception *e) {
+		delete e;
+		return -1;
+	}
 }

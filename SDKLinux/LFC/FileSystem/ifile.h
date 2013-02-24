@@ -32,9 +32,10 @@ public:
 	virtual ~IFile();
 
 	virtual int Read(char *buffer, int lonBuffer);
+	virtual void Read(char *buffer, int lonBuffer, long nanoseconds_timeout);
 	virtual int Write(const char *buffer, int lonBuffer);
-	virtual bool WaitForDataComming(long nanoseconds);
-	virtual bool WaitForDataGoing(long nanoseconds);
+	virtual bool WaitForDataComming(long nanoseconds_timeout);
+	virtual bool WaitForDataGoing(long nanoseconds_timeout);
 	
 	virtual Text ReadLine();
 	virtual void Write(const Text &text);

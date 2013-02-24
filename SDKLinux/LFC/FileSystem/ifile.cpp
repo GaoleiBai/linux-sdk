@@ -20,6 +20,7 @@
    
 #include "ifile.h"
 #include "../Text/text.h"
+#include "../System/system.h"
 #include "../exception.h"
 #include "buffer.h"
 #include <unistd.h>
@@ -43,6 +44,18 @@ int IFile::Read(char *buffer, int lonBuffer)
 	return leido;
 }
 
+void IFile::Read(char *buffer, int lonBuffer, long nanoseconds_timeout)
+{
+	unsigned long ticks = System::GetNanoTicks();
+	int leido = 0;
+	while (leido < lonBuffer) {
+		unsigned long elapsed = System::GetNanoTicks() - ticks;
+		if (!WaitForDataComming(nanoseconds_timeout - elapsed))
+			throw new Exception("Read timeout expired", __FILE__, __LINE__, __func__);
+		leido += Read(buffer + leido, lonBuffer - leido);
+	}
+}
+
 int IFile::Write(const char *buffer, int lonBuffer)
 {
 	if (fd == -1)
@@ -57,20 +70,20 @@ int IFile::Write(const char *buffer, int lonBuffer)
 	return escrito;
 }
 
-bool IFile::WaitForDataComming(long nanoseconds)
+bool IFile::WaitForDataComming(long nanoseconds_timeout)
 {
 	if (fd == -1)
 		throw new Exception("Can only perform actions on an open device", __FILE__, __LINE__, __func__);
 		
 	struct timeval timeout;
-	timeout.tv_sec = nanoseconds / 1000000000;
-	timeout.tv_usec = nanoseconds % 1000000000;
+	timeout.tv_sec = nanoseconds_timeout / 1000000000;
+	timeout.tv_usec = nanoseconds_timeout % 1000000000;
 	
 	fd_set readSet;
 	FD_ZERO(&readSet);
 	FD_SET(fd, &readSet);
 	
-	if (select(fd + 1, &readSet, NULL, NULL, nanoseconds < 0 ? NULL : &timeout) == -1)
+	if (select(fd + 1, &readSet, NULL, NULL, nanoseconds_timeout < 0 ? NULL : &timeout) == -1)
 		throw new Exception(Text::FromErrno(), __FILE__, __LINE__, __func__);
 	bool thereIsData = FD_ISSET(fd, &readSet);	
 	
@@ -78,20 +91,20 @@ bool IFile::WaitForDataComming(long nanoseconds)
 	return thereIsData;
 }
 
-bool IFile::WaitForDataGoing(long nanoseconds)
+bool IFile::WaitForDataGoing(long nanoseconds_timeout)
 {
 	if (fd == -1)
 		throw new Exception("Can only performa actions on an open device", __FILE__, __LINE__, __func__);
 		
 	struct timeval timeout;
-	timeout.tv_sec = nanoseconds / 1000000000;
-	timeout.tv_usec = nanoseconds % 1000000000;
+	timeout.tv_sec = nanoseconds_timeout / 1000000000;
+	timeout.tv_usec = nanoseconds_timeout % 1000000000;
 	
 	fd_set writeSet;
 	FD_ZERO(&writeSet);
 	FD_SET(fd, &writeSet);
 	
-	if (select(fd + 1, NULL, &writeSet, NULL, nanoseconds < 0 ? NULL : &timeout) == -1)
+	if (select(fd + 1, NULL, &writeSet, NULL, nanoseconds_timeout < 0 ? NULL : &timeout) == -1)
 		throw new Exception(Text::FromErrno(), __FILE__, __LINE__, __func__);
 	bool canWrite = FD_ISSET(fd, &writeSet);	
 	
