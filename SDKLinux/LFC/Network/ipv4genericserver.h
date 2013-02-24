@@ -31,8 +31,8 @@ class IPV4GenericServer : public NObject {
 	Socket *socket;
 	Collection<Socket *> *clientSockets;
 	
-	NDelegation *delegationOnManageNewConnection;
-	NDelegation *delegationOnManageClient;
+	NDelegation *delegationOnManageClientConnection;
+	NDelegation *delegationOnManageClientSocket;
 	
 	void *serverAcceptFunction(void *params);
 	void *clientFunction(void *params);
@@ -41,8 +41,8 @@ public:
 	IPV4GenericServer(int port);
 	virtual ~IPV4GenericServer();
 	
-	void OnNewConnection(NObject *object, Delegate delegate);
-	void OnManageClient(NObject *object, Delegate delegate);
+	void OnManageClientConnection(NObject *object, Delegate delegate);
+	void OnManageClientSocket(NObject *object, Delegate delegate);
 
 };
 

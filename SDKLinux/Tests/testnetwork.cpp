@@ -33,8 +33,8 @@ int TestNetwork::Perform()
 {
 	class SimpleServerController : public NObject {
 	public:
-		void *OnNewConnection(IPV4SocketAddress *clientAddress) { StdOut::PrintLine(clientAddress->ToText()); }
-		void *OnManageClient(IPV4SocketAddress *clientAddress) {
+		void *OnManageClientConnection(IPV4SocketAddress *clientAddress) { StdOut::PrintLine(clientAddress->ToText()); }
+		void *OnManageClientSocket(IPV4SocketAddress *clientAddress) {
 			
 			
 		}
@@ -42,6 +42,6 @@ int TestNetwork::Perform()
 	
 	SimpleServerController c;
 	IPV4GenericServer server(30001);
-	server.OnNewConnection(&c, (Delegate)&SimpleServerController::OnNewConnection);
-	server.OnManageClient(&c, (Delegate)&SimpleServerController::OnManageClient);
+	server.OnManageClientConnection(&c, (Delegate)&SimpleServerController::OnManageClientConnection);
+	server.OnManageClientSocket(&c, (Delegate)&SimpleServerController::OnManageClientSocket);
 }
