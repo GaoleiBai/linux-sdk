@@ -32,11 +32,29 @@ TestNetwork::~TestNetwork()
 int TestNetwork::Perform()
 {
 	class SimpleServerController : public IPV4GenericServerController {
+		void Read(Socket *s, char *buffer, int lonBuffer, long nanoseconds_timeout) {
+			int leido = 0;
+			while (leido < lonBuffer) {
+				// All socket operations are unblocking, so wait and then read
+				if (!s->WaitForDataComming(nanoseconds_timeout))
+					throw new Exception("No data comming from buffer", __FILE__, __LINE__, __func__);
+				leido += s->Read(buffer + leido, lonBuffer - leido);
+			}
+		}
+		
 	public:
-		virtual void *OnManageClientConnection(IPV4SocketAddress *clientAddress) { StdOut::PrintLine(clientAddress->ToText()); }
+		virtual void *OnManageClientConnection(IPV4SocketAddress *clientAddress) { 
+			StdOut::PrintLine(clientAddress->ToText()); 
+		}
+				
 		virtual void *OnManageClientSocket(Socket *clientSocket) {
-			
-			
+			int operation = 0;
+			while (true) {
+				Read(clientSocket, (char *)&operation, sizeof(operation), -1);
+				if (operation == 0) break;
+				else if (operation == 1) clientSocket->WriteLine("GenericServer example");
+				else StdOut::PrintLine((Text)"Unknown " + operation + " operation.");
+			}
 		}
 	};
 	
