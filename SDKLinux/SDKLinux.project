@@ -55,6 +55,8 @@
       <File Name="LFC/Network/ipv4socketaddress.cpp"/>
       <File Name="LFC/Network/ipv4genericserver.h"/>
       <File Name="LFC/Network/ipv4genericserver.cpp"/>
+      <File Name="LFC/Network/ipv4genericservercontroller.h"/>
+      <File Name="LFC/Network/ipv4genericservercontroller.cpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Threading">
       <File Name="LFC/Threading/thread.h"/>

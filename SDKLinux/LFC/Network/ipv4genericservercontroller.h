@@ -18,30 +18,20 @@
    02111-1307 USA. or see http://www.gnu.org/licenses/. */
    
    
-#include "testnetwork.h"
-#include "../LFC/LFC.h"
+#ifndef IPV4GENERICSERVERCONTROLLER_H
+#define IPV4GENERICSERVERCONTROLLER_H
 
-TestNetwork::TestNetwork()
-{
-}
+#include "ipv4socketaddress.h"
+#include "socket.h"
 
-TestNetwork::~TestNetwork()
-{
-}
+class IPV4GenericServerController : public NObject {
 
-int TestNetwork::Perform()
-{
-	class SimpleServerController : public IPV4GenericServerController {
-	public:
-		virtual void *OnManageClientConnection(IPV4SocketAddress *clientAddress) { StdOut::PrintLine(clientAddress->ToText()); }
-		virtual void *OnManageClientSocket(Socket *clientSocket) {
-			
-			
-		}
-	};
-	
-	SimpleServerController c;
-	IPV4GenericServer server(30001);
-	server.OnManageClientConnection(&c, (Delegate)&SimpleServerController::OnManageClientConnection);
-	server.OnManageClientSocket(&c, (Delegate)&SimpleServerController::OnManageClientSocket);
-}
+public:
+	IPV4GenericServerController();
+	virtual ~IPV4GenericServerController();
+
+	virtual void *OnManageClientConnection(IPV4SocketAddress *address) {}
+	virtual void *OnManageClientSocket(Socket *clientSocket) {}
+};
+
+#endif // IPV4GENERICSERVERCONTROLLER_H

@@ -87,6 +87,7 @@
 #include "Network/networkexception.h"
 #include "Network/socket.h"
 #include "Network/ipv4genericserver.h"
+#include "Network/ipv4genericservercontroller.h"
 
 void lfc_init();
 
