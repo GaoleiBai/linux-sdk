@@ -100,13 +100,18 @@ void *Thread::threadFunction(void *params)
 	void **vparams = (void **)params;
 	NDelegation *d = (NDelegation *)vparams[0];
 	void *delegateParams = vparams[1];
+	delete vparams;
 	
 	// Execute delegate
-	void *results = d->Execute(delegateParams);
+	void *results = NULL;
+	try {
+		results = d->Execute(delegateParams);
+	} catch (Exception *e) {
+		delete e;
+	}
 	
 	// Delete and return 
 	delete d;
-	delete vparams;
 	return results;
 }
 

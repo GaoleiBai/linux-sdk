@@ -19,6 +19,7 @@
    
    
 #include "testnetwork.h"
+#include "../LFC/LFC.h"
 
 TestNetwork::TestNetwork()
 {
@@ -30,5 +31,17 @@ TestNetwork::~TestNetwork()
 
 int TestNetwork::Perform()
 {
+	class SimpleServerController : public NObject {
+	public:
+		void *OnNewConnection(IPV4SocketAddress *clientAddress) { StdOut::PrintLine(clientAddress->ToText()); }
+		void *OnManageClient(IPV4SocketAddress *clientAddress) {
+			
+			
+		}
+	};
 	
+	SimpleServerController c;
+	IPV4GenericServer server(30001);
+	server.OnNewConnection(&c, (Delegate)&SimpleServerController::OnNewConnection);
+	server.OnManageClient(&c, (Delegate)&SimpleServerController::OnManageClient);
 }

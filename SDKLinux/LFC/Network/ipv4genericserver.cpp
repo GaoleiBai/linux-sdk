@@ -57,7 +57,7 @@ IPV4GenericServer::~IPV4GenericServer()
 	delete mutex;
 }
 
-void IPV4GenericServer::OnNewCollection(NObject *object, Delegate delegate)
+void IPV4GenericServer::OnNewConnection(NObject *object, Delegate delegate)
 {
 	MutexLock L(mutex);
 	if (delegationOnManageNewConnection != NULL) delete delegationOnManageNewConnection;
@@ -92,9 +92,11 @@ void *IPV4GenericServer::serverAcceptFunction(void *params)
 				if (delegationOnManageClient != NULL) continue;
 				
 				// Create a new thread to manage the client connection
-				Thread *t = new Thread((Text)"Client " + address.ToText() + " thread", false);
-				void *clientParams[3] = { t, new IPV4SocketAddress(address), clientSocket };
-				t->Launch(this, (Delegate)&IPV4GenericServer::clientFunction, clientParams);
+				Thread *clientThread = new Thread((Text)"Client " + address.ToText() + " thread", false);
+				void **clientParams = new void *[2];
+				clientParams[0] = clientThread;
+				clientParams[1] = clientSocket;
+				clientThread->Launch(this, (Delegate)&IPV4GenericServer::clientFunction, clientParams);
 				
 				// Add socket to clientSockets list
 				mutex->Lock();
@@ -117,11 +119,15 @@ void *IPV4GenericServer::clientFunction(void *params)
 {
 	void **vparams = (void **) params;
 	Thread *clientThread = (Thread *)vparams[0];
-	IPV4SocketAddress *address = (IPV4SocketAddress *)vparams[1];
-	Socket *clientSocket = (Socket *)vparams[2];
+	Socket *clientSocket = (Socket *)vparams[1];
+	delete vparams;
 	
 	// Execute the client delegate passing the address to it
-	delegationOnManageClient->Execute(address);
+	try {
+		delegationOnManageClient->Execute(clientSocket);
+	} catch (Exception *e) {
+		delete e;
+	}
 	
 	// Remove clientSocket from clientSockets list
 	mutex->Lock();
@@ -130,6 +136,5 @@ void *IPV4GenericServer::clientFunction(void *params)
 	
 	// Removing resources;
 	delete clientSocket;
-	delete address;
 	delete clientThread;
 }

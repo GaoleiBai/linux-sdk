@@ -39,6 +39,11 @@ int Tests::Perform()
 	
 	StdOut::PrintLine("hello world");
 	
+	if (TestNetwork::Perform() != 0) {
+		StdOut::PrintLine("TestNetwork::Perform error");
+		return -1;
+	}
+	
 	if (TestThread::Perform() != 0) {
 		StdOut::PrintLine("TestThread::Perform error");
 		return -1;

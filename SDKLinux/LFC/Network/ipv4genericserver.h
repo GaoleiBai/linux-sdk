@@ -41,7 +41,7 @@ public:
 	IPV4GenericServer(int port);
 	virtual ~IPV4GenericServer();
 	
-	void OnNewCollection(NObject *object, Delegate delegate);
+	void OnNewConnection(NObject *object, Delegate delegate);
 	void OnManageClient(NObject *object, Delegate delegate);
 
 };
