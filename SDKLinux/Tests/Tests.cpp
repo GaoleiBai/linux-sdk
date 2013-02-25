@@ -44,6 +44,11 @@ int Tests::Perform()
 		return -1;
 	}
 	
+	if (TestSerialization::Perform() != 0) {
+		StdOut::PrintLine("TestSerialization::Perform error!!!");
+		return -1;
+	}
+	
 	if (TestThread::Perform() != 0) {
 		StdOut::PrintLine("TestThread::Perform error");
 		return -1;
@@ -101,11 +106,6 @@ int Tests::Perform()
 	
 	if (TestBuffer::Perform() != 0) {
 		StdOut::PrintLine("TestBuffer::Perform error!!!");
-		return -1;
-	}
-	
-	if (TestSerialization::Perform() != 0) {
-		StdOut::PrintLine("TestSerialization::Perform error!!!");
 		return -1;
 	}
 	

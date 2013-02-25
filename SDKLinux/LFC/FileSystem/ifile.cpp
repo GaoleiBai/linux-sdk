@@ -49,10 +49,13 @@ void IFile::Read(char *buffer, int lonBuffer, long nanoseconds_timeout)
 	unsigned long ticks = System::GetNanoTicks();
 	int leido = 0;
 	while (leido < lonBuffer) {
-		unsigned long elapsed = System::GetNanoTicks() - ticks;
-		if (!WaitForDataComming(nanoseconds_timeout - elapsed))
-			throw new Exception("Read timeout expired", __FILE__, __LINE__, __func__);
 		leido += Read(buffer + leido, lonBuffer - leido);
+		if (leido < lonBuffer) {
+			unsigned long elapsed = System::GetNanoTicks() - ticks;
+			if (elapsed > nanoseconds_timeout) break;
+			if (!WaitForDataComming(nanoseconds_timeout - elapsed))
+				throw new Exception("Read timeout expired", __FILE__, __LINE__, __func__);
+		}
 	}
 }
 
@@ -117,13 +120,13 @@ Text IFile::ReadLine()
 	Buffer b;
 	char c;
 	
-	while (b.Length() == 0 || b[b.Length() - 1] != '\n') {
-		WaitForDataComming(-1);
-		Read(&c, 1);
+	while (true) {
+		Read(&c, 1, -1);
+		if (c == '\n') break;
 		b.Write(&c, 1);
 	}
 	
-	return b.ToText().Trim();
+	return b.ToText();
 }
 
 void IFile::Write(const Text &text)
@@ -135,7 +138,7 @@ void IFile::Write(const Text &text)
 	try {
 		tt->GetAnsiString(t, lont);
 		int reallont = strlen(t);
-		int res = Write(t, reallont);
+		Write(t, reallont);
 	} catch (Exception *e) {
 		delete t;
 		throw e;
