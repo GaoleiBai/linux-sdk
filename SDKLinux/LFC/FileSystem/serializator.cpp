@@ -44,13 +44,7 @@ Serializator::~Serializator()
 
 void Serializator::Put(char *buffer, int lonBuffer)
 {
-	int escrito = 0;
-	while (escrito < lonBuffer) {
-		int res = file->Write(buffer + escrito, lonBuffer - escrito > 1000 ? 1000 : lonBuffer - escrito);
-		if (res == 0)
-			throw new FileSystemException("It seems that the stream has suddently been closed.", __FILE__, __LINE__, __func__);
-		escrito += res;
-	}
+	file->Write(buffer, lonBuffer);
 }
 
 void Serializator::Put(const NObject &o) 
@@ -61,97 +55,85 @@ void Serializator::Put(const NObject &o)
 	unsigned char namelen = strlen(strName);
 	unsigned char signature = 0x000000CC;
 
-	file->Write((char *)&signature, sizeof(signature));
-	file->Write((char *)&namelen, sizeof(namelen));
-	file->Write(strName, namelen);
+	Put((char *)&signature, sizeof(signature));
+	Put((char *)&namelen, sizeof(namelen));
+	Put(strName, namelen);
 	((NObject *)&o)->Serialize(*this);
 }
 
 void Serializator::Put(bool b)
 {
-	file->Write((char *)&b, sizeof(b));	
+	Put((char *)&b, sizeof(b));	
 }
 
 void Serializator::Put(char n)
 {
-	file->Write((char *)&n, sizeof(n));
+	Put((char *)&n, sizeof(n));
 }
 
 void Serializator::Put(short n)
 {
-	file->Write((char *)&n, sizeof(n));
+	Put((char *)&n, sizeof(n));
 }
 
 void Serializator::Put(int n)
 {
-	file->Write((char *)&n, sizeof(n));
+	Put((char *)&n, sizeof(n));
 }
 
 void Serializator::Put(long n)
 {
-	file->Write((char *)&n, sizeof(n));
+	Put((char *)&n, sizeof(n));
 }
 
 void Serializator::Put(long long n)
 {
-	file->Write((char *)&n, sizeof(n));
+	Put((char *)&n, sizeof(n));
 }
 
 void Serializator::Put(unsigned char n)
 {
-	file->Write((char *)&n, sizeof(n));
+	Put((char *)&n, sizeof(n));
 }
 
 void Serializator::Put(unsigned short n)
 {
-	file->Write((char *)&n, sizeof(n));
+	Put((char *)&n, sizeof(n));
 }
 
 void Serializator::Put(unsigned int n)
 {
-	file->Write((char *)&n, sizeof(n));
+	Put((char *)&n, sizeof(n));
 }
 
 void Serializator::Put(unsigned long n)
 {
-	file->Write((char *)&n, sizeof(n));
+	Put((char *)&n, sizeof(n));
 }
 
 void Serializator::Put(unsigned long long n)
 {
-	file->Write((char *)&n, sizeof(n));
+	Put((char *)&n, sizeof(n));
 }
 
 void Serializator::Put(float n)
 {
-	file->Write((char *)&n, sizeof(n));
+	Put((char *)&n, sizeof(n));
 }
 
 void Serializator::Put(double n)
 {
-	file->Write((char *)&n, sizeof(n));
+	Put((char *)&n, sizeof(n));
 }
 
 void Serializator::Put(long double n)
 {
-	file->Write((char *)&n, sizeof(n));
+	Put((char *)&n, sizeof(n));
 }
 
 void Serializator::Get(char *buffer, int lonBuffer)
 {
-	unsigned long tstart = System::GetNanoTicks();
-	int leido = 0;
-	while (leido < lonBuffer) {
-		int res = file->Read(buffer + leido, lonBuffer - leido);
-		if (res == 0) {	// Waits until timeout goes
-			unsigned long telapsed = System::GetNanoTicks() - tstart;
-			if (telapsed > readTimeout)
-				throw new FileSystemException("Read timeout exception", __FILE__, __LINE__, __func__);
-			file->WaitForDataComming(readTimeout - telapsed);
-		} else {
-			leido += res;
-		}
-	}
+	file->Read(buffer, lonBuffer, readTimeout);
 }
 
 NObject *Serializator::GetNObject()

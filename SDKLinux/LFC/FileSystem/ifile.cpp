@@ -134,13 +134,8 @@ void IFile::Write(const Text &text)
 	
 	try {
 		tt->GetAnsiString(t, lont);
-		int escrito = 0;
 		int reallont = strlen(t);
-		while (escrito < reallont) {
-			int res = Write(t + escrito, reallont - escrito);
-			if (res == 0) WaitForDataGoing(-1);
-			escrito += res;
-		}
+		int res = Write(t, reallont);
 	} catch (Exception *e) {
 		delete t;
 		throw e;
