@@ -74,6 +74,7 @@ struct sockaddr *IPV4SocketAddress::GetAddressData()
 {
 	static sockaddr_in addr;
 	memset(&addr, 0, sizeof(addr));
+	addr.sin_family = AF_INET;
 	if (hostname == NULL) {
 		addr.sin_addr.s_addr = INADDR_ANY;
 	} else {
