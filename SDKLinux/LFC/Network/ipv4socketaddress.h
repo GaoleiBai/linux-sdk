@@ -43,6 +43,8 @@ public:
 	Text Hostname();
 	int Port();
 	
+	IPV4SocketAddress &operator=(const IPV4SocketAddress &address);
+	
 	virtual Text ToText();
 
 	static IPV4SocketAddress AnyLocal();

@@ -59,6 +59,7 @@ int TestNetwork::Perform()
 		s.Bind(IPV4SocketAddress("localhost", IPV4SocketAddress::PortAny));
 		s.Connect(IPV4SocketAddress("localhost", 30001));
 		int operation = 1;
+		Thread::Sleep(10000000);
 		s.Write((char *)&operation, sizeof(operation));
 		Text t = s.ReadLine();
 		if (t != "GenericServer example")

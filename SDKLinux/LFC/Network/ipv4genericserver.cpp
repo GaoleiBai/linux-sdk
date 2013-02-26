@@ -81,7 +81,6 @@ void *IPV4GenericServer::serverAcceptFunction(void *params)
 	while (true) {
 		// Accept a new connection
 		try {
-			socket->WaitForDataGoing(-1);
 			Socket *clientSocket = socket->Accept(address);
 			
 			try {

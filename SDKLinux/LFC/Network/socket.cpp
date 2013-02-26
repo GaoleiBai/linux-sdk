@@ -23,6 +23,7 @@
 #include "networkexception.h"
 #include "../Text/text.h"
 #include <unistd.h>
+#include <errno.h>
 #include <netinet/in.h>
 #include <typeinfo>
 
@@ -84,9 +85,9 @@ void Socket::Connect(const ISocketAddress &address, long nanoseconds_timeout)
 		
 	if (typeid(address) == typeid(IPV4SocketAddress)) {
 		IPV4SocketAddress *a = (IPV4SocketAddress *)&address;
-		if (connect(fd, a->GetAddressData(), a->GetAddressLen()) == -1)
+		if (connect(fd, a->GetAddressData(), a->GetAddressLen()) == -1 && errno != EINPROGRESS)
 			throw new NetworkException(Text::FromErrno(), __FILE__, __LINE__, __func__);
-		if (!WaitForDataGoing(nanoseconds_timeout)) {
+		if (errno == EINPROGRESS && !WaitForDataGoing(nanoseconds_timeout)) {
 			Close();
 			throw new NetworkException("Connection timeout. Socket closed.", __FILE__, __LINE__, __func__);
 		}
@@ -114,13 +115,21 @@ Socket *Socket::Accept(ISocketAddress &address)
 		socklen_t socklen = sizeof(addr);
 		
 		// El socket se crea como no bloqueante, por lo que se espera a que lleguen los datos de la nueva conexión
-		WaitForDataComming(-1);
-		int clientSocket = accept(fd, (sockaddr *)&addr, &socklen);
-		if (clientSocket == -1)
-			throw new NetworkException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+		int clientSocket = -1;
+		while (clientSocket == -1) {
+			clientSocket = accept(fd, (sockaddr *)&addr, &socklen);
+			if (clientSocket == -1 && errno != EAGAIN && errno != EWOULDBLOCK) {
+				Close();
+				throw new NetworkException(Text::FromErrno(), __FILE__, __LINE__, __func__);
+			}
+			if (clientSocket == -1 && !WaitForDataComming(-1)) {
+				Close();
+				throw new NetworkException("Error accepting connection", __FILE__, __LINE__, __func__);
+			}
+		}
 			
 		// Return results
-		(IPV4SocketAddress &)address = &addr;
+		(IPV4SocketAddress &)address = (IPV4SocketAddress)&addr;
 		return new Socket(clientSocket);
 	} else {
 		throw new NetworkException("Not implemented", __FILE__, __LINE__, __func__);

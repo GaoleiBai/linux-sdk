@@ -70,6 +70,13 @@ Text IPV4SocketAddress::ToText()
 	return *hostname + ":" + port;
 }
 
+IPV4SocketAddress &IPV4SocketAddress::operator =(const IPV4SocketAddress &address)
+{
+	if (hostname != NULL) delete hostname;
+	hostname = new Text(address.hostname);
+	port = address.port;
+}
+
 struct sockaddr *IPV4SocketAddress::GetAddressData()
 {
 	static sockaddr_in addr;
