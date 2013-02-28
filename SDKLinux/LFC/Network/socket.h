@@ -61,7 +61,7 @@ public:
 	void Listen(int backlog);
 	Socket *Accept(ISocketAddress &address);
 	void Close();
-
+	
 };
 
 #endif // SOCKET_H

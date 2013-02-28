@@ -84,7 +84,7 @@ void *IPV4GenericServer::serverAcceptFunction(void *params)
 			Socket *clientSocket = socket->Accept(address);
 			
 			try {
-				// Manage the new connection
+				// Manage the new connection (manage new client connection is optional)
 				if (delegationOnManageClientConnection != NULL) {		
 					if (delegationOnManageClientConnection->Execute(&address) == NULL) {
 						delete clientSocket;
@@ -92,8 +92,8 @@ void *IPV4GenericServer::serverAcceptFunction(void *params)
 					}
 				}
 				
-				// Check whether exists the client delegate
-				if (delegationOnManageClientSocket != NULL) {
+				// Management of the client socket is mandatory
+				if (delegationOnManageClientSocket == NULL) {
 					delete clientSocket;
 					continue;
 				}
@@ -105,7 +105,7 @@ void *IPV4GenericServer::serverAcceptFunction(void *params)
 
 				// Create a new thread to manage the client connection
 				Thread *clientThread = new Thread((Text)"Client " + address.ToText() + " thread", false);
-				void **clientParams = new void *[2];
+				void **clientParams = new void *[3];
 				clientParams[0] = clientThread;
 				clientParams[1] = clientSocket;
 				clientParams[2] = new NDelegation(*delegationOnManageClientSocket);

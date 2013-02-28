@@ -34,7 +34,12 @@ int TestNetwork::Perform()
 	class SimpleServerController : public IPV4GenericServerController {
 	public:
 		virtual void *OnManageClientConnection(IPV4SocketAddress *clientAddress) { 
-			StdOut::PrintLine(clientAddress->ToText()); 
+			StdOut::PrintLine(clientAddress->ToText());
+			
+			// We will accept all connections
+			int kk = 1;
+			if (kk == 0) return NULL;
+			return this;
 		}
 				
 		virtual void *OnManageClientSocket(Socket *clientSocket) {
@@ -59,9 +64,8 @@ int TestNetwork::Perform()
 		s.Bind(IPV4SocketAddress("localhost", IPV4SocketAddress::PortAny));
 		s.Connect(IPV4SocketAddress("localhost", 30001));
 		int operation = 1;
-		Thread::Sleep(10000000);
 		s.Write((char *)&operation, sizeof(operation));
-		Text t = s.ReadLine();
+		Text t = s.ReadLine(5000000000);
 		if (t != "GenericServer example")
 			throw new Exception("Server not responding to the demanded operation", __FILE__, __LINE__, __func__);		
 	} catch (Exception *e) {

@@ -25,6 +25,7 @@
 #include "buffer.h"
 #include <unistd.h>
 #include <string.h>
+#include <errno.h>
 
 IFile::IFile()
 {
@@ -39,6 +40,7 @@ int IFile::Read(char *buffer, int lonBuffer)
 	if (fd == -1)
 		throw new Exception("Cannot read from a closed device or file", __FILE__, __LINE__, __func__);
 	size_t leido = read(fd, buffer, lonBuffer);
+	if (leido == -1 && (errno == EAGAIN || errno == EWOULDBLOCK)) return 0;
 	if (leido == -1)
 		throw new Exception(Text::FromErrno(), __FILE__, __LINE__, __func__);
 	return leido;
@@ -122,6 +124,20 @@ Text IFile::ReadLine()
 	
 	while (true) {
 		Read(&c, 1, -1);
+		if (c == '\n') break;
+		b.Write(&c, 1);
+	}
+	
+	return b.ToText();
+}
+
+Text IFile::ReadLine(long nanoseconds_timeout) 
+{
+	Buffer b;
+	char c;
+	
+	while (true) {
+		Read(&c, 1, nanoseconds_timeout);
 		if (c == '\n') break;
 		b.Write(&c, 1);
 	}

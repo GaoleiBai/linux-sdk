@@ -38,6 +38,7 @@ public:
 	virtual bool WaitForDataGoing(long nanoseconds_timeout);
 	
 	virtual Text ReadLine();
+	virtual Text ReadLine(long nanoseconds_timeout);
 	virtual void Write(const Text &text);
 	virtual void WriteLine(const Text &text);
 	virtual void WriteLine();

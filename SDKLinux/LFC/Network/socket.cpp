@@ -50,9 +50,7 @@ Socket::~Socket()
 
 void Socket::Close()
 {
-	if (fd == -1)
-		throw new NetworkException("Cannot close an unexisting socket", __FILE__, __LINE__, __func__);
-		
+	if (fd == -1) return;		
 	if (close(fd) == -1)
 		throw new NetworkException(Text::FromErrno(), __FILE__, __LINE__, __func__);
 		
