@@ -65,19 +65,6 @@ public:
 	bool IsUpper(char c);
 	bool IsXDigit(char c);
 
-	bool IsAlpha(wchar_t c);
-	bool IsAlphaNumeric(wchar_t c);
-	bool IsAscii(wchar_t c);
-	bool IsControl(wchar_t c);
-	bool IsDigit(wchar_t c);
-	bool IsGraph(wchar_t c);
-	bool IsLower(wchar_t c);
-	bool IsPrintable(wchar_t c);
-	bool IsPunctuation(wchar_t c);
-	bool IsSpace(wchar_t c);
-	bool IsUpper(wchar_t c);
-	bool IsXDigit(wchar_t c);
-
 protected:
 	char value;
 	
