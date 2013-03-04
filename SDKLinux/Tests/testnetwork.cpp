@@ -63,13 +63,19 @@ int TestNetwork::Perform()
 		Socket s(Socket::SockDomainInetV4, Socket::SockTypeStream, Socket::SockProtocolNone);
 		s.Bind(IPV4SocketAddress("localhost", IPV4SocketAddress::PortAny));
 		s.Connect(IPV4SocketAddress("localhost", 30001));
-		int operation = 1;
-		s.Write((char *)&operation, sizeof(operation));
-		Text t = s.ReadLine(5000000000);
-		if (t != "GenericServer example")
-			throw new Exception("Server not responding to the demanded operation", __FILE__, __LINE__, __func__);		
+		
+		for (int i = 0; i < 100; i++) {
+			int operation = 1;
+			s.Write((char *)&operation, sizeof(operation));
+			Text t = s.ReadLine(5000000000);
+			if (t != "GenericServer example")
+				throw new Exception("Server not responding to the demanded operation", __FILE__, __LINE__, __func__);		
+			StdOut::PrintLine((Text)"Client iteration " + (i + 1) + "/100");
+		}
 	} catch (Exception *e) {
 		delete e;
 		return -1;
 	}
+	
+	int kk = 0;
 }

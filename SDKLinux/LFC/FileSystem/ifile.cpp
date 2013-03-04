@@ -99,7 +99,7 @@ bool IFile::WaitForDataComming(long nanoseconds_timeout)
 bool IFile::WaitForDataGoing(long nanoseconds_timeout)
 {
 	if (fd == -1)
-		throw new Exception("Can only performa actions on an open device", __FILE__, __LINE__, __func__);
+		throw new Exception("Can only perform actions on an open device", __FILE__, __LINE__, __func__);
 		
 	struct timeval timeout;
 	timeout.tv_sec = nanoseconds_timeout / 1000000000;

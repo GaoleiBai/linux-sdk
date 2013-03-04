@@ -51,6 +51,32 @@ public:
 	virtual long double ToLongDouble();
 	
 	static int COMPARER(const void *u, const void *v);
+	
+	bool IsAlpha(char c);
+	bool IsAlphaNumeric(char c);
+	bool IsAscii(char c);
+	bool IsControl(char c);
+	bool IsDigit(char c);
+	bool IsGraph(char c);
+	bool IsLower(char c);
+	bool IsPrintable(char c);
+	bool IsPunctuation(char c);
+	bool IsSpace(char c);
+	bool IsUpper(char c);
+	bool IsXDigit(char c);
+
+	bool IsAlpha(wchar_t c);
+	bool IsAlphaNumeric(wchar_t c);
+	bool IsAscii(wchar_t c);
+	bool IsControl(wchar_t c);
+	bool IsDigit(wchar_t c);
+	bool IsGraph(wchar_t c);
+	bool IsLower(wchar_t c);
+	bool IsPrintable(wchar_t c);
+	bool IsPunctuation(wchar_t c);
+	bool IsSpace(wchar_t c);
+	bool IsUpper(wchar_t c);
+	bool IsXDigit(wchar_t c);
 
 protected:
 	char value;

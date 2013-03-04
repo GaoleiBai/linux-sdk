@@ -26,6 +26,7 @@
 #include <typeinfo>
 #include <stdio.h>
 #include <errno.h>
+#include <ctype.h>
 
 NChar::NChar()
 {
@@ -137,4 +138,64 @@ int NChar::COMPARER(const void *u, const void *v)
 	if (*uu > *vv) return 1;
 	else if (*uu < *vv) return -1;
 	return 0;
+}
+
+bool NChar::IsAlpha(char c)
+{
+	return isalpha(c);
+}
+
+bool NChar::IsAlphaNumeric(char c)
+{
+	return isalnum(c);
+}
+
+bool NChar::IsAscii(char c)
+{
+	return isascii(c);
+}
+
+bool NChar::IsControl(char c)
+{
+	return iscntrl(c);
+}
+
+bool NChar::IsDigit(char c)
+{
+	return isdigit(c);
+}
+
+bool NChar::IsGraph(char c)
+{
+	return isgraph(c);
+}
+
+bool NChar::IsLower(char c)
+{
+	return islower(c);
+}
+
+bool NChar::IsPrintable(char c)
+{
+	return isprint(c);
+}
+
+bool NChar::IsPunctuation(char c)
+{
+	return ispunct(c);
+}
+
+bool NChar::IsSpace(char c)
+{
+	return isspace(c);
+}
+
+bool NChar::IsUpper(char c)
+{
+	return isupper(c);
+}
+
+bool NChar::IsXDigit(char c)
+{
+	return isxdigit(c);
 }

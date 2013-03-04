@@ -144,6 +144,8 @@
     <File Name="LFC/ndelegation.h"/>
     <File Name="LFC/ndelegation.cpp"/>
     <VirtualDirectory Name="Data"/>
+    <File Name="LFC/nwchar.h"/>
+    <File Name="LFC/nwchar.cpp"/>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>
