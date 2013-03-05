@@ -49,6 +49,7 @@
 #include "ndouble.h"
 #include "nlongdouble.h"
 #include "ndelegation.h"
+#include "nwchar.h"
 #include "Text/text.h"
 #include "Text/text_buffer.h"
 #include "Text/text_exception.h"

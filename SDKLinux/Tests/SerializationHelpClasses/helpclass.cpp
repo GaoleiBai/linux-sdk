@@ -42,6 +42,7 @@ HelpClass::HelpClass()
 	
 	nnbool = new NBool(true);
 	nnchar = new NChar('c');
+	nnwchar = new NWChar(L'd');
 	nnshort = new NShort(-22000);
 	nnint = new NInt(-34000);
 	nnlong = new NLong(-22000000000);
@@ -64,6 +65,7 @@ HelpClass::HelpClass()
 	nobjectcollection->Add(new Text("José Luis"));
 	nobjectcollection->Add(new NBool(true));
 	nobjectcollection->Add(new NChar('c'));
+	nobjectcollection->Add(new NWChar(L'd'));
 	nobjectcollection->Add(new NShort(-22000));
 	nobjectcollection->Add(new NInt(-34000));
 	nobjectcollection->Add(new NLong(-22000000000));
@@ -99,6 +101,7 @@ HelpClass::~HelpClass()
 	
 	delete nnbool;
 	delete nnchar;
+	delete nnwchar;
 	delete nnshort;
 	delete nnint;
 	delete nnlong;
@@ -144,6 +147,7 @@ void HelpClass::Serialize(const Serializator &s)
 	
 	((Serializator *)&s)->Put(*nnbool);
 	((Serializator *)&s)->Put(*nnchar);
+	((Serializator *)&s)->Put(*nnwchar);
 	((Serializator *)&s)->Put(*nnshort);
 	((Serializator *)&s)->Put(*nnint);
 	((Serializator *)&s)->Put(*nnlong);
@@ -175,6 +179,7 @@ void HelpClass::Deserialize(const Serializator &s)
 	TextBuffer *oldtextbuffer = atextbuffer;
 	NBool *oldnnbool = nnbool;
 	NChar *oldnnchar = nnchar;
+	NWChar *oldnnwchar = nnwchar;
 	NShort *oldnnshort = nnshort;
 	NInt *oldnnint = nnint;
 	NLong *oldnnlong = nnlong;
@@ -205,6 +210,7 @@ void HelpClass::Deserialize(const Serializator &s)
 	
 	nnbool = (NBool *)((Serializator *)&s)->GetNObject();
 	nnchar = (NChar *)((Serializator *)&s)->GetNObject();
+	nnwchar = (NWChar *)((Serializator *)&s)->GetNObject();
 	nnshort = (NShort *)((Serializator *)&s)->GetNObject();
 	nnint = (NInt *)((Serializator *)&s)->GetNObject();
 	nnlong = (NLong *)((Serializator *)&s)->GetNObject();
@@ -236,6 +242,7 @@ void HelpClass::Deserialize(const Serializator &s)
 	
 	if (nnbool->Value() != true) throw new Exception("NBool::Deserialize error", __FILE__, __LINE__, __func__);
 	if (nnchar->Value() != 'c') throw new Exception("NChar::Deserialize error", __FILE__, __LINE__, __func__);
+	if (nnwchar->Value() != L'd') throw new Exception("NWChar::Deserialize error", __FILE__, __LINE__, __func__);
 	if (nnshort->Value() != -22000) throw new Exception("NShort::Deserialize error", __FILE__, __LINE__, __func__);
 	if (nnint->Value() != -34000) throw new Exception("NInt::Deserialize error", __FILE__, __LINE__, __func__);
 	if (nnlong->Value() != -22000000000) throw new Exception("NLong::Deserialize error", __FILE__, __LINE__, __func__);
@@ -251,6 +258,7 @@ void HelpClass::Deserialize(const Serializator &s)
 	
 	if (oldnnbool->Value() != nnbool->Value()) throw new Exception("NBool::Deserialize error", __FILE__, __LINE__, __func__);
 	if (oldnnchar->Value() != nnchar->Value()) throw new Exception("NChar::Deserialize error", __FILE__, __LINE__, __func__);
+	if (oldnnwchar->Value() != nnwchar->Value()) throw new Exception("NWChar::Deserialize error", __FILE__, __LINE__, __func__);
 	if (oldnnshort->Value() != nnshort->Value()) throw new Exception("NShort::Deserialize error", __FILE__, __LINE__, __func__);
 	if (oldnnint->Value() != nnint->Value()) throw new Exception("NInt::Deserialize error", __FILE__, __LINE__, __func__);
 	if (oldnnlong->Value() != nnlong->Value()) throw new Exception("NLong::Deserialize error", __FILE__, __LINE__, __func__);
@@ -287,6 +295,7 @@ void HelpClass::Deserialize(const Serializator &s)
 	delete oldtextbuffer;
 	delete oldnnbool;
 	delete oldnnchar;
+	delete oldnnwchar;
 	delete oldnnshort;
 	delete oldnnint;
 	delete oldnnlong;

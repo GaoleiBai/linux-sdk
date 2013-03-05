@@ -56,6 +56,7 @@ private:
 	TextBuffer *atextbuffer;
 	NBool *nnbool;
 	NChar *nnchar;
+	NWChar *nnwchar;
 	NShort *nnshort;
 	NInt *nnint;
 	NLong *nnlong;
