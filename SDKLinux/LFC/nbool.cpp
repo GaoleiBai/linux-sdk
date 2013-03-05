@@ -85,6 +85,13 @@ int NBool::Compare(const NObject &o)
 	else return 0;
 }
 
+int NBool::Compare(const NBool &b)
+{
+	if (value && !b.value) return 1;
+	else if (!value && b.value) return -1;
+	else return 0;
+}
+
 void NBool::Serialize(const Serializator &s)
 {
 	((Serializator *)&s)->Put(value);

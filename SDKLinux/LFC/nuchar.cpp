@@ -115,6 +115,13 @@ int NUChar::Compare(const NObject &o)
 	else return 0;
 }
 
+int NUChar::Compare(const NUChar &c)
+{
+	if (value > c.value) return 1;
+	else if (value < c.value) return -1;
+	else return 0;
+}
+
 void NUChar::Serialize(const Serializator &s)
 {
 	((Serializator *)&s)->Put(value);

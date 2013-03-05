@@ -112,6 +112,13 @@ int NInt::Compare(const NObject &o)
 	else return 0;	
 }
 
+int NInt::Compare(const NInt &i)
+{
+	if (value > i.value) return 1;
+	else if (value < i.value) return -1;
+	else return 0;
+}
+
 void NInt::Serialize(const Serializator &s) 
 {
 	((Serializator *)&s)->Put(value);

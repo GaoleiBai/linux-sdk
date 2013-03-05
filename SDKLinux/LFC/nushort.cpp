@@ -113,6 +113,13 @@ int NUShort::Compare(const NObject &o)
 	else return 0;
 }
 
+int NUShort::Compare(const NUShort &s)
+{
+	if (value > s.value) return 1;
+	else if (value < s.value) return -1;
+	else return 0;
+}
+
 void NUShort::Serialize(const Serializator &s)
 {
 	((Serializator *)&s)->Put(value);

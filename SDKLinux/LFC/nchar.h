@@ -44,6 +44,7 @@ public:
 	virtual NObject *NewInstance();
 	virtual Text ToText();
 	virtual int Compare(const NObject &o);
+	virtual int Compare(const NChar &c);
 	virtual void Serialize(const Serializator &s);
 	virtual void Deserialize(const Serializator &s);
 	
@@ -55,6 +56,7 @@ public:
 	bool IsAlpha(char c);
 	bool IsAlphaNumeric(char c);
 	bool IsAscii(char c);
+	bool IsBlank(char c);
 	bool IsControl(char c);
 	bool IsDigit(char c);
 	bool IsGraph(char c);

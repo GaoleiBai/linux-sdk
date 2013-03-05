@@ -111,6 +111,13 @@ int NChar::Compare(const NObject &o)
 	else return 0;	
 }
 
+int NChar::Compare(const NChar &c)
+{
+	if (value > c.value) return 1;
+	else if (value < c.value) return -1;
+	else return 0;
+}
+
 void NChar::Serialize(const Serializator &s)
 {
 	((Serializator *)&s)->Put(value);
@@ -153,6 +160,11 @@ bool NChar::IsAlphaNumeric(char c)
 bool NChar::IsAscii(char c)
 {
 	return isascii(c);
+}
+
+bool NChar::IsBlank(char c)
+{
+	return isblank(c);
 }
 
 bool NChar::IsControl(char c)

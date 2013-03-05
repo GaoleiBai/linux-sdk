@@ -110,6 +110,13 @@ int NLongLong::Compare(const NObject &o)
 	else return 0;	
 }
 
+int NLongLong::Compare(const NLongLong &l)
+{
+	if (value > l.value) return 1;
+	else if (value < l.value) return -1;
+	else return 0;
+}
+
 void NLongLong::Serialize(const Serializator &s)
 {
 	((Serializator *)&s)->Put(value);

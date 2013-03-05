@@ -71,6 +71,11 @@ void Serializator::Put(char n)
 	Put((char *)&n, sizeof(n));
 }
 
+void Serializator::Put(wchar_t n)
+{
+	Put((char *)&n, sizeof(n));
+}
+
 void Serializator::Put(short n)
 {
 	Put((char *)&n, sizeof(n));
@@ -164,6 +169,13 @@ bool Serializator::GetBool()
 char Serializator::GetChar()
 {
 	char n = 0;
+	Get((char *)&n, sizeof(n));
+	return n;
+}
+
+wchar_t Serializator::GetWChar()
+{
+	wchar_t n = 0;
 	Get((char *)&n, sizeof(n));
 	return n;
 }

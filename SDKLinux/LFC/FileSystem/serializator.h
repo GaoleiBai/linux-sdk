@@ -36,6 +36,7 @@ public:
 	void Put(const NObject &o);
 	void Put(bool n);
 	void Put(char n);
+	void Put(wchar_t n);
 	void Put(short n);
 	void Put(int n);
 	void Put(long n);
@@ -53,6 +54,7 @@ public:
 	NObject *GetNObject();
 	bool GetBool();
 	char GetChar();
+	wchar_t GetWChar();
 	short GetShort();
 	int GetInt();
 	long GetLong();

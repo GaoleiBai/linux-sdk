@@ -148,6 +148,13 @@ int NDouble::Compare(const NObject &o)
 	else return 0;
 }
 
+int NDouble::Compare(const NDouble &d)
+{
+	if (value > d.value) return 1;
+	else if (value < d.value) return -1;
+	else return 0;
+}
+
 void NDouble::Serialize(const Serializator &s)
 {
 	((Serializator *)&s)->Put(value);

@@ -110,6 +110,13 @@ int NShort::Compare(const NObject &o)
 	else return 0;	
 }
 
+int NShort::Compare(const NShort &s)
+{
+	if (value > s.value) return 1;
+	else if (value < s.value) return -1;
+	else return 0;
+}
+
 void NShort::Serialize(const Serializator &s)
 {
 	((Serializator *)&s)->Put(value);

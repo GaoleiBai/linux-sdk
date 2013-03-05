@@ -148,6 +148,13 @@ int NLongDouble::Compare(const NObject &o)
 	else return 0;
 }
 
+int NLongDouble::Compare(const NLongDouble &d)
+{
+	if (value > d.value) return 1;
+	else if (value < d.value) return -1;
+	else return 0;
+}
+
 void NLongDouble::Serialize(const Serializator &s)
 {
 	((Serializator *)&s)->Put(value);

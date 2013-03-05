@@ -44,6 +44,7 @@ public:
 	virtual NObject *NewInstance();
 	virtual Text ToText();
 	virtual int Compare(const NObject &o);
+	virtual int Compare(const NLongLong &l);
 	virtual void Serialize(const Serializator &s);
 	virtual void Deserialize(const Serializator &s);
 	

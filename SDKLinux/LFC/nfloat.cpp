@@ -149,6 +149,13 @@ int NFloat::Compare(const NObject &o)
 	return 0;
 }
 
+int NFloat::Compare(const NFloat &f)
+{
+	if (value > f.value) return 1;
+	else if (value < f.value) return -1;
+	else return 0;
+}
+
 void NFloat::Serialize(const Serializator &s)
 {
 	((Serializator *)&s)->Put(value);

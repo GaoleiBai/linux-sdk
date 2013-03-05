@@ -112,6 +112,13 @@ int NUInt::Compare(const NObject &o)
 	else return 0;
 }
 
+int NUInt::Compare(const NUInt &i)
+{
+	if (value > i.value) return 1;
+	else if (value < i.value) return -1;
+	else return 0;
+}
+
 void NUInt::Serialize(const Serializator &s)
 {
 	((Serializator *)&s)->Put(value);
