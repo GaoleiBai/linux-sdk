@@ -143,7 +143,14 @@
     <File Name="LFC/LFC.h"/>
     <File Name="LFC/ndelegation.h"/>
     <File Name="LFC/ndelegation.cpp"/>
-    <VirtualDirectory Name="Data"/>
+    <VirtualDirectory Name="Data">
+      <File Name="LFC/Data/sqlite3db.h"/>
+      <File Name="LFC/Data/sqlite3db.cpp"/>
+      <File Name="LFC/Data/dataexception.h"/>
+      <File Name="LFC/Data/dataexception.cpp"/>
+      <File Name="LFC/Data/sqlite3statement.h"/>
+      <File Name="LFC/Data/sqlite3statement.cpp"/>
+    </VirtualDirectory>
     <File Name="LFC/nwchar.h"/>
     <File Name="LFC/nwchar.cpp"/>
   </VirtualDirectory>
@@ -199,6 +206,7 @@
       </Compiler>
       <Linker Options="" Required="yes">
         <Library Value="rt"/>
+        <Library Value="libsqlite3"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="no"/>
