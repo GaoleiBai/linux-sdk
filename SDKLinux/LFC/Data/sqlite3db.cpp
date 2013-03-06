@@ -32,6 +32,7 @@ SQLite3DB::SQLite3DB(const Text &connection_string)
 SQLite3DB::~SQLite3DB()
 {
 	Close();
+	delete connection_string;
 }
 
 Text SQLite3DB::ConnectionString()
@@ -54,6 +55,11 @@ int SQLite3DB::busy_handler(void *params, int tryes)
 	SQLite3DB *db = (SQLite3DB *)params;
 	usleep(10000);
 	return tryes * 10 < db->db_timeout ? 1 : 0;
+}
+
+bool SQLite3DB::IsOpen()
+{
+	return db != NULL;
 }
 
 void SQLite3DB::Open()

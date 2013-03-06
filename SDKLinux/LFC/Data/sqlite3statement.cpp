@@ -18,12 +18,30 @@
    02111-1307 USA. or see http://www.gnu.org/licenses/. */
    
 #include "sqlite3statement.h"
+#include "sqlite3db.h"
+#include "dataexception.h"
+#include "../Text/text.h"
 
-SQLite3Statement::SQLite3Statement()
+SQLite3Statement::SQLite3Statement(const SQLite3DB &database, const Text &query)
 {
+	this->query = new Text(query);
+	db = database.db;
+	
+	int strquerylength = 2 * ((Text *)&query)->Length() + 1;
+	char *strquery = new char[strquerylength];
+	((Text *)&query)->GetAnsiString(strquery, strquerylength);
+	int sqres = sqlite3_prepare(db, strquery, -1, &stmt, NULL);
+	delete strquery;
+	if (sqres != SQLITE_OK)
+		throw new DataException(sqlite3_errmsg(db), __FILE__, __LINE__, __func__);		
 }
 
 SQLite3Statement::~SQLite3Statement()
 {
+	if (sqlite3_finalize(stmt) != SQLITE_OK)
+		throw new DataException(sqlite3_errmsg(db), __FILE__, __LINE__, __func__);		
+	delete query;
+	stmt = NULL;
+	db = NULL;
 }
 

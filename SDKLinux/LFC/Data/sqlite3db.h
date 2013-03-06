@@ -25,6 +25,8 @@
 
 class SQLite3DB : public NObject 
 {
+	friend class SQLite3Statement;
+	
 protected:
 	int db_timeout;
 	Text *connection_string;
@@ -39,6 +41,7 @@ public:
 	Text ConnectionString();
 	void SetTimeout(int milliseconds);
 	int GetTimeout();
+	bool IsOpen();
 	void Open();
 	void Close();
 	

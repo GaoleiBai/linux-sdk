@@ -20,11 +20,22 @@
 #ifndef SQLITE3STATEMENT_H
 #define SQLITE3STATEMENT_H
 
-class SQLite3Statement {
+#include "../n_object.h"
+#include <sqlite3.h>
 
+class SQLite3DB;
+class Text;
+
+class SQLite3Statement : public NObject {
+	sqlite3 *db;
+	sqlite3_stmt *stmt;
+	Text *query;
+	
 public:
-	SQLite3Statement();
+	SQLite3Statement(const SQLite3DB &database, const Text &query);
 	virtual ~SQLite3Statement();
+
+	void Step();
 
 };
 
