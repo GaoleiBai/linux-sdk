@@ -89,6 +89,10 @@
 #include "Network/socket.h"
 #include "Network/ipv4genericserver.h"
 #include "Network/ipv4genericservercontroller.h"
+#include "Data/dataexception.h"
+#include "Data/sqlite3db.h"
+#include "Data/sqlite3statement.h"
+#include "Data/sqlite3recordset.h"
 
 void lfc_init();
 
