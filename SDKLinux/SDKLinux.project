@@ -150,6 +150,8 @@
       <File Name="LFC/Data/dataexception.cpp"/>
       <File Name="LFC/Data/sqlite3statement.h"/>
       <File Name="LFC/Data/sqlite3statement.cpp"/>
+      <File Name="LFC/Data/sqlite3recordset.h"/>
+      <File Name="LFC/Data/sqlite3recordset.cpp"/>
     </VirtualDirectory>
     <File Name="LFC/nwchar.h"/>
     <File Name="LFC/nwchar.cpp"/>

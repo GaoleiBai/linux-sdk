@@ -17,28 +17,35 @@
    Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
    02111-1307 USA. or see http://www.gnu.org/licenses/. */
    
-#ifndef SQLITE3STATEMENT_H
-#define SQLITE3STATEMENT_H
+#ifndef SQLITE3RECORDSET_H
+#define SQLITE3RECORDSET_H
 
 #include "../n_object.h"
 #include <sqlite3.h>
 
-class SQLite3DB;
-class Text;
-class SQLite3Recordset;
+class Buffer;
 
-class SQLite3Statement : public NObject {
+class SQLite3Recordset : public NObject {
+	friend class SQLite3Statement;
+	
 	sqlite3 *db;
 	sqlite3_stmt *stmt;
-	Text *query;
-	
+	SQLite3Recordset(sqlite3 *db, sqlite3_stmt *stmt);
+	void CheckColumnIndex(int column);
 public:
-	SQLite3Statement(const SQLite3DB &database, const Text &query);
-	virtual ~SQLite3Statement();
+	SQLite3Recordset(const SQLite3Recordset &r);
+	virtual ~SQLite3Recordset();
 
-	void Run();
-	SQLite3Recordset RunRecordset();
-
+	int Columns();
+	bool ExistsColumn(int column);
+	bool Step();
+	bool IsNull(int column);
+	int GetInt(int column);
+	long GetLong(int column);
+	double GetDouble(int column);
+	Text GetText(int column);
+	Buffer GetBlob(int column);
+	
 };
 
-#endif // SQLITE3STATEMENT_H
+#endif // SQLITE3RECORDSET_H

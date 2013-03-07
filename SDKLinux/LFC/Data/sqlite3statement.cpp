@@ -20,6 +20,7 @@
 #include "sqlite3statement.h"
 #include "sqlite3db.h"
 #include "dataexception.h"
+#include "sqlite3recordset.h"
 #include "../Text/text.h"
 
 SQLite3Statement::SQLite3Statement(const SQLite3DB &database, const Text &query)
@@ -30,7 +31,7 @@ SQLite3Statement::SQLite3Statement(const SQLite3DB &database, const Text &query)
 	int strquerylength = 2 * ((Text *)&query)->Length() + 1;
 	char *strquery = new char[strquerylength];
 	((Text *)&query)->GetAnsiString(strquery, strquerylength);
-	int sqres = sqlite3_prepare(db, strquery, -1, &stmt, NULL);
+	int sqres = sqlite3_prepare_v2(db, strquery, -1, &stmt, NULL);
 	delete strquery;
 	if (sqres != SQLITE_OK)
 		throw new DataException(sqlite3_errmsg(db), __FILE__, __LINE__, __func__);		
@@ -44,4 +45,17 @@ SQLite3Statement::~SQLite3Statement()
 	stmt = NULL;
 	db = NULL;
 }
+
+void SQLite3Statement::Run()
+{
+	if (sqlite3_step(stmt) != SQLITE_DONE)
+		throw new DataException((Text)"Statement didn't run: " + sqlite3_errmsg(db), __FILE__, __LINE__, __func__);		
+}
+
+SQLite3Recordset SQLite3Statement::RunRecordset()
+{
+	return SQLite3Recordset(db, stmt);;
+}
+
+
 
