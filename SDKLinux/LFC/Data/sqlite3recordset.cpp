@@ -139,5 +139,5 @@ Buffer SQLite3Recordset::GetBlob(int column)
 	CheckColumnIndex(column);
 	if (!IsBlob(column))
 		throw new DataException((Text)"Unspected type in column " + column, __FILE__, __LINE__, __func__);
-	return Buffer((char *)sqlite3_column_text(stmt, column), sqlite3_column_bytes(stmt, column));
+	return Buffer((char *)sqlite3_column_blob(stmt, column), sqlite3_column_bytes(stmt, column));
 }

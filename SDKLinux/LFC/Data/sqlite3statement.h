@@ -26,6 +26,7 @@
 class SQLite3DB;
 class Text;
 class SQLite3Recordset;
+class Buffer;
 
 class SQLite3Statement : public NObject {
 	sqlite3 *db;
@@ -35,6 +36,22 @@ class SQLite3Statement : public NObject {
 public:
 	SQLite3Statement(const SQLite3DB &database, const Text &query);
 	virtual ~SQLite3Statement();
+	
+	void BindNull(int parameter);
+	void BindInteger(int parameter, int value);
+	void BindLong(int parameter, long value);
+	void BindDouble(int parameter, double value);
+	void BindText(int parameter, const Text &t);
+	void BindBlob(int parameter, const Buffer &b);
+	
+	int GetParameterIndex(const Text &parameter);
+
+	void BindNull(const Text &parameter);
+	void BindInteger(const Text &parameter, int value);
+	void BindLong(const Text &parameter, long value);
+	void BindDouble(const Text &parameter, double value);
+	void BindText(const Text &parameter, const Text &t);
+	void BindBlob(const Text &parameter, const Buffer &b);
 
 	void Run();
 	SQLite3Recordset RunRecordset();

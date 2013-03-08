@@ -22,6 +22,7 @@
 #include "dataexception.h"
 #include "sqlite3recordset.h"
 #include "../Text/text.h"
+#include "../FileSystem/buffer.h"
 
 SQLite3Statement::SQLite3Statement(const SQLite3DB &database, const Text &query)
 {
@@ -57,5 +58,93 @@ SQLite3Recordset SQLite3Statement::RunRecordset()
 	return SQLite3Recordset(db, stmt);;
 }
 
+void SQLite3Statement::BindNull(int parameter)
+{
+	if (sqlite3_bind_null(stmt, parameter) != SQLITE_OK)
+		throw new DataException(sqlite3_errmsg(db), __FILE__, __LINE__, __func__);		
+}
 
+void SQLite3Statement::BindInteger(int parameter, int value)
+{
+	if (sqlite3_bind_int(stmt, parameter, value) != SQLITE_OK)
+		throw new DataException(sqlite3_errmsg(db), __FILE__, __LINE__, __func__);		
+}
 
+void SQLite3Statement::BindLong(int parameter, long value)
+{
+	if (sqlite3_bind_int64(stmt, parameter, value) != SQLITE_OK)
+		throw new DataException(sqlite3_errmsg(db), __FILE__, __LINE__, __func__);			
+}
+
+void SQLite3Statement::BindDouble(int parameter, double value)
+{
+	if (sqlite3_bind_double(stmt, parameter, value) != SQLITE_OK)
+		throw new DataException(sqlite3_errmsg(db), __FILE__, __LINE__, __func__);		
+}
+
+void deleteFunction(void *parameter) {
+	delete (char *)parameter;
+}
+
+void SQLite3Statement::BindText(int parameter, const Text &t)
+{
+	int lenvalue = ((Text *)&t)->Length();
+	char *value = new char[2 * lenvalue + 1];
+	((Text *)&t)->GetAnsiString(value, 2 * lenvalue);
+	
+	if (sqlite3_bind_text(stmt, parameter, value, lenvalue, deleteFunction) != SQLITE_OK)
+		throw new DataException(sqlite3_errmsg(db), __FILE__, __LINE__, __func__);			
+}
+
+void SQLite3Statement::BindBlob(int parameter, const Buffer &b)
+{
+	Buffer *bb = (Buffer *)&b;
+	char *buffer = new char[bb->Length()];
+	bb->FSetStart();
+	bb->Read(buffer, bb->Length());
+
+	if (sqlite3_bind_blob(stmt, parameter, buffer, bb->Length(), deleteFunction) != SQLITE_OK)
+		throw new DataException(sqlite3_errmsg(db), __FILE__, __LINE__, __func__);			
+}
+
+int SQLite3Statement::GetParameterIndex(const Text &parameter)
+{
+	int lname = ((Text *)&parameter)->Length();
+	char *pname = new char[2 * lname + 1];
+	((Text *)&parameter)->GetAnsiString(pname, 2 * lname);
+	
+	int ix = sqlite3_bind_parameter_index(stmt, pname);
+	delete pname;
+	if (ix == 0) 
+		throw new DataException((Text)"Parameter " + parameter + " not found", __FILE__, __LINE__, __func__);
+}
+
+void SQLite3Statement::BindNull(const Text &parameter)
+{
+	BindNull(GetParameterIndex(parameter));
+}
+
+void SQLite3Statement::BindInteger(const Text &parameter, int value)
+{
+	BindInteger(GetParameterIndex(parameter), value);
+}
+
+void SQLite3Statement::BindLong(const Text &parameter, long value)
+{
+	BindLong(GetParameterIndex(parameter), value);
+}
+
+void SQLite3Statement::BindDouble(const Text &parameter, double value)
+{
+	BindDouble(GetParameterIndex(parameter), value);
+}
+
+void SQLite3Statement::BindText(const Text &parameter, const Text &value)
+{
+	BindText(GetParameterIndex(parameter), value);
+}
+
+void SQLite3Statement::BindBlob(const Text &parameter, const Buffer &value)
+{
+	BindBlob(GetParameterIndex(parameter), value);
+}
