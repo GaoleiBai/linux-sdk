@@ -72,32 +72,72 @@ bool SQLite3Recordset::IsNull(int column)
 	return sqlite3_column_type(stmt, column) == SQLITE_NULL;
 }
 
+bool SQLite3Recordset::IsInteger(int column)
+{
+	CheckColumnIndex(column);
+	return sqlite3_column_type(stmt, column) == SQLITE_INTEGER;
+}
+
+bool SQLite3Recordset::IsLong(int column)
+{
+	CheckColumnIndex(column);
+	return sqlite3_column_type(stmt, column) == SQLITE_INTEGER;	
+}
+
+bool SQLite3Recordset::IsDouble(int column)
+{
+	CheckColumnIndex(column);
+	return sqlite3_column_type(stmt, column) == SQLITE_FLOAT;
+}
+
+bool SQLite3Recordset::IsText(int column)
+{
+	CheckColumnIndex(column);
+	return sqlite3_column_type(stmt, column) == SQLITE3_TEXT;	
+}
+
+bool SQLite3Recordset::IsBlob(int column)
+{
+	CheckColumnIndex(column);
+	return sqlite3_column_type(stmt, column) == SQLITE_BLOB;	
+}
+
 int SQLite3Recordset::GetInt(int column)
 {
 	CheckColumnIndex(column);
+	if (!IsInteger(column))
+		throw new DataException((Text)"Unspected type in column " + column, __FILE__, __LINE__, __func__);
 	return sqlite3_column_int(stmt, column);
 }
 
 long SQLite3Recordset::GetLong(int column)
 {
 	CheckColumnIndex(column);
+	if (!IsInteger(column))
+		throw new DataException((Text)"Unspected type in column " + column, __FILE__, __LINE__, __func__);
 	return sqlite3_column_int64(stmt, column);
 }
 
 double SQLite3Recordset::GetDouble(int column)
 {
 	CheckColumnIndex(column);
+	if (!IsInteger(column))
+		throw new DataException((Text)"Unspected type in column " + column, __FILE__, __LINE__, __func__);
 	return sqlite3_column_double(stmt, column);
 }
 
 Text SQLite3Recordset::GetText(int column)
 {
 	CheckColumnIndex(column);
+	if (!IsText(column))
+		throw new DataException((Text)"Unspected type in column " + column, __FILE__, __LINE__, __func__);
 	return Text((char *)sqlite3_column_text(stmt, column), sqlite3_column_bytes(stmt, column));
 }
 
 Buffer SQLite3Recordset::GetBlob(int column)
 {
 	CheckColumnIndex(column);
+	if (!IsBlob(column))
+		throw new DataException((Text)"Unspected type in column " + column, __FILE__, __LINE__, __func__);
 	return Buffer((char *)sqlite3_column_text(stmt, column), sqlite3_column_bytes(stmt, column));
 }

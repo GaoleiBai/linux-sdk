@@ -40,6 +40,11 @@ public:
 	bool ExistsColumn(int column);
 	bool Step();
 	bool IsNull(int column);
+	bool IsInteger(int column);
+	bool IsLong(int column);
+	bool IsDouble(int column);
+	bool IsText(int column);
+	bool IsBlob(int column);
 	int GetInt(int column);
 	long GetLong(int column);
 	double GetDouble(int column);
