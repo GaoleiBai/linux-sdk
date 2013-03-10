@@ -35,6 +35,7 @@
 #include "testthread.h"
 #include "testdelegation.h"
 #include "testnetwork.h"
+#include "testsqlite3.h"
 
 class Tests {
 public:

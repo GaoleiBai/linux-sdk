@@ -47,13 +47,13 @@ SQLite3Statement::~SQLite3Statement()
 	db = NULL;
 }
 
-void SQLite3Statement::Run()
+void SQLite3Statement::Exec()
 {
 	if (sqlite3_step(stmt) != SQLITE_DONE)
 		throw new DataException((Text)"Statement didn't run: " + sqlite3_errmsg(db), __FILE__, __LINE__, __func__);		
 }
 
-SQLite3Recordset SQLite3Statement::RunRecordset()
+SQLite3Recordset SQLite3Statement::ExecQuery()
 {
 	return SQLite3Recordset(db, stmt);;
 }

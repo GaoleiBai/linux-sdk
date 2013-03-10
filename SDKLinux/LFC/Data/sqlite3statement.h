@@ -53,8 +53,8 @@ public:
 	void BindText(const Text &parameter, const Text &t);
 	void BindBlob(const Text &parameter, const Buffer &b);
 
-	void Run();
-	SQLite3Recordset RunRecordset();
+	void Exec();
+	SQLite3Recordset ExecQuery();
 
 };
 

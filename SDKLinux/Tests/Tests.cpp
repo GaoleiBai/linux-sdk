@@ -39,8 +39,13 @@ int Tests::Perform()
 	
 	StdOut::PrintLine("hello world");
 	
+	if (TestSQLite3::Perform() != 0) {
+		StdOut::PrintLine("TestSQLite3::Perform error!!!");
+		return -1;
+	}
+	
 	if (TestNetwork::Perform() != 0) {
-		StdOut::PrintLine("TestNetwork::Perform error");
+		StdOut::PrintLine("TestNetwork::Perform error!!!");
 		return -1;
 	}
 	
