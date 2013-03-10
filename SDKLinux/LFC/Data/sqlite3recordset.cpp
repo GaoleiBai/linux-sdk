@@ -41,8 +41,8 @@ SQLite3Recordset::~SQLite3Recordset()
 bool SQLite3Recordset::Step()
 {
 	int res = sqlite3_step(stmt);
-	if (res == SQLITE_DONE) return true;
-	else if (res == SQLITE_ERROR) return false;
+	if (res == SQLITE_ROW) return true;
+	else if (res == SQLITE_DONE) return false;
 	else throw new DataException(sqlite3_errmsg(db), __FILE__, __LINE__, __func__);		
 }
 
@@ -121,7 +121,7 @@ long SQLite3Recordset::GetLong(int column)
 double SQLite3Recordset::GetDouble(int column)
 {
 	CheckColumnIndex(column);
-	if (!IsInteger(column))
+	if (!IsDouble(column))
 		throw new DataException((Text)"Unspected type in column " + column, __FILE__, __LINE__, __func__);
 	return sqlite3_column_double(stmt, column);
 }

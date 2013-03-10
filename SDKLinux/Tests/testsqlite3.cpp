@@ -35,7 +35,10 @@ int TestSQLite3::Perform()
 			delete s;
 		}
 		
-		int kk = 0;
+		SQLite3Statement s1(db, "SELECT ID, NAME, AGE FROM customer");
+		SQLite3Recordset r1 = s1.ExecQuery();
+		while (r1.Step())
+			StdOut::PrintLine((Text)r1.GetInt(0) + "\t" + r1.GetText(1) + "\t" + r1.GetDouble(2));
 	} catch (Exception *e) {
 		delete e;
 		if (s != NULL) delete s;
