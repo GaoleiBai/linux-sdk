@@ -18,17 +18,30 @@
    02111-1307 USA. or see http://www.gnu.org/licenses/. */
    
    
-#ifndef TESTSQLITE3_H
-#define TESTSQLITE3_H
+#include "random.h"
+#include <time.h>
 
-class TestSQLite3 {
+Random::Random()
+{
+	seed = time(NULL);
+}
 
-public:
-	TestSQLite3();
-	virtual ~TestSQLite3();
+Random::Random(unsigned int seed)
+{
+	this->seed = seed;
+}
 
-	static int Perform();
-	
-};
+Random::~Random()
+{
+}
 
-#endif // TESTSQLITE3_H
+unsigned int Random::Next()
+{
+	return rand_r(&seed);
+}
+
+double Random::NextDouble()
+{
+	return 1.0 * Next() / Max;
+}
+

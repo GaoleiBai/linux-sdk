@@ -155,6 +155,8 @@
     </VirtualDirectory>
     <File Name="LFC/nwchar.h"/>
     <File Name="LFC/nwchar.cpp"/>
+    <File Name="LFC/random.h"/>
+    <File Name="LFC/random.cpp"/>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>
