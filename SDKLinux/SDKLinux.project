@@ -204,6 +204,8 @@
     <File Name="Tests/testnetwork.cpp"/>
     <File Name="Tests/testsqlite3.h"/>
     <File Name="Tests/testsqlite3.cpp"/>
+    <File Name="Tests/testrandom.h"/>
+    <File Name="Tests/testrandom.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">

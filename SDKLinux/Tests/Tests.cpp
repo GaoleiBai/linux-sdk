@@ -39,6 +39,8 @@ int Tests::Perform()
 	
 	StdOut::PrintLine("hello world");
 	
+	TestRandom::Perform();
+	
 	if (TestSQLite3::Perform() != 0) {
 		StdOut::PrintLine("TestSQLite3::Perform error!!!");
 		return -1;

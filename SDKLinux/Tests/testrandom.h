@@ -18,31 +18,17 @@
    02111-1307 USA. or see http://www.gnu.org/licenses/. */
    
    
-#ifndef TESTS_H
-#define TESTS_H
+#ifndef TESTRANDOM_H
+#define TESTRANDOM_H
 
-#include "test_text.h"
-#include "testdirectory.h"
-#include "testdatetime.h"
-#include "testadministration.h"
-#include "testfile.h"
-#include "testcollection.h"
-#include "testdictionary.h"
-#include "test_buffer.h"
-#include "testserialization.h"
-#include "testnumeric.h"
-#include "testserialport.h"
-#include "testthread.h"
-#include "testdelegation.h"
-#include "testnetwork.h"
-#include "testsqlite3.h"
-#include "testrandom.h"
+class TestRandom {
 
-class Tests {
 public:
-	Tests();
-	~Tests();
+	TestRandom();
+	virtual ~TestRandom();
+
 	static int Perform();
+
 };
 
-#endif
+#endif // TESTRANDOM_H
