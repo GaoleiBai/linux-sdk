@@ -117,6 +117,8 @@ int SQLite3Statement::GetParameterIndex(const Text &parameter)
 	delete pname;
 	if (ix == 0) 
 		throw new DataException((Text)"Parameter " + parameter + " not found", __FILE__, __LINE__, __func__);
+		
+	return ix;
 }
 
 void SQLite3Statement::BindNull(const Text &parameter)

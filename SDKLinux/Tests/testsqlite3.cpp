@@ -39,6 +39,19 @@ int TestSQLite3::Perform()
 		SQLite3Recordset r1 = s1.ExecQuery();
 		while (r1.Step())
 			StdOut::PrintLine((Text)r1.GetInt(0) + "\t" + r1.GetText(1) + "\t" + r1.GetDouble(2));
+			
+		SQLite3Statement s2(db, "SELECT NAME, AGE FROM customer WHERE ID=?");
+		s2.BindInteger(1, 3);
+		SQLite3Recordset r2 = s2.ExecQuery();
+		if (r2.Step())
+			StdOut::PrintLine((Text)r2.GetText(0) + "\t" + r2.GetDouble(1));
+			
+		SQLite3Statement s3(db, "SELECT NAME, AGE FROM customer WHERE NAME=$name");
+		s3.BindText("$name", "Roger");
+		SQLite3Recordset r3 = s3.ExecQuery();
+		if (r3.Step())
+			StdOut::PrintLine((Text)r3.GetText(0) + "\t" + r3.GetDouble(1));
+		
 	} catch (Exception *e) {
 		delete e;
 		if (s != NULL) delete s;
