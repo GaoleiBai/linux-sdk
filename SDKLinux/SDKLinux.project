@@ -159,6 +159,14 @@
     <File Name="LFC/nwchar.cpp"/>
     <File Name="LFC/random.h"/>
     <File Name="LFC/random.cpp"/>
+    <VirtualDirectory Name="XWidgets">
+      <File Name="LFC/XWidgets/xwindow.h"/>
+      <File Name="LFC/XWidgets/xwindow.cpp"/>
+      <File Name="LFC/XWidgets/xdisplay.h"/>
+      <File Name="LFC/XWidgets/xdisplay.cpp"/>
+      <File Name="LFC/XWidgets/xexception.h"/>
+      <File Name="LFC/XWidgets/xexception.cpp"/>
+    </VirtualDirectory>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>
@@ -217,6 +225,7 @@
       <Linker Options="" Required="yes">
         <Library Value="rt"/>
         <Library Value="libsqlite3"/>
+        <Library Value="libX11"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="no"/>
