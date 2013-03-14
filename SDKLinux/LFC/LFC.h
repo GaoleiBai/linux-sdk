@@ -73,6 +73,7 @@
 #include "Time/timeexception.h"
 #include "Devices/stdout.h"
 #include "Devices/stdin.h"
+#include "Devices/stderr.h"
 #include "Devices/serialport.h"
 #include "Devices/deviceexception.h"
 #include "System/system.h"

@@ -43,6 +43,8 @@
       <File Name="LFC/Devices/deviceexception.cpp"/>
       <File Name="LFC/Devices/stdin.h"/>
       <File Name="LFC/Devices/stdin.cpp"/>
+      <File Name="LFC/Devices/stderr.h"/>
+      <File Name="LFC/Devices/stderr.cpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Network">
       <File Name="LFC/Network/socket.h"/>

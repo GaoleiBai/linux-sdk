@@ -20,7 +20,16 @@
 *
 **/
 #include "LFC.h"
+#include <execinfo.h>
+#include <signal.h>
 
+void sigsegv_handler(int signal) 
+{
+	void *addresses[1000];
+	size_t numberOfFrames = backtrace(addresses, 1000);
+	StdErr::PrintLine((Text)"Error signal:" + signal);
+	backtrace_symbols_fd(addresses, numberOfFrames, 2);
+}
 
 void lfc_init()
 {
@@ -50,4 +59,6 @@ void lfc_init()
 	NObjectRegistry::Register(NDouble());
 	NObjectRegistry::Register(NLongDouble());
 	
+	// Register sigsegv (segmentation fault)
+	signal(SIGSEGV, sigsegv_handler);
 }

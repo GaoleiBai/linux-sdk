@@ -38,12 +38,12 @@ void StdOut::Print(const Text &t)
 
 void StdOut::PrintLine(const Text &t)
 {
-	if (defaultStdOut == 0) defaultStdOut = new StdOut();
+	if (defaultStdOut == NULL) defaultStdOut = new StdOut();
 	defaultStdOut->WriteLine(t);
 }
 
 void StdOut::PrintLine()
 {
-	if (defaultStdOut == 0) defaultStdOut = new StdOut();
+	if (defaultStdOut == NULL) defaultStdOut = new StdOut();
 	defaultStdOut->WriteLine();
 }

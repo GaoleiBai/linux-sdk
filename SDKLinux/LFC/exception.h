@@ -27,7 +27,8 @@
 class Text;
 
 class Exception : public NObject {
-
+	static void DumpToStdErr(const Text &t);
+	
 public:
 	Exception();
 	Exception(const Exception &e);

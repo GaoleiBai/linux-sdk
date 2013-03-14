@@ -19,48 +19,32 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#include "exception.h"
-#include "Devices/stdout.h"
-#include "Text/text.h"
-#include "Devices/stderr.h"
-#include <execinfo.h>
+#include "stderr.h"
+#include <stdlib.h>
 
-void Exception::DumpToStdErr(const Text &t)
+StdErr *StdErr::defaultStdErr = NULL;
+
+StdErr::StdErr()
 {
-	StdErr::Print("Exception caught: ");
-	StdErr::Print(t);
-	StdErr::PrintLine();
-	
-	void *addresses[1000];
-	size_t numberOfFrames = backtrace(addresses, 1000);
-	backtrace_symbols_fd(addresses, numberOfFrames, 2);
+	fd = 2;
 }
 
-Exception::Exception()
+void StdErr::Print(const Text &t)
 {
-	t = new Text("");
-	DumpToStdErr(*t);
+	if (defaultStdErr == NULL) defaultStdErr = new StdErr();
+	defaultStdErr->Write(t);
 }
 
-Exception::Exception(const Exception &e)
+void StdErr::PrintLine(const Text &t)
 {
-	t = new Text(e.t);
-	DumpToStdErr(*t);
+	if (defaultStdErr == NULL) defaultStdErr = new StdErr();
+	defaultStdErr->WriteLine(t);
 }
 
-Exception::Exception(const Text &p, const char *file, int line, const char *func)
+void StdErr::PrintLine()
 {
-	t = new Text((Text)p + " in " + file + " at " + line + " : " + func);
-	DumpToStdErr(*t);
+	if (defaultStdErr == NULL) defaultStdErr = new StdErr();
+	defaultStdErr->WriteLine();
 }
 
-Exception::~Exception()
-{
-	delete t;
-}
-
-Text Exception::ToText()
-{
-	return *t;
-}
 

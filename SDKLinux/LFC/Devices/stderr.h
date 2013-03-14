@@ -19,48 +19,20 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#include "exception.h"
-#include "Devices/stdout.h"
-#include "Text/text.h"
-#include "Devices/stderr.h"
-#include <execinfo.h>
+#ifndef STDERR_H
+#define STDERR_H
 
-void Exception::DumpToStdErr(const Text &t)
-{
-	StdErr::Print("Exception caught: ");
-	StdErr::Print(t);
-	StdErr::PrintLine();
+#include "../FileSystem/ifile.h"
+
+class StdErr : public IFile {
+	static StdErr *defaultStdErr;
+	StdErr();
 	
-	void *addresses[1000];
-	size_t numberOfFrames = backtrace(addresses, 1000);
-	backtrace_symbols_fd(addresses, numberOfFrames, 2);
-}
+public:
+	static void Print(const Text &t);
+	static void PrintLine(const Text &t);
+	static void PrintLine();
+	
+};
 
-Exception::Exception()
-{
-	t = new Text("");
-	DumpToStdErr(*t);
-}
-
-Exception::Exception(const Exception &e)
-{
-	t = new Text(e.t);
-	DumpToStdErr(*t);
-}
-
-Exception::Exception(const Text &p, const char *file, int line, const char *func)
-{
-	t = new Text((Text)p + " in " + file + " at " + line + " : " + func);
-	DumpToStdErr(*t);
-}
-
-Exception::~Exception()
-{
-	delete t;
-}
-
-Text Exception::ToText()
-{
-	return *t;
-}
-
+#endif // STDERR_H
