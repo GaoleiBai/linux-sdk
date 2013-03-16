@@ -23,7 +23,10 @@
 #define LFC_H
 
 // Libraries needed to compile
-// rt
+// rt,libsqlite3,libx11
+
+// Linker options for backtrace at exceptions
+// -rdynamic
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -97,6 +100,9 @@
 #include "Data/sqlite3db.h"
 #include "Data/sqlite3statement.h"
 #include "Data/sqlite3recordset.h"
+#include "XWidgets/xwindow.h"
+#include "XWidgets/xdisplay.h"
+#include "XWidgets/xexception.h"
 
 void lfc_init();
 

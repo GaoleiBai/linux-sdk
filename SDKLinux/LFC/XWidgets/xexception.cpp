@@ -20,6 +20,8 @@
 *
 **/
 #include "xexception.h"
+#include "../Text/text.h"
+#include <X11/Xlib.h>
 
 XException::XException() : Exception()
 {
@@ -33,5 +35,23 @@ XException::XException(const Text &description, const char *file, int line, cons
 
 XException::~XException()
 {
+}
+
+void XException::CheckResult(int result)
+{
+	if (result == BadAlloc)
+		throw new XException("X cannot allocate the resource.", __FILE__, __LINE__, __func__);
+	else if (result == BadColor)
+		throw new XException("The value for the color map does not match any colormap", __FILE__, __LINE__, __func__);
+	else if (result == BadCursor)
+		throw new XException("The value for the cursor does not name any known cursor", __FILE__, __LINE__, __func__);
+	else if (result == BadMatch)
+		throw new XException("The values does not match any required argument", __FILE__, __LINE__, __func__);
+	else if (result == BadPixmap)
+		throw new XException("The value of the pixmap argument does not match any known pixmap", __FILE__, __LINE__, __func__);
+	else if (result == BadValue)
+		throw new XException("Any value falls outside the reange required by any parameter", __FILE__, __LINE__, __func__);
+	else if (result == BadWindow)
+		throw new XException("The value in the window argument does not name any existing window", __FILE__, __LINE__, __func__);
 }
 

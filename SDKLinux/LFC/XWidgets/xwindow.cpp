@@ -21,27 +21,114 @@
 **/
 #include "xwindow.h"
 #include "xdisplay.h"
+#include "xexception.h"
+#include "../Text/text.h"
 
 XWindow::XWindow()
 {
-	Display *d = XDisplay::Default().d;
-	int screen = XDefaultScreen(d);
-	Visual *v = DefaultVisual(d, screen);
-	XSetWindowAttributes attrs;
-	attrs.background_pixel = XWhitePixel(d, screen);
-	attrs.border_pixel = XBlackPixel(d, screen);
-	attrs.override_redirect = 0;
-	int x = 10, y = 10, w = 100, h = 100, borderw = 3, depth = 32;
-	XCreateWindow(
-		d, XRootWindow(d, screen), x, y, w, h, borderw, depth, InputOutput, v, 
-		CWBackPixel | CWBorderPixel | CWOverrideRedirect, &attrs);
+	init(XDisplay::Default());
 }
 
 XWindow::XWindow(const XDisplay &d)
 {
+	init(d);
 }
 
 XWindow::~XWindow()
 {
+	SetVisible(false);
+	
+	int res = XDestroyWindow(windowDisplay, window);
+	XException::CheckResult(res);
+	
+	DelegationOnDestroyWindow().Execute(NULL);
+	
+	delete dOnShowWindow;
+	delete dOnDestroyWindow;
+	delete dOnCreateWindow;
+	delete dOnDraw;
+}
+
+void XWindow::init(const XDisplay &d)
+{
+	windowDisplay = d.d;
+	windowScreen = XDefaultScreen(windowDisplay);
+	windowParent = XRootWindow(windowDisplay, windowScreen);
+	
+	// Creates delegates
+	dOnShowWindow = new NDelegation();
+	dOnDestroyWindow = new NDelegation();
+	dOnCreateWindow = new NDelegation();
+	dOnDraw = new NDelegation();
+	
+	Visual *v = DefaultVisual(windowDisplay, windowScreen);
+	XSetWindowAttributes attrs;
+	attrs.background_pixel = XWhitePixel(windowDisplay, windowScreen);
+	attrs.border_pixel = XBlackPixel(windowDisplay, windowScreen);
+	int x = 10, y = 10, w = 100, h = 100, borderw = 3, depth = 32;
+	
+	w = XCreateWindow(
+		windowDisplay, windowParent, x, y, w, h, borderw, depth, InputOutput, v, 
+		CWBackPixel | CWBorderPixel, &attrs);
+	XException::CheckResult(w);
+	
+	int res = XDefineCursor(windowDisplay, window, XCreateFontCursor(windowDisplay,XC_heart));
+	res = XSelectInput(windowDisplay, w, ExposureMask | ButtonPressMask | KeyPressMask);
+	XException::CheckResult(res);
+	
+	SetVisible(true);
+}
+
+NDelegation &XWindow::DelegationOnShowWindow()
+{
+	return *dOnShowWindow;
+}
+
+NDelegation &XWindow::DelegationOnDestroyWindow()
+{
+	return *dOnDestroyWindow;
+}
+
+NDelegation &XWindow::DelegationOnCreateWindow()
+{
+	return *dOnCreateWindow;
+}
+
+NDelegation &XWindow::DelegationOnDraw()
+{
+	return *dOnDraw;
+}
+
+void XWindow::Run()
+{
+	
+}
+
+int XWindow::RunModal()
+{
+	XEvent event;
+	do {
+		XNextEvent(windowDisplay, &event);
+		if (event.type == Expose) DelegationOnDraw().Execute(NULL);
+	} while (event.type != KeyPress);
+}
+
+void XWindow::SetVisible(bool visible)
+{
+	if (this->visible == visible) return;
+	
+	this->visible = visible;
+	int res = visible ? 
+		XMapWindow(windowDisplay, window) :
+		XUnmapWindow(windowDisplay, window);
+	XException::CheckResult(res);
+	
+	// Shows the window
+	DelegationOnShowWindow().Execute(&visible);
+}
+
+bool XWindow::IsVisible()
+{
+	return visible;
 }
 

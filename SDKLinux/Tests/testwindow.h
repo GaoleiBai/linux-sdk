@@ -19,45 +19,17 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef XWINDOW_H
-#define XWINDOW_H
+#ifndef TESTWINDOW_H
+#define TESTWINDOW_H
 
-#include "../ndelegation.h"
-#include <X11/Xlib.h>
-#include <X11/cursorfont.h>
+class TestWindow {
 
-class XDisplay;
-
-class XWindow : public NObject {
-	Window window;
-	Window windowParent;
-	Display *windowDisplay;
-	int windowScreen;
-	bool visible;
-	
-	NDelegation *dOnShowWindow;
-	NDelegation *dOnDestroyWindow;
-	NDelegation *dOnCreateWindow;
-	NDelegation *dOnDraw;
-	
-	void init(const XDisplay &d);
-	
 public:
-	XWindow();
-	XWindow(const XDisplay &d);
-	virtual ~XWindow();
+	TestWindow();
+	virtual ~TestWindow();
 	
-	NDelegation &DelegationOnShowWindow();
-	NDelegation &DelegationOnDestroyWindow();
-	NDelegation &DelegationOnCreateWindow();
-	NDelegation &DelegationOnDraw();
-	
-	void Run();
-	int RunModal();
-	
-	void SetVisible(bool visible);
-	bool IsVisible();
-	
+	static int Perform();
+
 };
 
-#endif // XWINDOW_H
+#endif // TESTWINDOW_H

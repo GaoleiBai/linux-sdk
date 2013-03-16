@@ -38,6 +38,7 @@
 #include "testnetwork.h"
 #include "testsqlite3.h"
 #include "testrandom.h"
+#include "testwindow.h"
 
 class Tests {
 public:

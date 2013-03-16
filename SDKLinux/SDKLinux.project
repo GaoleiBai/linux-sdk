@@ -216,13 +216,15 @@
     <File Name="Tests/testsqlite3.cpp"/>
     <File Name="Tests/testrandom.h"/>
     <File Name="Tests/testrandom.cpp"/>
+    <File Name="Tests/testwindow.h"/>
+    <File Name="Tests/testwindow.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-g" Required="yes" PreCompiledHeader="">
         <IncludePath Value="."/>
       </Compiler>
-      <Linker Options="" Required="yes">
+      <Linker Options="-rdynamic" Required="yes">
         <Library Value="rt"/>
         <Library Value="libsqlite3"/>
         <Library Value="libX11"/>

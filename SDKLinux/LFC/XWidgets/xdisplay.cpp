@@ -27,15 +27,27 @@ XDisplay *XDisplay::defaultXDisplay = NULL;
 
 XDisplay::XDisplay()
 {
+	createdAsCopy = false;
+	displayName = new Text("NULL");
 	d = XOpenDisplay(NULL);
 	if (d == NULL)
 		throw new XException((Text)"Could not open display NULL", __FILE__, __LINE__, __func__);
+}
+
+XDisplay::XDisplay(Display *d)
+{
+	createdAsCopy = true;
+	displayName = new Text(DisplayString(d));
+	this->d = d;
 }
 
 XDisplay::XDisplay(const Text &t)
 {
 	char displayName[1000];
 	((Text *)&t)->GetAnsiString(displayName, 1000);
+
+	createdAsCopy = false;
+	this->displayName = new Text(t);
 	d = XOpenDisplay(displayName);
 	if (d == NULL)
 		throw new XException((Text)"Could not open display " + t, __FILE__, __LINE__, __func__);
@@ -44,9 +56,9 @@ XDisplay::XDisplay(const Text &t)
 XDisplay::~XDisplay()
 {
 	if (d == NULL) return;
-	if (XCloseDisplay(d) == BadGC)
+	if (!createdAsCopy && XCloseDisplay(d) == BadGC)
 		throw new XException((Text)"Invalid display parameter", __FILE__, __LINE__, __func__);
-	d = NULL;
+	delete displayName;
 }
 
 XDisplay &XDisplay::Default()

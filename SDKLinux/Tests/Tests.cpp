@@ -40,6 +40,11 @@ int Tests::Perform()
 	
 	StdOut::PrintLine("hello world");
 	
+	if (TestWindow::Perform() != 0) {
+		StdOut::PrintLine("TestWindow::Perform error!!!");
+		return -1;
+	}
+	
 	TestRandom::Perform();
 	
 	if (TestSQLite3::Perform() != 0) {

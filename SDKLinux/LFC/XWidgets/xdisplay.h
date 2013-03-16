@@ -29,12 +29,19 @@ class XDisplay : public NObject {
 	friend class XWindow;
 	
 	static XDisplay *defaultXDisplay;
+	
+	bool createdAsCopy;
 	Display *d;
+	Text *displayName;
+	
+	XDisplay(Display *d);
 	
 public:
 	XDisplay();
 	XDisplay(const Text &displayName);
 	virtual ~XDisplay();
+	
+	Text &Name();
 	
 	static XDisplay &Default();
 

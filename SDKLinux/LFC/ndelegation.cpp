@@ -20,6 +20,13 @@
 *
 **/
 #include "ndelegation.h"
+#include <stdlib.h>
+
+NDelegation::NDelegation()
+{
+	o = NULL;
+	method = NULL;
+}
 
 NDelegation::NDelegation(const NObject *o, void *(NObject::*method)(void *param))
 {
@@ -39,6 +46,7 @@ NDelegation::~NDelegation()
 
 void *NDelegation::Execute(void *params)
 {
+	if (o == NULL || method == NULL) return NULL;
 	return (o->*method)(params);
 }
 

@@ -30,6 +30,8 @@ public:
 	XException();
 	XException(const Text &description, const char *file, int line, const char *func);
 	virtual ~XException();
+	
+	static void CheckResult(int result);
 
 };
 
