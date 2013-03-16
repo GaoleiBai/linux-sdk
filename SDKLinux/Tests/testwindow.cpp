@@ -33,7 +33,7 @@ TestWindow::~TestWindow()
 int TestWindow::Perform()
 {
 	try {
-		throw new XException("aaa", __FILE__, __LINE__, __func__);
+		//XWindow::RunExample();
 		XDisplay d;
 		XWindow w(d);
 		w.RunModal();

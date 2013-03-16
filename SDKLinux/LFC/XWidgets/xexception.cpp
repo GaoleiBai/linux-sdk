@@ -53,5 +53,7 @@ void XException::CheckResult(int result)
 		throw new XException("Any value falls outside the reange required by any parameter", __FILE__, __LINE__, __func__);
 	else if (result == BadWindow)
 		throw new XException("The value in the window argument does not name any existing window", __FILE__, __LINE__, __func__);
+	else if (result == BadDrawable)
+		throw new XException("A value for a Drawable argument does not name a Window or a Pixmap", __FILE__, __LINE__, __func__);
 }
 

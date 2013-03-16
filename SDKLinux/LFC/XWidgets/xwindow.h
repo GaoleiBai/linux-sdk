@@ -58,6 +58,8 @@ public:
 	void SetVisible(bool visible);
 	bool IsVisible();
 	
+	static void RunExample();
+	
 };
 
 #endif // XWINDOW_H

@@ -23,6 +23,8 @@
 #include "xdisplay.h"
 #include "xexception.h"
 #include "../Text/text.h"
+#include "../Threading/thread.h"
+#include <string.h>
 
 XWindow::XWindow()
 {
@@ -63,19 +65,20 @@ void XWindow::init(const XDisplay &d)
 	
 	Visual *v = DefaultVisual(windowDisplay, windowScreen);
 	XSetWindowAttributes attrs;
+	memset(&attrs, 0, sizeof(attrs));
 	attrs.background_pixel = XWhitePixel(windowDisplay, windowScreen);
 	attrs.border_pixel = XBlackPixel(windowDisplay, windowScreen);
-	int x = 10, y = 10, w = 100, h = 100, borderw = 3, depth = 32;
+	attrs.override_redirect = 0;
+	int x = 0, y = 0, width = 400, height = 400, borderw = 1, depth = DefaultDepth(windowDisplay, windowScreen);
 	
-	w = XCreateWindow(
-		windowDisplay, windowParent, x, y, w, h, borderw, depth, InputOutput, v, 
-		CWBackPixel | CWBorderPixel, &attrs);
-	XException::CheckResult(w);
+	window = XCreateWindow(
+		windowDisplay, windowParent, x, y, width, height, borderw, depth, InputOutput, v, 
+		CWBackPixel | CWBorderPixel | CWOverrideRedirect, &attrs);
+	XException::CheckResult(window);
 	
-	int res = XDefineCursor(windowDisplay, window, XCreateFontCursor(windowDisplay,XC_heart));
-	res = XSelectInput(windowDisplay, w, ExposureMask | ButtonPressMask | KeyPressMask);
+	int res = XSelectInput(windowDisplay, window, ExposureMask | ButtonPressMask | KeyPressMask);
 	XException::CheckResult(res);
-	
+				
 	SetVisible(true);
 }
 
@@ -122,6 +125,8 @@ void XWindow::SetVisible(bool visible)
 		XMapWindow(windowDisplay, window) :
 		XUnmapWindow(windowDisplay, window);
 	XException::CheckResult(res);
+
+	Thread::Sleep(1000000);
 	
 	// Shows the window
 	DelegationOnShowWindow().Execute(&visible);
@@ -131,4 +136,3 @@ bool XWindow::IsVisible()
 {
 	return visible;
 }
-
