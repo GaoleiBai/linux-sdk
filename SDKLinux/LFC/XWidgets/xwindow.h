@@ -23,10 +23,12 @@
 #define XWINDOW_H
 
 #include "../ndelegation.h"
+#include "../Collections/collection.h"
 #include <X11/Xlib.h>
 #include <X11/cursorfont.h>
 
 class XDisplay;
+class Mutex;
 
 class XWindow : public NObject {
 	Window window;
@@ -35,10 +37,26 @@ class XWindow : public NObject {
 	int windowScreen;
 	bool visible;
 	
-	NDelegation *dOnShowWindow;
-	NDelegation *dOnDestroyWindow;
-	NDelegation *dOnCreateWindow;
-	NDelegation *dOnDraw;
+	Mutex *windowMutex;
+	Collection<void *> *delegationsToExecute;
+	
+	NDelegation *dOnWindowDestroy;
+	NDelegation *dOnWindowCreate;
+	NDelegation *dOnWindowKeyPress;
+	NDelegation *dOnWindowKeyRelease;
+	NDelegation *dOnWindowMouseDown;
+	NDelegation *dOnWindowMouseUp;
+	NDelegation *dOnWindowMouseMove;
+	NDelegation *dOnWindowEnter;
+	NDelegation *dOnWindowLeave;
+	NDelegation *dOnWindowDraw;
+	NDelegation *dOnWindowShow;
+	NDelegation *dOnWindowMove;
+	NDelegation *dOnWindowResize;
+	NDelegation *dOnWindowFocus;
+	NDelegation *dOnWindowPropertyChange;
+	NDelegation *dOnWindowColormapChange;
+	NDelegation *dOnWindowGrabButton;
 	
 	void init(const XDisplay &d);
 	
@@ -47,13 +65,27 @@ public:
 	XWindow(const XDisplay &d);
 	virtual ~XWindow();
 	
-	NDelegation &DelegationOnShowWindow();
-	NDelegation &DelegationOnDestroyWindow();
-	NDelegation &DelegationOnCreateWindow();
-	NDelegation &DelegationOnDraw();
+	NDelegation &DelegationOnWindowDestroy();
+	NDelegation &DelegationOnWindowCreate();
+	NDelegation &DelegationOnWindowKeyPress();
+	NDelegation &DelegationOnWindowKeyRelease();
+	NDelegation &DelegationOnWindowMouseDown();
+	NDelegation &DelegationOnWindowMouseUp();
+	NDelegation &DelegationOnWindowMouseMove();
+	NDelegation &DelegationOnWindowEnter();
+	NDelegation &DelegationOnWindowLeave();
+	NDelegation &DelegationOnWindowDraw();
+	NDelegation &DelegationOnWindowShow();
+	NDelegation &DelegationOnWindowMove();
+	NDelegation &DelegationOnWindowResize();
+	NDelegation &DelegationOnWindowFocus();
+	NDelegation &DelegationOnWindowPropertyChange();
+	NDelegation &DelegationOnWindowColormapChange();
+	NDelegation &DelegationOnWindowGrabButton();
 	
 	void Run();
 	int RunModal();
+	void ExecuteDelegation(const NDelegation &d, void *params);
 	
 	void SetVisible(bool visible);
 	bool IsVisible();
