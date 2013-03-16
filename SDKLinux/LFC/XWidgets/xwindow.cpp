@@ -140,6 +140,11 @@ NDelegation &XWindow::DelegationOnWindowKeyRelease()
 	return *dOnWindowKeyRelease;
 }
 
+NDelegation &XWindow::DelegationOnWindowKeymap()
+{
+	return *dOnWindowKeymap;
+}
+
 NDelegation &XWindow::DelegationOnWindowMouseDown()
 {
 	return *dOnWindowMouseDown;
@@ -220,7 +225,27 @@ int XWindow::RunModal()
 		// Processes the events
 		if (event.type == KeyPress)
 			DelegationOnWindowKeyPress().Execute(NULL);
+		else if (event.type == KeyRelease)
+			DelegationOnWindowKeyRelease().Execute(NULL);
+		else if (event.type == ButtonPress)
+			DelegationOnWindowMouseDown().Execute(NULL);
+		else if (event.type == ButtonRelease)
+			DelegationOnWindowMouseUp().Execute(NULL);
+		else if (event.type == MotionNotify)
+			DelegationOnWindowMouseMove().Execute(NULL);
+		else if (event.type == EnterNotify)
+			DelegationOnWindowEnter().Execute(NULL);
+		else if (event.type == LeaveNotify)
+			DelegationOnWindowLeave().Execute(NULL);
+		else if (event.type == FocusIn)
+			DelegationOnWindowFocus().Execute(NULL);
+		else if (event.type == FocusOut)
+			DelegationOnWindowFocus().Execute(NULL);
+		else if (event.type == KeymapNotify)
+			DelegationOnWindowKeymap().Execute(NULL);
 		else if (event.type == Expose) 
+			DelegationOnWindowDraw().Execute(NULL);
+		else if (event.type == GraphicsExpose)
 			DelegationOnWindowDraw().Execute(NULL);
 		
 		// Locks the collection of delegations

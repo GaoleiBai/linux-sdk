@@ -44,6 +44,7 @@ class XWindow : public NObject {
 	NDelegation *dOnWindowCreate;
 	NDelegation *dOnWindowKeyPress;
 	NDelegation *dOnWindowKeyRelease;
+	NDelegation *dOnWindowKeymap;
 	NDelegation *dOnWindowMouseDown;
 	NDelegation *dOnWindowMouseUp;
 	NDelegation *dOnWindowMouseMove;
@@ -69,6 +70,7 @@ public:
 	NDelegation &DelegationOnWindowCreate();
 	NDelegation &DelegationOnWindowKeyPress();
 	NDelegation &DelegationOnWindowKeyRelease();
+	NDelegation &DelegationOnWindowKeymap();
 	NDelegation &DelegationOnWindowMouseDown();
 	NDelegation &DelegationOnWindowMouseUp();
 	NDelegation &DelegationOnWindowMouseMove();
