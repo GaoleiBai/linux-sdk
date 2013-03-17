@@ -39,8 +39,13 @@ XWindow::XWindow(const XDisplay &d)
 
 XWindow::~XWindow()
 {
+	// Hide window
 	SetVisible(false);
 	
+	// Destroy cairo surface
+	cairo_surface_destroy(cairoSurface);
+	
+	// Destroy window
 	int res = XDestroyWindow(windowDisplay, window);
 	XException::CheckResult(res);
 	
@@ -70,6 +75,8 @@ XWindow::~XWindow()
 void XWindow::init(const XDisplay &d)
 {
 	windowMutex = new Mutex(true);
+	delegationsToExecute = new Collection<void *>();
+	
 	windowDisplay = d.d;
 	windowScreen = XDefaultScreen(windowDisplay);
 	windowParent = XRootWindow(windowDisplay, windowScreen);
@@ -79,6 +86,7 @@ void XWindow::init(const XDisplay &d)
 	dOnWindowCreate = new NDelegation();
 	dOnWindowKeyPress = new NDelegation();
 	dOnWindowKeyRelease = new NDelegation();
+	dOnWindowKeymap = new NDelegation();
 	dOnWindowMouseDown = new NDelegation();
 	dOnWindowMouseUp = new NDelegation();
 	dOnWindowMouseMove = new NDelegation();
@@ -107,6 +115,9 @@ void XWindow::init(const XDisplay &d)
 		CWBackPixel | CWBorderPixel | CWOverrideRedirect, &attrs);
 	XException::CheckResult(window);
 	DelegationOnWindowCreate().Execute(NULL);
+	
+	// Create cairo surface
+	cairoSurface = cairo_xlib_surface_create(windowDisplay, window, v, width, height);
 	
 	// Select events
 	int res = XSelectInput(windowDisplay, window,
@@ -210,6 +221,26 @@ NDelegation &XWindow::DelegationOnWindowGrabButton()
 	return *dOnWindowGrabButton;
 }
 
+Display *XWindow::HandlerDisplay()
+{
+	return windowDisplay;
+}
+
+Window XWindow::HandlerWindow()
+{
+	return window;
+}
+
+int XWindow::HandlerScreen()
+{
+	return windowScreen;
+}
+
+cairo_surface_t *XWindow::HandlerCairoWindowSurface()
+{
+	return cairoSurface;
+}
+
 void XWindow::Run()
 {
 	
@@ -245,8 +276,22 @@ int XWindow::RunModal()
 			DelegationOnWindowKeymap().Execute(NULL);
 		else if (event.type == Expose) 
 			DelegationOnWindowDraw().Execute(NULL);
-		else if (event.type == GraphicsExpose)
+		else if (event.type == VisibilityNotify)
 			DelegationOnWindowDraw().Execute(NULL);
+		else if (event.type == CreateNotify)
+			DelegationOnWindowCreate().Execute(NULL);
+		else if (event.type == DestroyNotify)
+			DelegationOnWindowDestroy().Execute(NULL);
+		else if (event.type == UnmapNotify)
+			DelegationOnWindowShow().Execute(NULL);
+		else if (event.type == MapNotify)
+			DelegationOnWindowShow().Execute(NULL);
+		else if (event.type == ConfigureNotify)
+			DelegationOnWindowMove().Execute(NULL);
+		else if (event.type == ColormapNotify)
+			DelegationOnWindowColormapChange().Execute(NULL);
+		else if (event.type == MappingNotify)
+			DelegationOnWindowKeymap().Execute(NULL);
 		
 		// Locks the collection of delegations
 		windowMutex->Lock();
@@ -276,12 +321,25 @@ int XWindow::RunModal()
 
 void XWindow::ExecuteDelegation(const NDelegation &d, void *params)
 {
+	// Add delegation item to delegationsToExecute collection
 	windowMutex->Lock();
 	void **item = new void *[2];
 	item[0] = new NDelegation(d);
 	item[1] = params;
 	delegationsToExecute->Add(item);
 	windowMutex->Unlock();
+	
+	// Create an event
+	XEvent ev;
+	ev.xclient.type = ClientMessage;
+	ev.xclient.window = window;
+	ev.xclient.message_type = 0;
+	ev.xclient.format = 32;
+	
+	// It sends and flushes the event
+	int res = XSendEvent(windowDisplay, window, false, NoEventMask, &ev);
+	XException::CheckResult(res);
+	XFlush(windowDisplay);
 }
 
 void XWindow::SetVisible(bool visible)

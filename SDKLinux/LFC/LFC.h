@@ -23,7 +23,7 @@
 #define LFC_H
 
 // Libraries needed to compile
-// rt,libsqlite3,libx11
+// rt,libsqlite3,libx11,libcairo
 
 // Linker options for backtrace at exceptions
 // -rdynamic

@@ -228,6 +228,7 @@
         <Library Value="rt"/>
         <Library Value="libsqlite3"/>
         <Library Value="libX11"/>
+        <Library Value="libcairo"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="no"/>

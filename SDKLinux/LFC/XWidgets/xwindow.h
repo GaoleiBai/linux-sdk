@@ -24,6 +24,8 @@
 
 #include "../ndelegation.h"
 #include "../Collections/collection.h"
+#include <cairo/cairo.h>
+#include <cairo/cairo-xlib.h>
 #include <X11/Xlib.h>
 #include <X11/cursorfont.h>
 
@@ -36,6 +38,7 @@ class XWindow : public NObject {
 	Display *windowDisplay;
 	int windowScreen;
 	bool visible;
+	cairo_surface_t *cairoSurface;
 	
 	Mutex *windowMutex;
 	Collection<void *> *delegationsToExecute;
@@ -84,6 +87,12 @@ public:
 	NDelegation &DelegationOnWindowPropertyChange();
 	NDelegation &DelegationOnWindowColormapChange();
 	NDelegation &DelegationOnWindowGrabButton();
+	
+	Display *HandlerDisplay();
+	Window HandlerWindow();
+	Window HandlerParentWindow();
+	int HandlerScreen();
+	cairo_surface_t *HandlerCairoWindowSurface();
 	
 	void Run();
 	int RunModal();
