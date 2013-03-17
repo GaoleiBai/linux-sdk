@@ -22,7 +22,7 @@
 #ifndef XWINDOW_H
 #define XWINDOW_H
 
-#include "../Collections/ndelegationmanager.h"
+#include "../Delegations/ndelegationmanager.h"
 #include "../Collections/collection.h"
 #include <cairo/cairo.h>
 #include <cairo/cairo-xlib.h>

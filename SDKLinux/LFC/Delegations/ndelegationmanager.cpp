@@ -20,7 +20,7 @@
 *
 **/
 #include "ndelegationmanager.h"
-#include "../ndelegation.h"
+#include "../Delegations/ndelegation.h"
 
 NDelegationManager::NDelegationManager()
 {

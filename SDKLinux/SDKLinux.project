@@ -17,8 +17,6 @@
       <File Name="LFC/Collections/nobjectcollection.cpp"/>
       <File Name="LFC/Collections/nobjectdictionary.h"/>
       <File Name="LFC/Collections/nobjectdictionary.cpp"/>
-      <File Name="LFC/Collections/ndelegationmanager.h"/>
-      <File Name="LFC/Collections/ndelegationmanager.cpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Text">
       <File Name="LFC/Text/text.cpp"/>
@@ -145,8 +143,6 @@
     </VirtualDirectory>
     <File Name="LFC/LFC.cpp"/>
     <File Name="LFC/LFC.h"/>
-    <File Name="LFC/ndelegation.h"/>
-    <File Name="LFC/ndelegation.cpp"/>
     <VirtualDirectory Name="Data">
       <File Name="LFC/Data/sqlite3db.h"/>
       <File Name="LFC/Data/sqlite3db.cpp"/>
@@ -169,7 +165,12 @@
       <File Name="LFC/XWidgets/xexception.h"/>
       <File Name="LFC/XWidgets/xexception.cpp"/>
     </VirtualDirectory>
-    <VirtualDirectory Name="Delegations"/>
+    <VirtualDirectory Name="Delegations">
+      <File Name="LFC/Delegations/ndelegation.cpp"/>
+      <File Name="LFC/Delegations/ndelegation.h"/>
+      <File Name="LFC/Delegations/ndelegationmanager.cpp"/>
+      <File Name="LFC/Delegations/ndelegationmanager.h"/>
+    </VirtualDirectory>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>

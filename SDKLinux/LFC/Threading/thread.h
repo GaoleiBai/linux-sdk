@@ -22,7 +22,7 @@
 #ifndef THREAD_H
 #define THREAD_H
 
-#include "../ndelegation.h"
+#include "../Delegations/ndelegation.h"
 #include <pthread.h>
 
 class Text;

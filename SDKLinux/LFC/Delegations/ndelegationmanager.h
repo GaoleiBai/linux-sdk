@@ -24,7 +24,7 @@
 
 #include "../n_object.h"
 #include "../Text/text.h"
-#include "collection.h"
+#include "../Collections/collection.h"
 
 class NDelegation;
 

@@ -25,7 +25,7 @@
 #include "socket.h"
 #include "../Collections/collection.h"
 #include "../Threading/mutex.h"
-#include "../ndelegation.h"
+#include "../Delegations/ndelegation.h"
 
 class IPV4GenericServer : public NObject {
 	Mutex *mutex;

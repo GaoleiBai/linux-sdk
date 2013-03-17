@@ -22,7 +22,7 @@
 #ifndef NDELEGATION_H
 #define NDELEGATION_H
 
-#include "n_object.h"
+#include "../n_object.h"
 
 typedef void *(NObject::*Delegate)(void *param);
 
