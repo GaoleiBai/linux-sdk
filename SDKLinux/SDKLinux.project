@@ -17,6 +17,8 @@
       <File Name="LFC/Collections/nobjectcollection.cpp"/>
       <File Name="LFC/Collections/nobjectdictionary.h"/>
       <File Name="LFC/Collections/nobjectdictionary.cpp"/>
+      <File Name="LFC/Collections/ndelegationmanager.h"/>
+      <File Name="LFC/Collections/ndelegationmanager.cpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Text">
       <File Name="LFC/Text/text.cpp"/>
@@ -167,6 +169,7 @@
       <File Name="LFC/XWidgets/xexception.h"/>
       <File Name="LFC/XWidgets/xexception.cpp"/>
     </VirtualDirectory>
+    <VirtualDirectory Name="Delegations"/>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>

@@ -19,29 +19,26 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef NDELEGATION_H
-#define NDELEGATION_H
+#ifndef NDELEGATIONMANAGER_H
+#define NDELEGATIONMANAGER_H
 
-#include "n_object.h"
+#include "../n_object.h"
+#include "../Text/text.h"
+#include "collection.h"
 
-typedef void *(NObject::*Delegate)(void *param);
+class NDelegation;
 
-class NDelegation : public NObject {
-
-public:
-	NDelegation();
-	NDelegation(const NObject *o, void *(NObject::*method)(void *param));
-	NDelegation(const NDelegation &delegation);
-	virtual ~NDelegation();
-
-	void *Execute(void *params);
-	bool operator==(const NDelegation &d);
-	bool operator!=(const NDelegation &d);
+class NDelegationManager : public NObject {
+	Collection<NDelegation *> *delegations;
 	
-protected:
-	NObject *o;
-	void *(NObject::*method)(void *param);
+public:
+	NDelegationManager();
+	virtual ~NDelegationManager();
+	
+	void operator+=(const NDelegation &d);
+	void operator-=(const NDelegation &d);
+	void Execute(void *params);
 	
 };
 
-#endif // NDELEGATION_H
+#endif // NDELEGATIONMANAGER_H
