@@ -41,10 +41,7 @@ XWindow::~XWindow()
 {
 	// Hide window
 	SetVisible(false);
-	
-	// Destroy cairo surface
-	cairo_surface_destroy(cairoSurface);
-	
+
 	// Destroy window
 	int res = XDestroyWindow(windowDisplay, window);
 	XException::CheckResult(res);
@@ -80,44 +77,46 @@ void XWindow::init(const XDisplay &d)
 	windowDisplay = d.d;
 	windowScreen = XDefaultScreen(windowDisplay);
 	windowParent = XRootWindow(windowDisplay, windowScreen);
+	windowVisual = DefaultVisual(windowDisplay, windowScreen);
+	x = 0; 
+	y = 0;
+	width = 400;
+	height = 300;
+	borderwidth = 1, 
+	colordepth = DefaultDepth(windowDisplay, windowScreen);
 	
 	// Creates delegates
-	dOnWindowDestroy = new NDelegation();
-	dOnWindowCreate = new NDelegation();
-	dOnWindowKeyPress = new NDelegation();
-	dOnWindowKeyRelease = new NDelegation();
-	dOnWindowKeymap = new NDelegation();
-	dOnWindowMouseDown = new NDelegation();
-	dOnWindowMouseUp = new NDelegation();
-	dOnWindowMouseMove = new NDelegation();
-	dOnWindowEnter = new NDelegation();
-	dOnWindowLeave = new NDelegation();
-	dOnWindowDraw = new NDelegation();
-	dOnWindowShow = new NDelegation();
-	dOnWindowMove = new NDelegation();
-	dOnWindowResize = new NDelegation();
-	dOnWindowFocus = new NDelegation();
-	dOnWindowPropertyChange = new NDelegation();
-	dOnWindowColormapChange = new NDelegation();
-	dOnWindowGrabButton = new NDelegation();
+	dOnWindowDestroy = new NDelegationManager();
+	dOnWindowCreate = new NDelegationManager();
+	dOnWindowKeyPress = new NDelegationManager();
+	dOnWindowKeyRelease = new NDelegationManager();
+	dOnWindowKeymap = new NDelegationManager();
+	dOnWindowMouseDown = new NDelegationManager();
+	dOnWindowMouseUp = new NDelegationManager();
+	dOnWindowMouseMove = new NDelegationManager();
+	dOnWindowEnter = new NDelegationManager();
+	dOnWindowLeave = new NDelegationManager();
+	dOnWindowDraw = new NDelegationManager();
+	dOnWindowShow = new NDelegationManager();
+	dOnWindowMove = new NDelegationManager();
+	dOnWindowResize = new NDelegationManager();
+	dOnWindowFocus = new NDelegationManager();
+	dOnWindowPropertyChange = new NDelegationManager();
+	dOnWindowColormapChange = new NDelegationManager();
+	dOnWindowGrabButton = new NDelegationManager();
 	
-	Visual *v = DefaultVisual(windowDisplay, windowScreen);
 	XSetWindowAttributes attrs;
 	memset(&attrs, 0, sizeof(attrs));
 	attrs.background_pixel = XWhitePixel(windowDisplay, windowScreen);
 	attrs.border_pixel = XBlackPixel(windowDisplay, windowScreen);
 	attrs.override_redirect = 0;
-	int x = 0, y = 0, width = 400, height = 400, borderw = 1, depth = DefaultDepth(windowDisplay, windowScreen);
 
 	// Create window
 	window = XCreateWindow(
-		windowDisplay, windowParent, x, y, width, height, borderw, depth, InputOutput, v, 
-		CWBackPixel | CWBorderPixel | CWOverrideRedirect, &attrs);
+		windowDisplay, windowParent, x, y, width, height, borderwidth, colordepth, InputOutput, 
+		windowVisual, CWBackPixel | CWBorderPixel | CWOverrideRedirect, &attrs);
 	XException::CheckResult(window);
 	DelegationOnWindowCreate().Execute(NULL);
-	
-	// Create cairo surface
-	cairoSurface = cairo_xlib_surface_create(windowDisplay, window, v, width, height);
 	
 	// Select events
 	int res = XSelectInput(windowDisplay, window,
@@ -131,92 +130,92 @@ void XWindow::init(const XDisplay &d)
 	SetVisible(true);
 }
 
-NDelegation &XWindow::DelegationOnWindowDestroy()
+NDelegationManager &XWindow::DelegationOnWindowDestroy()
 {
 	return *dOnWindowDestroy;
 }
 
-NDelegation &XWindow::DelegationOnWindowCreate()
+NDelegationManager &XWindow::DelegationOnWindowCreate()
 {
 	return *dOnWindowCreate;
 }
 
-NDelegation &XWindow::DelegationOnWindowKeyPress()
+NDelegationManager &XWindow::DelegationOnWindowKeyPress()
 {
 	return *dOnWindowKeyPress;
 }
 
-NDelegation &XWindow::DelegationOnWindowKeyRelease()
+NDelegationManager &XWindow::DelegationOnWindowKeyRelease()
 {
 	return *dOnWindowKeyRelease;
 }
 
-NDelegation &XWindow::DelegationOnWindowKeymap()
+NDelegationManager &XWindow::DelegationOnWindowKeymap()
 {
 	return *dOnWindowKeymap;
 }
 
-NDelegation &XWindow::DelegationOnWindowMouseDown()
+NDelegationManager &XWindow::DelegationOnWindowMouseDown()
 {
 	return *dOnWindowMouseDown;
 }
 
-NDelegation &XWindow::DelegationOnWindowMouseUp()
+NDelegationManager &XWindow::DelegationOnWindowMouseUp()
 {
 	return *dOnWindowMouseUp;
 }
 
-NDelegation &XWindow::DelegationOnWindowMouseMove()
+NDelegationManager &XWindow::DelegationOnWindowMouseMove()
 {
 	return *dOnWindowMouseMove;
 }
 
-NDelegation &XWindow::DelegationOnWindowEnter()
+NDelegationManager &XWindow::DelegationOnWindowEnter()
 {
 	return *dOnWindowEnter;
 }
 
-NDelegation &XWindow::DelegationOnWindowLeave()
+NDelegationManager &XWindow::DelegationOnWindowLeave()
 {
 	return *dOnWindowLeave;
 }
 
-NDelegation &XWindow::DelegationOnWindowDraw()
+NDelegationManager &XWindow::DelegationOnWindowDraw()
 {
 	return *dOnWindowDraw;
 }
 
-NDelegation &XWindow::DelegationOnWindowShow()
+NDelegationManager &XWindow::DelegationOnWindowShow()
 {
 	return *dOnWindowShow;
 }
 
-NDelegation &XWindow::DelegationOnWindowMove()
+NDelegationManager &XWindow::DelegationOnWindowMove()
 {
 	return *dOnWindowMove;
 }
 
-NDelegation &XWindow::DelegationOnWindowResize()
+NDelegationManager &XWindow::DelegationOnWindowResize()
 {
 	return *dOnWindowResize;
 }
 
-NDelegation &XWindow::DelegationOnWindowFocus()
+NDelegationManager &XWindow::DelegationOnWindowFocus()
 {
 	return *dOnWindowFocus;
 }
 
-NDelegation &XWindow::DelegationOnWindowPropertyChange()
+NDelegationManager &XWindow::DelegationOnWindowPropertyChange()
 {
 	return *dOnWindowPropertyChange;
 }
 
-NDelegation &XWindow::DelegationOnWindowColormapChange()
+NDelegationManager &XWindow::DelegationOnWindowColormapChange()
 {
 	return *dOnWindowColormapChange;
 }
 
-NDelegation &XWindow::DelegationOnWindowGrabButton()
+NDelegationManager &XWindow::DelegationOnWindowGrabButton()
 {
 	return *dOnWindowGrabButton;
 }
@@ -236,9 +235,9 @@ int XWindow::HandlerScreen()
 	return windowScreen;
 }
 
-cairo_surface_t *XWindow::HandlerCairoWindowSurface()
+Visual *XWindow::HandlerVisual()
 {
-	return cairoSurface;
+	return windowVisual;
 }
 
 void XWindow::Run()
@@ -358,4 +357,34 @@ void XWindow::SetVisible(bool visible)
 bool XWindow::IsVisible()
 {
 	return visible;
+}
+
+int XWindow::GetX()
+{
+	return x;
+}
+
+int XWindow::GetY()
+{
+	return y;
+}
+
+int XWindow::GetWidth()
+{
+	return width;
+}
+
+int XWindow::GetHeight()
+{
+	return height;
+}
+
+int XWindow::GetBorderWidth()
+{
+	return borderwidth;
+}
+
+int XWindow::GetColorDepth()
+{
+	return colordepth;
 }

@@ -56,6 +56,7 @@ HelpClass::HelpClass()
 	nnfloat = new NFloat(-1e15f);
 	nndouble = new NDouble(-1e40);
 	nnlongdouble = new NLongDouble(-1e400L);
+	nnsize = new NSize(400, 300);
 	
 	Collection<Text *> variasPalabras = ((Text)"Esto es una prueba de varias palabras").Split(" ", false);
 	
@@ -79,6 +80,7 @@ HelpClass::HelpClass()
 	nobjectcollection->Add(new NFloat(-1e15f));
 	nobjectcollection->Add(new NDouble(-1e40));
 	nobjectcollection->Add(new NLongDouble(-1e400L));
+	nobjectcollection->Add(new NSize(500, 600));
 	nobjectcollection->AddRange((Collection<NObject *>&)variasPalabras);
 	
 	nobjectdictionary = new NObjectDictionary();
@@ -115,6 +117,7 @@ HelpClass::~HelpClass()
 	delete nnfloat;
 	delete nndouble;
 	delete nnlongdouble;
+	delete nnsize;
 	
 	delete atext;
 	delete adatetime;
@@ -161,6 +164,7 @@ void HelpClass::Serialize(const Serializator &s)
 	((Serializator *)&s)->Put(*nnfloat);
 	((Serializator *)&s)->Put(*nndouble);
 	((Serializator *)&s)->Put(*nnlongdouble);
+	((Serializator *)&s)->Put(*nnsize);
 	
 	((Serializator *)&s)->Put(*atext);
 	((Serializator *)&s)->Put(*adatetime);
@@ -193,6 +197,7 @@ void HelpClass::Deserialize(const Serializator &s)
 	NFloat *oldnnfloat = nnfloat;
 	NDouble *oldnndouble = nndouble;
 	NLongDouble *oldnnlongdouble = nnlongdouble;
+	NSize *oldnnsize = nnsize;
 	
 	nbool = ((Serializator *)&s)->GetBool();
 	nchar = ((Serializator *)&s)->GetChar();
@@ -224,6 +229,7 @@ void HelpClass::Deserialize(const Serializator &s)
 	nnfloat = (NFloat *)((Serializator *)&s)->GetNObject();
 	nndouble = (NDouble *)((Serializator *)&s)->GetNObject();
 	nnlongdouble = (NLongDouble *)((Serializator *)&s)->GetNObject();
+	nnsize = (NSize *)((Serializator *)&s)->GetNObject();
 	
 	atext = (Text *)((Serializator *)&s)->GetNObject();
 	adatetime = (DateTime *)((Serializator *)&s)->GetNObject();
@@ -256,6 +262,8 @@ void HelpClass::Deserialize(const Serializator &s)
 	if (nnfloat->Value() != -1e15f) throw new Exception("NFloat::Deserialize error", __FILE__, __LINE__, __func__);
 	if (nndouble->Value() != -1e40) throw new Exception("NDouble::Deserialize error", __FILE__, __LINE__, __func__);
 	if (nnlongdouble->Value() != -1e400L) throw new Exception("NLongDouble::Deserialize error", __FILE__, __LINE__, __func__);
+	if (nnsize->GetWidth() != 400) throw new Exception("NNSize::Deserialize error", __FILE__, __LINE__, __func__);
+	if (nnsize->GetHeight() != 300) throw new Exception("NNSize::Deserialize error", __FILE__, __LINE__, __func__);
 	
 	if (oldnnbool->Value() != nnbool->Value()) throw new Exception("NBool::Deserialize error", __FILE__, __LINE__, __func__);
 	if (oldnnchar->Value() != nnchar->Value()) throw new Exception("NChar::Deserialize error", __FILE__, __LINE__, __func__);
@@ -272,6 +280,7 @@ void HelpClass::Deserialize(const Serializator &s)
 	if (oldnnfloat->Value() != nnfloat->Value()) throw new Exception("NFloat::Deserialize error", __FILE__, __LINE__, __func__);
 	if (oldnndouble->Value() != nndouble->Value()) throw new Exception("NDouble::Deserialize error", __FILE__, __LINE__, __func__);
 	if (oldnnlongdouble->Value() != nnlongdouble->Value()) throw new Exception("NLongDouble::Deserialize error", __FILE__, __LINE__, __func__);
+	if (oldnnsize->GetWidth() != nnsize->GetWidth()) throw new Exception("NSize::Deserialize error", __FILE__, __LINE__, __func__);
 	
 	if (*oldtext != *atext) 
 		throw new Exception("Text not propertly deserializated", __FILE__, __LINE__, __func__);
@@ -309,5 +318,6 @@ void HelpClass::Deserialize(const Serializator &s)
 	delete oldnnfloat;
 	delete oldnndouble;
 	delete oldnnlongdouble;
+	delete oldnnsize;
 }
 

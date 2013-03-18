@@ -24,8 +24,6 @@
 
 #include "../Delegations/ndelegationmanager.h"
 #include "../Collections/collection.h"
-#include <cairo/cairo.h>
-#include <cairo/cairo-xlib.h>
 #include <X11/Xlib.h>
 #include <X11/cursorfont.h>
 
@@ -36,31 +34,32 @@ class XWindow : public NObject {
 	Window window;
 	Window windowParent;
 	Display *windowDisplay;
+	Visual *windowVisual;
 	int windowScreen;
 	bool visible;
-	cairo_surface_t *cairoSurface;
+	int x, y, width, height, borderwidth, colordepth;
 	
 	Mutex *windowMutex;
 	Collection<void *> *delegationsToExecute;
 	
-	NDelegation *dOnWindowDestroy;
-	NDelegation *dOnWindowCreate;
-	NDelegation *dOnWindowKeyPress;
-	NDelegation *dOnWindowKeyRelease;
-	NDelegation *dOnWindowKeymap;
-	NDelegation *dOnWindowMouseDown;
-	NDelegation *dOnWindowMouseUp;
-	NDelegation *dOnWindowMouseMove;
-	NDelegation *dOnWindowEnter;
-	NDelegation *dOnWindowLeave;
-	NDelegation *dOnWindowDraw;
-	NDelegation *dOnWindowShow;
-	NDelegation *dOnWindowMove;
-	NDelegation *dOnWindowResize;
-	NDelegation *dOnWindowFocus;
-	NDelegation *dOnWindowPropertyChange;
-	NDelegation *dOnWindowColormapChange;
-	NDelegation *dOnWindowGrabButton;
+	NDelegationManager *dOnWindowDestroy;
+	NDelegationManager *dOnWindowCreate;
+	NDelegationManager *dOnWindowKeyPress;
+	NDelegationManager *dOnWindowKeyRelease;
+	NDelegationManager *dOnWindowKeymap;
+	NDelegationManager *dOnWindowMouseDown;
+	NDelegationManager *dOnWindowMouseUp;
+	NDelegationManager *dOnWindowMouseMove;
+	NDelegationManager *dOnWindowEnter;
+	NDelegationManager *dOnWindowLeave;
+	NDelegationManager *dOnWindowDraw;
+	NDelegationManager *dOnWindowShow;
+	NDelegationManager *dOnWindowMove;
+	NDelegationManager *dOnWindowResize;
+	NDelegationManager *dOnWindowFocus;
+	NDelegationManager *dOnWindowPropertyChange;
+	NDelegationManager *dOnWindowColormapChange;
+	NDelegationManager *dOnWindowGrabButton;
 	
 	void init(const XDisplay &d);
 	
@@ -69,30 +68,30 @@ public:
 	XWindow(const XDisplay &d);
 	virtual ~XWindow();
 	
-	NDelegation &DelegationOnWindowDestroy();
-	NDelegation &DelegationOnWindowCreate();
-	NDelegation &DelegationOnWindowKeyPress();
-	NDelegation &DelegationOnWindowKeyRelease();
-	NDelegation &DelegationOnWindowKeymap();
-	NDelegation &DelegationOnWindowMouseDown();
-	NDelegation &DelegationOnWindowMouseUp();
-	NDelegation &DelegationOnWindowMouseMove();
-	NDelegation &DelegationOnWindowEnter();
-	NDelegation &DelegationOnWindowLeave();
-	NDelegation &DelegationOnWindowDraw();
-	NDelegation &DelegationOnWindowShow();
-	NDelegation &DelegationOnWindowMove();
-	NDelegation &DelegationOnWindowResize();
-	NDelegation &DelegationOnWindowFocus();
-	NDelegation &DelegationOnWindowPropertyChange();
-	NDelegation &DelegationOnWindowColormapChange();
-	NDelegation &DelegationOnWindowGrabButton();
+	NDelegationManager &DelegationOnWindowDestroy();
+	NDelegationManager &DelegationOnWindowCreate();
+	NDelegationManager &DelegationOnWindowKeyPress();
+	NDelegationManager &DelegationOnWindowKeyRelease();
+	NDelegationManager &DelegationOnWindowKeymap();
+	NDelegationManager &DelegationOnWindowMouseDown();
+	NDelegationManager &DelegationOnWindowMouseUp();
+	NDelegationManager &DelegationOnWindowMouseMove();
+	NDelegationManager &DelegationOnWindowEnter();
+	NDelegationManager &DelegationOnWindowLeave();
+	NDelegationManager &DelegationOnWindowDraw();
+	NDelegationManager &DelegationOnWindowShow();
+	NDelegationManager &DelegationOnWindowMove();
+	NDelegationManager &DelegationOnWindowResize();
+	NDelegationManager &DelegationOnWindowFocus();
+	NDelegationManager &DelegationOnWindowPropertyChange();
+	NDelegationManager &DelegationOnWindowColormapChange();
+	NDelegationManager &DelegationOnWindowGrabButton();
 	
 	Display *HandlerDisplay();
 	Window HandlerWindow();
 	Window HandlerParentWindow();
+	Visual *HandlerVisual();
 	int HandlerScreen();
-	cairo_surface_t *HandlerCairoWindowSurface();
 	
 	void Run();
 	int RunModal();
@@ -100,6 +99,12 @@ public:
 	
 	void SetVisible(bool visible);
 	bool IsVisible();
+	int GetX();
+	int GetY();
+	int GetWidth();
+	int GetHeight();
+	int GetBorderWidth();
+	int GetColorDepth();
 	
 	static void RunExample();
 	

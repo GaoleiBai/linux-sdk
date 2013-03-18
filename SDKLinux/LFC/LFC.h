@@ -104,6 +104,8 @@
 #include "XWidgets/xwindow.h"
 #include "XWidgets/xdisplay.h"
 #include "XWidgets/xexception.h"
+#include "XWidgets/Graphics/cairographics.h"
+#include "XWidgets/Graphics/nsize.h"
 
 void lfc_init();
 

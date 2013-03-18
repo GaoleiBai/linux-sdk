@@ -164,6 +164,12 @@
       <File Name="LFC/XWidgets/xdisplay.cpp"/>
       <File Name="LFC/XWidgets/xexception.h"/>
       <File Name="LFC/XWidgets/xexception.cpp"/>
+      <VirtualDirectory Name="Graphics">
+        <File Name="LFC/XWidgets/Graphics/cairographics.h"/>
+        <File Name="LFC/XWidgets/Graphics/cairographics.cpp"/>
+        <File Name="LFC/XWidgets/Graphics/nsize.h"/>
+        <File Name="LFC/XWidgets/Graphics/nsize.cpp"/>
+      </VirtualDirectory>
     </VirtualDirectory>
     <VirtualDirectory Name="Delegations">
       <File Name="LFC/Delegations/ndelegation.cpp"/>

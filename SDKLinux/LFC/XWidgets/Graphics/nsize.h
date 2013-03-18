@@ -19,59 +19,30 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef HELPCLASS_H
-#define HELPCLASS_H
+#ifndef NSIZE_H
+#define NSIZE_H
 
-#include "../../LFC/LFC.h"
+#include "../../n_object.h"
 
-class HelpClass : public NObject {
-
+class NSize : public NObject {
+	int width, height;
+	
 public:
-	HelpClass();
-	virtual ~HelpClass();
+	NSize();
+	NSize(int width, int height);
+	NSize(const NSize &s);
+	virtual ~NSize();
+
+	int GetWidth();
+	int GetHeight();
+	void SetWidth(int width);
+	void SetHeight(int height);
 	
 	virtual NObject *NewInstance();
 	virtual void Serialize(const Serializator &s);
 	virtual void Deserialize(const Serializator &s);
 	
-private:
-	bool nbool;
-	char nchar;
-	short nshort;
-	int nint;
-	long nlong;
-	long long nlonglong;
-	unsigned char nuchar;
-	unsigned short nushort;
-	unsigned int nuint;
-	unsigned long nulong;
-	unsigned long long nulonglong;
-	float nfloat;
-	double ndouble;
-	long double nlongdouble;
-	Text *atext;
-	DateTime *adatetime;
-	NObjectCollection *nobjectcollection;
-	NObjectDictionary *nobjectdictionary;
-	Buffer *abuffer;
-	TextBuffer *atextbuffer;
-	NBool *nnbool;
-	NChar *nnchar;
-	NWChar *nnwchar;
-	NShort *nnshort;
-	NInt *nnint;
-	NLong *nnlong;
-	NLongLong *nnlonglong;
-	NUChar *nnuchar;
-	NUShort *nnushort;
-	NUInt *nnuint;
-	NULong *nnulong;
-	NULongLong *nnulonglong;
-	NFloat *nnfloat;
-	NDouble *nndouble;
-	NLongDouble *nnlongdouble;
-	NSize *nnsize;
-	
+
 };
 
-#endif // HELPCLASS_H
+#endif // NSIZE_H
