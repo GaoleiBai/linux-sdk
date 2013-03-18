@@ -4,7 +4,6 @@ linux-sdk
 
 The purpose of this repository is to create a common place to participate in the creation of a C++ Linux SDK.
 This project is in a very initial state, so it is not recommended to use it in production scenarios.
-Codelite will be used for the development of this project.
 
 Rules:
  1.- Classes should avoid the use of pointers in functions whenever possible.
