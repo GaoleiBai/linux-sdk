@@ -26,6 +26,7 @@
 #include <cairo/cairo-xlib.h>
 
 class XWindow;
+class NSize;
 
 class CairoGraphics : public NObject {
 	cairo_surface_t *surface;
@@ -35,6 +36,13 @@ public:
 	virtual ~CairoGraphics();
 	
 	void Resize(int width, int height);
+	NSize GetSize();
+	int GetColorDepth();
+	
+	Screen *HandlerScreen();
+	Display *HandlerDisplay();
+	Visual *HandleVisual();
+	Window HandleWindow();
 
 };
 
