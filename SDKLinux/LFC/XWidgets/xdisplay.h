@@ -44,7 +44,7 @@ public:
 	Text &Name();
 	
 	static XDisplay &Default();
-
+	
 };
 
 #endif // XDISPLAY_H

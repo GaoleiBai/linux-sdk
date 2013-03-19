@@ -29,6 +29,7 @@
 
 class XDisplay;
 class Mutex;
+class XWindowGraphics;
 
 class XWindow : public NObject {
 	Window window;
@@ -106,8 +107,12 @@ public:
 	int GetBorderWidth();
 	int GetColorDepth();
 	
-	static void RunExample();
-	
+protected:
+
+	virtual void OnCreate();
+	virtual void OnDraw(const XWindowGraphics &g);
+	virtual void OnDestroy();
+
 };
 
 #endif // XWINDOW_H

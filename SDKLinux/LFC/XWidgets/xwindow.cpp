@@ -25,20 +25,25 @@
 #include "../Text/text.h"
 #include "../Threading/mutex.h"
 #include "../Threading/thread.h"
+#include "Graphics/xwindowgraphics.h"
 #include <string.h>
 
 XWindow::XWindow()
 {
+	OnCreate();
 	init(XDisplay::Default());
 }
 
 XWindow::XWindow(const XDisplay &d)
 {
-	init(d);
+	OnCreate();
+	init(d);	
 }
 
 XWindow::~XWindow()
 {
+	OnDestroy();
+	
 	// Hide window
 	SetVisible(false);
 
@@ -273,10 +278,16 @@ int XWindow::RunModal()
 			DelegationOnWindowFocus().Execute(NULL);
 		else if (event.type == KeymapNotify)
 			DelegationOnWindowKeymap().Execute(NULL);
-		else if (event.type == Expose) 
-			DelegationOnWindowDraw().Execute(NULL);
-		else if (event.type == VisibilityNotify)
-			DelegationOnWindowDraw().Execute(NULL);
+		else if (event.type == Expose) { 
+			XWindowGraphics g(*this);
+			OnDraw(g);
+			DelegationOnWindowDraw().Execute(&g);
+		}
+		else if (event.type == VisibilityNotify) {
+			XWindowGraphics g(*this);
+			OnDraw(g);
+			DelegationOnWindowDraw().Execute(&g);
+		}
 		else if (event.type == CreateNotify)
 			DelegationOnWindowCreate().Execute(NULL);
 		else if (event.type == DestroyNotify)
@@ -387,4 +398,19 @@ int XWindow::GetBorderWidth()
 int XWindow::GetColorDepth()
 {
 	return colordepth;
+}
+
+void XWindow::OnCreate()
+{
+	
+}
+
+void XWindow::OnDraw(const XWindowGraphics &g)
+{
+	
+}
+
+void XWindow::OnDestroy()
+{
+	
 }
