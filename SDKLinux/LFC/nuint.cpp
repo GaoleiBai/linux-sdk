@@ -107,10 +107,9 @@ Text NUInt::ToText()
 
 int NUInt::Compare(const NObject &o)
 {
-	long long vo = ((NObject *)&o)->ToLongLong();
-	if (value > vo) return 1;
-	else if (value < vo) return -1;
-	else return 0;
+	if (typeid(*this) != typeid(o)) 
+		throw new Exception("Not comparable", __FILE__, __LINE__, __func__);
+	return Compare((NUInt &)o);
 }
 
 int NUInt::Compare(const NUInt &i)
@@ -118,6 +117,13 @@ int NUInt::Compare(const NUInt &i)
 	if (value > i.value) return 1;
 	else if (value < i.value) return -1;
 	else return 0;
+}
+
+bool NUInt::Equals(const NObject &o)
+{
+	if (this == &o) return true;
+	if (typeid(*this) != typeid(o)) return false;
+	return Value() == ((NUInt &)o).Value();
 }
 
 void NUInt::Serialize(const Serializator &s)
@@ -128,16 +134,6 @@ void NUInt::Serialize(const Serializator &s)
 void NUInt::Deserialize(const Serializator &s)
 {
 	value = ((Serializator *)&s)->GetUInt();
-}
-
-long long NUInt::ToLongLong()
-{
-	return value;
-}
-
-long double NUInt::ToLongDouble()
-{
-	return value;
 }
 
 int NUInt::COMPARER(const void *u, const void *v) 

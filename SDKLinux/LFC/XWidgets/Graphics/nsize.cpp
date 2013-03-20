@@ -21,6 +21,7 @@
 **/
 #include "nsize.h"
 #include "../../FileSystem/serializator.h"
+#include <typeinfo>
 
 NSize::NSize()
 {
@@ -67,6 +68,14 @@ void NSize::SetHeight(int height)
 NObject *NSize::NewInstance()
 {
 	return new NSize();
+}
+
+bool NSize::Equals(const NObject &o)
+{
+	if (this == &o) return true;
+	if (typeid(*this) != typeid(o)) return false;
+	NSize *ss = (NSize *)&o;
+	return width == ss->width && height == ss->height;
 }
 
 void NSize::Serialize(const Serializator &s)

@@ -109,11 +109,7 @@ int NUChar::Compare(const NObject &o)
 {
 	if (typeid(*this) != typeid(o))
 		throw new Exception("Not comparable", __FILE__, __LINE__, __func__);
-	
-	unsigned char vo = ((NUChar *)&o)->value;
-	if (value > vo) return 1;
-	else if (value < vo) return -1;
-	else return 0;
+	return Compare((NUChar &)o);
 }
 
 int NUChar::Compare(const NUChar &c)
@@ -121,6 +117,13 @@ int NUChar::Compare(const NUChar &c)
 	if (value > c.value) return 1;
 	else if (value < c.value) return -1;
 	else return 0;
+}
+
+bool NUChar::Equals(const NObject &o)
+{
+	if (this == &o) return true;
+	if (typeid(*this) != typeid(o)) return false;
+	return Value() == ((NUChar &)o).Value();
 }
 
 void NUChar::Serialize(const Serializator &s)
@@ -131,16 +134,6 @@ void NUChar::Serialize(const Serializator &s)
 void NUChar::Deserialize(const Serializator &s)
 {
 	value = ((Serializator *)&s)->GetUChar();
-}
-
-long long NUChar::ToLongLong()
-{
-	return value;
-}
-
-long double NUChar::ToLongDouble()
-{
-	return value;
 }
 
 int NUChar::COMPARER(const void *u, const void *v)

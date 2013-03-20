@@ -171,6 +171,10 @@
         <File Name="LFC/XWidgets/Graphics/xwindowgraphics.cpp"/>
         <File Name="LFC/XWidgets/Graphics/pixmapgraphics.h"/>
         <File Name="LFC/XWidgets/Graphics/pixmapgraphics.cpp"/>
+        <File Name="LFC/XWidgets/Graphics/nrectangle.h"/>
+        <File Name="LFC/XWidgets/Graphics/nrectangle.cpp"/>
+        <File Name="LFC/XWidgets/Graphics/npoint.h"/>
+        <File Name="LFC/XWidgets/Graphics/npoint.cpp"/>
       </VirtualDirectory>
       <File Name="LFC/XWidgets/xpixmap.h"/>
       <File Name="LFC/XWidgets/xpixmap.cpp"/>

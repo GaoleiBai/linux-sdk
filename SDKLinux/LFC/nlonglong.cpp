@@ -105,10 +105,9 @@ Text NLongLong::ToText()
 
 int NLongLong::Compare(const NObject &o)
 {
-	long long vo = ((NObject *)&o)->ToLongLong();		
-	if (value > vo) return 1;
-	else if (value < vo) return -1;
-	else return 0;	
+	if (typeid(*this) != typeid(o)) 
+		throw new Exception("Not comparable", __FILE__, __LINE__, __func__);
+	return Compare((NLongLong &)o);
 }
 
 int NLongLong::Compare(const NLongLong &l)
@@ -116,6 +115,13 @@ int NLongLong::Compare(const NLongLong &l)
 	if (value > l.value) return 1;
 	else if (value < l.value) return -1;
 	else return 0;
+}
+
+bool NLongLong::Equals(const NObject &o)
+{
+	if (this == &o) return true;
+	if (typeid(*this) != typeid(o)) return false;
+	return Value() == ((NLongLong &)o).Value();
 }
 
 void NLongLong::Serialize(const Serializator &s)
@@ -126,18 +132,6 @@ void NLongLong::Serialize(const Serializator &s)
 void NLongLong::Deserialize(const Serializator &s)
 {
 	value = ((Serializator *)&s)->GetLongLong();
-}
-
-long long NLongLong::ToLongLong()
-{
-	if (value > NLong::MaxValue())
-		throw new Exception("Cannot convert to long long", __FILE__, __LINE__, __func__);
-	return value;
-}
-
-long double NLongLong::ToLongDouble()
-{
-	return value;
 }
 
 int NLongLong::COMPARER(const void *u, const void *v)

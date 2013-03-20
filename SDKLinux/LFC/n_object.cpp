@@ -55,6 +55,11 @@ int NObject::Compare(const NObject &o)
 	return ToText().Compare(((NObject *)&o)->ToText());	
 }
 
+bool NObject::Equals(const NObject &o)
+{
+	return ToText().Compare(((NObject *)&o)->ToText());
+}
+
 void NObject::Serialize(const Serializator &s)
 {
 	throw new Exception(ClassName() + "::Serialize() must be able to serialize.", __FILE__, __LINE__, __func__);
@@ -63,14 +68,4 @@ void NObject::Serialize(const Serializator &s)
 void NObject::Deserialize(const Serializator &s)
 {
 	throw new Exception(ClassName() + "Deserialize() must be implemented to be able to deserialize.", __FILE__, __LINE__, __func__);
-}
-
-long long NObject::ToLongLong()
-{
-	throw new Exception((Text)"Cannot convert to long long", __FILE__, __LINE__, __func__);
-}
-
-long double NObject::ToLongDouble()
-{
-	throw new Exception((Text)"Cannot convert to long double", __FILE__, __LINE__, __func__);
 }

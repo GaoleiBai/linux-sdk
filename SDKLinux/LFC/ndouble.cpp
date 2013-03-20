@@ -28,6 +28,7 @@
 #include <math.h>
 #include <float.h>
 #include <errno.h>
+#include <typeinfo>
 
 NDouble::NDouble()
 {
@@ -143,10 +144,9 @@ Text NDouble::ToText()
 
 int NDouble::Compare(const NObject &o)
 {
-	long double vo = ((NObject *)&o)->ToLongDouble();
-	if (value > vo) return 1;
-	else if (value < vo) return -1;
-	else return 0;
+	if (typeid(*this) != typeid(o)) 
+		throw new Exception("Not comparable", __FILE__, __LINE__, __func__);
+	return Compare((NDouble &)o);
 }
 
 int NDouble::Compare(const NDouble &d)
@@ -154,6 +154,13 @@ int NDouble::Compare(const NDouble &d)
 	if (value > d.value) return 1;
 	else if (value < d.value) return -1;
 	else return 0;
+}
+
+bool NDouble::Equals(const NObject &o)
+{
+	if (this == &o) return true;
+	if (typeid(*this) != typeid(o)) return false;
+	return Value() == ((NDouble &)o).Value();
 }
 
 void NDouble::Serialize(const Serializator &s)
@@ -164,19 +171,6 @@ void NDouble::Serialize(const Serializator &s)
 void NDouble::Deserialize(const Serializator &s)
 {
 	value = ((Serializator *)&s)->GetDouble();
-}
-
-long long NDouble::ToLongLong()
-{
-	if (value > NLongLong::MaxValue() || value < NLongLong::MinValue())
-		throw new Exception("Cannot convert to long long", __FILE__, __LINE__, __func__);
-		
-	return value;
-}
-
-long double NDouble::ToLongDouble()
-{
-	return value;
 }
 
 int NDouble::COMPARER(const void *u, const void *v)

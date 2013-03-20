@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <limits.h>
 #include <errno.h>
+#include <typeinfo>
 
 NULong::NULong()
 {
@@ -107,10 +108,9 @@ Text NULong::ToText()
 
 int NULong::Compare(const NObject &o)
 {
-	long long vo = ((NObject *)&o)->ToLongLong();
-	if (value > vo) return 1;
-	else if (value < vo) return -1;
-	else return 0;
+	if (typeid(*this) != typeid(o)) 
+		throw new Exception("Not comparable", __FILE__, __LINE__, __func__);
+	return Compare((NULong &)o);
 }
 
 int NULong::Compare(const NULong &l)
@@ -118,6 +118,13 @@ int NULong::Compare(const NULong &l)
 	if (value > l.value) return 1;
 	else if (value < l.value) return -1;
 	else return 0;
+}
+
+bool NULong::Equals(const NObject &o)
+{
+	if (this == &o) return true;
+	if (typeid(*this) != typeid(o)) return false;
+	return Value() == ((NULong &)o).Value();
 }
 
 void NULong::Serialize(const Serializator &s)
@@ -128,16 +135,6 @@ void NULong::Serialize(const Serializator &s)
 void NULong::Deserialize(const Serializator &s)
 {
 	value = ((Serializator *)&s)->GetULong();
-}
-
-long long NULong::ToLongLong()
-{
-	return value;
-}
-
-long double NULong::ToLongDouble()
-{
-	return value;
 }
 
 int NULong::COMPARER(const void *u, const void *v)

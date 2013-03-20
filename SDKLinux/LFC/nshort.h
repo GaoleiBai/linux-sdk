@@ -44,11 +44,9 @@ public:
 	virtual Text ToText();
 	virtual int Compare(const NObject &o);
 	virtual int Compare(const NShort &s);
+	virtual bool Equals(const NObject &o);
 	virtual void Serialize(const Serializator &s);
 	virtual void Deserialize(const Serializator &s);
-	
-	virtual long long ToLongLong();
-	virtual long double ToLongDouble();
 	
 	static int COMPARER(const void *u, const void *v);
 

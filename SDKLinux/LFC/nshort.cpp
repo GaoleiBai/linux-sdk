@@ -105,10 +105,9 @@ Text NShort::ToText()
 
 int NShort::Compare(const NObject &o)
 {
-	long long vo = ((NObject *)&o)->ToLongLong();		
-	if (value > vo) return 1;
-	else if (value < vo) return -1;
-	else return 0;	
+	if (typeid(*this) != typeid(o)) 
+		throw new Exception("Not comparable", __FILE__, __LINE__, __func__);
+	return Compare((NShort &)o);
 }
 
 int NShort::Compare(const NShort &s)
@@ -116,6 +115,13 @@ int NShort::Compare(const NShort &s)
 	if (value > s.value) return 1;
 	else if (value < s.value) return -1;
 	else return 0;
+}
+
+bool NShort::Equals(const NObject &o)
+{
+	if (this == &o) return true;
+	if (typeid(*this) != typeid(o)) return false;
+	return Value() == ((NShort &)o).Value();
 }
 
 void NShort::Serialize(const Serializator &s)
@@ -126,16 +132,6 @@ void NShort::Serialize(const Serializator &s)
 void NShort::Deserialize(const Serializator &s)
 {
 	value = ((Serializator *)&s)->GetShort();
-}
-
-long long NShort::ToLongLong()
-{
-	return value;
-}
-
-long double NShort::ToLongDouble()
-{
-	return value;
 }
 
 int NShort::COMPARER(const void *u, const void *v)

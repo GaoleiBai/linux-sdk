@@ -27,6 +27,7 @@
 #include <stdio.h>
 #include <limits.h>
 #include <errno.h>
+#include <typeinfo>
 
 NULongLong::NULongLong()
 {
@@ -107,10 +108,9 @@ Text NULongLong::ToText()
 
 int NULongLong::Compare(const NObject &o)
 {
-	long long vo = ((NObject *)&o)->ToLongLong();
-	if (value > vo) return 1;
-	else if (value < vo) return -1;
-	else return 0;
+	if (typeid(*this) != typeid(o)) 
+		throw new Exception("Not comparable", __FILE__, __LINE__, __func__);
+	return Compare((NULongLong &)o);
 }
 
 int NULongLong::Compare(const NULongLong &l)
@@ -118,6 +118,13 @@ int NULongLong::Compare(const NULongLong &l)
 	if (value > l.value) return 1;
 	else if (value < l.value) return -1;
 	else return 0;
+}
+
+bool NULongLong::Equals(const NObject &o)
+{
+	if (this == &o) return true;
+	if (typeid(*this) != typeid(o)) return false;
+	return Value() == ((NULongLong &)o).Value();
 }
 
 void NULongLong::Serialize(const Serializator &s)
@@ -128,18 +135,6 @@ void NULongLong::Serialize(const Serializator &s)
 void NULongLong::Deserialize(const Serializator &s)
 {
 	value = ((Serializator *)&s)->GetULongLong();
-}
-
-long long NULongLong::ToLongLong()
-{
-	if (value > LLONG_MAX)
-		throw new Exception("Value too big to be converted to long long", __FILE__, __LINE__, __func__);
-	return value;
-}
-
-long double NULongLong::ToLongDouble()
-{
-	return value;
 }
 
 int NULongLong::COMPARER(const void *u, const void *v)

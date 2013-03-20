@@ -107,10 +107,9 @@ Text NLong::ToText()
 
 int NLong::Compare(const NObject &o)
 {
-	long long vo = ((NObject *)&o)->ToLongLong();		
-	if (value > vo) return 1;
-	else if (value < vo) return -1;
-	else return 0;	
+	if (typeid(*this) != typeid(o)) 
+		throw new Exception("Not comparable", __FILE__, __LINE__, __func__);
+	return Compare((NLong &)o);
 }
 
 int NLong::Compare(const NLong &l)
@@ -118,6 +117,13 @@ int NLong::Compare(const NLong &l)
 	if (value > l.value) return 1;
 	else if (value < l.value) return -1;
 	else return 0;
+}
+
+bool NLong::Equals(const NObject &o)
+{
+	if (this == &o) return true;
+	if (typeid(*this) != typeid(o)) return false;
+	return Value() == ((NLong &)o).Value();
 }
 
 void NLong::Serialize(const Serializator &s)
@@ -128,16 +134,6 @@ void NLong::Serialize(const Serializator &s)
 void NLong::Deserialize(const Serializator &s)
 {
 	value = ((Serializator *)&s)->GetLong();
-}
-
-long long NLong::ToLongLong()
-{
-	return value;
-}
-
-long double NLong::ToLongDouble()
-{
-	return value;
 }
 
 int NLong::COMPARER(const void *u, const void *v)

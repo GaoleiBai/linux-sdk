@@ -19,42 +19,13 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef NULONG_H
-#define NULONG_H
+#include "npoint.h"
 
-#include "n_object.h"
+NPoint::NPoint()
+{
+}
 
-class Text;
+NPoint::~NPoint()
+{
+}
 
-class NULong : public NObject {
-
-public:
-	NULong();
-	NULong(unsigned long n);
-	NULong(const NULong &n);
-	virtual ~NULong();
-
-	static unsigned long MaxValue();
-	static unsigned long MinValue();
-	static unsigned long Parse(const Text &text);
-	static bool TryParse(const Text &text, unsigned long &n);
-	Text ToText(const Text &format);
-	
-	unsigned long &Value();
-	
-	virtual NObject *NewInstance();
-	virtual Text ToText();
-	virtual int Compare(const NObject &o);
-	virtual int Compare(const NULong &l);
-	virtual bool Equals(const NObject &o);
-	virtual void Serialize(const Serializator &s);
-	virtual void Deserialize(const Serializator &s);
-	
-	static int COMPARER(const void *u, const void *v);
-
-protected:
-	unsigned long value;
-	
-};
-
-#endif // NULONG_H

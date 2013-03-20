@@ -107,10 +107,9 @@ Text NInt::ToText()
 
 int NInt::Compare(const NObject &o)
 {
-	long long vo = ((NObject *)&o)->ToLongLong();		
-	if (value > vo) return 1;
-	else if (value < vo) return -1;
-	else return 0;	
+	if (typeid(*this) != typeid(o)) 
+		throw new Exception("Not comparable", __FILE__, __LINE__, __func__);
+	return Compare((NInt &)o);
 }
 
 int NInt::Compare(const NInt &i)
@@ -118,6 +117,13 @@ int NInt::Compare(const NInt &i)
 	if (value > i.value) return 1;
 	else if (value < i.value) return -1;
 	else return 0;
+}
+
+bool NInt::Equals(const NObject &o)
+{
+	if (this == &o) return true;
+	if (typeid(*this) != typeid(o)) return false;
+	return Value() == ((NInt &)o).Value();
 }
 
 void NInt::Serialize(const Serializator &s) 
@@ -128,16 +134,6 @@ void NInt::Serialize(const Serializator &s)
 void NInt::Deserialize(const Serializator &s) 
 {
 	value = ((Serializator *)&s)->GetInt();
-}
-
-long long NInt::ToLongLong()
-{
-	return value;
-}
-
-long double NInt::ToLongDouble()
-{
-	return value;
 }
 
 int NInt::COMPARER(const void *u, const void *v)

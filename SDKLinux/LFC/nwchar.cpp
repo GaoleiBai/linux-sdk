@@ -27,6 +27,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <wctype.h>
+#include <typeinfo>
 
 NWChar::NWChar()
 {
@@ -104,10 +105,9 @@ Text NWChar::ToText()
 
 int NWChar::Compare(const NObject &o)
 {
-	long long vo = ((NObject *)&o)->ToLongLong();
-	if (value > vo) return 1;
-	else if (value < vo) return -1;
-	else return 0;
+	if (typeid(*this) != typeid(o)) 
+		throw new Exception("Not comparable", __FILE__, __LINE__, __func__);
+	return Compare((NWChar &)o);
 }
 
 int NWChar::Compare(const NWChar &c)
@@ -115,6 +115,13 @@ int NWChar::Compare(const NWChar &c)
 	if (value > c.value) return 1;
 	else if (value < c.value) return -1;
 	else return 0;
+}
+
+bool NWChar::Equals(const NObject &o)
+{
+	if (this == &o) return true;
+	if (typeid(*this) != typeid(o)) return false;
+	return Value() == ((NWChar &)o).Value();
 }
 
 void NWChar::Serialize(const Serializator &s)
@@ -125,16 +132,6 @@ void NWChar::Serialize(const Serializator &s)
 void NWChar::Deserialize(const Serializator &s)
 {
 	value = (short)((Serializator *)&s)->GetWChar();
-}
-
-long long NWChar::ToLongLong()
-{
-	return value;
-}
-
-long double NWChar::ToLongDouble()
-{
-	return value;
 }
 
 int NWChar::COMPARER(const void *u, const void *v)

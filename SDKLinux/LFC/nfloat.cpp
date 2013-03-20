@@ -29,6 +29,7 @@
 #include <float.h>
 #include <math.h>
 #include <errno.h>
+#include <typeinfo>
 
 NFloat::NFloat()
 {
@@ -144,10 +145,9 @@ Text NFloat::ToText()
 
 int NFloat::Compare(const NObject &o)
 {
-	long double vo = ((NObject *)&o)->ToLongDouble();
-	if (value > vo) return 1;
-	else if (value < vo) return -1;
-	return 0;
+	if (typeid(*this) != typeid(o)) 
+		throw new Exception("Not comparable", __FILE__, __LINE__, __func__);
+	return Compare((NFloat &)o);
 }
 
 int NFloat::Compare(const NFloat &f)
@@ -155,6 +155,13 @@ int NFloat::Compare(const NFloat &f)
 	if (value > f.value) return 1;
 	else if (value < f.value) return -1;
 	else return 0;
+}
+
+bool NFloat::Equals(const NObject &o)
+{
+	if (this == &o) return true;
+	if (typeid(*this) != typeid(o)) return false;
+	return Value() == ((NFloat &)o).Value();
 }
 
 void NFloat::Serialize(const Serializator &s)
@@ -165,19 +172,6 @@ void NFloat::Serialize(const Serializator &s)
 void NFloat::Deserialize(const Serializator &s)
 {
 	value = ((Serializator *)&s)->GetFloat();
-}
-
-long long NFloat::ToLongLong()
-{
-	if (value > NLongLong::MaxValue() || value < NLongLong::MinValue())
-		throw new Exception("Cannot convert to long long", __FILE__, __LINE__, __func__);
-		
-	return value;
-}
-
-long double NFloat::ToLongDouble()
-{
-	return value;
 }
 
 int NFloat::COMPARER(const void *u, const void *v)

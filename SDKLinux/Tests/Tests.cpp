@@ -40,6 +40,11 @@ int Tests::Perform()
 	
 	StdOut::PrintLine("hello world");
 	
+	if (TestNumeric::Perform() != 0) {
+		StdOut::PrintLine("TestNumeric::Perform error!!!");
+		return -1;
+	}
+	
 	if (TestSerialization::Perform() != 0) {
 		StdOut::PrintLine("TestSerialization::Perform error!!!");
 		return -1;
@@ -119,11 +124,6 @@ int Tests::Perform()
 	
 	if (TestBuffer::Perform() != 0) {
 		StdOut::PrintLine("TestBuffer::Perform error!!!");
-		return -1;
-	}
-	
-	if (TestNumeric::Perform() != 0) {
-		StdOut::PrintLine("TestNumeric::Perform error!!!");
 		return -1;
 	}
 	

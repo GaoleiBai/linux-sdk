@@ -40,9 +40,8 @@ public:
 	
 	virtual NObject *NewInstance();
 	virtual Text ToText();
-	virtual long long ToLongLong();
-	virtual long double ToLongDouble();
 	virtual int Compare(const NObject &o);
+	virtual bool Equals(const NObject &o);
 	virtual void Serialize(const Serializator &s);
 	virtual void Deserialize(const Serializator &s);
 	

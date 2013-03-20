@@ -29,6 +29,7 @@
 #include <float.h>
 #include <math.h>
 #include <errno.h>
+#include <typeinfo>
 
 NLongDouble::NLongDouble()
 {
@@ -143,10 +144,9 @@ Text NLongDouble::ToText()
 
 int NLongDouble::Compare(const NObject &o)
 {
-	long double vo = ((NObject *)&o)->ToLongDouble();
-	if (value > vo) return 1;
-	else if (value < vo) return -1;
-	else return 0;
+	if (typeid(*this) != typeid(o)) 
+		throw new Exception("Not comparable", __FILE__, __LINE__, __func__);
+	return Compare((NLongDouble &)o);
 }
 
 int NLongDouble::Compare(const NLongDouble &d)
@@ -154,6 +154,13 @@ int NLongDouble::Compare(const NLongDouble &d)
 	if (value > d.value) return 1;
 	else if (value < d.value) return -1;
 	else return 0;
+}
+
+bool NLongDouble::Equals(const NObject &o)
+{
+	if (this == &o) return true;
+	if (typeid(*this) != typeid(o)) return false;
+	return Value() == ((NLongDouble &)o).Value();
 }
 
 void NLongDouble::Serialize(const Serializator &s)
@@ -164,19 +171,6 @@ void NLongDouble::Serialize(const Serializator &s)
 void NLongDouble::Deserialize(const Serializator &s)
 {
 	value = ((Serializator *)&s)->GetLongDouble();
-}
-
-long long NLongDouble::ToLongLong()
-{
-	if (value > NLongLong::MaxValue() || value < NLongLong::MinValue())
-		throw new Exception("Cannot convert to long long", __FILE__, __LINE__, __func__);
-		
-	return value;
-}
-
-long double NLongDouble::ToLongDouble()
-{
-	return value;
 }
 
 int NLongDouble::COMPARER(const void *u, const void *v)

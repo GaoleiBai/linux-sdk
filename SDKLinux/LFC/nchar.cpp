@@ -106,10 +106,9 @@ Text NChar::ToText()
 
 int NChar::Compare(const NObject &o)
 {
-	long long vo = ((NObject *)&o)->ToLongLong();		
-	if (value > vo) return 1;
-	else if (value < vo) return -1;
-	else return 0;	
+	if (typeid(*this) != typeid(o)) 
+		throw new Exception("Not comparable", __FILE__, __LINE__, __func__);
+	return Compare((NChar &)o);
 }
 
 int NChar::Compare(const NChar &c)
@@ -117,6 +116,14 @@ int NChar::Compare(const NChar &c)
 	if (value > c.value) return 1;
 	else if (value < c.value) return -1;
 	else return 0;
+}
+
+bool NChar::Equals(const NObject &o)
+{
+	if (this == &o) return true;
+	if (typeid(o) != typeid(*this)) return false;
+	
+	return Value() == ((NChar &)o).Value();
 }
 
 void NChar::Serialize(const Serializator &s)
@@ -127,16 +134,6 @@ void NChar::Serialize(const Serializator &s)
 void NChar::Deserialize(const Serializator &s)
 {
 	value = ((Serializator *)&s)->GetChar();
-}
-
-long long NChar::ToLongLong()
-{
-	return value;
-}
-
-long double NChar::ToLongDouble()
-{
-	return value;
 }
 
 int NChar::COMPARER(const void *u, const void *v)

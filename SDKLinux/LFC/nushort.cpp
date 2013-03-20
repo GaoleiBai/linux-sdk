@@ -108,10 +108,9 @@ Text NUShort::ToText()
 
 int NUShort::Compare(const NObject &o)
 {
-	long long vo = ((NObject *)&o)->ToLongLong();
-	if (value > vo) return 1;
-	else if (value < vo) return -1;
-	else return 0;
+	if (typeid(*this) != typeid(o)) 
+		throw new Exception("Not comparable", __FILE__, __LINE__, __func__);
+	return Compare((NUShort &)o);
 }
 
 int NUShort::Compare(const NUShort &s)
@@ -119,6 +118,13 @@ int NUShort::Compare(const NUShort &s)
 	if (value > s.value) return 1;
 	else if (value < s.value) return -1;
 	else return 0;
+}
+
+bool NUShort::Equals(const NObject &o)
+{
+	if (this == &o) return true;
+	if (typeid(*this) != typeid(o)) return false;
+	return Value() == ((NUShort &)o).Value();
 }
 
 void NUShort::Serialize(const Serializator &s)
@@ -129,16 +135,6 @@ void NUShort::Serialize(const Serializator &s)
 void NUShort::Deserialize(const Serializator &s)
 {
 	value = ((Serializator *)&s)->GetUShort();
-}
-
-long long NUShort::ToLongLong()
-{
-	return value;
-}
-
-long double NUShort::ToLongDouble()
-{
-	return value;
 }
 
 int NUShort::COMPARER(const void *u, const void *v)

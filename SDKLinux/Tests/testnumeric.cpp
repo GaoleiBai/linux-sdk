@@ -89,6 +89,8 @@ int TestNumeric::Perform()
 		if (b1.Value() != false) throw new Exception("NBool::Parse error", __FILE__, __LINE__, __func__);
 		bool sb;
 		if (NBool::TryParse("porca miseria!!!", sb)) throw new Exception("NBool cannot parse wrong string", __FILE__, __LINE__, __func__); 
+		NBool b2(false);
+		if (!b1.Equals(b2)) throw new Exception("NBool::Equals error", __FILE__, __LINE__, __func__);
 		
 		NLongLong nll1;
 		NChar c1;
@@ -103,6 +105,10 @@ int TestNumeric::Perform()
 		if (NChar::TryParse("128", sc)) { StdOut::PrintLine("NChar cannot parse '128'"); return -1; }
 		if (NChar::MaxValue() != 127) throw new Exception("NChar::MaxValue error", __FILE__, __LINE__, __func__);
 		if (NChar::MinValue() != -128) throw new Exception("NChar::MinValue error", __FILE__, __LINE__, __func__);
+		c1 = NChar::Parse((Text)(int)'c');
+		NChar c2('c');
+		if (!c1.Equals(c2)) throw new Exception("NChar::Equals error", __FILE__, __LINE__, __func__);
+		ddd;
 		
 		NShort s1;
 		for (int i=-32768; i<=32767; i++) {
