@@ -169,7 +169,11 @@
         <File Name="LFC/XWidgets/Graphics/nsize.cpp"/>
         <File Name="LFC/XWidgets/Graphics/xwindowgraphics.h"/>
         <File Name="LFC/XWidgets/Graphics/xwindowgraphics.cpp"/>
+        <File Name="LFC/XWidgets/Graphics/pixmapgraphics.h"/>
+        <File Name="LFC/XWidgets/Graphics/pixmapgraphics.cpp"/>
       </VirtualDirectory>
+      <File Name="LFC/XWidgets/xpixmap.h"/>
+      <File Name="LFC/XWidgets/xpixmap.cpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Delegations">
       <File Name="LFC/Delegations/ndelegation.cpp"/>
