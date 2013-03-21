@@ -108,7 +108,6 @@ int TestNumeric::Perform()
 		c1 = NChar::Parse((Text)(int)'c');
 		NChar c2('c');
 		if (!c1.Equals(c2)) throw new Exception("NChar::Equals error", __FILE__, __LINE__, __func__);
-		ddd;
 		
 		NShort s1;
 		for (int i=-32768; i<=32767; i++) {
@@ -122,6 +121,9 @@ int TestNumeric::Perform()
 		if (NShort::TryParse("32768", ss)) { StdOut::PrintLine("NShort cannot parse 32768"); return -1; }
 		if (NShort::MaxValue() != 32767) throw new Exception("NShort::MaxValue error", __FILE__, __LINE__, __func__);
 		if (NShort::MinValue() != -32768) throw new Exception("NShort::MinValue error", __FILE__, __LINE__, __func__);
+		s1 = NShort::Parse("21");
+		NShort s2(21);
+		if (!s1.Equals(s2)) throw new Exception("NShort::Equals error", __FILE__, __LINE__, __func__);
 		
 		NInt i1;
 		for (int i=-2147483648; i<2147483647; i++) {
@@ -137,6 +139,9 @@ int TestNumeric::Perform()
 		if (NInt::TryParse("2147483648", si)) { StdOut::PrintLine("NInt cannot parse 2147483648"); return -1; }
 		if (NInt::MaxValue() != 2147483647) throw new Exception("NInt::MaxValue error", __FILE__, __LINE__, __func__);
 		if (NInt::MinValue() != -2147483648) throw new Exception("NInt::MinValue error", __FILE__, __LINE__, __func__);
+		i1 = NInt::Parse("4");
+		NInt i2(4);
+		if (!i1.Equals(i2)) throw new Exception("NInt::Equals error", __FILE__, __LINE__, __func__);
 		
 		NLong l1;
 		for (long i=NLong::MinValue(); i<NLong::MaxValue(); i++) {
@@ -152,6 +157,9 @@ int TestNumeric::Perform()
 		if (NLong::TryParse("9223372036854775808", sl)) { StdOut::PrintLine("NLong cannot parse 9223372036854775808"); return -1; }
 		if (NLong::MaxValue() != 9223372036854775807L) throw new Exception("NLong::MaxValue error", __FILE__, __LINE__, __func__);
 		if (NLong::MinValue() != -NLong::MaxValue() -1L) throw new Exception("NLong::MinValue error", __FILE__, __LINE__, __func__);
+		l1 = NLong::Parse("34");
+		NLong l2(34);
+		if (!l1.Equals(l2)) throw new Exception("NLong::Equals error", __FILE__, __LINE__, __func__);
 		
 		NLongLong ll1;
 		for (long long i=NLongLong::MinValue(); i<NLongLong::MaxValue(); i++) {
@@ -167,6 +175,9 @@ int TestNumeric::Perform()
 		if (NLongLong::TryParse("9223372036854775808", sll)) { StdOut::PrintLine("NLongLong cannot parse 9223372036854775808"); return -1; }
 		if (NLongLong::MaxValue() != 9223372036854775807L) throw new Exception("NLongLong::Maxvalue error", __FILE__, __LINE__, __func__);
 		if (NLongLong::MinValue() != -NLongLong::MaxValue() - 1L) throw new Exception("NLongLong::MinValue error", __FILE__, __LINE__, __func__);
+		ll1 = NLongLong::Parse("1222");
+		NLongLong ll2(1222);
+		if (!ll1.Equals(ll2)) throw new Exception("NLongLong::Equals error", __FILE__, __LINE__, __func__);
 		
 		NUChar uc1;
 		for (long i = 0; i<NUChar::MaxValue(); i++) {
@@ -180,6 +191,9 @@ int TestNumeric::Perform()
 		if (NUChar::TryParse("256", sc1)) { StdOut::PrintLine("NUChar cannot parse 65536"); return -1; }
 		if (NUChar::MinValue() != 0) throw new Exception("NUChar::MinValue error", __FILE__, __LINE__, __func__);
 		if (NUChar::MaxValue() != 255) throw new Exception("NUChar::MaxValue error", __FILE__, __LINE__, __func__);
+		uc1 = NUChar::Parse("22");
+		NUChar uc2(22);
+		if (!uc1.Equals(uc2)) throw new Exception("NUChar::Equals error", __FILE__, __LINE__, __func__);		
 		
 		NULongLong ull1;
 		NUShort us1;
@@ -194,6 +208,9 @@ int TestNumeric::Perform()
 		if (NUShort::TryParse("65536", ss1)) { StdOut::PrintLine("NUShort cannor parse 65536"); return -1; }
 		if (NUShort::MinValue() != 0) throw new Exception("NUShort::MinValue error", __FILE__, __LINE__, __func__);
 		if (NUShort::MaxValue() != 65535) throw new Exception("NUShort::MaxValue error", __FILE__, __LINE__, __func__);
+		us1 = NUShort::Parse("4000");
+		NUShort us2(4000);
+		if (!us1.Equals(us2)) throw new Exception("NUShort::Equals error", __FILE__, __LINE__, __func__);
 		
 		NUInt ui1;
 		for (unsigned long i = 0; i<NUInt::MaxValue(); i++) {
@@ -208,6 +225,9 @@ int TestNumeric::Perform()
 		if (NUInt::TryParse("4294967296", si1)) { StdOut::PrintLine("NUInt cannot parse -1"); return -1; }
 		if (NUInt::MinValue() != 0) throw new Exception("NUInt::MinValue error", __FILE__, __LINE__, __func__);
 		if (NUInt::MaxValue() != 4294967295U) throw new Exception("NUInt::MaxValue error", __FILE__, __LINE__, __func__);
+		ui1 = NUInt::Parse("45000000");
+		NUInt ui2(45000000);
+		if (!ui1.Equals(ui2)) throw new Exception("NUInt::Equals error", __FILE__, __LINE__, __func__);
 		
 		NULong ul1;
 		for (unsigned long i = 0; i<NULong::MaxValue(); i++) {
@@ -222,6 +242,9 @@ int TestNumeric::Perform()
 		if (NULong::TryParse("18446744073709551616", sul1)) { StdOut::PrintLine("NULong cannot parse "); return -1; }
 		if (NULong::MinValue() != 0) throw new Exception("NULong::MinValue error", __FILE__, __LINE__, __func__);
 		if (NULong::MaxValue() != 18446744073709551615UL) throw new Exception("NULong::MaxValue error", __FILE__, __LINE__, __func__);
+		ul1 = NULong::Parse("4000000001");
+		NULong ul2(4000000001);
+		if (!ul1.Equals(ul2)) throw new Exception("NULong::Equals error", __FILE__, __LINE__, __func__);
 		
 		NULongLong null1;
 		for (unsigned long i = 0; i<NULongLong::MaxValue(); i++) {
@@ -264,6 +287,9 @@ int TestNumeric::Perform()
 		if (NFloat::IsFinite(NFloat::NegativeInfinity())) throw new Exception("NFloat::IsFinite NI error", __FILE__, __LINE__, __func__);
 		if (NFloat::IsNaN(4)) throw new Exception("NFloat::IsNaN error", __FILE__, __LINE__, __func__);
 		if (!NFloat::IsNaN(NFloat::NaN())) throw new Exception("NFloat::NaN error", __FILE__, __LINE__, __func__);
+		nf1 = 5000.501f;
+		nf2 = 5000.501f;
+		if (!nf1.Equals(nf2)) throw new Exception("NFloat::Equals error", __FILE__, __LINE__, __func__);
 		
 		NDouble nd1;
 		NDouble nd2;
@@ -287,11 +313,14 @@ int TestNumeric::Perform()
 		if (NDouble::TryParse("2e308", sd1)) { StdOut::PrintLine("NDouble cannot parse 2e308"); return -1; }
 		if (NDouble::MaxValue() != DBL_MAX) throw new Exception("NDouble::MaxValue error", __FILE__, __LINE__, __func__);
 		if (NDouble::MinValue() != -DBL_MAX) throw new Exception("NDouble::MinValue error", __FILE__, __LINE__, __func__);
-		if (!NDouble::IsFinite(4)) throw new Exception("NFloat::IsFinite error", __FILE__, __LINE__, __func__);
-		if (NDouble::IsFinite(NDouble::PositiveInfinity())) throw new Exception("NFloat::IsFinite PI error", __FILE__, __LINE__, __func__);
-		if (NDouble::IsFinite(NDouble::NegativeInfinity())) throw new Exception("NFloat::IsFinite NI error", __FILE__, __LINE__, __func__);
-		if (NDouble::IsNaN(4)) throw new Exception("NFloat::IsNaN error", __FILE__, __LINE__, __func__);
-		if (!NDouble::IsNaN(NDouble::NaN())) throw new Exception("NFloat::NaN error", __FILE__, __LINE__, __func__);
+		if (!NDouble::IsFinite(4)) throw new Exception("NDouble::IsFinite error", __FILE__, __LINE__, __func__);
+		if (NDouble::IsFinite(NDouble::PositiveInfinity())) throw new Exception("NDouble::IsFinite PI error", __FILE__, __LINE__, __func__);
+		if (NDouble::IsFinite(NDouble::NegativeInfinity())) throw new Exception("NDouble::IsFinite NI error", __FILE__, __LINE__, __func__);
+		if (NDouble::IsNaN(4)) throw new Exception("NDouble::IsNaN error", __FILE__, __LINE__, __func__);
+		if (!NDouble::IsNaN(NDouble::NaN())) throw new Exception("NDouble::NaN error", __FILE__, __LINE__, __func__);
+		nd1 = 45.9978;
+		nd2 = NDouble::Parse("45,9978");
+		if (!nd1.Equals(nd2)) throw new Exception("NDouble::Equals error", __FILE__, __LINE__, __func__);
 		
 		NLongDouble nld1;
 		NLongDouble nld2;
@@ -320,6 +349,9 @@ int TestNumeric::Perform()
 		if (NLongDouble::IsFinite(NLongDouble::NegativeInfinity())) throw new Exception("NFloat::IsFinite NI error", __FILE__, __LINE__, __func__);
 		if (NLongDouble::IsNaN(4)) throw new Exception("NFloat::IsNaN error", __FILE__, __LINE__, __func__);
 		if (!NLongDouble::IsNaN(NLongDouble::NaN())) throw new Exception("NFloat::NaN error", __FILE__, __LINE__, __func__);
+		nld1 = 62.3456l;
+		nld2 = NLongDouble::Parse("62,3456");
+		if (!nld1.Equals(nld2)) throw new Exception("NLongDouble::Equals error", __FILE__, __LINE__, __func__);
 		
 		int kk = 1;
 	} catch (Exception *e) {
