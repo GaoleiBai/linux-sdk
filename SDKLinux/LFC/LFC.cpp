@@ -59,6 +59,8 @@ void lfc_init()
 	NObjectRegistry::Register(NDouble());
 	NObjectRegistry::Register(NLongDouble());
 	NObjectRegistry::Register(NSize());
+	NObjectRegistry::Register(NPoint());
+	NObjectRegistry::Register(NRectangle());
 	
 	// Register sigsegv (segmentation fault)
 	signal(SIGSEGV, sigsegv_handler);

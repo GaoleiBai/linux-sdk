@@ -106,6 +106,8 @@
 #include "XWidgets/xexception.h"
 #include "XWidgets/Graphics/xwindowgraphics.h"
 #include "XWidgets/Graphics/nsize.h"
+#include "XWidgets/Graphics/npoint.h"
+#include "XWidgets/Graphics/nrectangle.h"
 
 void lfc_init();
 

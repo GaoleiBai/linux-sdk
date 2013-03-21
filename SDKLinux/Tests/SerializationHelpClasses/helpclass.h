@@ -71,6 +71,8 @@ private:
 	NDouble *nndouble;
 	NLongDouble *nnlongdouble;
 	NSize *nnsize;
+	NPoint *nnpoint;
+	NRectangle *nnrectangle;
 	
 };
 
