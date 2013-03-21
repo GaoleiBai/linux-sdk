@@ -22,12 +22,28 @@
 #ifndef NPOINT_H
 #define NPOINT_H
 
-class NPoint {
+#include "../../n_object.h"
 
+class Serializator;
+
+class NPoint : public NObject {
+	int x, y;
+	
 public:
 	NPoint();
+	NPoint(int x, int y);
+	NPoint(const NPoint &p);
 	virtual ~NPoint();
+	
+	void SetX(int x);
+	void SetY(int y);
+	int GetX();
+	int GetY();
 
+	NObject *NewInstance();
+	bool Equals(const NObject &o);
+	void Serialize(const Serializator &s);
+	void Deserialize(const Serializator &s);
 };
 
 #endif // NPOINT_H
