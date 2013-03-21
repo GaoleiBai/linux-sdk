@@ -22,11 +22,36 @@
 #ifndef NRECTANGLE_H
 #define NRECTANGLE_H
 
-class NRectangle {
+#include "../../n_object.h"
 
+class Serializator;
+class NPoint;
+
+class NRectangle : public NObject {
+	int x, y, width, height;
+	
 public:
 	NRectangle();
+	NRectangle(int x, int y, int width, int height);
+	NRectangle(const NRectangle &r);
 	virtual ~NRectangle();
+
+	int GetX();
+	int GetY();
+	int GetWidth();
+	int GetHeight();
+	void SetX(int x);
+	void SetY(int y);
+	void SetWidth(int width);
+	void SetHeight(int height);
+	
+	bool Contains(int x, int y);
+	bool Contains(const NPoint &p);
+	
+	NObject *NewInstance();
+	bool Equals(const NObject &o);
+	void Serialize(const Serializator &s);
+	void Deserialize(const Serializator &s);
 
 };
 
