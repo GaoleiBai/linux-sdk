@@ -178,6 +178,10 @@
       </VirtualDirectory>
       <File Name="LFC/XWidgets/xpixmap.h"/>
       <File Name="LFC/XWidgets/xpixmap.cpp"/>
+      <VirtualDirectory Name="Events">
+        <File Name="LFC/XWidgets/Events/keypressevent.h"/>
+        <File Name="LFC/XWidgets/Events/keypressevent.cpp"/>
+      </VirtualDirectory>
     </VirtualDirectory>
     <VirtualDirectory Name="Delegations">
       <File Name="LFC/Delegations/ndelegation.cpp"/>

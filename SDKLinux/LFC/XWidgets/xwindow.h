@@ -32,6 +32,9 @@ class Mutex;
 class XWindowGraphics;
 
 class XWindow : public NObject {
+	
+protected:
+	
 	Window window;
 	Window windowParent;
 	Display *windowDisplay;

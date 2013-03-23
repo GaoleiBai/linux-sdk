@@ -26,6 +26,7 @@
 #include "../Threading/mutex.h"
 #include "../Threading/thread.h"
 #include "Graphics/xwindowgraphics.h"
+#include "Events/keypressevent.h"
 #include <string.h>
 
 XWindow::XWindow()
@@ -87,8 +88,9 @@ void XWindow::init(const XDisplay &d)
 	y = 0;
 	width = 400;
 	height = 300;
-	borderwidth = 1, 
+	borderwidth = 1;
 	colordepth = DefaultDepth(windowDisplay, windowScreen);
+	visible = false;
 	
 	// Creates delegates
 	dOnWindowDestroy = new NDelegationManager();
@@ -258,50 +260,53 @@ int XWindow::RunModal()
 		int res = XNextEvent(windowDisplay, &event);
 		
 		// Processes the events
-		if (event.type == KeyPress)
-			DelegationOnWindowKeyPress().Execute(NULL);
-		else if (event.type == KeyRelease)
-			DelegationOnWindowKeyRelease().Execute(NULL);
-		else if (event.type == ButtonPress)
-			DelegationOnWindowMouseDown().Execute(NULL);
-		else if (event.type == ButtonRelease)
-			DelegationOnWindowMouseUp().Execute(NULL);
-		else if (event.type == MotionNotify)
-			DelegationOnWindowMouseMove().Execute(NULL);
-		else if (event.type == EnterNotify)
-			DelegationOnWindowEnter().Execute(NULL);
-		else if (event.type == LeaveNotify)
-			DelegationOnWindowLeave().Execute(NULL);
-		else if (event.type == FocusIn)
-			DelegationOnWindowFocus().Execute(NULL);
-		else if (event.type == FocusOut)
-			DelegationOnWindowFocus().Execute(NULL);
-		else if (event.type == KeymapNotify)
-			DelegationOnWindowKeymap().Execute(NULL);
-		else if (event.type == Expose) { 
-			XWindowGraphics g(*this);
-			OnDraw(g);
-			DelegationOnWindowDraw().Execute(&g);
+		if (window == event.xany.window) {
+			if (event.type == KeyPress)
+				
+				DelegationOnWindowKeyPress().Execute(NULL);
+			else if (event.type == KeyRelease)
+				DelegationOnWindowKeyRelease().Execute(NULL);
+			else if (event.type == ButtonPress)
+				DelegationOnWindowMouseDown().Execute(NULL);
+			else if (event.type == ButtonRelease)
+				DelegationOnWindowMouseUp().Execute(NULL);
+			else if (event.type == MotionNotify)
+				DelegationOnWindowMouseMove().Execute(NULL);
+			else if (event.type == EnterNotify)
+				DelegationOnWindowEnter().Execute(NULL);
+			else if (event.type == LeaveNotify)
+				DelegationOnWindowLeave().Execute(NULL);
+			else if (event.type == FocusIn)
+				DelegationOnWindowFocus().Execute(NULL);
+			else if (event.type == FocusOut)
+				DelegationOnWindowFocus().Execute(NULL);
+			else if (event.type == KeymapNotify)
+				DelegationOnWindowKeymap().Execute(NULL);
+			else if (event.type == Expose) { 
+				XWindowGraphics g(*this);
+				OnDraw(g);
+				DelegationOnWindowDraw().Execute(&g);
+			}
+			else if (event.type == VisibilityNotify) {
+				XWindowGraphics g(*this);
+				OnDraw(g);
+				DelegationOnWindowDraw().Execute(&g);
+			}
+			else if (event.type == CreateNotify)
+				DelegationOnWindowCreate().Execute(NULL);
+			else if (event.type == DestroyNotify)
+				DelegationOnWindowDestroy().Execute(NULL);
+			else if (event.type == UnmapNotify)
+				DelegationOnWindowShow().Execute(NULL);
+			else if (event.type == MapNotify)
+				DelegationOnWindowShow().Execute(NULL);
+			else if (event.type == ConfigureNotify)
+				DelegationOnWindowMove().Execute(NULL);
+			else if (event.type == ColormapNotify)
+				DelegationOnWindowColormapChange().Execute(NULL);
+			else if (event.type == MappingNotify)
+				DelegationOnWindowKeymap().Execute(NULL);
 		}
-		else if (event.type == VisibilityNotify) {
-			XWindowGraphics g(*this);
-			OnDraw(g);
-			DelegationOnWindowDraw().Execute(&g);
-		}
-		else if (event.type == CreateNotify)
-			DelegationOnWindowCreate().Execute(NULL);
-		else if (event.type == DestroyNotify)
-			DelegationOnWindowDestroy().Execute(NULL);
-		else if (event.type == UnmapNotify)
-			DelegationOnWindowShow().Execute(NULL);
-		else if (event.type == MapNotify)
-			DelegationOnWindowShow().Execute(NULL);
-		else if (event.type == ConfigureNotify)
-			DelegationOnWindowMove().Execute(NULL);
-		else if (event.type == ColormapNotify)
-			DelegationOnWindowColormapChange().Execute(NULL);
-		else if (event.type == MappingNotify)
-			DelegationOnWindowKeymap().Execute(NULL);
 		
 		// Locks the collection of delegations
 		windowMutex->Lock();

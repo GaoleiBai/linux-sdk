@@ -40,6 +40,11 @@ int Tests::Perform()
 	
 	StdOut::PrintLine("hello world");
 	
+	if (TestWindow::Perform() != 0) {
+		StdOut::PrintLine("TestWindow::Perform error!!!");
+		return -1;
+	}
+	
 	if (TestSerialization::Perform() != 0) {
 		StdOut::PrintLine("TestSerialization::Perform error!!!");
 		return -1;
@@ -47,11 +52,6 @@ int Tests::Perform()
 	
 	if (TestNumeric::Perform() != 0) {
 		StdOut::PrintLine("TestNumeric::Perform error!!!");
-		return -1;
-	}
-	
-	if (TestWindow::Perform() != 0) {
-		StdOut::PrintLine("TestWindow::Perform error!!!");
 		return -1;
 	}
 	
