@@ -183,6 +183,8 @@
         <File Name="LFC/XWidgets/Events/keyevent.h"/>
         <File Name="LFC/XWidgets/Events/buttonevent.h"/>
         <File Name="LFC/XWidgets/Events/buttonevent.cpp"/>
+        <File Name="LFC/XWidgets/Events/moveevent.h"/>
+        <File Name="LFC/XWidgets/Events/moveevent.cpp"/>
       </VirtualDirectory>
     </VirtualDirectory>
     <VirtualDirectory Name="Delegations">

@@ -28,6 +28,7 @@
 #include "Graphics/xwindowgraphics.h"
 #include "Events/keyevent.h"
 #include "Events/buttonevent.h"
+#include "Events/moveevent.h"
 #include <string.h>
 
 XWindow::XWindow()
@@ -274,9 +275,10 @@ int XWindow::RunModal()
 			} else if (event.type == ButtonRelease) {
 				ButtonEvent e(&event.xbutton);
 				DelegationOnWindowMouseUp().Execute(&e);
-			} else if (event.type == MotionNotify)
-				DelegationOnWindowMouseMove().Execute(NULL);
-			else if (event.type == EnterNotify)
+			} else if (event.type == MotionNotify) {
+				MoveEvent e(&event.xmotion);
+				DelegationOnWindowMouseMove().Execute(&e);
+			} else if (event.type == EnterNotify)
 				DelegationOnWindowEnter().Execute(NULL);
 			else if (event.type == LeaveNotify)
 				DelegationOnWindowLeave().Execute(NULL);
