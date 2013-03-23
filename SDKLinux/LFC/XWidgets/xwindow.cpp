@@ -261,10 +261,10 @@ int XWindow::RunModal()
 		
 		// Processes the events
 		if (window == event.xany.window) {
-			if (event.type == KeyPress)
-				
-				DelegationOnWindowKeyPress().Execute(NULL);
-			else if (event.type == KeyRelease)
+			if (event.type == KeyPress) {
+				KeyPressEvent e(&event.xkey);
+				DelegationOnWindowKeyPress().Execute(&e);
+			} else if (event.type == KeyRelease)
 				DelegationOnWindowKeyRelease().Execute(NULL);
 			else if (event.type == ButtonPress)
 				DelegationOnWindowMouseDown().Execute(NULL);
