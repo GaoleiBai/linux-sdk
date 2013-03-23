@@ -179,8 +179,10 @@
       <File Name="LFC/XWidgets/xpixmap.h"/>
       <File Name="LFC/XWidgets/xpixmap.cpp"/>
       <VirtualDirectory Name="Events">
-        <File Name="LFC/XWidgets/Events/keypressevent.h"/>
-        <File Name="LFC/XWidgets/Events/keypressevent.cpp"/>
+        <File Name="LFC/XWidgets/Events/keyevent.cpp"/>
+        <File Name="LFC/XWidgets/Events/keyevent.h"/>
+        <File Name="LFC/XWidgets/Events/buttonevent.h"/>
+        <File Name="LFC/XWidgets/Events/buttonevent.cpp"/>
       </VirtualDirectory>
     </VirtualDirectory>
     <VirtualDirectory Name="Delegations">

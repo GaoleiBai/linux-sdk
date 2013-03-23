@@ -26,7 +26,8 @@
 #include "../Threading/mutex.h"
 #include "../Threading/thread.h"
 #include "Graphics/xwindowgraphics.h"
-#include "Events/keypressevent.h"
+#include "Events/keyevent.h"
+#include "Events/buttonevent.h"
 #include <string.h>
 
 XWindow::XWindow()
@@ -262,15 +263,18 @@ int XWindow::RunModal()
 		// Processes the events
 		if (window == event.xany.window) {
 			if (event.type == KeyPress) {
-				KeyPressEvent e(&event.xkey);
+				KeyEvent e(&event.xkey);
 				DelegationOnWindowKeyPress().Execute(&e);
-			} else if (event.type == KeyRelease)
-				DelegationOnWindowKeyRelease().Execute(NULL);
-			else if (event.type == ButtonPress)
-				DelegationOnWindowMouseDown().Execute(NULL);
-			else if (event.type == ButtonRelease)
-				DelegationOnWindowMouseUp().Execute(NULL);
-			else if (event.type == MotionNotify)
+			} else if (event.type == KeyRelease) {
+				KeyEvent e(&event.xkey);
+				DelegationOnWindowKeyRelease().Execute(&e);
+			} else if (event.type == ButtonPress) {
+				ButtonEvent e(&event.xbutton);
+				DelegationOnWindowMouseDown().Execute(&e);
+			} else if (event.type == ButtonRelease) {
+				ButtonEvent e(&event.xbutton);
+				DelegationOnWindowMouseUp().Execute(&e);
+			} else if (event.type == MotionNotify)
 				DelegationOnWindowMouseMove().Execute(NULL);
 			else if (event.type == EnterNotify)
 				DelegationOnWindowEnter().Execute(NULL);

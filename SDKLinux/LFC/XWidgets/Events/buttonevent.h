@@ -19,27 +19,25 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef KEYPRESSEVENT_H
-#define KEYPRESSEVENT_H
+#ifndef BUTTONEVENT_H
+#define BUTTONEVENT_H
 
-#include "../../n_object.h"
 #include <X11/Xlib.h>
+#include "../../n_object.h"
 
 class DateTime;
-class NWChar;
 class NPoint;
 
-class KeyEvent : public NObject {
-	XKeyEvent *keyEvent;
+class ButtonEvent : public NObject {
+	XButtonEvent *e;
 	
 public:
-	KeyEvent(XKeyEvent *e);
-	virtual ~KeyEvent();
-
+	ButtonEvent(XButtonEvent *e);
+	virtual ~ButtonEvent();
+	
 	DateTime Time();
-	NWChar KeyCode();
 	NPoint Position();
-	NPoint PositionRoot();
+	NPoint PositionRoot();	
 	
 	bool PressedButton1();
 	bool PressedButton2();
@@ -55,6 +53,13 @@ public:
 	bool PressedMod4();
 	bool PressedMod5();
 	
+	bool SourceButton1();
+	bool SourceButton2();
+	bool SourceButton3();
+	bool SourceButton4();
+	bool SourceButton5();
+	
+
 };
 
-#endif // KEYPRESSEVENT_H
+#endif // BUTTONEVENT_H

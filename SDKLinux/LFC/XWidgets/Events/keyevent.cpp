@@ -19,101 +19,101 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#include "keypressevent.h"
+#include "keyevent.h"
 #include "../../Time/datetime.h"
 #include "../../nwchar.h"
 #include "../Graphics/npoint.h"
 
-KeyPressEvent::KeyPressEvent(XKeyEvent *e)
+KeyEvent::KeyEvent(XKeyEvent *e)
 {
 	keyEvent = e;
 }
 
-KeyPressEvent::~KeyPressEvent()
+KeyEvent::~KeyEvent()
 {
 }
 
-DateTime KeyPressEvent::Time()
+DateTime KeyEvent::Time()
 {
 	return DateTime((time_t)keyEvent->time);
 }
 
-NWChar KeyPressEvent::KeyCode()
+NWChar KeyEvent::KeyCode()
 {
 	return NWChar(keyEvent->keycode);
 }
 
-NPoint KeyPressEvent::Position()
+NPoint KeyEvent::Position()
 {
 	return NPoint(keyEvent->x, keyEvent->y);
 }
 
-NPoint KeyPressEvent::PositionRoot()
+NPoint KeyEvent::PositionRoot()
 {
 	return NPoint(keyEvent->x_root, keyEvent->y_root);
 }
 
-bool KeyPressEvent::PressedButton1()
+bool KeyEvent::PressedButton1()
 {
 	return keyEvent->state & Button1Mask != 0;
 }
 
-bool KeyPressEvent::PressedButton2()
+bool KeyEvent::PressedButton2()
 {
 	return keyEvent->state & Button2Mask != 0;
 }
 
-bool KeyPressEvent::PressedButton3()
+bool KeyEvent::PressedButton3()
 {
 	return keyEvent->state & Button3Mask != 0;
 }
 
-bool KeyPressEvent::PressedButton4()
+bool KeyEvent::PressedButton4()
 {
 	return keyEvent->state & Button4Mask != 0;
 }
 
-bool KeyPressEvent::PressedButton5()
+bool KeyEvent::PressedButton5()
 {
 	return keyEvent->state & Button5Mask != 0;
 }
 
-bool KeyPressEvent::PressedControl()
+bool KeyEvent::PressedControl()
 {
 	return keyEvent->state & ControlMask != 0;
 }
 
-bool KeyPressEvent::PressedLock()
+bool KeyEvent::PressedLock()
 {
 	return keyEvent->state & LockMask != 0;
 }
 
-bool KeyPressEvent::PressedShift()
+bool KeyEvent::PressedShift()
 {
 	return keyEvent->state & ShiftMask != 0;
 }
 
-bool KeyPressEvent::PressedMod1()
+bool KeyEvent::PressedMod1()
 {
 	return keyEvent->state & Mod1Mask != 0;
 }
 
-bool KeyPressEvent::PressedMod2()
+bool KeyEvent::PressedMod2()
 {
 	return keyEvent->state & Mod2Mask != 0;
 }
 
-bool KeyPressEvent::PressedMod3()
+bool KeyEvent::PressedMod3()
 {
 	return keyEvent->state & Mod3Mask != 0;
 }
 
-bool KeyPressEvent::PressedMod4()
+bool KeyEvent::PressedMod4()
 {
 	return keyEvent->state & Mod4Mask != 0;
 }
 
-bool KeyPressEvent::PressedMod5()
+bool KeyEvent::PressedMod5()
 {
 	return keyEvent->state & Mod5Mask != 0;
 }
