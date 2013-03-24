@@ -65,6 +65,7 @@ protected:
 	NDelegationManager *dOnWindowPropertyChange;
 	NDelegationManager *dOnWindowColormapChange;
 	NDelegationManager *dOnWindowGrabButton;
+	NDelegationManager *dOnWindowVisibilityChange;
 	
 	void init(const XDisplay &d);
 	
@@ -91,6 +92,7 @@ public:
 	NDelegationManager &DelegationOnWindowPropertyChange();
 	NDelegationManager &DelegationOnWindowColormapChange();
 	NDelegationManager &DelegationOnWindowGrabButton();
+	NDelegationManager &DelegationOnWindowVisibilityChange();
 	
 	Display *HandlerDisplay();
 	Window HandlerWindow();

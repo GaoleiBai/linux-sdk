@@ -33,6 +33,7 @@
 #include "Events/focusevent.h"
 #include "Events/keymapevent.h"
 #include "Events/drawevent.h"
+#include "Events/visibilityevent.h"
 #include <string.h>
 
 XWindow::XWindow()
@@ -77,6 +78,7 @@ XWindow::~XWindow()
 	delete dOnWindowPropertyChange;
 	delete dOnWindowColormapChange;
 	delete dOnWindowGrabButton;
+	delete dOnWindowVisibilityChange;
 	
 	delete windowMutex;
 }
@@ -117,6 +119,7 @@ void XWindow::init(const XDisplay &d)
 	dOnWindowPropertyChange = new NDelegationManager();
 	dOnWindowColormapChange = new NDelegationManager();
 	dOnWindowGrabButton = new NDelegationManager();
+	dOnWindowVisibilityChange = new NDelegationManager();
 	
 	XSetWindowAttributes attrs;
 	memset(&attrs, 0, sizeof(attrs));
@@ -233,6 +236,11 @@ NDelegationManager &XWindow::DelegationOnWindowGrabButton()
 	return *dOnWindowGrabButton;
 }
 
+NDelegationManager &XWindow::DelegationOnWindowVisibilityChange()
+{
+	return *dOnWindowVisibilityChange;
+}
+
 Display *XWindow::HandlerDisplay()
 {
 	return windowDisplay;
@@ -304,10 +312,8 @@ int XWindow::RunModal()
 				DelegationOnWindowDraw().Execute(&e);
 			}
 			else if (event.type == VisibilityNotify) {
-				XWindowGraphics g(*this);
-				DrawEvent e(&g, &event.xexpose);
-				OnDraw(&e);
-				DelegationOnWindowDraw().Execute(&e);
+				VisibilityEvent e(&event.xvisibility);
+				DelegationOnWindowVisibilityChange().Execute(&e);
 			}
 			else if (event.type == CreateNotify)
 				DelegationOnWindowCreate().Execute(NULL);
