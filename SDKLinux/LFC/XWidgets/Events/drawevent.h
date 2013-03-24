@@ -19,25 +19,27 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef PIXMAPGRAPHICS_H
-#define PIXMAPGRAPHICS_H
+#ifndef DRAWEVENT_H
+#define DRAWEVENT_H
 
-#include "igraphics.h"
+#include "../../n_object.h"
 #include <X11/Xlib.h>
-#include <cairo/cairo.h>
-#include <cairo/cairo-xlib.h>
 
-class XPixmap;
+class NRectangle;
+class IGraphics;
 
-class PixmapGraphics : public IGraphics {
-	cairo_surface_t *surface;
-	Pixmap pixmap;
-	Display *display;
+class DrawEvent : public NObject {
+	IGraphics *g;
+	XExposeEvent *e;
 	
 public:
-	PixmapGraphics(const XPixmap &p);
-	virtual ~PixmapGraphics();
+	DrawEvent(IGraphics *g, XExposeEvent *e);
+	virtual ~DrawEvent();
+
+	NRectangle Area();
+	int NumberOfFollowingDrawEvents();
+	IGraphics &Graphics();
 
 };
 
-#endif // PIXMAPGRAPHICS_H
+#endif // DRAWEVENT_H

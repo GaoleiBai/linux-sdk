@@ -30,6 +30,7 @@
 class XDisplay;
 class Mutex;
 class XWindowGraphics;
+class DrawEvent;
 
 class XWindow : public NObject {
 	
@@ -113,7 +114,7 @@ public:
 protected:
 
 	virtual void OnCreate();
-	virtual void OnDraw(const XWindowGraphics &g);
+	virtual void OnDraw(DrawEvent *e);
 	virtual void OnDestroy();
 
 };

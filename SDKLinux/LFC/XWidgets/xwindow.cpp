@@ -32,6 +32,7 @@
 #include "Events/enterleaveevent.h"
 #include "Events/focusevent.h"
 #include "Events/keymapevent.h"
+#include "Events/drawevent.h"
 #include <string.h>
 
 XWindow::XWindow()
@@ -298,13 +299,15 @@ int XWindow::RunModal()
 				DelegationOnWindowKeymap().Execute(&e);
 			} else if (event.type == Expose) { 
 				XWindowGraphics g(*this);
-				OnDraw(g);
-				DelegationOnWindowDraw().Execute(&g);
+				DrawEvent e(&g, &event.xexpose);
+				OnDraw(&e);
+				DelegationOnWindowDraw().Execute(&e);
 			}
 			else if (event.type == VisibilityNotify) {
 				XWindowGraphics g(*this);
-				OnDraw(g);
-				DelegationOnWindowDraw().Execute(&g);
+				DrawEvent e(&g, &event.xexpose);
+				OnDraw(&e);
+				DelegationOnWindowDraw().Execute(&e);
 			}
 			else if (event.type == CreateNotify)
 				DelegationOnWindowCreate().Execute(NULL);
@@ -424,7 +427,7 @@ void XWindow::OnCreate()
 	
 }
 
-void XWindow::OnDraw(const XWindowGraphics &g)
+void XWindow::OnDraw(DrawEvent *e)
 {
 	
 }

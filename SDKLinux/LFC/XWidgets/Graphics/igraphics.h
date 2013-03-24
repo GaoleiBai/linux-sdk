@@ -19,25 +19,15 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef PIXMAPGRAPHICS_H
-#define PIXMAPGRAPHICS_H
+#ifndef IGRAPHICS_H
+#define IGRAPHICS_H
 
-#include "igraphics.h"
-#include <X11/Xlib.h>
-#include <cairo/cairo.h>
-#include <cairo/cairo-xlib.h>
+#include "../../n_object.h"
 
-class XPixmap;
+class IGraphics : public NObject {
 
-class PixmapGraphics : public IGraphics {
-	cairo_surface_t *surface;
-	Pixmap pixmap;
-	Display *display;
-	
 public:
-	PixmapGraphics(const XPixmap &p);
-	virtual ~PixmapGraphics();
 
 };
 
-#endif // PIXMAPGRAPHICS_H
+#endif // IGRAPHICS_H

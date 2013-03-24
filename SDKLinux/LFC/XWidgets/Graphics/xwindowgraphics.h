@@ -22,14 +22,14 @@
 #ifndef XWINDOWGRAPHICS_H
 #define XWINDOWGRAPHICS_H
 
-#include "../../n_object.h"
+#include "igraphics.h"
 #include <cairo/cairo.h>
 #include <cairo/cairo-xlib.h>
 
 class XWindow;
 class NSize;
 
-class XWindowGraphics : public NObject {
+class XWindowGraphics : public IGraphics {
 	cairo_surface_t *surface;
 	
 public:

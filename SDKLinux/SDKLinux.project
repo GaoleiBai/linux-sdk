@@ -175,6 +175,8 @@
         <File Name="LFC/XWidgets/Graphics/nrectangle.cpp"/>
         <File Name="LFC/XWidgets/Graphics/npoint.h"/>
         <File Name="LFC/XWidgets/Graphics/npoint.cpp"/>
+        <File Name="LFC/XWidgets/Graphics/igraphics.h"/>
+        <File Name="LFC/XWidgets/Graphics/igraphics.cpp"/>
       </VirtualDirectory>
       <File Name="LFC/XWidgets/xpixmap.h"/>
       <File Name="LFC/XWidgets/xpixmap.cpp"/>
@@ -191,6 +193,8 @@
         <File Name="LFC/XWidgets/Events/focusevent.cpp"/>
         <File Name="LFC/XWidgets/Events/keymapevent.h"/>
         <File Name="LFC/XWidgets/Events/keymapevent.cpp"/>
+        <File Name="LFC/XWidgets/Events/drawevent.h"/>
+        <File Name="LFC/XWidgets/Events/drawevent.cpp"/>
       </VirtualDirectory>
     </VirtualDirectory>
     <VirtualDirectory Name="Delegations">
