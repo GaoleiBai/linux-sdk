@@ -187,6 +187,8 @@
         <File Name="LFC/XWidgets/Events/moveevent.cpp"/>
         <File Name="LFC/XWidgets/Events/enterleaveevent.h"/>
         <File Name="LFC/XWidgets/Events/enterleaveevent.cpp"/>
+        <File Name="LFC/XWidgets/Events/focusevent.h"/>
+        <File Name="LFC/XWidgets/Events/focusevent.cpp"/>
       </VirtualDirectory>
     </VirtualDirectory>
     <VirtualDirectory Name="Delegations">

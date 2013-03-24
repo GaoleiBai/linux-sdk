@@ -113,6 +113,7 @@
 #include "XWidgets/Events/enterleaveevent.h"
 #include "XWidgets/Events/keyevent.h"
 #include "XWidgets/Events/moveevent.h"
+#include "XWidgets/Events/focusevent.h"
 
 void lfc_init();
 
