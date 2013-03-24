@@ -105,9 +105,14 @@
 #include "XWidgets/xdisplay.h"
 #include "XWidgets/xexception.h"
 #include "XWidgets/Graphics/xwindowgraphics.h"
+#include "XWidgets/Graphics/pixmapgraphics.h"
 #include "XWidgets/Graphics/nsize.h"
 #include "XWidgets/Graphics/npoint.h"
 #include "XWidgets/Graphics/nrectangle.h"
+#include "XWidgets/Events/buttonevent.h"
+#include "XWidgets/Events/enterleaveevent.h"
+#include "XWidgets/Events/keyevent.h"
+#include "XWidgets/Events/moveevent.h"
 
 void lfc_init();
 

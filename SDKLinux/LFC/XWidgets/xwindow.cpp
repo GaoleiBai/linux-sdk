@@ -29,6 +29,7 @@
 #include "Events/keyevent.h"
 #include "Events/buttonevent.h"
 #include "Events/moveevent.h"
+#include "Events/enterleaveevent.h"
 #include <string.h>
 
 XWindow::XWindow()
@@ -278,11 +279,13 @@ int XWindow::RunModal()
 			} else if (event.type == MotionNotify) {
 				MoveEvent e(&event.xmotion);
 				DelegationOnWindowMouseMove().Execute(&e);
-			} else if (event.type == EnterNotify)
-				DelegationOnWindowEnter().Execute(NULL);
-			else if (event.type == LeaveNotify)
-				DelegationOnWindowLeave().Execute(NULL);
-			else if (event.type == FocusIn)
+			} else if (event.type == EnterNotify) {
+				EnterLeaveEvent e(&event.xcrossing);
+				DelegationOnWindowEnter().Execute(&e);
+			} else if (event.type == LeaveNotify) {
+				EnterLeaveEvent e(&event.xcrossing);
+				DelegationOnWindowLeave().Execute(&e);
+			} else if (event.type == FocusIn)
 				DelegationOnWindowFocus().Execute(NULL);
 			else if (event.type == FocusOut)
 				DelegationOnWindowFocus().Execute(NULL);
