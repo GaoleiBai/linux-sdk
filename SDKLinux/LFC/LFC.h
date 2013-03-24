@@ -114,6 +114,7 @@
 #include "XWidgets/Events/keyevent.h"
 #include "XWidgets/Events/moveevent.h"
 #include "XWidgets/Events/focusevent.h"
+#include "XWidgets/Events/keymapevent.h"
 
 void lfc_init();
 

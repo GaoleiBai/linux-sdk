@@ -31,6 +31,7 @@
 #include "Events/moveevent.h"
 #include "Events/enterleaveevent.h"
 #include "Events/focusevent.h"
+#include "Events/keymapevent.h"
 #include <string.h>
 
 XWindow::XWindow()
@@ -292,9 +293,10 @@ int XWindow::RunModal()
 			} else if (event.type == FocusOut) {
 				FocusEvent e(&event.xfocus);
 				DelegationOnWindowFocus().Execute(&e);
-			} else if (event.type == KeymapNotify)
-				DelegationOnWindowKeymap().Execute(NULL);
-			else if (event.type == Expose) { 
+			} else if (event.type == KeymapNotify) {
+				KeymapEvent e(&event.xkeymap);
+				DelegationOnWindowKeymap().Execute(&e);
+			} else if (event.type == Expose) { 
 				XWindowGraphics g(*this);
 				OnDraw(g);
 				DelegationOnWindowDraw().Execute(&g);
