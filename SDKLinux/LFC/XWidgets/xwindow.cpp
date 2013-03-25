@@ -36,6 +36,9 @@
 #include "Events/visibilityevent.h"
 #include "Events/showevent.h"
 #include "Events/createevent.h"
+#include "Events/destroyevent.h"
+#include "Events/windowmoveevent.h"
+#include "Events/windowresizeevent.h"
 #include <string.h>
 
 XWindow::XWindow()
@@ -272,67 +275,75 @@ int XWindow::RunModal()
 {
 	XEvent event;
 	do {
+		if (window != event.xany.window) continue;
 		// Gets the new event
 		int res = XNextEvent(windowDisplay, &event);
 		
 		// Processes the events
-		if (window == event.xany.window) {
-			if (event.type == KeyPress) {
-				KeyEvent e(&event.xkey);
-				DelegationOnWindowKeyPress().Execute(&e);
-			} else if (event.type == KeyRelease) {
-				KeyEvent e(&event.xkey);
-				DelegationOnWindowKeyRelease().Execute(&e);
-			} else if (event.type == ButtonPress) {
-				ButtonEvent e(&event.xbutton);
-				DelegationOnWindowMouseDown().Execute(&e);
-			} else if (event.type == ButtonRelease) {
-				ButtonEvent e(&event.xbutton);
-				DelegationOnWindowMouseUp().Execute(&e);
-			} else if (event.type == MotionNotify) {
-				MoveEvent e(&event.xmotion);
-				DelegationOnWindowMouseMove().Execute(&e);
-			} else if (event.type == EnterNotify) {
-				EnterLeaveEvent e(&event.xcrossing);
-				DelegationOnWindowEnter().Execute(&e);
-			} else if (event.type == LeaveNotify) {
-				EnterLeaveEvent e(&event.xcrossing);
-				DelegationOnWindowLeave().Execute(&e);
-			} else if (event.type == FocusIn) {
-				FocusEvent e(&event.xfocus);
-				DelegationOnWindowFocus().Execute(&e);
-			} else if (event.type == FocusOut) {
-				FocusEvent e(&event.xfocus);
-				DelegationOnWindowFocus().Execute(&e);
-			} else if (event.type == KeymapNotify) {
-				KeymapEvent e(&event.xkeymap);
-				DelegationOnWindowKeymap().Execute(&e);
-			} else if (event.type == Expose) { 
-				XWindowGraphics g(*this);
-				DrawEvent e(&g, &event.xexpose);
-				OnDraw(&e);
-				DelegationOnWindowDraw().Execute(&e);
-			} else if (event.type == VisibilityNotify) {
-				VisibilityEvent e(&event.xvisibility);
-				DelegationOnWindowVisibilityChange().Execute(&e);
-			} else if (event.type == CreateNotify) {
-				CreateEvent e(&event.xcreatewindow);
-				DelegationOnWindowCreate().Execute(&e);
-			} else if (event.type == DestroyNotify)
-				DelegationOnWindowDestroy().Execute(NULL);
-			else if (event.type == UnmapNotify) {
-				ShowEvent e(false);
-				DelegationOnWindowShow().Execute(&e);
-			} else if (event.type == MapNotify) {
-				ShowEvent e(true);
-				DelegationOnWindowShow().Execute(&e);
-			} else if (event.type == ConfigureNotify)
-				DelegationOnWindowMove().Execute(NULL);
-			else if (event.type == ColormapNotify)
-				DelegationOnWindowColormapChange().Execute(NULL);
-			else if (event.type == MappingNotify)
-				DelegationOnWindowKeymap().Execute(NULL);
-		}
+		if (event.type == KeyPress) {
+			KeyEvent e(&event.xkey);
+			DelegationOnWindowKeyPress().Execute(&e);
+		} else if (event.type == KeyRelease) {
+			KeyEvent e(&event.xkey);
+			DelegationOnWindowKeyRelease().Execute(&e);
+		} else if (event.type == ButtonPress) {
+			ButtonEvent e(&event.xbutton);
+			DelegationOnWindowMouseDown().Execute(&e);
+		} else if (event.type == ButtonRelease) {
+			ButtonEvent e(&event.xbutton);
+			DelegationOnWindowMouseUp().Execute(&e);
+		} else if (event.type == MotionNotify) {
+			MoveEvent e(&event.xmotion);
+			DelegationOnWindowMouseMove().Execute(&e);
+		} else if (event.type == EnterNotify) {
+			EnterLeaveEvent e(&event.xcrossing);
+			DelegationOnWindowEnter().Execute(&e);
+		} else if (event.type == LeaveNotify) {
+			EnterLeaveEvent e(&event.xcrossing);
+			DelegationOnWindowLeave().Execute(&e);
+		} else if (event.type == FocusIn) {
+			FocusEvent e(&event.xfocus);
+			DelegationOnWindowFocus().Execute(&e);
+		} else if (event.type == FocusOut) {
+			FocusEvent e(&event.xfocus);
+			DelegationOnWindowFocus().Execute(&e);
+		} else if (event.type == KeymapNotify) {
+			KeymapEvent e(&event.xkeymap);
+			DelegationOnWindowKeymap().Execute(&e);
+		} else if (event.type == Expose) { 
+			XWindowGraphics g(*this);
+			DrawEvent e(&g, &event.xexpose);
+			OnDraw(&e);
+			DelegationOnWindowDraw().Execute(&e);
+		} else if (event.type == VisibilityNotify) {
+			VisibilityEvent e(&event.xvisibility);
+			DelegationOnWindowVisibilityChange().Execute(&e);
+		} else if (event.type == CreateNotify) {
+			CreateEvent e(&event.xcreatewindow);
+			DelegationOnWindowCreate().Execute(&e);
+		} else if (event.type == DestroyNotify) {
+			DestroyEvent e(&event.xdestroywindow);
+			DelegationOnWindowDestroy().Execute(&e);
+		} else if (event.type == UnmapNotify) {
+			ShowEvent e(false);
+			DelegationOnWindowShow().Execute(&e);
+		} else if (event.type == MapNotify) {
+			ShowEvent e(true);
+			DelegationOnWindowShow().Execute(&e);
+		} else if (event.type == ConfigureNotify) {
+			if (x != event.xconfigure.x || y != event.xconfigure.y) {
+				x = event.xconfigure.x;
+				y = event.xconfigure.y;
+				WindowMoveEvent e(&event.xconfigure);
+				DelegationOnWindowMove().Execute(&e);
+			} else if (width != event.xconfigure.width || height != event.xconfigure.height) {
+				width = event.xconfigure.width;
+				height = event.xconfigure.height;
+			}
+		} else if (event.type == ColormapNotify)
+			DelegationOnWindowColormapChange().Execute(NULL);
+		else if (event.type == MappingNotify)
+			DelegationOnWindowKeymap().Execute(NULL);
 		
 		// Locks the collection of delegations
 		windowMutex->Lock();

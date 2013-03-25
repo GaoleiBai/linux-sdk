@@ -201,6 +201,12 @@
         <File Name="LFC/XWidgets/Events/showevent.cpp"/>
         <File Name="LFC/XWidgets/Events/createevent.h"/>
         <File Name="LFC/XWidgets/Events/createevent.cpp"/>
+        <File Name="LFC/XWidgets/Events/destroyevent.h"/>
+        <File Name="LFC/XWidgets/Events/destroyevent.cpp"/>
+        <File Name="LFC/XWidgets/Events/windowmoveevent.h"/>
+        <File Name="LFC/XWidgets/Events/windowmoveevent.cpp"/>
+        <File Name="LFC/XWidgets/Events/windowresizeevent.h"/>
+        <File Name="LFC/XWidgets/Events/windowresizeevent.cpp"/>
       </VirtualDirectory>
     </VirtualDirectory>
     <VirtualDirectory Name="Delegations">

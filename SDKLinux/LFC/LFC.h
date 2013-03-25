@@ -119,6 +119,9 @@
 #include "XWidgets/Events/visibilityevent.h"
 #include "XWidgets/Events/showevent.h"
 #include "XWidgets/Events/createevent.h"
+#include "XWidgets/Events/destroyevent.h"
+#include "XWidgets/Events/windowmoveevent.h"
+#include "XWidgets/Events/windowresizeevent.h"
 
 void lfc_init();
 
