@@ -277,9 +277,9 @@ int XWindow::RunModal()
 {
 	XEvent event;
 	do {
-		if (window != event.xany.window) continue;
 		// Gets the new event
 		int res = XNextEvent(windowDisplay, &event);
+		if (window != event.xany.window) continue;
 		
 		// Processes the events
 		if (event.type == KeyPress) {
@@ -336,7 +336,8 @@ int XWindow::RunModal()
 			if (x != event.xconfigure.x || y != event.xconfigure.y) {
 				WindowMoveEvent e(&event.xconfigure);
 				DelegationOnWindowMove().Execute(&e);
-			} else if (width != event.xconfigure.width || height != event.xconfigure.height) {
+			}
+			if (width != event.xconfigure.width || height != event.xconfigure.height) {
 				WindowResizeEvent e(&event.xconfigure);
 				DelegationOnWindowResize().Execute(&e);
 			}
