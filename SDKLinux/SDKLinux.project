@@ -197,6 +197,10 @@
         <File Name="LFC/XWidgets/Events/drawevent.cpp"/>
         <File Name="LFC/XWidgets/Events/visibilityevent.h"/>
         <File Name="LFC/XWidgets/Events/visibilityevent.cpp"/>
+        <File Name="LFC/XWidgets/Events/showevent.h"/>
+        <File Name="LFC/XWidgets/Events/showevent.cpp"/>
+        <File Name="LFC/XWidgets/Events/createevent.h"/>
+        <File Name="LFC/XWidgets/Events/createevent.cpp"/>
       </VirtualDirectory>
     </VirtualDirectory>
     <VirtualDirectory Name="Delegations">

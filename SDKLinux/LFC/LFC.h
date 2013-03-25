@@ -117,6 +117,8 @@
 #include "XWidgets/Events/keymapevent.h"
 #include "XWidgets/Events/drawevent.h"
 #include "XWidgets/Events/visibilityevent.h"
+#include "XWidgets/Events/showevent.h"
+#include "XWidgets/Events/createevent.h"
 
 void lfc_init();
 

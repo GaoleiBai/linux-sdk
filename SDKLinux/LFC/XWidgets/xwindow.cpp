@@ -34,6 +34,8 @@
 #include "Events/keymapevent.h"
 #include "Events/drawevent.h"
 #include "Events/visibilityevent.h"
+#include "Events/showevent.h"
+#include "Events/createevent.h"
 #include <string.h>
 
 XWindow::XWindow()
@@ -310,20 +312,21 @@ int XWindow::RunModal()
 				DrawEvent e(&g, &event.xexpose);
 				OnDraw(&e);
 				DelegationOnWindowDraw().Execute(&e);
-			}
-			else if (event.type == VisibilityNotify) {
+			} else if (event.type == VisibilityNotify) {
 				VisibilityEvent e(&event.xvisibility);
 				DelegationOnWindowVisibilityChange().Execute(&e);
-			}
-			else if (event.type == CreateNotify)
-				DelegationOnWindowCreate().Execute(NULL);
-			else if (event.type == DestroyNotify)
+			} else if (event.type == CreateNotify) {
+				CreateEvent e(&event.xcreatewindow);
+				DelegationOnWindowCreate().Execute(&e);
+			} else if (event.type == DestroyNotify)
 				DelegationOnWindowDestroy().Execute(NULL);
-			else if (event.type == UnmapNotify)
-				DelegationOnWindowShow().Execute(NULL);
-			else if (event.type == MapNotify)
-				DelegationOnWindowShow().Execute(NULL);
-			else if (event.type == ConfigureNotify)
+			else if (event.type == UnmapNotify) {
+				ShowEvent e(false);
+				DelegationOnWindowShow().Execute(&e);
+			} else if (event.type == MapNotify) {
+				ShowEvent e(true);
+				DelegationOnWindowShow().Execute(&e);
+			} else if (event.type == ConfigureNotify)
 				DelegationOnWindowMove().Execute(NULL);
 			else if (event.type == ColormapNotify)
 				DelegationOnWindowColormapChange().Execute(NULL);
