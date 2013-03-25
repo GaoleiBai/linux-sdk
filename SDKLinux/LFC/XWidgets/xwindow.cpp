@@ -331,14 +331,18 @@ int XWindow::RunModal()
 			ShowEvent e(true);
 			DelegationOnWindowShow().Execute(&e);
 		} else if (event.type == ConfigureNotify) {
+			x = event.xconfigure.x;
+			y = event.xconfigure.y;
+			width = event.xconfigure.width;
+			height = event.xconfigure.height;
+			borderwidth = event.xconfigure.border_width;
+			
 			if (x != event.xconfigure.x || y != event.xconfigure.y) {
-				x = event.xconfigure.x;
-				y = event.xconfigure.y;
 				WindowMoveEvent e(&event.xconfigure);
 				DelegationOnWindowMove().Execute(&e);
 			} else if (width != event.xconfigure.width || height != event.xconfigure.height) {
-				width = event.xconfigure.width;
-				height = event.xconfigure.height;
+				WindowResizeEvent e(&event.xconfigure);
+				DelegationOnWindowResize().Execute(&e);
 			}
 		} else if (event.type == ColormapNotify)
 			DelegationOnWindowColormapChange().Execute(NULL);
