@@ -207,6 +207,10 @@
         <File Name="LFC/XWidgets/Events/windowmoveevent.cpp"/>
         <File Name="LFC/XWidgets/Events/windowresizeevent.h"/>
         <File Name="LFC/XWidgets/Events/windowresizeevent.cpp"/>
+        <File Name="LFC/XWidgets/Events/keyboardmappingevent.h"/>
+        <File Name="LFC/XWidgets/Events/keyboardmappingevent.cpp"/>
+        <File Name="LFC/XWidgets/Events/colormapevent.h"/>
+        <File Name="LFC/XWidgets/Events/colormapevent.cpp"/>
       </VirtualDirectory>
     </VirtualDirectory>
     <VirtualDirectory Name="Delegations">

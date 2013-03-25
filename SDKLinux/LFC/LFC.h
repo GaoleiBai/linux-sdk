@@ -122,6 +122,8 @@
 #include "XWidgets/Events/destroyevent.h"
 #include "XWidgets/Events/windowmoveevent.h"
 #include "XWidgets/Events/windowresizeevent.h"
+#include "XWidgets/Events/keyboardmappingevent.h"
+#include "XWidgets/Events/colormapevent.h"
 
 void lfc_init();
 

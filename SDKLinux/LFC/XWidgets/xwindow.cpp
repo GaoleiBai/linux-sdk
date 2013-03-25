@@ -39,6 +39,8 @@
 #include "Events/destroyevent.h"
 #include "Events/windowmoveevent.h"
 #include "Events/windowresizeevent.h"
+#include "Events/keyboardmappingevent.h"
+#include "Events/colormapevent.h"
 #include <string.h>
 
 XWindow::XWindow()
@@ -330,13 +332,7 @@ int XWindow::RunModal()
 		} else if (event.type == MapNotify) {
 			ShowEvent e(true);
 			DelegationOnWindowShow().Execute(&e);
-		} else if (event.type == ConfigureNotify) {
-			x = event.xconfigure.x;
-			y = event.xconfigure.y;
-			width = event.xconfigure.width;
-			height = event.xconfigure.height;
-			borderwidth = event.xconfigure.border_width;
-			
+		} else if (event.type == ConfigureNotify) {			
 			if (x != event.xconfigure.x || y != event.xconfigure.y) {
 				WindowMoveEvent e(&event.xconfigure);
 				DelegationOnWindowMove().Execute(&e);
@@ -344,10 +340,19 @@ int XWindow::RunModal()
 				WindowResizeEvent e(&event.xconfigure);
 				DelegationOnWindowResize().Execute(&e);
 			}
-		} else if (event.type == ColormapNotify)
-			DelegationOnWindowColormapChange().Execute(NULL);
-		else if (event.type == MappingNotify)
-			DelegationOnWindowKeymap().Execute(NULL);
+			
+			x = event.xconfigure.x;
+			y = event.xconfigure.y;
+			width = event.xconfigure.width;
+			height = event.xconfigure.height;
+			borderwidth = event.xconfigure.border_width;			
+		} else if (event.type == ColormapNotify) {
+			ColormapEvent e(&event.xcolormap);
+			DelegationOnWindowColormapChange().Execute(&e);
+		} else if (event.type == MappingNotify) {
+			KeyboardMappingEvent e(&event.xmapping);
+			DelegationOnWindowKeymap().Execute(&e);
+		}
 		
 		// Locks the collection of delegations
 		windowMutex->Lock();
