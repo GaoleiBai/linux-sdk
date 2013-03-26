@@ -57,3 +57,10 @@ void XException::CheckResult(int result)
 		throw new XException("A value for a Drawable argument does not name a Window or a Pixmap", __FILE__, __LINE__, __func__);
 }
 
+void XException::CheckCairo(cairo_t *g)
+{
+	cairo_status_t s = cairo_status(g);
+	if (s == CAIRO_STATUS_SUCCESS) return;
+	throw new XException(cairo_status_to_string(s), __FILE__, __LINE__, __func__);
+}
+

@@ -23,15 +23,11 @@
 #define XWINDOWGRAPHICS_H
 
 #include "igraphics.h"
-#include <cairo/cairo.h>
-#include <cairo/cairo-xlib.h>
 
 class XWindow;
 class NSize;
 
 class XWindowGraphics : public IGraphics {
-	cairo_surface_t *surface;
-	
 public:
 	XWindowGraphics(const XWindow &w);
 	virtual ~XWindowGraphics();

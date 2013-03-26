@@ -22,6 +22,7 @@
 #include "xwindowgraphics.h"
 #include "nsize.h"
 #include "../xwindow.h"
+#include "../xexception.h"
 
 XWindowGraphics::XWindowGraphics(const XWindow &w)
 {
@@ -30,10 +31,17 @@ XWindowGraphics::XWindowGraphics(const XWindow &w)
 	surface = cairo_xlib_surface_create(
 		ww->HandlerDisplay(), ww->HandlerWindow(), ww->HandlerVisual(), 
 		ww->GetWidth(), ww->GetHeight());	
+	
+	// Create cairo drawing context
+	g = cairo_create(surface);
 }
 
 XWindowGraphics::~XWindowGraphics()
 {
+	// Destroy cairo drawing context
+	cairo_destroy(g);
+	XException::CheckCairo(g);
+	
 	// Destroy cairo surface
 	cairo_surface_destroy(surface);
 }

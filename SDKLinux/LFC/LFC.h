@@ -109,6 +109,7 @@
 #include "XWidgets/Graphics/nsize.h"
 #include "XWidgets/Graphics/npoint.h"
 #include "XWidgets/Graphics/nrectangle.h"
+#include "XWidgets/Graphics/ncolor.h"
 #include "XWidgets/Events/buttonevent.h"
 #include "XWidgets/Events/enterleaveevent.h"
 #include "XWidgets/Events/keyevent.h"
@@ -124,6 +125,7 @@
 #include "XWidgets/Events/windowresizeevent.h"
 #include "XWidgets/Events/keyboardmappingevent.h"
 #include "XWidgets/Events/colormapevent.h"
+#include "XWidgets/Controls/control.h"
 
 void lfc_init();
 

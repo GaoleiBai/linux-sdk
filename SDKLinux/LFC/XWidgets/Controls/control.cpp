@@ -19,23 +19,32 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef XEXCEPTION_H
-#define XEXCEPTION_H
+#include "control.h"
 
-#include "../exception.h"
-#include <cairo/cairo.h>
-#include <cairo/cairo-xlib.h>
+Control::Control(const NRectangle &r)
+{
+	area = new NRectangle(r);
+}
 
-class XException : public Exception {
+Control::~Control()
+{
+	delete area;
+}
 
-public:
-	XException();
-	XException(const Text &description, const char *file, int line, const char *func);
-	virtual ~XException();
+NRectangle Control::Area()
+{
+	return *area;
+}
+
+void Control::SetArea(const NRectangle &r)
+{
+	area->SetX(((NRectangle*)&r)->GetX());
+	area->SetY(((NRectangle*)&r)->GetY());
+	area->SetWidth(((NRectangle*)&r)->GetWidth());
+	area->SetHeight(((NRectangle*)&r)->GetHeight());
+}
+
+void Control::Draw(IGraphics *g)
+{
 	
-	static void CheckResult(int result);
-	static void CheckCairo(cairo_t *g);
-
-};
-
-#endif // XEXCEPTION_H
+}

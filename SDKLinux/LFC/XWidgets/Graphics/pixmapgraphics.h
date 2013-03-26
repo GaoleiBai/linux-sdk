@@ -23,14 +23,12 @@
 #define PIXMAPGRAPHICS_H
 
 #include "igraphics.h"
-#include <X11/Xlib.h>
-#include <cairo/cairo.h>
-#include <cairo/cairo-xlib.h>
 
 class XPixmap;
 
 class PixmapGraphics : public IGraphics {
-	cairo_surface_t *surface;
+	
+protected:
 	Pixmap pixmap;
 	Display *display;
 	
