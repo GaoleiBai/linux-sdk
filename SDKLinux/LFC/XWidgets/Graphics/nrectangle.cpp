@@ -40,6 +40,14 @@ NRectangle::NRectangle(int x, int y, int width, int height)
 	this->height = height;
 }
 
+NRectangle::NRectangle(const NRectangle &r)
+{
+	x = r.x;
+	y = r.y;
+	width = r.width;
+	height = r.height;
+}
+
 NRectangle::~NRectangle()
 {
 }

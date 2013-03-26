@@ -212,6 +212,10 @@
         <File Name="LFC/XWidgets/Events/colormapevent.h"/>
         <File Name="LFC/XWidgets/Events/colormapevent.cpp"/>
       </VirtualDirectory>
+      <VirtualDirectory Name="Controls">
+        <File Name="LFC/XWidgets/Controls/control.h"/>
+        <File Name="LFC/XWidgets/Controls/control.cpp"/>
+      </VirtualDirectory>
     </VirtualDirectory>
     <VirtualDirectory Name="Delegations">
       <File Name="LFC/Delegations/ndelegation.cpp"/>

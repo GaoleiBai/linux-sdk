@@ -33,9 +33,18 @@ TestWindow::~TestWindow()
 int TestWindow::Perform()
 {
 	try {
+		class VentanaInicio : public XWindow {
+		public:
+			VentanaInicio(const XDisplay &d) : XWindow(d) { }
+			virtual void OnCreate() {
+				
+			}
+		};
+		
 		//XWindow::RunExample();
 		XDisplay d;
-		XWindow w(d);
+		VentanaInicio w(d);
+		//XWindow w(d);
 		w.RunModal();
 		
 	} catch (Exception *e) {
