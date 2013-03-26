@@ -73,6 +73,7 @@ private:
 	NSize *nnsize;
 	NPoint *nnpoint;
 	NRectangle *nnrectangle;
+	NColor *nncolor;
 	
 };
 

@@ -59,6 +59,7 @@ HelpClass::HelpClass()
 	nnsize = new NSize(400, 300);
 	nnpoint = new NPoint(3, 4);
 	nnrectangle = new NRectangle(4, 5, 6, 7);
+	nncolor = new NColor(1, 0, 0, 0.5);
 	
 	Collection<Text *> variasPalabras = ((Text)"Esto es una prueba de varias palabras").Split(" ", false);
 	
@@ -85,6 +86,7 @@ HelpClass::HelpClass()
 	nobjectcollection->Add(new NSize(500, 600));
 	nobjectcollection->Add(new NPoint(100,200));
 	nobjectcollection->Add(new NRectangle(300, 400, 500, 600));
+	nobjectcollection->Add(new NColor(0, 1, 0, 0.25));
 	nobjectcollection->AddRange((Collection<NObject *>&)variasPalabras);
 	
 	nobjectdictionary = new NObjectDictionary();
@@ -124,6 +126,7 @@ HelpClass::~HelpClass()
 	delete nnsize;
 	delete nnpoint;
 	delete nnrectangle;
+	delete nncolor;
 	
 	delete atext;
 	delete adatetime;
@@ -173,6 +176,7 @@ void HelpClass::Serialize(const Serializator &s)
 	((Serializator *)&s)->Put(*nnsize);
 	((Serializator *)&s)->Put(*nnpoint);
 	((Serializator *)&s)->Put(*nnrectangle);
+	((Serializator *)&s)->Put(*nncolor);
 	
 	((Serializator *)&s)->Put(*atext);
 	((Serializator *)&s)->Put(*adatetime);
@@ -208,6 +212,7 @@ void HelpClass::Deserialize(const Serializator &s)
 	NSize *oldnnsize = nnsize;
 	NPoint *oldnnpoint = nnpoint;
 	NRectangle *oldnnrectangle = nnrectangle;
+	NColor *oldnncolor = nncolor;
 	
 	nbool = ((Serializator *)&s)->GetBool();
 	nchar = ((Serializator *)&s)->GetChar();
@@ -242,6 +247,7 @@ void HelpClass::Deserialize(const Serializator &s)
 	nnsize = (NSize *)((Serializator *)&s)->GetNObject();
 	nnpoint = (NPoint *)((Serializator *)&s)->GetNObject();
 	nnrectangle = (NRectangle *)((Serializator *)&s)->GetNObject();
+	nncolor = (NColor *)((Serializator *)&s)->GetNObject();
 	
 	atext = (Text *)((Serializator *)&s)->GetNObject();
 	adatetime = (DateTime *)((Serializator *)&s)->GetNObject();
@@ -282,6 +288,8 @@ void HelpClass::Deserialize(const Serializator &s)
 	if (nnrectangle->GetY() != 5) throw new Exception("NRectangle::Deserialize error", __FILE__, __LINE__, __func__);
 	if (nnrectangle->GetWidth() != 6) throw new Exception("NRectangle::Deserialize error", __FILE__, __LINE__, __func__);
 	if (nnrectangle->GetHeight() != 7) throw new Exception("NRectangle::Deserialize error", __FILE__, __LINE__, __func__);
+	if (nncolor->R() != 1 || nncolor->G() != 0 || nncolor->B() != 0 || nncolor->A() != 0.5)
+		throw new Exception("NColor::Deserialize error", __FILE__, __LINE__, __func__);
 	
 	if (oldnnbool->Value() != nnbool->Value()) throw new Exception("NBool::Deserialize error", __FILE__, __LINE__, __func__);
 	if (oldnnchar->Value() != nnchar->Value()) throw new Exception("NChar::Deserialize error", __FILE__, __LINE__, __func__);
@@ -301,6 +309,7 @@ void HelpClass::Deserialize(const Serializator &s)
 	if (oldnnsize->GetWidth() != nnsize->GetWidth()) throw new Exception("NSize::Deserialize error", __FILE__, __LINE__, __func__);
 	if (!oldnnpoint->Equals(*nnpoint)) throw new Exception("NPoint::Deserialize error", __FILE__, __LINE__, __func__);
 	if (!oldnnrectangle->Equals(*nnrectangle)) throw new Exception("NRectangle::Deserialize error", __FILE__, __LINE__, __func__);
+	if (!oldnncolor->Equals(*nncolor)) throw new Exception("NColor::Deserilize error", __FILE__, __LINE__, __func__);
 	
 	if (*oldtext != *atext) 
 		throw new Exception("Text not propertly deserializated", __FILE__, __LINE__, __func__);
@@ -341,5 +350,6 @@ void HelpClass::Deserialize(const Serializator &s)
 	delete oldnnsize;
 	delete oldnnpoint;
 	delete oldnnrectangle;
+	delete oldnncolor;
 }
 
