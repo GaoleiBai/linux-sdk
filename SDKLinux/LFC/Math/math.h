@@ -22,12 +22,14 @@
 #ifndef MATH_H
 #define MATH_H
 
+#include <math.h>
+
 class Math {
 
 public:
 
-	static double PI();
-	static double E();
+	static const double PI = M_PI;
+	static const double E = M_E;
 	
 	static double Sin(double r);
 	static double Cos(double r);

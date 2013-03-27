@@ -74,6 +74,14 @@ public:
 	void DrawRectangle(const NRectangle &r);
 	void FillRectangle(int x, int y, int width, int height);
 	void FillRectangle(const NRectangle &r);
+	void DrawEllipse(int x, int y, int width, int height);
+	void DrawEllipse(const NRectangle &r);
+	void FillEllipse(int x, int y, int width, int height);
+	void FillEllipse(const NRectangle &r);
+	void DrawArc(int x, int y, int width, int height, double startangle, double endangle);
+	void DrawArc(const NRectangle &r, double startangle, double endangle);
+	void FillArc(int x, int y, int width, int height, double startangle, double endangle);
+	void FillArc(const NRectangle &r, double startangle, double endangle);
 
 };
 

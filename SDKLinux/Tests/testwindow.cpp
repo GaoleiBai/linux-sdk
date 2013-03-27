@@ -50,6 +50,17 @@ int TestWindow::Perform()
 				e->Graphics().DrawLine(0, 0, 100, 100);
 				e->Graphics().SetColor(0, 1.0, 0, 0.5);
 				e->Graphics().DrawRectangle(75, 75, 12, 12);
+				
+				e->Graphics().SetColor(0, 0, 1.0, 0.5);
+				e->Graphics().ClipRegionReset();
+				e->Graphics().DrawEllipse(25, 25, 100, 50);
+				e->Graphics().DrawRectangle(25, 25, 100, 50);
+				e->Graphics().DrawEllipse(50, 10, 50, 100);
+				e->Graphics().DrawRectangle(50, 10, 50, 100);
+				
+				e->Graphics().SetColor(0.5, 0.5, 0.5, 0.5);
+				e->Graphics().FillEllipse(200, 10, 100, 20);
+				e->Graphics().FillRectangle(200, 40, 100, 20);
 			}
 		};
 		

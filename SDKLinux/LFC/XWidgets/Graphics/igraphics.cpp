@@ -22,6 +22,7 @@
 #include "igraphics.h"
 #include "../xexception.h"
 #include "../../Text/text.h"
+#include "../../Math/math.h"
 
 IGraphics::IGraphics()
 {
@@ -160,4 +161,64 @@ void IGraphics::FillRectangle(const NRectangle &r)
 	NRectangle *rr = (NRectangle *)&r;
 	cairo_rectangle(gc, rr->GetX(), rr->GetY(), rr->GetWidth(), rr->GetHeight());
 	cairo_fill(gc);
+}
+
+void IGraphics::DrawEllipse(int x, int y, int width, int height)
+{
+	cairo_translate(gc, x + width / 2, y + height / 2);
+	cairo_scale(gc, 1.0, 1.0 * height / width);
+	cairo_arc(gc, 0, 0, width / 2, 0, 2 * Math::PI);
+	cairo_stroke(gc);
+	cairo_identity_matrix(gc);
+}
+
+void IGraphics::DrawEllipse(const NRectangle &r)
+{
+	NRectangle *rr = (NRectangle *)&r;
+	DrawEllipse(rr->GetX(), rr->GetY(), rr->GetWidth(), rr->GetHeight());
+}
+
+void IGraphics::FillEllipse(int x, int y, int width, int height)
+{
+	cairo_translate(gc, x + width / 2, y + height / 2);
+	cairo_scale(gc, 1.0, 1.0 * height / width);
+	cairo_arc(gc, 0, 0, width / 2, 0, 2 * Math::PI);
+	cairo_fill(gc);
+	cairo_identity_matrix(gc);
+}
+
+void IGraphics::FillEllipse(const NRectangle &r)
+{
+	NRectangle *rr = (NRectangle *)&r;
+	FillEllipse(rr->GetX(), rr->GetY(), rr->GetWidth(), rr->GetHeight());
+}
+
+void IGraphics::DrawArc(int x, int y, int width, int height, double startangle, double endangle)
+{
+	cairo_translate(gc, x + width / 2, y + height / 2);
+	cairo_scale(gc, 1.0, 1.0 * height / width);
+	cairo_arc(gc, 0, 0, width / 2, startangle, endangle);
+	cairo_stroke(gc);
+	cairo_identity_matrix(gc);
+}
+
+void IGraphics::DrawArc(const NRectangle &r, double startangle, double endangle)
+{
+	NRectangle *rr = (NRectangle *)&r;
+	DrawArc(rr->GetX(), rr->GetY(), rr->GetWidth(), rr->GetHeight(), startangle, endangle);
+}
+
+void IGraphics::FillArc(int x, int y, int width, int height, double startangle, double endangle)
+{
+	cairo_translate(gc, x + width / 2, y + height / 2);
+	cairo_scale(gc, 1.0, 1.0 * height / width);
+	cairo_arc(gc, 0, 0, width / 2, startangle, endangle);
+	cairo_fill(gc);
+	cairo_identity_matrix(gc);
+}
+
+void IGraphics::FillArc(const NRectangle &r, double startangle, double endangle)
+{
+	NRectangle *rr = (NRectangle *)&r;
+	FillArc(rr->GetX(), rr->GetY(), rr->GetWidth(), rr->GetHeight(), startangle, endangle);
 }

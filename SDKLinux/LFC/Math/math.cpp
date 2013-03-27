@@ -21,17 +21,6 @@
 **/
 #include "math.h"
 #include "mathexception.h"
-#include <math.h>
-
-double Math::PI()
-{
-	return M_PI;
-}
-
-double Math::E()
-{
-	return M_E;
-}
 
 double Math::Sin(double r)
 {
