@@ -65,9 +65,9 @@ public:
 	void ClipRegionReset();
 	void ClipRegionSet(int x, int y, int width, int height);
 	void ClipRegionSet(const NRectangle &r);
-	void SetStrokeColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
-	void SetStrokeColor(double r, double g, double b, double a);
-	void SetStrokeColor(const NColor &c);
+	void SetColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
+	void SetColor(double r, double g, double b, double a);
+	void SetColor(const NColor &c);
 
 	void DrawLine(int x1, int y1, int x2, int y2);
 	void DrawRectangle(int x, int y, int width, int height);

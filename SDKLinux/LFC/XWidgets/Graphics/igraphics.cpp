@@ -102,32 +102,28 @@ void IGraphics::ClipRegionReset()
 
 void IGraphics::ClipRegionSet(int x, int y, int width, int height)
 {
-	cairo_new_path(gc);
 	cairo_rectangle(gc, x, y, width, height);
 	cairo_clip(gc);
-	//cairo_close_path(g);
 }
 
 void IGraphics::ClipRegionSet(const NRectangle &r)
 {
 	NRectangle *rr = (NRectangle *)&r;
-	cairo_new_path(gc);
 	cairo_rectangle(gc, rr->GetX(), rr->GetY(), rr->GetWidth(), rr->GetHeight());
 	cairo_clip(gc);
-	//cairo_close_path(g);
 }
 
-void IGraphics::SetStrokeColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+void IGraphics::SetColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
 	cairo_set_source_rgba(gc, r / 255.0, g / 255.0, b / 255.0, a / 255.0);
 }
 
-void IGraphics::SetStrokeColor(double r, double g, double b, double a)
+void IGraphics::SetColor(double r, double g, double b, double a)
 {
 	cairo_set_source_rgba(gc, r, g, b, a);
 }
 
-void IGraphics::SetStrokeColor(const NColor &c)
+void IGraphics::SetColor(const NColor &c)
 {
 	NColor *cc = (NColor *)&c;
 	cairo_set_source_rgba(gc, cc->R(), cc->G(), cc->B(), cc->A());
@@ -142,15 +138,13 @@ void IGraphics::DrawLine(int x1, int y1, int x2, int y2)
 
 void IGraphics::DrawRectangle(int x, int y, int width, int height)
 {
-	cairo_new_path(gc);
 	cairo_rectangle(gc, x, y, width, height);
-	cairo_close_path(gc);
+	cairo_stroke(gc);
 }
 
 void IGraphics::DrawRectangle(const NRectangle &r)
 {
 	NRectangle *rr = (NRectangle *)&r;
-	cairo_new_path(gc);
 	cairo_rectangle(gc, rr->GetX(), rr->GetY(), rr->GetWidth(), rr->GetHeight());
-	cairo_close_path(gc);
+	cairo_stroke(gc);
 }

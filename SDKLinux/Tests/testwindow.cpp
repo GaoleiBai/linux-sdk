@@ -37,16 +37,17 @@ int TestWindow::Perform()
 		public:
 			VentanaInicio(const XDisplay &d) : XWindow(d) { }
 			virtual void OnDraw(DrawEvent *e) {
+				e->Graphics().ClipRegionSet(50, 50, 50, 50);
 				e->Graphics().SetLineWidth(1);
-				e->Graphics().SetStrokeColor(1.0, 0, 0, 1.0);
+				e->Graphics().SetColor(1.0, 0, 0, 1.0);
 				e->Graphics().DrawLine(0, 0, 100, 100);
+				e->Graphics().SetColor(0, 1.0, 0, 0.5);
+				e->Graphics().DrawRectangle(75, 75, 12, 12);
 			}
 		};
 		
-		//XWindow::RunExample();
 		XDisplay d;
 		VentanaInicio w(d);
-		//XWindow w(d);
 		w.RunModal();
 		
 	} catch (Exception *e) {

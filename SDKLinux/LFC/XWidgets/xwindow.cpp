@@ -62,6 +62,9 @@ XWindow::~XWindow()
 	// Hide window
 	SetVisible(false);
 
+	// Destroy window graphics context
+	delete gc;
+	
 	// Destroy window
 	int res = XDestroyWindow(windowDisplay, window);
 	XException::CheckResult(res);
@@ -88,7 +91,6 @@ XWindow::~XWindow()
 	delete dOnWindowVisibilityChange;
 	
 	delete windowMutex;
-	delete gc;
 }
 
 void XWindow::init(const XDisplay &d)
