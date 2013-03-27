@@ -25,7 +25,8 @@
 
 IGraphics::IGraphics()
 {
-	throw new XException((Text)"This class cannot be instanciated. Please use XWindowGraphics or any other that inherit from this :)", __FILE__, __LINE__, __func__);
+	surface = NULL;
+	gc = NULL;
 }
 
 cairo_t *IGraphics::Handle()
@@ -134,10 +135,9 @@ void IGraphics::SetStrokeColor(const NColor &c)
 
 void IGraphics::DrawLine(int x1, int y1, int x2, int y2)
 {
-	cairo_new_path(gc);
 	cairo_move_to(gc, x1, y1);
-	cairo_line_to(gc, x1, y1);
-	cairo_close_path(gc);
+	cairo_line_to(gc, x2, y2);
+	cairo_stroke(gc);
 }
 
 void IGraphics::DrawRectangle(int x, int y, int width, int height)

@@ -88,6 +88,7 @@ XWindow::~XWindow()
 	delete dOnWindowVisibilityChange;
 	
 	delete windowMutex;
+	delete gc;
 }
 
 void XWindow::init(const XDisplay &d)
@@ -147,7 +148,10 @@ void XWindow::init(const XDisplay &d)
 		EnterWindowMask | LeaveWindowMask | PointerMotionMask | ButtonMotionMask |
 		KeymapStateMask | ExposureMask | VisibilityChangeMask | StructureNotifyMask |
 		FocusChangeMask | PropertyChangeMask | ColormapChangeMask | OwnerGrabButtonMask);
-	XException::CheckResult(res);				
+	XException::CheckResult(res);	
+	
+	// Create a graphics context
+	gc = new XWindowGraphics(*this);
 	
 	// Show window
 	SetVisible(true);
@@ -313,8 +317,7 @@ int XWindow::RunModal()
 			KeymapEvent e(&event.xkeymap);
 			DelegationOnWindowKeymap().Execute(&e);
 		} else if (event.type == Expose) { 
-			XWindowGraphics g(*this);
-			DrawEvent e(&g, &event.xexpose);
+			DrawEvent e(gc, &event.xexpose);
 			OnDraw(&e);
 			DelegationOnWindowDraw().Execute(&e);
 		} else if (event.type == VisibilityNotify) {

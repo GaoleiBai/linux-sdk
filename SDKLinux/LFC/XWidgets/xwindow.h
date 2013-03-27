@@ -43,6 +43,7 @@ protected:
 	int windowScreen;
 	bool visible;
 	int x, y, width, height, borderwidth, colordepth;
+	XWindowGraphics *gc;
 	
 	Mutex *windowMutex;
 	Collection<void *> *delegationsToExecute;

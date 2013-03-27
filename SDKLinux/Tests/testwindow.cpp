@@ -36,8 +36,10 @@ int TestWindow::Perform()
 		class VentanaInicio : public XWindow {
 		public:
 			VentanaInicio(const XDisplay &d) : XWindow(d) { }
-			virtual void OnCreate() {
-				
+			virtual void OnDraw(DrawEvent *e) {
+				e->Graphics().SetLineWidth(1);
+				e->Graphics().SetStrokeColor(1.0, 0, 0, 1.0);
+				e->Graphics().DrawLine(0, 0, 100, 100);
 			}
 		};
 		

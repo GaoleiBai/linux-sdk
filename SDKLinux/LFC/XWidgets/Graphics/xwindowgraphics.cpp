@@ -40,7 +40,6 @@ XWindowGraphics::~XWindowGraphics()
 {
 	// Destroy cairo drawing context
 	cairo_destroy(gc);
-	XException::CheckCairo(gc);
 	
 	// Destroy cairo surface
 	cairo_surface_destroy(surface);
