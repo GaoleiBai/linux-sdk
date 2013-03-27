@@ -69,10 +69,6 @@ XWindow::~XWindow()
 	int res = XDestroyWindow(windowDisplay, window);
 	XException::CheckResult(res);
 	
-	DelegationOnWindowDestroy().Execute(NULL);
-	
-	delete dOnWindowDestroy;
-	delete dOnWindowCreate;
 	delete dOnWindowKeyPress;
 	delete dOnWindowKeyRelease;
 	delete dOnWindowMouseDown;
@@ -111,8 +107,6 @@ void XWindow::init(const XDisplay &d)
 	visible = false;
 	
 	// Creates delegates
-	dOnWindowDestroy = new NDelegationManager();
-	dOnWindowCreate = new NDelegationManager();
 	dOnWindowKeyPress = new NDelegationManager();
 	dOnWindowKeyRelease = new NDelegationManager();
 	dOnWindowKeymap = new NDelegationManager();
@@ -142,7 +136,6 @@ void XWindow::init(const XDisplay &d)
 		windowDisplay, windowParent, x, y, width, height, borderwidth, colordepth, InputOutput, 
 		windowVisual, CWBackPixel | CWBorderPixel | CWOverrideRedirect, &attrs);
 	XException::CheckResult(window);
-	DelegationOnWindowCreate().Execute(NULL);
 	
 	// Select events
 	int res = XSelectInput(windowDisplay, window,
@@ -157,16 +150,6 @@ void XWindow::init(const XDisplay &d)
 	
 	// Show window
 	SetVisible(true);
-}
-
-NDelegationManager &XWindow::DelegationOnWindowDestroy()
-{
-	return *dOnWindowDestroy;
-}
-
-NDelegationManager &XWindow::DelegationOnWindowCreate()
-{
-	return *dOnWindowCreate;
 }
 
 NDelegationManager &XWindow::DelegationOnWindowKeyPress()
@@ -330,12 +313,6 @@ int XWindow::RunModal()
 		} else if (event.type == VisibilityNotify) {
 			VisibilityEvent e(&event.xvisibility);
 			DelegationOnWindowVisibilityChange().Execute(&e);
-		} else if (event.type == CreateNotify) {
-			CreateEvent e(&event.xcreatewindow);
-			DelegationOnWindowCreate().Execute(&e);
-		} else if (event.type == DestroyNotify) {
-			DestroyEvent e(&event.xdestroywindow);
-			DelegationOnWindowDestroy().Execute(&e);
 		} else if (event.type == UnmapNotify) {
 			ShowEvent e(false);
 			DelegationOnWindowShow().Execute(&e);

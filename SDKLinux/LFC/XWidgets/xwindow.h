@@ -48,8 +48,6 @@ protected:
 	Mutex *windowMutex;
 	Collection<void *> *delegationsToExecute;
 	
-	NDelegationManager *dOnWindowDestroy;
-	NDelegationManager *dOnWindowCreate;
 	NDelegationManager *dOnWindowKeyPress;
 	NDelegationManager *dOnWindowKeyRelease;
 	NDelegationManager *dOnWindowKeymap;
@@ -75,8 +73,6 @@ public:
 	XWindow(const XDisplay &d);
 	virtual ~XWindow();
 	
-	NDelegationManager &DelegationOnWindowDestroy();
-	NDelegationManager &DelegationOnWindowCreate();
 	NDelegationManager &DelegationOnWindowKeyPress();
 	NDelegationManager &DelegationOnWindowKeyRelease();
 	NDelegationManager &DelegationOnWindowKeymap();
