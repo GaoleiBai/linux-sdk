@@ -116,8 +116,8 @@ public:
 	
 protected:
 
-	virtual void OnCreate();
-	virtual void OnDestroy();
+	virtual void Prepare();
+	virtual void Dispose();
 
 };
 

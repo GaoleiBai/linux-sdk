@@ -35,7 +35,7 @@ int TestWindow::Perform()
 	try {
 		class VentanaInicio : public XWindow {
 		protected:
-			virtual void OnCreate() {
+			virtual void Prepare() {
 				DelegationOnWindowDraw() += NDelegation(this, (Delegate)&VentanaInicio::OnDraw);
 			}
 			

@@ -45,19 +45,19 @@
 
 XWindow::XWindow()
 {
-	OnCreate();
+	Prepare();
 	init(XDisplay::Default());
 }
 
 XWindow::XWindow(const XDisplay &d)
 {
-	OnCreate();
+	Prepare();
 	init(d);	
 }
 
 XWindow::~XWindow()
 {
-	OnDestroy();
+	Dispose();
 	
 	// Hide window
 	SetVisible(false);
@@ -281,6 +281,12 @@ void XWindow::Run()
 
 int XWindow::RunModal()
 {
+	Prepare();
+	
+	// Trap XWindows "WM_DELETE_WINDOW" message
+	Atom wmDeleteMessage = XInternAtom(windowDisplay, "WM_DELETE_WINDOW", false);
+	XSetWMProtocols(windowDisplay, window, &wmDeleteMessage, 1);
+	
 	XEvent event;
 	do {
 		// Gets the new event
@@ -357,6 +363,9 @@ int XWindow::RunModal()
 		} else if (event.type == MappingNotify) {
 			KeyboardMappingEvent e(&event.xmapping);
 			DelegationOnWindowKeymap().Execute(&e);
+		} else if (event.type == ClientMessage) {
+			if (event.xclient.data.l[0] == wmDeleteMessage)
+				break;
 		}
 		
 		// Locks the collection of delegations
@@ -382,7 +391,9 @@ int XWindow::RunModal()
 		// Clear delegations collection and unlocks the mutex
 		delegationsToExecute->Clear();
 		windowMutex->Unlock();
-	} while (event.type != KeyPress);
+	} while (true);
+	
+	Dispose();
 }
 
 void XWindow::ExecuteDelegation(const NDelegation &d, void *params)
@@ -456,12 +467,12 @@ int XWindow::GetColorDepth()
 	return colordepth;
 }
 
-void XWindow::OnCreate()
+void XWindow::Prepare()
 {
 	
 }
 
-void XWindow::OnDestroy()
+void XWindow::Dispose()
 {
 	
 }
