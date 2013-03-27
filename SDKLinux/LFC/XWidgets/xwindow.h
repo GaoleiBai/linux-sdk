@@ -117,7 +117,6 @@ public:
 protected:
 
 	virtual void OnCreate();
-	virtual void OnDraw(DrawEvent *e);
 	virtual void OnDestroy();
 
 };

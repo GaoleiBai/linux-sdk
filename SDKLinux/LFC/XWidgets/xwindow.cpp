@@ -320,7 +320,6 @@ int XWindow::RunModal()
 			DelegationOnWindowKeymap().Execute(&e);
 		} else if (event.type == Expose) { 
 			DrawEvent e(gc, &event.xexpose);
-			OnDraw(&e);
 			DelegationOnWindowDraw().Execute(&e);
 		} else if (event.type == VisibilityNotify) {
 			VisibilityEvent e(&event.xvisibility);
@@ -458,11 +457,6 @@ int XWindow::GetColorDepth()
 }
 
 void XWindow::OnCreate()
-{
-	
-}
-
-void XWindow::OnDraw(DrawEvent *e)
 {
 	
 }

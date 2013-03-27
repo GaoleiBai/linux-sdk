@@ -148,3 +148,16 @@ void IGraphics::DrawRectangle(const NRectangle &r)
 	cairo_rectangle(gc, rr->GetX(), rr->GetY(), rr->GetWidth(), rr->GetHeight());
 	cairo_stroke(gc);
 }
+
+void IGraphics::FillRectangle(int x, int y, int width, int height)
+{
+	cairo_rectangle(gc, x, y, width, height);
+	cairo_fill(gc);
+}
+
+void IGraphics::FillRectangle(const NRectangle &r)
+{
+	NRectangle *rr = (NRectangle *)&r;
+	cairo_rectangle(gc, rr->GetX(), rr->GetY(), rr->GetWidth(), rr->GetHeight());
+	cairo_fill(gc);
+}

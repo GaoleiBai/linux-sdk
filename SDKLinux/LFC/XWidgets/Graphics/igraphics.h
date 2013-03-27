@@ -72,6 +72,8 @@ public:
 	void DrawLine(int x1, int y1, int x2, int y2);
 	void DrawRectangle(int x, int y, int width, int height);
 	void DrawRectangle(const NRectangle &r);
+	void FillRectangle(int x, int y, int width, int height);
+	void FillRectangle(const NRectangle &r);
 
 };
 
