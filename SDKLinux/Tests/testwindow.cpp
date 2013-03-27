@@ -61,6 +61,13 @@ int TestWindow::Perform()
 				e->Graphics().SetColor(0.5, 0.5, 0.5, 0.5);
 				e->Graphics().FillEllipse(200, 10, 100, 20);
 				e->Graphics().FillRectangle(200, 40, 100, 20);
+				
+				e->Graphics().FillArc(200, 70, 100, 100, Math::PI / 2, Math::PI);
+				e->Graphics().SetLineCap(IGraphics::LineCapRound);
+				e->Graphics().SetLineWidth(4);
+				e->Graphics().SetColor(0.5, 0, 0, 0.5);
+				e->Graphics().DrawArc(200, 70, 100, 100, Math::PI / 2, Math::PI);
+				
 			}
 		};
 		
