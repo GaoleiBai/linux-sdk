@@ -30,9 +30,8 @@
 class IGraphics : public NObject {
 	
 protected:
-
 	cairo_surface_t *surface;
-	cairo_t *g;
+	cairo_t *gc;
 	
 public:
 	IGraphics();
@@ -69,7 +68,6 @@ public:
 	void SetStrokeColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 	void SetStrokeColor(double r, double g, double b, double a);
 	void SetStrokeColor(const NColor &c);
-	
 
 	void DrawLine(int x1, int y1, int x2, int y2);
 	void DrawRectangle(int x, int y, int width, int height);

@@ -33,14 +33,14 @@ XWindowGraphics::XWindowGraphics(const XWindow &w)
 		ww->GetWidth(), ww->GetHeight());	
 	
 	// Create cairo drawing context
-	g = cairo_create(surface);
+	gc = cairo_create(surface);
 }
 
 XWindowGraphics::~XWindowGraphics()
 {
 	// Destroy cairo drawing context
-	cairo_destroy(g);
-	XException::CheckCairo(g);
+	cairo_destroy(gc);
+	XException::CheckCairo(gc);
 	
 	// Destroy cairo surface
 	cairo_surface_destroy(surface);

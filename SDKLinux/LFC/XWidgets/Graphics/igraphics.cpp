@@ -30,7 +30,7 @@ IGraphics::IGraphics()
 
 cairo_t *IGraphics::Handle()
 {
-	return g;
+	return gc;
 }
 
 cairo_surface_t *IGraphics::HandleSurface()
@@ -40,101 +40,117 @@ cairo_surface_t *IGraphics::HandleSurface()
 
 void IGraphics::SetAntialiasMode(int mode)
 {
-	cairo_set_antialias(g, (cairo_antialias_t)mode);
-	XException::CheckCairo(g);
+	cairo_set_antialias(gc, (cairo_antialias_t)mode);
+	XException::CheckCairo(gc);
 }
 
 int IGraphics::GetAntialiasMode()
 {
-	cairo_get_antialias(g);
+	cairo_get_antialias(gc);
 }
 
 void IGraphics::SetLineCap(int cap)
 {
-	cairo_set_line_cap(g, (cairo_line_cap_t)cap);
-	XException::CheckCairo(g);
+	cairo_set_line_cap(gc, (cairo_line_cap_t)cap);
+	XException::CheckCairo(gc);
 }
 
 int IGraphics::GetLineCap()
 {
-	return cairo_get_line_cap(g);
+	return cairo_get_line_cap(gc);
 }
 
 void IGraphics::SetLineJoint(int joint)
 {
-	cairo_set_line_join(g, (cairo_line_join_t)joint);
-	XException::CheckCairo(g);
+	cairo_set_line_join(gc, (cairo_line_join_t)joint);
+	XException::CheckCairo(gc);
 }
 
 int IGraphics::GetLineJoint()
 {
-	return cairo_get_line_join(g);
+	return cairo_get_line_join(gc);
 }
 
 void IGraphics::SetLineWidth(double width)
 {
-	cairo_set_line_width(g, width);
-	XException::CheckCairo(g);
+	cairo_set_line_width(gc, width);
+	XException::CheckCairo(gc);
 }
 
 int IGraphics::GetLineWidth()
 {
-	return cairo_get_line_width(g);
+	return cairo_get_line_width(gc);
 }
 
 NRectangle IGraphics::ClipRegionGetCurrent()
 {
 	double x1 = 0, y1 = 0, x2 = 0, y2 = 0;
-	cairo_clip_extents(g, &x1, &y1, &x2, &y2);
+	cairo_clip_extents(gc, &x1, &y1, &x2, &y2);
 	return NRectangle(x1, y1, x2 - x1, y2 - y1);
 }
 
 bool IGraphics::ClipRegionIsIn(int x, int y)
 {
-	return cairo_in_clip(g, x, y);
+	return cairo_in_clip(gc, x, y);
 }
 
 void IGraphics::ClipRegionReset()
 {
-	cairo_reset_clip(g);
+	cairo_reset_clip(gc);
 }
 
 void IGraphics::ClipRegionSet(int x, int y, int width, int height)
 {
-	cairo_new_path(g);
-	cairo_rectangle(g, x, y, width, height);
-	cairo_clip(g);
+	cairo_new_path(gc);
+	cairo_rectangle(gc, x, y, width, height);
+	cairo_clip(gc);
 	//cairo_close_path(g);
 }
 
 void IGraphics::ClipRegionSet(const NRectangle &r)
 {
 	NRectangle *rr = (NRectangle *)&r;
-	cairo_new_path(g);
-	cairo_rectangle(g, rr->GetX(), rr->GetY(), rr->GetWidth(), rr->GetHeight());
-	cairo_clip(g);
+	cairo_new_path(gc);
+	cairo_rectangle(gc, rr->GetX(), rr->GetY(), rr->GetWidth(), rr->GetHeight());
+	cairo_clip(gc);
 	//cairo_close_path(g);
+}
+
+void IGraphics::SetStrokeColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+{
+	cairo_set_source_rgba(gc, r / 255.0, g / 255.0, b / 255.0, a / 255.0);
+}
+
+void IGraphics::SetStrokeColor(double r, double g, double b, double a)
+{
+	cairo_set_source_rgba(gc, r, g, b, a);
+}
+
+void IGraphics::SetStrokeColor(const NColor &c)
+{
+	NColor *cc = (NColor *)&c;
+	cairo_set_source_rgba(gc, cc->R(), cc->G(), cc->B(), cc->A());
 }
 
 void IGraphics::DrawLine(int x1, int y1, int x2, int y2)
 {
-	cairo_new_path(g);
-	cairo_move_to(g, x1, y1);
-	cairo_line_to(g, x1, y1);
-	cairo_close_path(g);
+	cairo_new_path(gc);
+	cairo_move_to(gc, x1, y1);
+	cairo_line_to(gc, x1, y1);
+	cairo_close_path(gc);
 }
 
 void IGraphics::DrawRectangle(int x, int y, int width, int height)
 {
-	cairo_new_path(g);
-	cairo_rectangle(g, x, y, width, height);
-	cairo_close_path(g);
+	cairo_new_path(gc);
+	cairo_rectangle(gc, x, y, width, height);
+	cairo_close_path(gc);
 }
 
 void IGraphics::DrawRectangle(const NRectangle &r)
 {
 	NRectangle *rr = (NRectangle *)&r;
-	cairo_new_path(g);
-	cairo_rectangle(g, rr->GetX(), rr->GetY(), rr->GetWidth(), rr->GetHeight());
-	cairo_close_path(g);
+	cairo_new_path(gc);
+	cairo_rectangle(gc, rr->GetX(), rr->GetY(), rr->GetWidth(), rr->GetHeight());
+	cairo_close_path(gc);
 }
