@@ -20,6 +20,7 @@
 *
 **/
 #include "igraphics.h"
+#include "npoint.h"
 #include "../xexception.h"
 #include "../../Text/text.h"
 #include "../../Math/math.h"
@@ -38,6 +39,15 @@ cairo_t *IGraphics::Handle()
 cairo_surface_t *IGraphics::HandleSurface()
 {
 	return surface;
+}
+
+void IGraphics::WriteToPng(const Text &filename)
+{
+	char fn[10000];
+	((Text *)&filename)->GetAnsiString(fn, 10000);
+	
+	cairo_surface_write_to_png(surface, fn);
+	XException::CheckCairo(gc);
 }
 
 void IGraphics::SetAntialiasMode(int mode)
@@ -165,11 +175,12 @@ void IGraphics::FillRectangle(const NRectangle &r)
 
 void IGraphics::DrawEllipse(int x, int y, int width, int height)
 {
+	cairo_save(gc);
 	cairo_translate(gc, x + width / 2, y + height / 2);
 	cairo_scale(gc, 1.0, 1.0 * height / width);
 	cairo_arc(gc, 0, 0, width / 2, 0, 2 * Math::PI);
 	cairo_stroke(gc);
-	cairo_identity_matrix(gc);
+	cairo_restore(gc);
 }
 
 void IGraphics::DrawEllipse(const NRectangle &r)
@@ -180,11 +191,12 @@ void IGraphics::DrawEllipse(const NRectangle &r)
 
 void IGraphics::FillEllipse(int x, int y, int width, int height)
 {
+	cairo_save(gc);
 	cairo_translate(gc, x + width / 2, y + height / 2);
 	cairo_scale(gc, 1.0, 1.0 * height / width);
 	cairo_arc(gc, 0, 0, width / 2, 0, 2 * Math::PI);
 	cairo_fill(gc);
-	cairo_identity_matrix(gc);
+	cairo_restore(gc);
 }
 
 void IGraphics::FillEllipse(const NRectangle &r)
@@ -195,11 +207,12 @@ void IGraphics::FillEllipse(const NRectangle &r)
 
 void IGraphics::DrawArc(int x, int y, int width, int height, double startangle, double endangle)
 {
+	cairo_save(gc);
 	cairo_translate(gc, x + width / 2, y + height / 2);
 	cairo_scale(gc, 1.0, 1.0 * height / width);
 	cairo_arc(gc, 0, 0, width / 2, startangle, endangle);
 	cairo_stroke(gc);
-	cairo_identity_matrix(gc);
+	cairo_restore(gc);
 }
 
 void IGraphics::DrawArc(const NRectangle &r, double startangle, double endangle)
@@ -210,15 +223,34 @@ void IGraphics::DrawArc(const NRectangle &r, double startangle, double endangle)
 
 void IGraphics::FillArc(int x, int y, int width, int height, double startangle, double endangle)
 {
+	cairo_save(gc);
 	cairo_translate(gc, x + width / 2, y + height / 2);
 	cairo_scale(gc, 1.0, 1.0 * height / width);
 	cairo_arc(gc, 0, 0, width / 2, startangle, endangle);
 	cairo_fill(gc);
-	cairo_identity_matrix(gc);
+	cairo_restore(gc);
 }
 
 void IGraphics::FillArc(const NRectangle &r, double startangle, double endangle)
 {
 	NRectangle *rr = (NRectangle *)&r;
 	FillArc(rr->GetX(), rr->GetY(), rr->GetWidth(), rr->GetHeight(), startangle, endangle);
+}
+
+void IGraphics::DrawGraphics(int x, int y, int width, int height, const IGraphics &src, int src_x, int src_y)
+{
+	IGraphics *gg = (IGraphics *)&src;
+	
+	cairo_save(gc);
+	cairo_set_source_surface(gc, gg->HandleSurface(), src_x, src_y);
+	cairo_rectangle(gc, x, y, width, height);
+	cairo_fill(gc);
+	cairo_restore(gc);
+}
+
+void IGraphics::DrawGraphics(const NRectangle &r, const IGraphics &src, const NPoint &srcp)
+{
+	NRectangle *rr = (NRectangle *)&r;
+	NPoint *pp = (NPoint *)&srcp;
+	DrawGraphics(rr->GetX(), rr->GetY(), rr->GetWidth(), rr->GetHeight(), src, pp->GetX(), pp->GetY());
 }

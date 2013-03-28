@@ -21,6 +21,7 @@
 **/
 #include "pixmapgraphics.h"
 #include "../xpixmap.h"
+#include "../xexception.h"
 
 PixmapGraphics::PixmapGraphics(const XPixmap &p)
 {
@@ -31,10 +32,14 @@ PixmapGraphics::PixmapGraphics(const XPixmap &p)
 	surface = cairo_xlib_surface_create_for_bitmap(
 		pp->HandlerDisplay(), pp->Handler(), DefaultScreenOfDisplay(this->display),
 		pp->Width(), pp->Height());	
+	
+	gc = cairo_create(surface);
+	XException::CheckCairo(gc);
 }
 
 PixmapGraphics::~PixmapGraphics()
 {
+	cairo_destroy(gc);
 	cairo_surface_destroy(surface);
 }
 

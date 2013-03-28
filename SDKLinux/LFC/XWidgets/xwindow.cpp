@@ -320,20 +320,24 @@ int XWindow::RunModal()
 			ShowEvent e(true);
 			DelegationOnWindowShow().Execute(&e);
 		} else if (event.type == ConfigureNotify) {			
-			if (x != event.xconfigure.x || y != event.xconfigure.y) {
-				WindowMoveEvent e(&event.xconfigure);
-				DelegationOnWindowMove().Execute(&e);
-			}
-			if (width != event.xconfigure.width || height != event.xconfigure.height) {
-				WindowResizeEvent e(&event.xconfigure);
-				DelegationOnWindowResize().Execute(&e);
-			}
+			bool generateWindowMoveEvent = x != event.xconfigure.x || y != event.xconfigure.y;
+			bool generateWindowResizeEvent = width != event.xconfigure.width || height != event.xconfigure.height;
 			
 			x = event.xconfigure.x;
 			y = event.xconfigure.y;
 			width = event.xconfigure.width;
 			height = event.xconfigure.height;
-			borderwidth = event.xconfigure.border_width;			
+			borderwidth = event.xconfigure.border_width;		
+						
+			if (generateWindowMoveEvent) {
+				WindowMoveEvent e(&event.xconfigure);
+				DelegationOnWindowMove().Execute(&e);
+			}
+			if (generateWindowResizeEvent) {
+				gc->Resize(width, height);	// Resize XWindowGraphics
+				WindowResizeEvent e(&event.xconfigure);
+				DelegationOnWindowResize().Execute(&e);
+			}			
 		} else if (event.type == ColormapNotify) {
 			ColormapEvent e(&event.xcolormap);
 			DelegationOnWindowColormapChange().Execute(&e);

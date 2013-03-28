@@ -24,6 +24,7 @@
 
 #include "nrectangle.h"
 #include "ncolor.h"
+#include "../../Text/text.h"
 #include <cairo/cairo.h>
 #include <cairo/cairo-xlib.h>
 
@@ -51,6 +52,8 @@ public:
 	static const int LineJointNone = CAIRO_LINE_JOIN_MITER;
 	static const int LineJointRound = CAIRO_LINE_CAP_ROUND;
 	static const int LineJointBebel = CAIRO_LINE_JOIN_BEVEL;
+	
+	void WriteToPng(const Text &filename);
 
 	void SetAntialiasMode(int mode);
 	int GetAntialiasMode();
@@ -82,6 +85,8 @@ public:
 	void DrawArc(const NRectangle &r, double startangle, double endangle);
 	void FillArc(int x, int y, int width, int height, double startangle, double endangle);
 	void FillArc(const NRectangle &r, double startangle, double endangle);
+	void DrawGraphics(int x, int y, int width, int height, const IGraphics &src, int srcx, int srcy);
+	void DrawGraphics(const NRectangle &r, const IGraphics &src, const NPoint &srcp);
 
 };
 
