@@ -33,7 +33,7 @@ public:
 	virtual ~XWindowGraphics();
 
 	void Resize(int width, int height);
-	NSize GetSize();
+	virtual NSize GetSize();
 	int GetColorDepth();
 	
 	Screen *HandlerScreen();

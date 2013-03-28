@@ -69,6 +69,8 @@ int TestWindow::Perform()
 				e->Graphics().DrawArc(200, 70, 100, 100, Math::PI / 2, Math::PI);
 				
 				e->Graphics().WriteToPng("test.png");
+				ImageGraphics imgg(e->Graphics());
+				imgg.WriteToPng("test2.png");
 			}
 		};
 		

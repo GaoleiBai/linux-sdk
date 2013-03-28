@@ -39,9 +39,22 @@ ImageGraphics::ImageGraphics(int width, int height, int format)
 ImageGraphics::ImageGraphics(const ImageGraphics &i)
 {
 	ImageGraphics *ii = (ImageGraphics *)&i;
-	surface = cairo_image_surface_create_for_data(ii->Data(), (cairo_format_t)ii->Format(), ii->Width(), ii->Height(), ii->Stride());
+	NSize ss = ii->GetSize();
+	surface = cairo_image_surface_create_for_data(
+		ii->Data(), (cairo_format_t)ii->Format(), ss.GetWidth(), ss.GetHeight(), ii->Stride());
 	gc = cairo_create(surface);
 	XException::CheckCairo(gc);
+}
+
+ImageGraphics::ImageGraphics(const IGraphics &g)
+{
+	IGraphics *gg = (IGraphics *)&g;
+	NSize ss = gg->GetSize();
+	surface = cairo_image_surface_create((cairo_format_t)ImageFormatARGB32, ss.GetWidth(), ss.GetHeight());
+	gc = cairo_create(surface);
+	XException::CheckCairo(gc);
+	
+	DrawGraphics(0, 0, ss.GetWidth(), ss.GetHeight(), g, 0, 0);
 }
 
 ImageGraphics::~ImageGraphics()
@@ -60,14 +73,9 @@ int ImageGraphics::Format()
 	return cairo_image_surface_get_format(surface);
 }
 
-int ImageGraphics::Width()
+NSize ImageGraphics::GetSize()
 {
-	return cairo_image_surface_get_width(surface);
-}
-
-int ImageGraphics::Height()
-{
-	return cairo_image_surface_get_height(surface);
+	return NSize(cairo_image_surface_get_width(surface), cairo_image_surface_get_height(surface));
 }
 
 int ImageGraphics::Stride()

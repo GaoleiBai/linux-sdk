@@ -36,12 +36,12 @@ public:
 	ImageGraphics();
 	ImageGraphics(int width, int height, int format);
 	ImageGraphics(const ImageGraphics &i);
+	ImageGraphics(const IGraphics &g);
 	virtual ~ImageGraphics();
 	
 	unsigned char *Data();
+	virtual NSize GetSize();
 	int Format();
-	int Width();
-	int Height();
 	int Stride();
 
 };

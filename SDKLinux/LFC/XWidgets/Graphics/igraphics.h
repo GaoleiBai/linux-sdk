@@ -24,6 +24,7 @@
 
 #include "nrectangle.h"
 #include "ncolor.h"
+#include "nsize.h"
 #include "../../Text/text.h"
 #include <cairo/cairo.h>
 #include <cairo/cairo-xlib.h>
@@ -39,6 +40,8 @@ public:
 	
 	cairo_t *Handle();
 	cairo_surface_t *HandleSurface();
+	
+	virtual NSize GetSize() = 0;	// This class is abstract so that nobody can instanciate it
 
 	static const int AntialiasModeDefault = CAIRO_ANTIALIAS_DEFAULT;
 	static const int AntialiasModeNone = CAIRO_ANTIALIAS_NONE;

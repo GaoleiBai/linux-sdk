@@ -106,6 +106,7 @@
 #include "XWidgets/xexception.h"
 #include "XWidgets/Graphics/xwindowgraphics.h"
 #include "XWidgets/Graphics/pixmapgraphics.h"
+#include "XWidgets/Graphics/imagegraphics.h"
 #include "XWidgets/Graphics/nsize.h"
 #include "XWidgets/Graphics/npoint.h"
 #include "XWidgets/Graphics/nrectangle.h"

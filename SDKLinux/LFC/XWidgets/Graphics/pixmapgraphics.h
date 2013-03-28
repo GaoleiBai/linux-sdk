@@ -35,6 +35,7 @@ protected:
 public:
 	PixmapGraphics(const XPixmap &p);
 	virtual ~PixmapGraphics();
+	virtual NSize GetSize();
 
 };
 

@@ -43,3 +43,8 @@ PixmapGraphics::~PixmapGraphics()
 	cairo_surface_destroy(surface);
 }
 
+NSize PixmapGraphics::GetSize()
+{
+	return NSize(cairo_xlib_surface_get_width(surface), cairo_xlib_surface_get_height(surface));
+}
+
