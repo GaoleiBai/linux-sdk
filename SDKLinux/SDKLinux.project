@@ -179,6 +179,8 @@
         <File Name="LFC/XWidgets/Graphics/igraphics.cpp"/>
         <File Name="LFC/XWidgets/Graphics/ncolor.h"/>
         <File Name="LFC/XWidgets/Graphics/ncolor.cpp"/>
+        <File Name="LFC/XWidgets/Graphics/imagegraphics.h"/>
+        <File Name="LFC/XWidgets/Graphics/imagegraphics.cpp"/>
       </VirtualDirectory>
       <File Name="LFC/XWidgets/xpixmap.h"/>
       <File Name="LFC/XWidgets/xpixmap.cpp"/>
