@@ -104,6 +104,7 @@
 #include "XWidgets/xwindow.h"
 #include "XWidgets/xdisplay.h"
 #include "XWidgets/xexception.h"
+#include "XWidgets/Graphics/igraphics.h"
 #include "XWidgets/Graphics/xwindowgraphics.h"
 #include "XWidgets/Graphics/pixmapgraphics.h"
 #include "XWidgets/Graphics/imagegraphics.h"
