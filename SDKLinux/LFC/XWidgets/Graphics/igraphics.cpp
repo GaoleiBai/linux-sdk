@@ -21,7 +21,7 @@
 **/
 #include "igraphics.h"
 #include "npoint.h"
-#include "font.h"
+#include "nfont.h"
 #include "../xexception.h"
 #include "../../Text/text.h"
 #include "../../Math/math.h"

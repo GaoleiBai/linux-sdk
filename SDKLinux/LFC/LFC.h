@@ -23,7 +23,7 @@
 #define LFC_H
 
 // Libraries needed to compile
-// rt,libsqlite3,libx11,libcairo
+// rt, libsqlite3, libx11, libcairo, libpango-1.0, libpangocairo-1.0
 
 // Linker options for backtrace at exceptions
 // -rdynamic
@@ -111,6 +111,7 @@
 #include "XWidgets/Graphics/npoint.h"
 #include "XWidgets/Graphics/nrectangle.h"
 #include "XWidgets/Graphics/ncolor.h"
+#include "XWidgets/Graphics/nfont.h"
 #include "XWidgets/Events/buttonevent.h"
 #include "XWidgets/Events/enterleaveevent.h"
 #include "XWidgets/Events/keyevent.h"

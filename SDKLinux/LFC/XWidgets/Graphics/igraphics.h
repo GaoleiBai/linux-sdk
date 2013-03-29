@@ -25,7 +25,7 @@
 #include "nrectangle.h"
 #include "ncolor.h"
 #include "nsize.h"
-#include "font.h"
+#include "nfont.h"
 #include "../../Text/text.h"
 #include <cairo/cairo.h>
 #include <cairo/cairo-xlib.h>

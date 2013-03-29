@@ -1,4 +1,4 @@
-#include "font.h"
+#include "nfont.h"
 #include "../../Text/text.h"
 
 NFont::NFont(const Text &fontfamily, int weight, int size)
