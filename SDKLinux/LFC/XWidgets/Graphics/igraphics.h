@@ -25,9 +25,11 @@
 #include "nrectangle.h"
 #include "ncolor.h"
 #include "nsize.h"
+#include "font.h"
 #include "../../Text/text.h"
 #include <cairo/cairo.h>
 #include <cairo/cairo-xlib.h>
+#include <pango/pangocairo.h>
 
 class IGraphics : public NObject {
 	
@@ -90,7 +92,9 @@ public:
 	void FillArc(const NRectangle &r, double startangle, double endangle);
 	void DrawGraphics(int x, int y, int width, int height, const IGraphics &src, int srcx, int srcy);
 	void DrawGraphics(const NRectangle &r, const IGraphics &src, const NPoint &srcp);
-
+	void DrawText(const Text &text, int x, int y, const NFont &font);
+	void DrawText(const Text &text, const NPoint &p, const NFont &font);
+	
 };
 
 #endif // IGRAPHICS_H

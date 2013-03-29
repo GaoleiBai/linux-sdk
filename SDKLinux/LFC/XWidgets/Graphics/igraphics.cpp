@@ -21,6 +21,7 @@
 **/
 #include "igraphics.h"
 #include "npoint.h"
+#include "font.h"
 #include "../xexception.h"
 #include "../../Text/text.h"
 #include "../../Math/math.h"
@@ -253,4 +254,27 @@ void IGraphics::DrawGraphics(const NRectangle &r, const IGraphics &src, const NP
 	NRectangle *rr = (NRectangle *)&r;
 	NPoint *pp = (NPoint *)&srcp;
 	DrawGraphics(rr->GetX(), rr->GetY(), rr->GetWidth(), rr->GetHeight(), src, pp->GetX(), pp->GetY());
+}
+
+void IGraphics::DrawText(const Text &text, int x, int y, const NFont &font)
+{
+	Text *tt = (Text *)&text;
+	char *ttt = new char[2 * tt->Length() + 1];
+	tt->GetAnsiString(ttt, 2 * tt->Length());
+	NFont *ff = (NFont *)&font;
+	
+	PangoLayout *layout = pango_cairo_create_layout(gc);
+	pango_layout_set_font_description(layout, ff->Handle());
+	pango_layout_set_text(layout, ttt, -1);
+	
+	cairo_move_to(gc, x, y);
+	pango_cairo_show_layout(gc, layout);
+	
+	g_object_unref(layout);
+}
+
+void IGraphics::DrawText(const Text &text, const NPoint &p, const NFont &font)
+{
+	NPoint *pp = (NPoint *)&p;
+	DrawText(text, pp->GetX(), pp->GetY(), font);
 }
