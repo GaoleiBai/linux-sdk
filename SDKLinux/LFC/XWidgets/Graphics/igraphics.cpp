@@ -172,6 +172,46 @@ void IGraphics::FillRectangle(const NRectangle &r)
 	FillRectangle(rr->GetX(), rr->GetY(), rr->GetWidth(), rr->GetHeight());
 }
 
+void IGraphics::DrawRoundRectangle(int x, int y, int width, int height, int roundradius)
+{
+	int rr = roundradius;
+	if (rr > height / 2) rr = height / 2;
+	if (rr > width / 2) rr = width / 2;
+	
+	cairo_new_path(gc);
+	cairo_arc(gc, x + rr, y + rr, rr, -1 * Math::PI, -1 * Math::PI / 2);
+	cairo_arc(gc, x + width - rr, y + rr, rr, -1 * Math::PI / 2, 0);
+	cairo_arc(gc, x + width - rr, y + height - rr, rr, 0, Math::PI / 2);
+	cairo_arc(gc, x + rr, y + height - rr, rr, Math::PI / 2, Math::PI);
+	cairo_close_path(gc);
+	cairo_stroke(gc);
+}
+
+void IGraphics::DrawRoundRectangle(const NRectangle &r, int roundradius)
+{
+	NRectangle *rr = (NRectangle *)&r;
+	DrawRoundRectangle(rr->GetX(), rr->GetY(), rr->GetWidth(), rr->GetHeight(), roundradius);
+}
+
+void IGraphics::FillRoundRectangle(int x, int y, int width, int height, int roundradius)
+{
+	int rr = roundradius;
+	if (rr > height / 2) rr = height / 2;
+	if (rr > width / 2) rr = width / 2;
+	
+	cairo_arc(gc, x + rr, y + rr, rr, -1 * Math::PI, -1 * Math::PI / 2);
+	cairo_arc(gc, x + width - rr, y + rr, rr, -1 * Math::PI / 2, 0);
+	cairo_arc(gc, x + width - rr, y + height - rr, rr, 0, Math::PI / 2);
+	cairo_arc(gc, x + rr, y + height - rr, rr, Math::PI / 2, Math::PI);
+	cairo_fill(gc);
+}
+
+void IGraphics::FillRoundRectangle(const NRectangle &r, int roundradius)
+{
+	NRectangle *rr = (NRectangle *)&r;
+	FillRoundRectangle(rr->GetX(), rr->GetY(), rr->GetWidth(), rr->GetHeight(), roundradius);
+}
+
 void IGraphics::DrawEllipse(int x, int y, int width, int height)
 {
 	cairo_save(gc);

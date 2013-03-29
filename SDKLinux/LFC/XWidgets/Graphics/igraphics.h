@@ -82,6 +82,10 @@ public:
 	void DrawRectangle(const NRectangle &r);
 	void FillRectangle(int x, int y, int width, int height);
 	void FillRectangle(const NRectangle &r);
+	void DrawRoundRectangle(int x, int y, int width, int height, int roundradius);
+	void DrawRoundRectangle(const NRectangle &r, int roundradius);
+	void FillRoundRectangle(int x, int y, int width, int height, int roundradius);
+	void FillRoundRectangle(const NRectangle &r, int roundradius);
 	void DrawEllipse(int x, int y, int width, int height);
 	void DrawEllipse(const NRectangle &r);
 	void FillEllipse(int x, int y, int width, int height);

@@ -80,6 +80,7 @@ int TestWindow::Perform()
 				e->Graphics().DrawLine(10, 112 + shm.GetHeight(), 10 + shm.GetWidth(), 112 + shm.GetHeight());
 				e->Graphics().DrawLine(12 + shm.GetWidth(), 112, 12 + shm.GetWidth(), 112 + shm.GetHeight());
 				
+				e->Graphics().DrawRoundRectangle(10, 130, 50, 40, 3);
 				/*
 				Collection<Text *> families = NFont::GetAvaliableFamilies();
 				for (int i=0; i<families.Count(); i++)
