@@ -94,6 +94,7 @@ public:
 	void DrawGraphics(const NRectangle &r, const IGraphics &src, const NPoint &srcp);
 	void DrawText(const Text &text, int x, int y, const NFont &font);
 	void DrawText(const Text &text, const NPoint &p, const NFont &font);
+	NSize GetTextExtents(const Text &text, const NFont &font);
 	
 };
 

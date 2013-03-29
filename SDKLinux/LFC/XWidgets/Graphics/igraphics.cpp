@@ -143,35 +143,33 @@ void IGraphics::SetColor(const NColor &c)
 
 void IGraphics::DrawLine(int x1, int y1, int x2, int y2)
 {
-	cairo_move_to(gc, x1, y1);
-	cairo_line_to(gc, x2, y2);
+	cairo_move_to(gc, x1 - 0.5, y1 - 0.5);
+	cairo_line_to(gc, x2 - 0.5, y2 - 0.5);
 	cairo_stroke(gc);
 }
 
 void IGraphics::DrawRectangle(int x, int y, int width, int height)
 {
-	cairo_rectangle(gc, x, y, width, height);
+	cairo_rectangle(gc, x - 0.5, y - 0.5, width, height);
 	cairo_stroke(gc);
 }
 
 void IGraphics::DrawRectangle(const NRectangle &r)
 {
 	NRectangle *rr = (NRectangle *)&r;
-	cairo_rectangle(gc, rr->GetX(), rr->GetY(), rr->GetWidth(), rr->GetHeight());
-	cairo_stroke(gc);
+	DrawRectangle(rr->GetX(), rr->GetY(), rr->GetWidth(), rr->GetHeight());
 }
 
 void IGraphics::FillRectangle(int x, int y, int width, int height)
 {
-	cairo_rectangle(gc, x, y, width, height);
+	cairo_rectangle(gc, x - 0.5, y - 0.5, width, height);
 	cairo_fill(gc);
 }
 
 void IGraphics::FillRectangle(const NRectangle &r)
 {
 	NRectangle *rr = (NRectangle *)&r;
-	cairo_rectangle(gc, rr->GetX(), rr->GetY(), rr->GetWidth(), rr->GetHeight());
-	cairo_fill(gc);
+	FillRectangle(rr->GetX(), rr->GetY(), rr->GetWidth(), rr->GetHeight());
 }
 
 void IGraphics::DrawEllipse(int x, int y, int width, int height)
@@ -179,7 +177,7 @@ void IGraphics::DrawEllipse(int x, int y, int width, int height)
 	cairo_save(gc);
 	cairo_translate(gc, x + width / 2, y + height / 2);
 	cairo_scale(gc, 1.0, 1.0 * height / width);
-	cairo_arc(gc, 0, 0, width / 2, 0, 2 * Math::PI);
+	cairo_arc(gc, -0.5, -0.5, width / 2, 0, 2 * Math::PI);
 	cairo_stroke(gc);
 	cairo_restore(gc);
 }
@@ -195,7 +193,7 @@ void IGraphics::FillEllipse(int x, int y, int width, int height)
 	cairo_save(gc);
 	cairo_translate(gc, x + width / 2, y + height / 2);
 	cairo_scale(gc, 1.0, 1.0 * height / width);
-	cairo_arc(gc, 0, 0, width / 2, 0, 2 * Math::PI);
+	cairo_arc(gc, -0.5, -0.5, width / 2, 0, 2 * Math::PI);
 	cairo_fill(gc);
 	cairo_restore(gc);
 }
@@ -211,7 +209,7 @@ void IGraphics::DrawArc(int x, int y, int width, int height, double startangle, 
 	cairo_save(gc);
 	cairo_translate(gc, x + width / 2, y + height / 2);
 	cairo_scale(gc, 1.0, 1.0 * height / width);
-	cairo_arc(gc, 0, 0, width / 2, startangle, endangle);
+	cairo_arc(gc, -0.5, -0.5, width / 2, startangle, endangle);
 	cairo_stroke(gc);
 	cairo_restore(gc);
 }
@@ -227,7 +225,7 @@ void IGraphics::FillArc(int x, int y, int width, int height, double startangle, 
 	cairo_save(gc);
 	cairo_translate(gc, x + width / 2, y + height / 2);
 	cairo_scale(gc, 1.0, 1.0 * height / width);
-	cairo_arc(gc, 0, 0, width / 2, startangle, endangle);
+	cairo_arc(gc, -0.5, -0.5, width / 2, startangle, endangle);
 	cairo_fill(gc);
 	cairo_restore(gc);
 }
@@ -271,10 +269,32 @@ void IGraphics::DrawText(const Text &text, int x, int y, const NFont &font)
 	pango_cairo_show_layout(gc, layout);
 	
 	g_object_unref(layout);
+	delete ttt;
 }
 
 void IGraphics::DrawText(const Text &text, const NPoint &p, const NFont &font)
 {
 	NPoint *pp = (NPoint *)&p;
 	DrawText(text, pp->GetX(), pp->GetY(), font);
+}
+
+NSize IGraphics::GetTextExtents(const Text &text, const NFont &font)
+{
+	Text *tt = (Text *)&text;
+	char *ttt = new char[2 * tt->Length() + 1];
+	tt->GetAnsiString(ttt, 2 * tt->Length());
+	NFont *ff = (NFont *)&font;
+	
+	PangoLayout *layout = pango_cairo_create_layout(gc);
+	pango_layout_set_font_description(layout, ff->Handle());
+	pango_layout_set_text(layout, ttt, -1);
+	
+	PangoRectangle inkrect;
+	PangoRectangle logicalrect;
+	pango_layout_get_pixel_extents(layout, &inkrect, &logicalrect);
+	
+	g_object_unref(layout);
+	delete ttt;
+	
+	return NSize(inkrect.width, inkrect.height);
 }

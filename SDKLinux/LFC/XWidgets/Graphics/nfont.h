@@ -2,6 +2,7 @@
 #define FONT_H
 
 #include "../../n_object.h"
+#include "../../Collections/collection.h"
 #include <pango/pangocairo.h>
 
 class NFont : public NObject {
@@ -15,9 +16,18 @@ public:
 	static const int FontWeightUltraBold = PANGO_WEIGHT_ULTRABOLD;
 	static const int FontWeightHeavy = PANGO_WEIGHT_HEAVY;
 
+	NFont(const Text &fontdescription);
 	NFont(const Text &fontfamily, int weight, int size);
 	virtual ~NFont();
 	PangoFontDescription *Handle();
+	
+	virtual Text ToText();
+	Text Name();
+	Text Family();
+	int Weight();
+	int Size();
+	
+	static Collection<Text *> GetAvaliableFamilies();
 
 };
 

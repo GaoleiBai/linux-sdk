@@ -71,6 +71,21 @@ int TestWindow::Perform()
 				e->Graphics().WriteToPng("test.png");
 				ImageGraphics imgg(e->Graphics());
 				imgg.WriteToPng("test2.png");
+				
+				Text hm = "Hola mundo2";
+				NFont f("Ubuntu Mono", NFont::FontWeightNormal, 8);
+				NSize shm = e->Graphics().GetTextExtents(hm, f);
+				e->Graphics().SetLineWidth(1);
+				e->Graphics().DrawText(hm, 10, 110, f);
+				e->Graphics().DrawLine(10, 112 + shm.GetHeight(), 10 + shm.GetWidth(), 112 + shm.GetHeight());
+				e->Graphics().DrawLine(12 + shm.GetWidth(), 112, 12 + shm.GetWidth(), 112 + shm.GetHeight());
+				
+				/*
+				Collection<Text *> families = NFont::GetAvaliableFamilies();
+				for (int i=0; i<families.Count(); i++)
+					StdOut::PrintLine(*families[i]);
+				families.DeleteAndClear();
+				*/
 			}
 		};
 		
