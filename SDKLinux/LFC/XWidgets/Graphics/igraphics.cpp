@@ -181,15 +181,17 @@ void IGraphics::FillRectangle(const NRectangle &r)
 
 void IGraphics::DrawRoundRectangle(int x, int y, int width, int height, int roundradius)
 {
+	double xx = x - 0.5;
+	double yy = y - 0.5;
 	int rr = roundradius;
 	if (rr > height / 2) rr = height / 2;
 	if (rr > width / 2) rr = width / 2;
 	
 	cairo_new_path(gc);
-	cairo_arc(gc, x + rr, y + rr, rr, -1 * Math::PI, -1 * Math::PI / 2);
-	cairo_arc(gc, x + width - rr, y + rr, rr, -1 * Math::PI / 2, 0);
-	cairo_arc(gc, x + width - rr, y + height - rr, rr, 0, Math::PI / 2);
-	cairo_arc(gc, x + rr, y + height - rr, rr, Math::PI / 2, Math::PI);
+	cairo_arc(gc, xx + rr, yy + rr, rr, -1 * Math::PI, -1 * Math::PI / 2);
+	cairo_arc(gc, xx + width - rr, yy + rr, rr, -1 * Math::PI / 2, 0);
+	cairo_arc(gc, xx + width - rr, yy + height - rr, rr, 0, Math::PI / 2);
+	cairo_arc(gc, xx + rr, yy + height - rr, rr, Math::PI / 2, Math::PI);
 	cairo_close_path(gc);
 	cairo_stroke(gc);
 }

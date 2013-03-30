@@ -20,15 +20,79 @@
 *
 **/
 #include "control.h"
+#include "../Graphics/igraphics.h"
+#include <stdlib.h>
 
-Control::Control(const NRectangle &r)
+Control::Control()
 {
-	area = new NRectangle(r);
+	area = new NRectangle();
+	backcolor = new NColor(0, 0, 0, 1.0);
+	userdata = NULL;
+	children = new Collection<Control *>();
+	visible = true;
+	focused = false;
+	entered = false;
+	
+	onControlChanged = new NDelegationManager();
+	onMouseDown = new NDelegationManager();
+	onMouseUp = new NDelegationManager();
+	onMouseMove = new NDelegationManager();
+	onClick = new NDelegationManager();
+	onDoubleClick = new NDelegationManager();
+	onKeyDown = new NDelegationManager();
+	onKeyUp = new NDelegationManager();
+	onMove = new NDelegationManager();
+	onVisible = new NDelegationManager();
+	onEnter = new NDelegationManager();
+	onFocus = new NDelegationManager();
+	
+}
+
+Control::Control(const NRectangle &area)
+{
+	this->area = new NRectangle(area);
+	backcolor = new NColor(0, 0, 0, 1.0);
+	userdata = NULL;
+	children = new Collection<Control *>();
+	visible = true;
+	focused = false;
+	entered = false;
+	
+	onControlChanged = new NDelegationManager();
+	onMouseDown = new NDelegationManager();
+	onMouseUp = new NDelegationManager();
+	onMouseMove = new NDelegationManager();
+	onClick = new NDelegationManager();
+	onDoubleClick = new NDelegationManager();
+	onKeyDown = new NDelegationManager();
+	onKeyUp = new NDelegationManager();
+	onMove = new NDelegationManager();
+	onVisible = new NDelegationManager();
+	onEnter = new NDelegationManager();
+	onFocus = new NDelegationManager();
+		
 }
 
 Control::~Control()
 {
 	delete area;
+	delete backcolor;
+	children->DeleteAndClear();
+	delete children;
+			
+	delete onControlChanged;
+	delete onMouseDown;
+	delete onMouseUp;
+	delete onMouseMove;
+	delete onClick;
+	delete onDoubleClick;
+	delete onKeyDown;
+	delete onKeyUp;
+	delete onMove;
+	delete onVisible;
+	delete onEnter;
+	delete onFocus;
+		
 }
 
 NRectangle Control::Area()
@@ -36,15 +100,116 @@ NRectangle Control::Area()
 	return *area;
 }
 
-void Control::SetArea(const NRectangle &r)
+NColor Control::BackColor()
 {
-	area->SetX(((NRectangle*)&r)->GetX());
-	area->SetY(((NRectangle*)&r)->GetY());
-	area->SetWidth(((NRectangle*)&r)->GetWidth());
-	area->SetHeight(((NRectangle*)&r)->GetHeight());
+	return *backcolor;
+}
+
+void *Control::GetUserData()
+{
+	return userdata;
+}
+
+void Control::SetArea(const NRectangle &area)
+{
+	*this->area = area;
+}
+
+void Control::SetBackColor(const NColor &backcolor)
+{
+	*this->backcolor = backcolor;
+}
+
+void Control::SetUserData(void *userdata)
+{
+	this->userdata = userdata;
+}
+
+void Control::SetFocused(bool focused)
+{
+	if (this->focused == focused) return;
+	DelegationOnControlChanged().Execute(this);
+}
+
+void Control::SetVisible(bool visible)
+{
+	
 }
 
 void Control::Draw(IGraphics *g)
 {
+	g->ClipRegionSet(*area);
+	g->SetColor(*backcolor);
+	g->FillRectangle(*area);
+	g->ClipRegionReset();
+}
+
+void Control::Prepare()
+{
 	
+}
+
+void Control::Release()
+{
+	
+}
+
+NDelegationManager &Control::DelegationOnControlChanged()
+{
+	return *onControlChanged;
+}
+
+NDelegationManager &Control::DelegationOnMouseDown()
+{
+	return *onMouseDown;
+}
+
+NDelegationManager &Control::DelegationOnMouseUp()
+{
+	return *onMouseUp;
+}
+
+NDelegationManager &Control::DelegationOnMouseMove()
+{
+	return *onMouseMove;
+}
+
+NDelegationManager &Control::DelegationOnClick()
+{
+	return *onClick;
+}
+
+NDelegationManager &Control::DelegationOnDoubleClick()
+{
+	return *onDoubleClick;
+}
+
+NDelegationManager &Control::DelegationOnKeyDown()
+{
+	return *onKeyDown;
+}
+
+NDelegationManager &Control::DelegationOnKeyUp()
+{
+	return *onKeyUp;
+}
+
+NDelegationManager &Control::DelegationOnMove()
+{
+	return *onMove;
+}
+
+NDelegationManager &Control::DelegationOnVisible()
+{
+	return *onVisible;
+}
+
+NDelegationManager &Control::DelegationOnEnter()
+{
+	return *onEnter;
+}
+
+NDelegationManager &Control::DelegationOnFocus()
+{
+	return *onFocus;
 }

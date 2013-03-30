@@ -227,6 +227,8 @@
       <VirtualDirectory Name="Controls">
         <File Name="LFC/XWidgets/Controls/control.h"/>
         <File Name="LFC/XWidgets/Controls/control.cpp"/>
+        <File Name="LFC/XWidgets/Controls/controllabel.h"/>
+        <File Name="LFC/XWidgets/Controls/controllabel.cpp"/>
       </VirtualDirectory>
     </VirtualDirectory>
     <VirtualDirectory Name="Delegations">

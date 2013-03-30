@@ -23,20 +23,68 @@
 #define CONTROL_H
 
 #include "../Graphics/nrectangle.h"
+#include "../../Delegations/ndelegationmanager.h"
+#include "../../Collections/collection.h"
 
 class IGraphics;
+class NColor;
 
 class Control : public NObject {
+protected:
 	NRectangle *area;
+	NColor *backcolor;
+	void *userdata;
+	Collection<Control *> *children;
+	bool visible;
+	bool entered;
+	bool focused;
+	
+	NDelegationManager *onControlChanged;
+	NDelegationManager *onMouseDown;
+	NDelegationManager *onMouseUp;
+	NDelegationManager *onMouseMove;
+	NDelegationManager *onClick;
+	NDelegationManager *onDoubleClick;
+	NDelegationManager *onKeyDown;
+	NDelegationManager *onKeyUp;
+	NDelegationManager *onMove;
+	NDelegationManager *onVisible;
+	NDelegationManager *onEnter;
+	NDelegationManager *onFocus;
 	
 public:
-	Control(const NRectangle &r);
+	Control();
+	Control(const NRectangle &area);
 	virtual ~Control();
 
 	NRectangle Area();
-	void SetArea(const NRectangle &r);
+	NColor BackColor();
+	void *GetUserData();
+	bool IsVisible();
+	bool IsFocused();
+	
+	void SetArea(const NRectangle &area);
+	void SetBackColor(const NColor &backcolor);
+	void SetUserData(void *userdata);
+	void SetVisible(bool visible);
+	void SetFocused(bool focused);
 	
 	virtual void Draw(IGraphics *g);
+	virtual void Prepare();
+	virtual void Release();
+	
+	NDelegationManager &DelegationOnControlChanged();
+	NDelegationManager &DelegationOnMouseDown();
+	NDelegationManager &DelegationOnMouseUp();
+	NDelegationManager &DelegationOnMouseMove();
+	NDelegationManager &DelegationOnClick();
+	NDelegationManager &DelegationOnDoubleClick();
+	NDelegationManager &DelegationOnKeyDown();
+	NDelegationManager &DelegationOnKeyUp();
+	NDelegationManager &DelegationOnMove();
+	NDelegationManager &DelegationOnVisible();
+	NDelegationManager &DelegationOnEnter();
+	NDelegationManager &DelegationOnFocus();
 	
 };
 
