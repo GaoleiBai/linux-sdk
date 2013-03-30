@@ -21,6 +21,7 @@
 **/
 #include "control.h"
 #include "../Graphics/igraphics.h"
+#include "../../Delegations/ndelegation.h"
 #include <stdlib.h>
 
 Control::Control()
@@ -39,8 +40,8 @@ Control::Control()
 	onMouseMove = new NDelegationManager();
 	onClick = new NDelegationManager();
 	onDoubleClick = new NDelegationManager();
-	onKeyDown = new NDelegationManager();
-	onKeyUp = new NDelegationManager();
+	onKeyPress = new NDelegationManager();
+	onKeyRelease = new NDelegationManager();
 	onMove = new NDelegationManager();
 	onVisible = new NDelegationManager();
 	onEnter = new NDelegationManager();
@@ -64,8 +65,8 @@ Control::Control(const NRectangle &area)
 	onMouseMove = new NDelegationManager();
 	onClick = new NDelegationManager();
 	onDoubleClick = new NDelegationManager();
-	onKeyDown = new NDelegationManager();
-	onKeyUp = new NDelegationManager();
+	onKeyPress = new NDelegationManager();
+	onKeyRelease = new NDelegationManager();
 	onMove = new NDelegationManager();
 	onVisible = new NDelegationManager();
 	onEnter = new NDelegationManager();
@@ -75,6 +76,8 @@ Control::Control(const NRectangle &area)
 
 Control::~Control()
 {
+	Release();
+	
 	delete area;
 	delete backcolor;
 	children->DeleteAndClear();
@@ -86,13 +89,23 @@ Control::~Control()
 	delete onMouseMove;
 	delete onClick;
 	delete onDoubleClick;
-	delete onKeyDown;
-	delete onKeyUp;
+	delete onKeyPress;
+	delete onKeyRelease;
 	delete onMove;
 	delete onVisible;
 	delete onEnter;
 	delete onFocus;
 		
+}
+
+void *Control::InternalOnMouseDown(void *params)
+{
+	
+}
+
+void *Control::InternalOnMouseUp(void *params)
+{
+	
 }
 
 NRectangle Control::Area()
@@ -110,14 +123,27 @@ void *Control::GetUserData()
 	return userdata;
 }
 
+bool Control::IsVisible()
+{
+	return visible;
+}
+
+bool Control::IsFocused()
+{
+	return focused;
+}
+
 void Control::SetArea(const NRectangle &area)
 {
 	*this->area = area;
+	DelegationOnControlChanged().Execute(this);
+	DelegationOnMove().Execute((void *)&area);
 }
 
 void Control::SetBackColor(const NColor &backcolor)
 {
 	*this->backcolor = backcolor;
+	DelegationOnControlChanged().Execute(this);
 }
 
 void Control::SetUserData(void *userdata)
@@ -128,12 +154,27 @@ void Control::SetUserData(void *userdata)
 void Control::SetFocused(bool focused)
 {
 	if (this->focused == focused) return;
+	this->focused = focused;
 	DelegationOnControlChanged().Execute(this);
+	DelegationOnFocus().Execute(&focused);
 }
 
 void Control::SetVisible(bool visible)
 {
+	if (this->visible == visible) return;
+	this->visible = visible;
+	DelegationOnControlChanged().Execute(this);
+	DelegationOnVisible().Execute(&visible);
+}
+
+void Control::Init()
+{
+	// For detecting click and double click events
+	DelegationOnMouseDown() += NDelegation(this, (Delegate)&Control::InternalOnMouseDown);
+	DelegationOnMouseUp() += NDelegation(this, (Delegate)&Control::InternalOnMouseUp);
 	
+	// Call prepare
+	Prepare();
 }
 
 void Control::Draw(IGraphics *g)
@@ -184,14 +225,14 @@ NDelegationManager &Control::DelegationOnDoubleClick()
 	return *onDoubleClick;
 }
 
-NDelegationManager &Control::DelegationOnKeyDown()
+NDelegationManager &Control::DelegationOnKeyPress()
 {
-	return *onKeyDown;
+	return *onKeyPress;
 }
 
-NDelegationManager &Control::DelegationOnKeyUp()
+NDelegationManager &Control::DelegationOnKeyRelease()
 {
-	return *onKeyUp;
+	return *onKeyRelease;
 }
 
 NDelegationManager &Control::DelegationOnMove()

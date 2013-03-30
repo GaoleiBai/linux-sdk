@@ -28,6 +28,7 @@
 
 class IGraphics;
 class NColor;
+class XWindow;
 
 class Control : public NObject {
 protected:
@@ -45,17 +46,22 @@ protected:
 	NDelegationManager *onMouseMove;
 	NDelegationManager *onClick;
 	NDelegationManager *onDoubleClick;
-	NDelegationManager *onKeyDown;
-	NDelegationManager *onKeyUp;
+	NDelegationManager *onKeyPress;
+	NDelegationManager *onKeyRelease;
 	NDelegationManager *onMove;
 	NDelegationManager *onVisible;
 	NDelegationManager *onEnter;
 	NDelegationManager *onFocus;
 	
+	void *InternalOnMouseDown(void *params);
+	void *InternalOnMouseUp(void *params);
+	
 public:
 	Control();
 	Control(const NRectangle &area);
 	virtual ~Control();
+
+	void Init();
 
 	NRectangle Area();
 	NColor BackColor();
@@ -79,8 +85,8 @@ public:
 	NDelegationManager &DelegationOnMouseMove();
 	NDelegationManager &DelegationOnClick();
 	NDelegationManager &DelegationOnDoubleClick();
-	NDelegationManager &DelegationOnKeyDown();
-	NDelegationManager &DelegationOnKeyUp();
+	NDelegationManager &DelegationOnKeyPress();
+	NDelegationManager &DelegationOnKeyRelease();
 	NDelegationManager &DelegationOnMove();
 	NDelegationManager &DelegationOnVisible();
 	NDelegationManager &DelegationOnEnter();
