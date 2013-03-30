@@ -141,9 +141,10 @@ void IGraphics::SetColor(const NColor &c)
 	cairo_set_source_rgba(gc, cc->R(), cc->G(), cc->B(), cc->A());
 }
 
-void IGraphics::SetPattern(GraphicsPattern &p)
+void IGraphics::SetPattern(const GraphicsPattern &p)
 {
-	cairo_set_source(gc, p.Handle());
+	GraphicsPattern *pp = (GraphicsPattern *)&p;
+	cairo_set_source(gc, pp->Handle());
 	XException::CheckCairo(gc);
 }
 

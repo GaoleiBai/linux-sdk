@@ -80,6 +80,13 @@ int TestWindow::Perform()
 				e->Graphics().DrawLine(10, 112 + shm.GetHeight(), 10 + shm.GetWidth(), 112 + shm.GetHeight());
 				e->Graphics().DrawLine(12 + shm.GetWidth(), 112, 12 + shm.GetWidth(), 112 + shm.GetHeight());
 				
+				GraphicsPatternLinear pl(NPoint(10, 130), NPoint(10, 170));
+				pl.AddColorAtDistance(NColor(0.8, 0.8, 0.85, 1), 0);
+				pl.AddColorAtDistance(NColor(0.7, 0.7, 0.75, 1), 40);
+				e->Graphics().SetPattern(pl);
+				e->Graphics().FillRoundRectangle(10, 130, 50, 40, 3);
+				
+				e->Graphics().SetColor(NColor(0.7, 0.7, 0.7, 1));
 				e->Graphics().DrawRoundRectangle(10, 130, 50, 40, 3);
 				/*
 				Collection<Text *> families = NFont::GetAvaliableFamilies();
