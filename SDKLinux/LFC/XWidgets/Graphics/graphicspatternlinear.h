@@ -19,24 +19,24 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef XEXCEPTION_H
-#define XEXCEPTION_H
+#ifndef GRAPHICSPATTERNLINEAR_H
+#define GRAPHICSPATTERNLINEAR_H
 
-#include "../exception.h"
-#include <cairo/cairo.h>
-#include <cairo/cairo-xlib.h>
+#include "graphicspattern.h"
+#include "npoint.h"
+#include "ncolor.h"
 
-class XException : public Exception {
+class GraphicsPatternLinear : public GraphicsPattern {
 
 public:
-	XException();
-	XException(const Text &description, const char *file, int line, const char *func);
-	virtual ~XException();
+	GraphicsPatternLinear(const NPoint &a, const NPoint &b);
+	virtual ~GraphicsPatternLinear();
 	
-	static void CheckResult(int result);
-	static void CheckCairo(cairo_t *g);
-	static void CheckCairoPattern(cairo_pattern_t *p);
-
+	virtual cairo_pattern_t *Handle();
+	void AddColorAtDistance(const NColor &c, double distance);
+	int GetColorsCount();
+	NColor GetColorAndDistance(int index, double &distance);
+	
 };
 
-#endif // XEXCEPTION_H
+#endif // GRAPHICSPATTERNLINEAR_H

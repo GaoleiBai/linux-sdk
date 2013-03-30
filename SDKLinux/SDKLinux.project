@@ -183,6 +183,12 @@
         <File Name="LFC/XWidgets/Graphics/imagegraphics.cpp"/>
         <File Name="LFC/XWidgets/Graphics/nfont.h"/>
         <File Name="LFC/XWidgets/Graphics/nfont.cpp"/>
+        <File Name="LFC/XWidgets/Graphics/graphicspattern.h"/>
+        <File Name="LFC/XWidgets/Graphics/graphicspattern.cpp"/>
+        <File Name="LFC/XWidgets/Graphics/graphicspatternlinear.h"/>
+        <File Name="LFC/XWidgets/Graphics/graphicspatternlinear.cpp"/>
+        <File Name="LFC/XWidgets/Graphics/graphicspatternradial.h"/>
+        <File Name="LFC/XWidgets/Graphics/graphicspatternradial.cpp"/>
       </VirtualDirectory>
       <File Name="LFC/XWidgets/xpixmap.h"/>
       <File Name="LFC/XWidgets/xpixmap.cpp"/>

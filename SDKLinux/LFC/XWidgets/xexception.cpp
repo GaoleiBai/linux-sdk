@@ -64,3 +64,10 @@ void XException::CheckCairo(cairo_t *g)
 	throw new XException(cairo_status_to_string(s), __FILE__, __LINE__, __func__);
 }
 
+void XException::CheckCairoPattern(cairo_pattern_t *p)
+{
+	cairo_status_t s = cairo_pattern_status(p);
+	if (s == CAIRO_STATUS_SUCCESS) return;
+	throw new XException(cairo_status_to_string(s), __FILE__, __LINE__, __func__);
+}
+

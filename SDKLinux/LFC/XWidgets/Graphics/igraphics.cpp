@@ -141,6 +141,12 @@ void IGraphics::SetColor(const NColor &c)
 	cairo_set_source_rgba(gc, cc->R(), cc->G(), cc->B(), cc->A());
 }
 
+void IGraphics::SetPattern(GraphicsPattern &p)
+{
+	cairo_set_source(gc, p.Handle());
+	XException::CheckCairo(gc);
+}
+
 void IGraphics::DrawLine(int x1, int y1, int x2, int y2)
 {
 	cairo_move_to(gc, x1 - 0.5, y1 - 0.5);

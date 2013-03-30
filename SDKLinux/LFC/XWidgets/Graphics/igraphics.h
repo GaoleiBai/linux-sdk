@@ -26,6 +26,7 @@
 #include "ncolor.h"
 #include "nsize.h"
 #include "nfont.h"
+#include "graphicspattern.h"
 #include "../../Text/text.h"
 #include <cairo/cairo.h>
 #include <cairo/cairo-xlib.h>
@@ -76,6 +77,7 @@ public:
 	void SetColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 	void SetColor(double r, double g, double b, double a);
 	void SetColor(const NColor &c);
+	void SetPattern(GraphicsPattern &p);
 
 	void DrawLine(int x1, int y1, int x2, int y2);
 	void DrawRectangle(int x, int y, int width, int height);
