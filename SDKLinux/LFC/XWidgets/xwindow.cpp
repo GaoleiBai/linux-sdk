@@ -26,6 +26,8 @@
 #include "../Threading/mutex.h"
 #include "../Threading/thread.h"
 #include "Graphics/xwindowgraphics.h"
+#include "Graphics/ncolor.h"
+#include "Controls/control.h"
 #include "Events/keyevent.h"
 #include "Events/buttonevent.h"
 #include "Events/moveevent.h"
@@ -45,13 +47,11 @@
 
 XWindow::XWindow()
 {
-	Prepare();
 	init(XDisplay::Default());
 }
 
 XWindow::XWindow(const XDisplay &d)
 {
-	Prepare();
 	init(d);	
 }
 
@@ -62,8 +62,15 @@ XWindow::~XWindow()
 	// Hide window
 	SetVisible(false);
 
-	// Destroy window graphics context
+	// Destroy controls
+	controls->DeleteAndClear();
+	delete controls;
+	
+	// Destroy helper objects
 	delete gc;
+	delete area;
+	delete backcolor;
+	delete font;
 	
 	// Destroy window
 	int res = XDestroyWindow(windowDisplay, window);
@@ -93,18 +100,18 @@ void XWindow::init(const XDisplay &d)
 {
 	windowMutex = new Mutex(true);
 	delegationsToExecute = new Collection<void *>();
+	controls = new Collection<Control *>();
 	
 	windowDisplay = d.d;
 	windowScreen = XDefaultScreen(windowDisplay);
 	windowParent = XRootWindow(windowDisplay, windowScreen);
 	windowVisual = DefaultVisual(windowDisplay, windowScreen);
-	x = 0; 
-	y = 0;
-	width = 400;
-	height = 300;
+	area = new NRectangle(0, 0, 400, 300);
 	borderwidth = 1;
 	colordepth = DefaultDepth(windowDisplay, windowScreen);
 	visible = false;
+	backcolor = new NColor(0.7, 0.7, 0.8, 1.0);
+	font = new NFont("Ubuntu Mono", NFont::FontWeightBold, 12);
 	
 	// Creates delegates
 	dOnWindowKeyPress = new NDelegationManager();
@@ -133,7 +140,8 @@ void XWindow::init(const XDisplay &d)
 
 	// Create window
 	window = XCreateWindow(
-		windowDisplay, windowParent, x, y, width, height, borderwidth, colordepth, InputOutput, 
+		windowDisplay, windowParent, area->GetX(), area->GetY(), 
+		area->GetWidth(), area->GetHeight(), borderwidth, colordepth, InputOutput, 
 		windowVisual, CWBackPixel | CWBorderPixel | CWOverrideRedirect, &attrs);
 	XException::CheckResult(window);
 	
@@ -309,6 +317,7 @@ int XWindow::RunModal()
 			DelegationOnWindowKeymap().Execute(&e);
 		} else if (event.type == Expose) { 
 			DrawEvent e(gc, &event.xexpose);
+			Draw();
 			DelegationOnWindowDraw().Execute(&e);
 		} else if (event.type == VisibilityNotify) {
 			VisibilityEvent e(&event.xvisibility);
@@ -320,13 +329,14 @@ int XWindow::RunModal()
 			ShowEvent e(true);
 			DelegationOnWindowShow().Execute(&e);
 		} else if (event.type == ConfigureNotify) {			
-			bool generateWindowMoveEvent = x != event.xconfigure.x || y != event.xconfigure.y;
-			bool generateWindowResizeEvent = width != event.xconfigure.width || height != event.xconfigure.height;
+			bool generateWindowMoveEvent = 
+				area->GetX() != event.xconfigure.x || 
+				area->GetY() != event.xconfigure.y;
+			bool generateWindowResizeEvent = 
+				area->GetWidth() != event.xconfigure.width || 
+				area->GetHeight() != event.xconfigure.height;
 			
-			x = event.xconfigure.x;
-			y = event.xconfigure.y;
-			width = event.xconfigure.width;
-			height = event.xconfigure.height;
+			*area = NRectangle(event.xconfigure.x, event.xconfigure.y, event.xconfigure.width, event.xconfigure.height);
 			borderwidth = event.xconfigure.border_width;		
 						
 			if (generateWindowMoveEvent) {
@@ -334,7 +344,7 @@ int XWindow::RunModal()
 				DelegationOnWindowMove().Execute(&e);
 			}
 			if (generateWindowResizeEvent) {
-				gc->Resize(width, height);	// Resize XWindowGraphics
+				gc->Resize(area->GetWidth(), area->GetHeight());	// Resize XWindowGraphics
 				WindowResizeEvent e(&event.xconfigure);
 				DelegationOnWindowResize().Execute(&e);
 			}			
@@ -400,6 +410,24 @@ void XWindow::ExecuteDelegation(const NDelegation &d, void *params)
 	XFlush(windowDisplay);
 }
 
+void XWindow::Invalidate()
+{
+	XEvent ev;
+	ev.type = Expose;
+	ev.xexpose.window = window;
+	ev.xexpose.count = 0;
+	ev.xexpose.send_event = true;
+	ev.xexpose.type = Expose;
+	ev.xexpose.x = area->GetX();
+	ev.xexpose.y = area->GetY();
+	ev.xexpose.width = area->GetWidth();
+	ev.xexpose.height = area->GetHeight();
+	
+	int res = XSendEvent(windowDisplay, window, false, Expose, &ev);
+	XException::CheckResult(res);
+	XFlush(windowDisplay);
+}
+
 void XWindow::SetVisible(bool visible)
 {
 	if (this->visible == visible) return;
@@ -413,29 +441,41 @@ void XWindow::SetVisible(bool visible)
 	DelegationOnWindowShow().Execute(&visible);
 }
 
+void XWindow::SetArea(const NRectangle &r)
+{
+	NRectangle *rr = (NRectangle *)&r;
+	XMoveResizeWindow(windowDisplay, window, rr->GetX(), rr->GetY(), rr->GetWidth(), rr->GetHeight());
+}
+
+void XWindow::SetBackColor(const NColor &c)
+{
+	*backcolor = c;
+	Invalidate();
+}
+
+void XWindow::SetFont(const NFont &f)
+{
+	*font = f;
+}
+
 bool XWindow::IsVisible()
 {
 	return visible;
 }
 
-int XWindow::GetX()
+NRectangle XWindow::Area()
 {
-	return x;
+	return *area;
 }
 
-int XWindow::GetY()
+NColor XWindow::BackColor()
 {
-	return y;
+	return *backcolor;
 }
 
-int XWindow::GetWidth()
+NFont XWindow::Font()
 {
-	return width;
-}
-
-int XWindow::GetHeight()
-{
-	return height;
+	return *font;
 }
 
 int XWindow::GetBorderWidth()
@@ -448,6 +488,24 @@ int XWindow::GetColorDepth()
 	return colordepth;
 }
 
+void XWindow::ControlAdd(Control *c)
+{
+	if (ControlExists(c)) return;	
+	c->Init();
+	controls->Add(c);
+	Invalidate();
+}
+
+void XWindow::ControlRemove(Control *c)
+{
+	controls->Remove(c);
+}
+
+bool XWindow::ControlExists(Control *c)
+{
+	return controls->Contains(c);
+}
+
 void XWindow::Prepare()
 {
 	
@@ -456,4 +514,11 @@ void XWindow::Prepare()
 void XWindow::Dispose()
 {
 	
+}
+
+void XWindow::Draw()
+{
+	gc->Clear(*backcolor);
+	for (int i=0; i<controls->Count(); i++)
+		(*controls)[i]->Draw(gc);
 }

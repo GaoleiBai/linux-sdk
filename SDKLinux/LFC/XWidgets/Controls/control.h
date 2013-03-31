@@ -38,7 +38,7 @@ protected:
 	Collection<Control *> *children;
 	bool visible;
 	bool entered;
-	bool focused;
+	bool focused;	
 	
 	NDelegationManager *onControlChanged;
 	NDelegationManager *onMouseDown;
@@ -52,6 +52,7 @@ protected:
 	NDelegationManager *onVisible;
 	NDelegationManager *onEnter;
 	NDelegationManager *onFocus;
+	NDelegationManager *onBackColor;
 	
 	void *InternalOnMouseDown(void *params);
 	void *InternalOnMouseUp(void *params);
@@ -62,6 +63,9 @@ public:
 	virtual ~Control();
 
 	void Init();
+	void ChildControlAdd(Control *c);
+	void ChildControlRemove(Control *c);
+	bool ChildControlExists(Control *c);
 
 	NRectangle Area();
 	NColor BackColor();
@@ -91,6 +95,7 @@ public:
 	NDelegationManager &DelegationOnVisible();
 	NDelegationManager &DelegationOnEnter();
 	NDelegationManager &DelegationOnFocus();
+	NDelegationManager &DelegationOnBackColor();
 	
 };
 

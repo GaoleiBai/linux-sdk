@@ -223,6 +223,18 @@
         <File Name="LFC/XWidgets/Events/keyboardmappingevent.cpp"/>
         <File Name="LFC/XWidgets/Events/colormapevent.h"/>
         <File Name="LFC/XWidgets/Events/colormapevent.cpp"/>
+        <File Name="LFC/XWidgets/Events/controleventvisible.h"/>
+        <File Name="LFC/XWidgets/Events/controleventvisible.cpp"/>
+        <File Name="LFC/XWidgets/Events/controleventfocused.h"/>
+        <File Name="LFC/XWidgets/Events/controleventfocused.cpp"/>
+        <File Name="LFC/XWidgets/Events/controlevent.h"/>
+        <File Name="LFC/XWidgets/Events/controlevent.cpp"/>
+        <File Name="LFC/XWidgets/Events/controleventchanged.h"/>
+        <File Name="LFC/XWidgets/Events/controleventchanged.cpp"/>
+        <File Name="LFC/XWidgets/Events/controleventmoved.h"/>
+        <File Name="LFC/XWidgets/Events/controleventmoved.cpp"/>
+        <File Name="LFC/XWidgets/Events/controleventbackcolor.h"/>
+        <File Name="LFC/XWidgets/Events/controleventbackcolor.cpp"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Controls">
         <File Name="LFC/XWidgets/Controls/control.h"/>

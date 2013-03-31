@@ -131,6 +131,12 @@
 #include "XWidgets/Events/windowresizeevent.h"
 #include "XWidgets/Events/keyboardmappingevent.h"
 #include "XWidgets/Events/colormapevent.h"
+#include "XWidgets/Events/controlevent.h"
+#include "XWidgets/Events/controleventvisible.h"
+#include "XWidgets/Events/controleventfocused.h"
+#include "XWidgets/Events/controleventbackcolor.h"
+#include "XWidgets/Events/controleventchanged.h"
+#include "XWidgets/Events/controleventmoved.h"
 #include "XWidgets/Controls/control.h"
 
 void lfc_init();

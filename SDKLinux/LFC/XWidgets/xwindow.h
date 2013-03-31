@@ -31,6 +31,10 @@ class XDisplay;
 class Mutex;
 class XWindowGraphics;
 class DrawEvent;
+class Control;
+class NColor;
+class NRectangle;
+class NFont;
 
 class XWindow : public NObject {
 	
@@ -42,11 +46,15 @@ protected:
 	Visual *windowVisual;
 	int windowScreen;
 	bool visible;
-	int x, y, width, height, borderwidth, colordepth;
+	NRectangle *area;
+	int borderwidth, colordepth;
 	XWindowGraphics *gc;
+	NColor *backcolor;
+	NFont *font;
 	
 	Mutex *windowMutex;
 	Collection<void *> *delegationsToExecute;
+	Collection<Control *> *controls;
 	
 	NDelegationManager *dOnWindowKeyPress;
 	NDelegationManager *dOnWindowKeyRelease;
@@ -100,20 +108,30 @@ public:
 	void Run();
 	int RunModal();
 	void ExecuteDelegation(const NDelegation &d, void *params);
+	void Invalidate();
 	
-	void SetVisible(bool visible);
-	bool IsVisible();
-	int GetX();
-	int GetY();
-	int GetWidth();
-	int GetHeight();
 	int GetBorderWidth();
 	int GetColorDepth();
+	
+	void SetVisible(bool visible);
+	void SetArea(const NRectangle &r);
+	void SetBackColor(const NColor &c);
+	void SetFont(const NFont &f);
+
+	bool IsVisible();
+	NRectangle Area();
+	NColor BackColor();
+	NFont Font();
+	
+	void ControlAdd(Control *c);
+	void ControlRemove(Control *c);
+	bool ControlExists(Control *c);
 	
 protected:
 
 	virtual void Prepare();
 	virtual void Dispose();
+	void Draw();
 
 };
 

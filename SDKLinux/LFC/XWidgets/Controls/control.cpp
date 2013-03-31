@@ -20,6 +20,11 @@
 *
 **/
 #include "control.h"
+#include "../Events/controleventmoved.h"
+#include "../Events/controleventbackcolor.h"
+#include "../Events/controleventchanged.h"
+#include "../Events/controleventfocused.h"
+#include "../Events/controleventvisible.h"
 #include "../Graphics/igraphics.h"
 #include "../../Delegations/ndelegation.h"
 #include <stdlib.h>
@@ -46,6 +51,7 @@ Control::Control()
 	onVisible = new NDelegationManager();
 	onEnter = new NDelegationManager();
 	onFocus = new NDelegationManager();
+	onBackColor = new NDelegationManager();
 	
 }
 
@@ -71,6 +77,7 @@ Control::Control(const NRectangle &area)
 	onVisible = new NDelegationManager();
 	onEnter = new NDelegationManager();
 	onFocus = new NDelegationManager();
+	onBackColor = new NDelegationManager();
 		
 }
 
@@ -95,12 +102,13 @@ Control::~Control()
 	delete onVisible;
 	delete onEnter;
 	delete onFocus;
+	delete onBackColor;
 		
 }
 
 void *Control::InternalOnMouseDown(void *params)
 {
-	
+
 }
 
 void *Control::InternalOnMouseUp(void *params)
@@ -135,15 +143,22 @@ bool Control::IsFocused()
 
 void Control::SetArea(const NRectangle &area)
 {
-	*this->area = area;
-	DelegationOnControlChanged().Execute(this);
-	DelegationOnMove().Execute((void *)&area);
+	if (this->area->Equals(area)) return;
+	*this->area = area;	
+	ControlEventMoved me(this, area);
+	ControlEventChanged ce(this);
+	DelegationOnControlChanged().Execute(&ce);
+	DelegationOnMove().Execute(&me);
 }
 
 void Control::SetBackColor(const NColor &backcolor)
 {
+	if (this->backcolor->Equals(backcolor)) return;
 	*this->backcolor = backcolor;
-	DelegationOnControlChanged().Execute(this);
+	ControlEventBackColor bce(this, backcolor);
+	ControlEventChanged ce(this);
+	DelegationOnControlChanged().Execute(&ce);
+	DelegationOnBackColor().Execute(&bce);
 }
 
 void Control::SetUserData(void *userdata)
@@ -155,16 +170,20 @@ void Control::SetFocused(bool focused)
 {
 	if (this->focused == focused) return;
 	this->focused = focused;
-	DelegationOnControlChanged().Execute(this);
-	DelegationOnFocus().Execute(&focused);
+	ControlEventFocused fe(this, focused);
+	ControlEventChanged ce(this);
+	DelegationOnControlChanged().Execute(&ce);
+	DelegationOnFocus().Execute(&fe);
 }
 
 void Control::SetVisible(bool visible)
 {
 	if (this->visible == visible) return;
 	this->visible = visible;
-	DelegationOnControlChanged().Execute(this);
-	DelegationOnVisible().Execute(&visible);
+	ControlEventVisible ve(this, visible);
+	ControlEventChanged ce(this);
+	DelegationOnControlChanged().Execute(&ce);
+	DelegationOnVisible().Execute(&ve);
 }
 
 void Control::Init()
@@ -175,6 +194,26 @@ void Control::Init()
 	
 	// Call prepare
 	Prepare();
+}
+
+void Control::ChildControlAdd(Control *c)
+{
+	if (ChildControlExists(c)) return;
+	children->Add(c);
+	ControlEventChanged e(this);
+	DelegationOnControlChanged().Execute(&e);
+}
+
+void Control::ChildControlRemove(Control *c)
+{
+	children->Remove(c);
+	ControlEventChanged e(this);
+	DelegationOnControlChanged().Execute(&e);
+}
+
+bool Control::ChildControlExists(Control *c)
+{
+	return children->Contains(c);
 }
 
 void Control::Draw(IGraphics *g)
@@ -253,4 +292,9 @@ NDelegationManager &Control::DelegationOnEnter()
 NDelegationManager &Control::DelegationOnFocus()
 {
 	return *onFocus;
+}
+
+NDelegationManager &Control::DelegationOnBackColor()
+{
+	return *onBackColor;
 }

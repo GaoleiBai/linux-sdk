@@ -148,6 +148,13 @@ void IGraphics::SetPattern(const GraphicsPattern &p)
 	XException::CheckCairo(gc);
 }
 
+void IGraphics::Clear(const NColor &color)
+{
+	ClipRegionReset();
+	SetColor(color);
+	cairo_paint(gc);
+}
+
 void IGraphics::DrawLine(int x1, int y1, int x2, int y2)
 {
 	cairo_move_to(gc, x1 - 0.5, y1 - 0.5);

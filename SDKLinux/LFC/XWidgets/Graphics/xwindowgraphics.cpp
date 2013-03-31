@@ -30,7 +30,7 @@ XWindowGraphics::XWindowGraphics(const XWindow &w)
 	XWindow *ww = (XWindow *)&w;
 	surface = cairo_xlib_surface_create(
 		ww->HandlerDisplay(), ww->HandlerWindow(), ww->HandlerVisual(), 
-		ww->GetWidth(), ww->GetHeight());	
+		ww->Area().GetWidth(), ww->Area().GetHeight());	
 	
 	// Create cairo drawing context
 	gc = cairo_create(surface);
