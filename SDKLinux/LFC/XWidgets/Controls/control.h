@@ -93,6 +93,8 @@ public:
 	virtual bool IsFocusable();
 	virtual bool CaptureTabKey();
 	virtual bool CaptureEnterKey();
+	virtual bool CaptureSpaceKey();
+	virtual bool CaptureEscapeKey();
 	
 	Collection<Control *> EnumFocusableChildren();
 	
@@ -102,12 +104,12 @@ public:
 	NDelegationManager &DelegationOnMouseMove();
 	NDelegationManager &DelegationOnClick();
 	NDelegationManager &DelegationOnDoubleClick();
-	NDelegationManager &DelegationOnKeyPress();
-	NDelegationManager &DelegationOnKeyRelease();
+	NDelegationManager &DelegationOnKeyPress();		// Arg: ControlEventKey *
+	NDelegationManager &DelegationOnKeyRelease();	// Arg: ControlEventKey *
 	NDelegationManager &DelegationOnMove();
 	NDelegationManager &DelegationOnVisible();
 	NDelegationManager &DelegationOnEnter();
-	NDelegationManager &DelegationOnFocus();
+	NDelegationManager &DelegationOnFocus();		// Arg: ControlEventFocus *
 	NDelegationManager &DelegationOnBackColor();
 	
 };

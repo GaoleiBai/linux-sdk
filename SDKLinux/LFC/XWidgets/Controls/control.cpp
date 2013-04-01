@@ -291,6 +291,16 @@ bool Control::CaptureEnterKey()
 	return false;
 }
 
+bool Control::CaptureSpaceKey()
+{
+	return false;
+}
+
+bool Control::CaptureEscapeKey()
+{
+	return false;
+}
+
 Collection<Control *> Control::EnumFocusableChildren()
 {
 	Collection<Control *> result;

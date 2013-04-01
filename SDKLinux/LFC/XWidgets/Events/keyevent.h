@@ -39,6 +39,7 @@ public:
 	DateTime Time();
 	NPoint Position();
 	NPoint PositionRoot();
+	NWChar KeyCode();
 	
 	bool PressedButton1();
 	bool PressedButton2();
@@ -52,9 +53,7 @@ public:
 	bool PressedMod2();
 	bool PressedMod3();
 	bool PressedMod4();
-	bool PressedMod5();
-	
-	NWChar KeyCode();
+	bool PressedMod5();	
 
 };
 

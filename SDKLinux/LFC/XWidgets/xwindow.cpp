@@ -45,6 +45,7 @@
 #include "Events/keyboardmappingevent.h"
 #include "Events/colormapevent.h"
 #include "Events/controleventfocused.h"
+#include "Events/controleventkey.h"
 #include <string.h>
 
 XWindow::XWindow()
@@ -298,17 +299,56 @@ int XWindow::RunModal()
 			KeyEvent e(&event.xkey);
 			DelegationOnWindowKeyPress().Execute(&e);
 			
-			// Focus rotate
+			// Key redirection to controls
+			bool windowAccept = false;
+			bool windowCancel = false;
+			bool redirectKey = false;
+			bool focusRotate = false;
 			Control *cc = ControlGetFocused();
-			if (cc != NULL && !cc->CaptureTabKey()) {
-				if (e.KeyCode().Value() == 23 && !e.PressedShift())
-					ControlFocusNext();
-				else if (e.KeyCode().Value() == 23 && e.PressedShift())
-					ControlFocusPrevious();
+			if (cc != NULL) {
+				if (e.KeyCode().Value() == 23 && !cc->CaptureTabKey()) {
+					focusRotate = true;
+				} else if (e.KeyCode().Value() == 13 && !cc->CaptureEnterKey()) {
+					windowAccept = true;
+				} else if (e.KeyCode().Value() == 27 && !cc->CaptureEscapeKey()) {
+					windowCancel = true;
+				} else if (e.KeyCode().Value() == 20 && !cc->CaptureSpaceKey()) {
+					windowAccept = true;					
+				} else {
+					redirectKey = true;
+				}
+			} else {
+				if (e.KeyCode().Value() == 23) {
+					focusRotate = true;
+				} else if (e.KeyCode().Value() == 13) {
+					windowAccept = true;
+				} else if (e.KeyCode().Value() == 27) {
+					windowCancel = true;
+				} else if (e.KeyCode().Value() == 20) {
+					windowAccept = true;
+				} else {
+					redirectKey = true;
+				}
+			}
+			
+			if (redirectKey) {
+				// Redirect key
+				ControlEventKey ee(e);
+				if (cc != NULL) cc->DelegationOnKeyPress().Execute(&ee);
+			} else if (focusRotate) {
+				// Window focus rotate
+				if (!e.PressedShift()) ControlFocusNext();
+				else ControlFocusPrevious();
+			} else if (windowAccept) {
+			} else if (windowCancel) {
 			}
 		} else if (event.type == KeyRelease) {
 			KeyEvent e(&event.xkey);
 			DelegationOnWindowKeyRelease().Execute(&e);
+
+			ControlEventKey ee(e);
+			Control *cc = ControlGetFocused();
+			if (cc != NULL) cc->DelegationOnKeyPress().Execute(&ee);
 		} else if (event.type == ButtonPress) {
 			ButtonEvent e(&event.xbutton);
 			DelegationOnWindowMouseDown().Execute(&e);
@@ -557,8 +597,10 @@ Control *XWindow::ControlGetFocused()
 void XWindow::ControlFocusNext()
 {
 	Collection<Control *> focusables = ControlsEnumFocusable();
+	if (focusables.Count() == 0) return;
+	
 	Control *focused = ControlGetFocused();
-	int ix = controls->FindFirstIx(focused);
+	int ix = focused == NULL ? 0 : controls->FindFirstIx(focused);
 	if (ix == -1) return;
 	
 	ix += 1;
@@ -569,8 +611,10 @@ void XWindow::ControlFocusNext()
 void XWindow::ControlFocusPrevious()
 {
 	Collection<Control *> focusables = ControlsEnumFocusable();
+	if (focusables.Count() == 0) return;
+	
 	Control *focused = ControlGetFocused();
-	int ix = controls->FindFirstIx(focused);
+	int ix = focused == NULL ? 0 : controls->FindFirstIx(focused);
 	if (ix == -1) return;
 	
 	ix += controls->Count() - 1;
