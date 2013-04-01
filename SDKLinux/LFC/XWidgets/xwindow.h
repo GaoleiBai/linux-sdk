@@ -51,6 +51,7 @@ protected:
 	XWindowGraphics *gc;
 	NColor *backcolor;
 	NFont *font;
+	bool drawEnabled;
 	
 	Mutex *windowMutex;
 	Collection<void *> *delegationsToExecute;
@@ -109,6 +110,8 @@ public:
 	int RunModal();
 	void ExecuteDelegation(const NDelegation &d, void *params);
 	void Invalidate();
+	void DrawDisable();
+	void DrawEnable();
 	
 	int GetBorderWidth();
 	int GetColorDepth();

@@ -112,6 +112,7 @@ void XWindow::init(const XDisplay &d)
 	visible = false;
 	backcolor = new NColor(0.7, 0.7, 0.8, 1.0);
 	font = new NFont("Ubuntu Mono", NFont::FontWeightBold, 12);
+	drawEnabled = true;
 	
 	// Creates delegates
 	dOnWindowKeyPress = new NDelegationManager();
@@ -315,7 +316,7 @@ int XWindow::RunModal()
 		} else if (event.type == KeymapNotify) {
 			KeymapEvent e(&event.xkeymap);
 			DelegationOnWindowKeymap().Execute(&e);
-		} else if (event.type == Expose) { 
+		} else if (event.type == Expose && event.xexpose.count == 0) { 
 			DrawEvent e(gc, &event.xexpose);
 			Draw();
 			DelegationOnWindowDraw().Execute(&e);
@@ -428,6 +429,17 @@ void XWindow::Invalidate()
 	XFlush(windowDisplay);
 }
 
+void XWindow::DrawEnable()
+{
+	drawEnabled = true;
+	Draw();
+}
+
+void XWindow::DrawDisable()
+{
+	drawEnabled = false;
+}
+
 void XWindow::SetVisible(bool visible)
 {
 	if (this->visible == visible) return;
@@ -499,6 +511,7 @@ void XWindow::ControlAdd(Control *c)
 void XWindow::ControlRemove(Control *c)
 {
 	controls->Remove(c);
+	Invalidate();
 }
 
 bool XWindow::ControlExists(Control *c)
@@ -518,6 +531,8 @@ void XWindow::Dispose()
 
 void XWindow::Draw()
 {
+	if (!drawEnabled) return;
+	
 	gc->Clear(*backcolor);
 	for (int i=0; i<controls->Count(); i++)
 		(*controls)[i]->Draw(gc);
