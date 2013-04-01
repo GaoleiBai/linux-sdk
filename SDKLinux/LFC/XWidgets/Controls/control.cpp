@@ -281,6 +281,16 @@ bool Control::IsFocusable()
 	return false;
 }
 
+bool Control::CaptureTabKey()
+{
+	return false;
+}
+
+bool Control::CaptureEnterKey()
+{
+	return false;
+}
+
 Collection<Control *> Control::EnumFocusableChildren()
 {
 	Collection<Control *> result;

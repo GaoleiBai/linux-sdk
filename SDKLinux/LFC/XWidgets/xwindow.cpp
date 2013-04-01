@@ -22,6 +22,7 @@
 #include "xwindow.h"
 #include "xdisplay.h"
 #include "xexception.h"
+#include "../nwchar.h"
 #include "../Text/text.h"
 #include "../Threading/mutex.h"
 #include "../Threading/thread.h"
@@ -296,6 +297,15 @@ int XWindow::RunModal()
 		if (event.type == KeyPress) {
 			KeyEvent e(&event.xkey);
 			DelegationOnWindowKeyPress().Execute(&e);
+			
+			// Focus rotate
+			Control *cc = ControlGetFocused();
+			if (cc != NULL && !cc->CaptureTabKey()) {
+				if (e.KeyCode().Value() == 23 && !e.PressedShift())
+					ControlFocusNext();
+				else if (e.KeyCode().Value() == 23 && e.PressedShift())
+					ControlFocusPrevious();
+			}
 		} else if (event.type == KeyRelease) {
 			KeyEvent e(&event.xkey);
 			DelegationOnWindowKeyRelease().Execute(&e);

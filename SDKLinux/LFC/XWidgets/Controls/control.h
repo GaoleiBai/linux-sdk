@@ -91,6 +91,8 @@ public:
 	virtual void Prepare();
 	virtual void Release();
 	virtual bool IsFocusable();
+	virtual bool CaptureTabKey();
+	virtual bool CaptureEnterKey();
 	
 	Collection<Control *> EnumFocusableChildren();
 	
