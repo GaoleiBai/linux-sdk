@@ -35,7 +35,8 @@ class Control;
 class NColor;
 class NRectangle;
 class NFont;
-class ControlEventChanged;
+class ControlEventFocused;
+class IGraphics;
 
 class XWindow : public NObject {
 	
@@ -106,6 +107,7 @@ public:
 	Window HandlerParentWindow();
 	Visual *HandlerVisual();
 	int HandlerScreen();
+	IGraphics *HandlerGraphics();
 	
 	void Run();
 	int RunModal();
@@ -131,13 +133,18 @@ public:
 	void ControlRemove(Control *c);
 	bool ControlExists(Control *c);
 	
+	Collection<Control *> ControlsEnumFocusable();
+	Control *ControlGetFocused();
+	void ControlFocusNext();
+	void ControlFocusPrevious();
+	
 protected:
 
 	virtual void Prepare();
 	virtual void Dispose();
 	void Draw();
-	void *OnControlChanged(ControlEventChanged *e);
-
+	void *OnControlFocusChanged(ControlEventFocused *e);
+	
 };
 
 #endif // XWINDOW_H

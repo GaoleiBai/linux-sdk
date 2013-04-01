@@ -229,8 +229,6 @@
         <File Name="LFC/XWidgets/Events/controleventfocused.cpp"/>
         <File Name="LFC/XWidgets/Events/controlevent.h"/>
         <File Name="LFC/XWidgets/Events/controlevent.cpp"/>
-        <File Name="LFC/XWidgets/Events/controleventchanged.h"/>
-        <File Name="LFC/XWidgets/Events/controleventchanged.cpp"/>
         <File Name="LFC/XWidgets/Events/controleventmoved.h"/>
         <File Name="LFC/XWidgets/Events/controleventmoved.cpp"/>
         <File Name="LFC/XWidgets/Events/controleventbackcolor.h"/>

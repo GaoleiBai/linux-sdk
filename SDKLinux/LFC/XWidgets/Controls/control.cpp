@@ -20,12 +20,12 @@
 *
 **/
 #include "control.h"
+#include "../xwindow.h"
+#include "../Graphics/igraphics.h"
 #include "../Events/controleventmoved.h"
 #include "../Events/controleventbackcolor.h"
-#include "../Events/controleventchanged.h"
 #include "../Events/controleventfocused.h"
 #include "../Events/controleventvisible.h"
-#include "../Graphics/igraphics.h"
 #include "../../Delegations/ndelegation.h"
 #include <stdlib.h>
 
@@ -38,6 +38,7 @@ Control::Control()
 	visible = true;
 	focused = false;
 	entered = false;
+	taborder = 0;
 	
 	onControlChanged = new NDelegationManager();
 	onMouseDown = new NDelegationManager();
@@ -64,6 +65,7 @@ Control::Control(const NRectangle &area)
 	visible = true;
 	focused = false;
 	entered = false;
+	taborder = 0;
 	
 	onControlChanged = new NDelegationManager();
 	onMouseDown = new NDelegationManager();
@@ -106,6 +108,19 @@ Control::~Control()
 		
 }
 
+int Control::COMPARER(const void *u, const void *v)
+{
+	Control **uu = (Control **)u;
+	Control **vv = (Control **)v;
+	int diff = (*uu)->TabOrder() - (*vv)->TabOrder();
+	if (diff > 0)
+		return 1;
+	else if (diff < 0)
+		return -1;
+	else 
+		return 0;
+}
+
 void *Control::InternalOnMouseDown(void *params)
 {
 
@@ -114,6 +129,11 @@ void *Control::InternalOnMouseDown(void *params)
 void *Control::InternalOnMouseUp(void *params)
 {
 	
+}
+
+void *Control::InternalOnChildFocusChanged(ControlEventFocused *e)
+{
+	DelegationOnFocus().Execute(e);
 }
 
 NRectangle Control::Area()
@@ -138,7 +158,16 @@ bool Control::IsVisible()
 
 bool Control::IsFocused()
 {
-	return focused;
+	if (focused) return true;
+	for (int i=0; i<children->Count(); i++)
+		if ((*children)[i]->IsFocused())
+			return true;
+	return false;
+}
+
+int Control::TabOrder()
+{
+	return taborder;
 }
 
 void Control::SetArea(const NRectangle &area)
@@ -146,9 +175,8 @@ void Control::SetArea(const NRectangle &area)
 	if (this->area->Equals(area)) return;
 	*this->area = area;	
 	ControlEventMoved me(this, area);
-	ControlEventChanged ce(this);
-	DelegationOnControlChanged().Execute(&ce);
 	DelegationOnMove().Execute(&me);
+	window->Invalidate();
 }
 
 void Control::SetBackColor(const NColor &backcolor)
@@ -156,9 +184,8 @@ void Control::SetBackColor(const NColor &backcolor)
 	if (this->backcolor->Equals(backcolor)) return;
 	*this->backcolor = backcolor;
 	ControlEventBackColor bce(this, backcolor);
-	ControlEventChanged ce(this);
-	DelegationOnControlChanged().Execute(&ce);
 	DelegationOnBackColor().Execute(&bce);
+	Draw();
 }
 
 void Control::SetUserData(void *userdata)
@@ -166,28 +193,38 @@ void Control::SetUserData(void *userdata)
 	this->userdata = userdata;
 }
 
-void Control::SetFocused(bool focused)
-{
-	if (this->focused == focused) return;
-	this->focused = focused;
-	ControlEventFocused fe(this, focused);
-	ControlEventChanged ce(this);
-	DelegationOnControlChanged().Execute(&ce);
-	DelegationOnFocus().Execute(&fe);
-}
-
 void Control::SetVisible(bool visible)
 {
 	if (this->visible == visible) return;
 	this->visible = visible;
 	ControlEventVisible ve(this, visible);
-	ControlEventChanged ce(this);
-	DelegationOnControlChanged().Execute(&ce);
 	DelegationOnVisible().Execute(&ve);
+	if (visible) 
+		Draw();
+	else 
+		window->Invalidate();
 }
 
-void Control::Init()
+void Control::SetFocus(bool focus)
 {
+	if (!IsFocusable()) return;
+	if (this->focused == focus) return;
+	this->focused = focus;
+	ControlEventFocused fe(this, focus);
+	DelegationOnFocus().Execute(&fe);
+	Draw();
+}
+
+void Control::SetTabOrder(int taborder)
+{
+	this->taborder = taborder;
+}
+
+void Control::Init(XWindow *w)
+{
+	// Get the graphics context
+	this->window = w;
+	
 	// For detecting click and double click events
 	DelegationOnMouseDown() += NDelegation(this, (Delegate)&Control::InternalOnMouseDown);
 	DelegationOnMouseUp() += NDelegation(this, (Delegate)&Control::InternalOnMouseUp);
@@ -200,15 +237,16 @@ void Control::ChildControlAdd(Control *c)
 {
 	if (ChildControlExists(c)) return;
 	children->Add(c);
-	ControlEventChanged e(this);
-	DelegationOnControlChanged().Execute(&e);
+	c->Init(window);
+	c->DelegationOnFocus() += NDelegation(this, (Delegate)&Control::InternalOnChildFocusChanged);
+	c->Draw();
 }
 
 void Control::ChildControlRemove(Control *c)
 {
+	c->DelegationOnFocus() -= NDelegation(this, (Delegate)&Control::InternalOnChildFocusChanged);
 	children->Remove(c);
-	ControlEventChanged e(this);
-	DelegationOnControlChanged().Execute(&e);
+	window->Invalidate();
 }
 
 bool Control::ChildControlExists(Control *c)
@@ -216,12 +254,16 @@ bool Control::ChildControlExists(Control *c)
 	return children->Contains(c);
 }
 
-void Control::Draw(IGraphics *g)
+void Control::Draw()
 {
-	g->ClipRegionSet(*area);
-	g->SetColor(*backcolor);
-	g->FillRectangle(*area);
-	g->ClipRegionReset();
+	IGraphics *gc = window->HandlerGraphics();
+	gc->ClipRegionSet(*area);
+	gc->SetColor(*backcolor);
+	gc->FillRectangle(*area);
+	gc->ClipRegionReset();
+	
+	for (int i=0; i<children->Count(); i++)
+		(*children)[i]->Draw();
 }
 
 void Control::Prepare()
@@ -232,6 +274,20 @@ void Control::Prepare()
 void Control::Release()
 {
 	
+}
+
+bool Control::IsFocusable()
+{
+	return false;
+}
+
+Collection<Control *> Control::EnumFocusableChildren()
+{
+	Collection<Control *> result;
+	if (IsFocusable()) result.Add(this);
+	for (int i=0; i<children->Count(); i++) 
+		result.AddRange((*children)[i]->EnumFocusableChildren());
+	return result;
 }
 
 NDelegationManager &Control::DelegationOnControlChanged()

@@ -43,7 +43,7 @@
 #include "Events/windowresizeevent.h"
 #include "Events/keyboardmappingevent.h"
 #include "Events/colormapevent.h"
-#include "Events/controleventchanged.h"
+#include "Events/controleventfocused.h"
 #include <string.h>
 
 XWindow::XWindow()
@@ -111,7 +111,7 @@ void XWindow::init(const XDisplay &d)
 	borderwidth = 1;
 	colordepth = DefaultDepth(windowDisplay, windowScreen);
 	visible = false;
-	backcolor = new NColor(0.7, 0.7, 0.8, 1.0);
+	backcolor = new NColor(0.95, 0.95, 0.97, 1.0);
 	font = new NFont("Ubuntu Mono", NFont::FontWeightBold, 12);
 	drawEnabled = true;
 	
@@ -257,15 +257,21 @@ Window XWindow::HandlerWindow()
 	return window;
 }
 
+Visual *XWindow::HandlerVisual()
+{
+	return windowVisual;
+}
+
 int XWindow::HandlerScreen()
 {
 	return windowScreen;
 }
 
-Visual *XWindow::HandlerVisual()
+IGraphics *XWindow::HandlerGraphics()
 {
-	return windowVisual;
+	return gc;
 }
+
 
 void XWindow::Run()
 {
@@ -450,8 +456,6 @@ void XWindow::SetVisible(bool visible)
 		XMapWindow(windowDisplay, window) :
 		XUnmapWindow(windowDisplay, window);
 	XException::CheckResult(res);
-
-	DelegationOnWindowShow().Execute(&visible);
 }
 
 void XWindow::SetArea(const NRectangle &r)
@@ -469,6 +473,7 @@ void XWindow::SetBackColor(const NColor &c)
 void XWindow::SetFont(const NFont &f)
 {
 	*font = f;
+	Invalidate();
 }
 
 bool XWindow::IsVisible()
@@ -505,21 +510,62 @@ void XWindow::ControlAdd(Control *c)
 {
 	if (ControlExists(c)) return;	
 	controls->Add(c);
-	c->Init();
-	c->Draw(gc);
-	c->DelegationOnControlChanged() += NDelegation(this, (Delegate)&XWindow::OnControlChanged);
+	c->Init(this);
+	c->DelegationOnFocus() += NDelegation(this, (Delegate)&XWindow::OnControlFocusChanged);
+	Invalidate();
 }
 
 void XWindow::ControlRemove(Control *c)
 {
+	c->DelegationOnFocus() -= NDelegation(this, (Delegate)&XWindow::OnControlFocusChanged);
 	controls->Remove(c);
-	c->SetVisible(false);
-	c->Draw(gc);
+	Invalidate();
 }
 
 bool XWindow::ControlExists(Control *c)
 {
 	return controls->Contains(c);
+}
+
+Collection<Control *> XWindow::ControlsEnumFocusable()
+{
+	Collection<Control *> focusables;
+	for (int i=0; i<controls->Count(); i++)
+		focusables.AddRange((*controls)[i]->EnumFocusableChildren());
+	focusables.QuickSort(Control::COMPARER);
+	return focusables;
+}
+
+Control *XWindow::ControlGetFocused()
+{
+	Collection<Control *> focusables = ControlsEnumFocusable();
+	for (int i=0; i<focusables.Count(); i++)
+		if (focusables[i]->IsFocused())
+			return focusables[i];
+}
+
+void XWindow::ControlFocusNext()
+{
+	Collection<Control *> focusables = ControlsEnumFocusable();
+	Control *focused = ControlGetFocused();
+	int ix = controls->FindFirstIx(focused);
+	if (ix == -1) return;
+	
+	ix += 1;
+	ix = ix % controls->Count();
+	(*controls)[ix]->SetFocus(true);
+}
+
+void XWindow::ControlFocusPrevious()
+{
+	Collection<Control *> focusables = ControlsEnumFocusable();
+	Control *focused = ControlGetFocused();
+	int ix = controls->FindFirstIx(focused);
+	if (ix == -1) return;
+	
+	ix += controls->Count() - 1;
+	ix = ix % controls->Count();
+	(*controls)[ix]->SetFocus(true);
 }
 
 void XWindow::Prepare()
@@ -539,16 +585,16 @@ void XWindow::Draw()
 	gc->Clear(*backcolor);
 	for (int i=0; i<controls->Count(); i++) {
 		if (!(*controls)[i]->IsVisible()) continue;
-		(*controls)[i]->Draw(gc);
+		(*controls)[i]->Draw();
 	}
 }
 
-void *XWindow::OnControlChanged(ControlEventChanged *e)
+void *XWindow::OnControlFocusChanged(ControlEventFocused *e)
 {
-	if (e->Source()->IsVisible()) {
-		e->Source()->Draw(gc);
-	} else {
-		gc->SetColor(*backcolor);
-		gc->FillRectangle(e->Source()->Area());
+	if (!e->IsFocused()) return NULL;
+	Collection<Control *> focusables = ControlsEnumFocusable();
+	for (int i=0; i<focusables.Count(); i++) {
+		if (focusables[i] == e->Source()) continue;
+		focusables[i]->SetFocus(false);
 	}
 }

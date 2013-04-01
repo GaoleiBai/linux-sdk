@@ -29,16 +29,19 @@
 class IGraphics;
 class NColor;
 class XWindow;
+class ControlEventFocused;
 
 class Control : public NObject {
 protected:
+	XWindow *window;
 	NRectangle *area;
 	NColor *backcolor;
 	void *userdata;
 	Collection<Control *> *children;
 	bool visible;
 	bool entered;
-	bool focused;	
+	bool focused;
+	int taborder;
 	
 	NDelegationManager *onControlChanged;
 	NDelegationManager *onMouseDown;
@@ -56,13 +59,16 @@ protected:
 	
 	void *InternalOnMouseDown(void *params);
 	void *InternalOnMouseUp(void *params);
+	void *InternalOnChildFocusChanged(ControlEventFocused *e);
 	
 public:
 	Control();
 	Control(const NRectangle &area);
 	virtual ~Control();
+	
+	static int COMPARER(const void *u, const void *v);
 
-	void Init();
+	void Init(XWindow *w);
 	void ChildControlAdd(Control *c);
 	void ChildControlRemove(Control *c);
 	bool ChildControlExists(Control *c);
@@ -72,16 +78,21 @@ public:
 	void *GetUserData();
 	bool IsVisible();
 	bool IsFocused();
+	int TabOrder();
 	
 	void SetArea(const NRectangle &area);
 	void SetBackColor(const NColor &backcolor);
 	void SetUserData(void *userdata);
 	void SetVisible(bool visible);
-	void SetFocused(bool focused);
+	void SetFocus(bool focused);
+	void SetTabOrder(int taborder);
 	
-	virtual void Draw(IGraphics *g);
+	virtual void Draw();
 	virtual void Prepare();
 	virtual void Release();
+	virtual bool IsFocusable();
+	
+	Collection<Control *> EnumFocusableChildren();
 	
 	NDelegationManager &DelegationOnControlChanged();
 	NDelegationManager &DelegationOnMouseDown();

@@ -53,6 +53,7 @@ public:
 	void QuickSort(int (*COMPARER)(const void *u, const void *v));
 	int BinarySearchIx(T o, int (*COMPARER)(const void *u, const void *v));
 	void Pack();
+	int FindFirstIx(T o);
 	
 	
 	T &First();
@@ -299,6 +300,15 @@ T &Collection<T>::operator[](int ix)
 	if (ix < 0 || ix > numObjects) 
 		new CollectionException("Index out of bounds", __FILE__, __LINE__, __func__);
 	return objects[ix];
+}
+
+template<class T>
+int Collection<T>::FindFirstIx(T o)
+{
+	for (int i=0; i < numObjects; i++)
+		if (objects[i] == o)
+			return i;
+	return -1;
 }
 
 
