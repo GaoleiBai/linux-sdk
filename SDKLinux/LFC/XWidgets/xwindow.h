@@ -35,6 +35,7 @@ class Control;
 class NColor;
 class NRectangle;
 class NFont;
+class ControlEventChanged;
 
 class XWindow : public NObject {
 	
@@ -135,6 +136,7 @@ protected:
 	virtual void Prepare();
 	virtual void Dispose();
 	void Draw();
+	void *OnControlChanged(ControlEventChanged *e);
 
 };
 

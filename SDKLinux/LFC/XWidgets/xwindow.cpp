@@ -43,6 +43,7 @@
 #include "Events/windowresizeevent.h"
 #include "Events/keyboardmappingevent.h"
 #include "Events/colormapevent.h"
+#include "Events/controleventchanged.h"
 #include <string.h>
 
 XWindow::XWindow()
@@ -503,15 +504,17 @@ int XWindow::GetColorDepth()
 void XWindow::ControlAdd(Control *c)
 {
 	if (ControlExists(c)) return;	
-	c->Init();
 	controls->Add(c);
-	Invalidate();
+	c->Init();
+	c->Draw(gc);
+	c->DelegationOnControlChanged() += NDelegation(this, (Delegate)&XWindow::OnControlChanged);
 }
 
 void XWindow::ControlRemove(Control *c)
 {
 	controls->Remove(c);
-	Invalidate();
+	c->SetVisible(false);
+	c->Draw(gc);
 }
 
 bool XWindow::ControlExists(Control *c)
@@ -534,6 +537,18 @@ void XWindow::Draw()
 	if (!drawEnabled) return;
 	
 	gc->Clear(*backcolor);
-	for (int i=0; i<controls->Count(); i++)
+	for (int i=0; i<controls->Count(); i++) {
+		if (!(*controls)[i]->IsVisible()) continue;
 		(*controls)[i]->Draw(gc);
+	}
+}
+
+void *XWindow::OnControlChanged(ControlEventChanged *e)
+{
+	if (e->Source()->IsVisible()) {
+		e->Source()->Draw(gc);
+	} else {
+		gc->SetColor(*backcolor);
+		gc->FillRectangle(e->Source()->Area());
+	}
 }
