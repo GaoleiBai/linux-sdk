@@ -29,7 +29,12 @@
 class IGraphics;
 class NColor;
 class XWindow;
+class ControlEventMoved;
+class ControlEventKey;
 class ControlEventFocused;
+class ControlEventMouseButton;
+class ControlEventBackColor;
+class ControlEventVisible;
 
 class Control : public NObject {
 protected:
@@ -43,12 +48,12 @@ protected:
 	bool focused;
 	int taborder;
 	
-	NDelegationManager *onControlChanged;
 	NDelegationManager *onMouseDown;
 	NDelegationManager *onMouseUp;
 	NDelegationManager *onMouseMove;
 	NDelegationManager *onClick;
 	NDelegationManager *onDoubleClick;
+	NDelegationManager *onKeyPreview;
 	NDelegationManager *onKeyPress;
 	NDelegationManager *onKeyRelease;
 	NDelegationManager *onMove;
@@ -56,10 +61,6 @@ protected:
 	NDelegationManager *onEnter;
 	NDelegationManager *onFocus;
 	NDelegationManager *onBackColor;
-	
-	void *InternalOnMouseDown(void *params);
-	void *InternalOnMouseUp(void *params);
-	void *InternalOnChildFocusChanged(ControlEventFocused *e);
 	
 public:
 	Control();
@@ -96,21 +97,31 @@ public:
 	virtual bool CaptureSpaceKey();
 	virtual bool CaptureEscapeKey();
 	
+	virtual bool OnMove(ControlEventMoved *e);
+	virtual bool OnBackColor(ControlEventBackColor *e);
+	virtual bool OnVisible(ControlEventVisible *e);
+	virtual bool OnKeyPreview(ControlEventKey *e);
+	virtual bool OnKeyPressed(ControlEventKey *e);
+	virtual bool OnKeyReleased(ControlEventKey *e);
+	virtual bool OnMouseButtonDown(ControlEventMouseButton *e);
+	virtual bool OnMouseButtonUp(ControlEventMouseButton *e);
+	virtual bool OnFocus(ControlEventFocused *e);
+		
 	Collection<Control *> EnumFocusableChildren();
 	
-	NDelegationManager &DelegationOnControlChanged();
-	NDelegationManager &DelegationOnMouseDown();
-	NDelegationManager &DelegationOnMouseUp();
+	NDelegationManager &DelegationOnMouseDown();	// Arg: ControlEventMouseButton *
+	NDelegationManager &DelegationOnMouseUp();		// Arg: ControlEventMouseButton *
 	NDelegationManager &DelegationOnMouseMove();
 	NDelegationManager &DelegationOnClick();
 	NDelegationManager &DelegationOnDoubleClick();
+	NDelegationManager &DelegationOnKeyPreview();	// Arg: ControlEventKey *
 	NDelegationManager &DelegationOnKeyPress();		// Arg: ControlEventKey *
 	NDelegationManager &DelegationOnKeyRelease();	// Arg: ControlEventKey *
-	NDelegationManager &DelegationOnMove();
-	NDelegationManager &DelegationOnVisible();
+	NDelegationManager &DelegationOnMove();			// Arg: ControlEventMoved *
+	NDelegationManager &DelegationOnVisible();		// Arg: ControlEventVisible *
 	NDelegationManager &DelegationOnEnter();
 	NDelegationManager &DelegationOnFocus();		// Arg: ControlEventFocus *
-	NDelegationManager &DelegationOnBackColor();
+	NDelegationManager &DelegationOnBackColor();	// Arg: ControlEventBackColor *
 	
 };
 

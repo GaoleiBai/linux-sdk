@@ -235,6 +235,8 @@
         <File Name="LFC/XWidgets/Events/controleventbackcolor.cpp"/>
         <File Name="LFC/XWidgets/Events/controleventkey.h"/>
         <File Name="LFC/XWidgets/Events/controleventkey.cpp"/>
+        <File Name="LFC/XWidgets/Events/controleventmousebutton.h"/>
+        <File Name="LFC/XWidgets/Events/controleventmousebutton.cpp"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Controls">
         <File Name="LFC/XWidgets/Controls/control.h"/>

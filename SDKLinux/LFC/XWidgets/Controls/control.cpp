@@ -22,11 +22,15 @@
 #include "control.h"
 #include "../xwindow.h"
 #include "../Graphics/igraphics.h"
+#include "../Graphics/npoint.h"
 #include "../Events/controleventmoved.h"
 #include "../Events/controleventbackcolor.h"
 #include "../Events/controleventfocused.h"
 #include "../Events/controleventvisible.h"
+#include "../Events/controleventkey.h"
+#include "../Events/controleventmousebutton.h"
 #include "../../Delegations/ndelegation.h"
+#include "../../nwchar.h"
 #include <stdlib.h>
 
 Control::Control()
@@ -40,12 +44,12 @@ Control::Control()
 	entered = false;
 	taborder = 0;
 	
-	onControlChanged = new NDelegationManager();
 	onMouseDown = new NDelegationManager();
 	onMouseUp = new NDelegationManager();
 	onMouseMove = new NDelegationManager();
 	onClick = new NDelegationManager();
 	onDoubleClick = new NDelegationManager();
+	onKeyPreview = new NDelegationManager();
 	onKeyPress = new NDelegationManager();
 	onKeyRelease = new NDelegationManager();
 	onMove = new NDelegationManager();
@@ -67,12 +71,12 @@ Control::Control(const NRectangle &area)
 	entered = false;
 	taborder = 0;
 	
-	onControlChanged = new NDelegationManager();
 	onMouseDown = new NDelegationManager();
 	onMouseUp = new NDelegationManager();
 	onMouseMove = new NDelegationManager();
 	onClick = new NDelegationManager();
 	onDoubleClick = new NDelegationManager();
+	onKeyPreview = new NDelegationManager();
 	onKeyPress = new NDelegationManager();
 	onKeyRelease = new NDelegationManager();
 	onMove = new NDelegationManager();
@@ -92,12 +96,12 @@ Control::~Control()
 	children->DeleteAndClear();
 	delete children;
 			
-	delete onControlChanged;
 	delete onMouseDown;
 	delete onMouseUp;
 	delete onMouseMove;
 	delete onClick;
 	delete onDoubleClick;
+	delete onKeyPreview;
 	delete onKeyPress;
 	delete onKeyRelease;
 	delete onMove;
@@ -121,17 +125,93 @@ int Control::COMPARER(const void *u, const void *v)
 		return 0;
 }
 
-void *Control::InternalOnMouseDown(void *params)
+bool Control::OnMove(ControlEventMoved *e)
 {
-
+	DelegationOnMove().Execute(e);
 }
 
-void *Control::InternalOnMouseUp(void *params)
+bool Control::OnBackColor(ControlEventBackColor *e)
 {
+	DelegationOnBackColor().Execute(e);
+}
+
+bool Control::OnVisible(ControlEventVisible *e)
+{
+	DelegationOnVisible().Execute(e);
+}
+
+bool Control::OnKeyPreview(ControlEventKey *e)
+{
+	for (int i=0;i<children->Count(); i++) 
+		(*children)[i]->OnKeyPreview(e);
 	
+	DelegationOnKeyPreview().Execute(e);
 }
 
-void *Control::InternalOnChildFocusChanged(ControlEventFocused *e)
+bool Control::OnKeyPressed(ControlEventKey *e)
+{
+	for (int i=0;i<children->Count(); i++) 
+		if ((*children)[i]->OnKeyPressed(e)) 
+			return true;
+	
+	if (!IsVisible()) return false;
+	if (!IsFocused()) return false;
+	if (e->KeyCode().Value() == 23 && !CaptureTabKey() || 		// Window focus rotate
+		e->KeyCode().Value() == 13 && !CaptureEnterKey() || 	// Return: Window Accept
+		e->KeyCode().Value() == 27 && !CaptureEscapeKey() || 	// Escape: Window Cancel
+		e->KeyCode().Value() == 20 && !CaptureSpaceKey()) 		// Return: Window Accept
+	{
+		return false;
+	}
+	
+	DelegationOnKeyPress().Execute(e);
+	return true;
+}
+
+bool Control::OnKeyReleased(ControlEventKey *e)
+{
+	for (int i=0;i<children->Count(); i++) 
+		if ((*children)[i]->OnKeyReleased(e)) 
+			return true;
+	
+	if (!IsVisible()) return false;
+	if (!IsFocused()) return false;
+	if (e->KeyCode().Value() == 23 && !CaptureTabKey() || 		// Window focus rotate
+		e->KeyCode().Value() == 13 && !CaptureEnterKey() || 	// Return: Window Accept
+		e->KeyCode().Value() == 27 && !CaptureEscapeKey() || 	// Escape: Window Cancel
+		e->KeyCode().Value() == 20 && !CaptureSpaceKey()) 		// Return: Window Accept
+	{
+		return false;
+	}
+	
+	DelegationOnKeyRelease().Execute(e);
+	return true;
+}
+
+bool Control::OnMouseButtonDown(ControlEventMouseButton *e)
+{
+	for (int i=0;i<children->Count(); i++) 
+		if ((*children)[i]->OnMouseButtonDown(e)) 
+			return true;
+	
+	if (!IsVisible()) return false;
+	if (!area->Contains(e->Position())) return false;
+	DelegationOnMouseDown().Execute(e);
+	return true;
+}
+
+bool Control::OnMouseButtonUp(ControlEventMouseButton *e)
+{
+	for (int i=0;i<children->Count(); i++) 
+		if ((*children)[i]->OnMouseButtonUp(e)) 
+			return true;
+	
+	if (!IsVisible()) return false;
+	DelegationOnMouseUp().Execute(e);
+	return true;
+}
+
+bool Control::OnFocus(ControlEventFocused *e)
 {
 	DelegationOnFocus().Execute(e);
 }
@@ -175,7 +255,7 @@ void Control::SetArea(const NRectangle &area)
 	if (this->area->Equals(area)) return;
 	*this->area = area;	
 	ControlEventMoved me(this, area);
-	DelegationOnMove().Execute(&me);
+	OnMove(&me);
 	window->Invalidate();
 }
 
@@ -184,7 +264,7 @@ void Control::SetBackColor(const NColor &backcolor)
 	if (this->backcolor->Equals(backcolor)) return;
 	*this->backcolor = backcolor;
 	ControlEventBackColor bce(this, backcolor);
-	DelegationOnBackColor().Execute(&bce);
+	OnBackColor(&bce);
 	Draw();
 }
 
@@ -211,7 +291,7 @@ void Control::SetFocus(bool focus)
 	if (this->focused == focus) return;
 	this->focused = focus;
 	ControlEventFocused fe(this, focus);
-	DelegationOnFocus().Execute(&fe);
+	OnFocus(&fe);
 	Draw();
 }
 
@@ -225,10 +305,6 @@ void Control::Init(XWindow *w)
 	// Get the graphics context
 	this->window = w;
 	
-	// For detecting click and double click events
-	DelegationOnMouseDown() += NDelegation(this, (Delegate)&Control::InternalOnMouseDown);
-	DelegationOnMouseUp() += NDelegation(this, (Delegate)&Control::InternalOnMouseUp);
-	
 	// Call prepare
 	Prepare();
 }
@@ -238,13 +314,11 @@ void Control::ChildControlAdd(Control *c)
 	if (ChildControlExists(c)) return;
 	children->Add(c);
 	c->Init(window);
-	c->DelegationOnFocus() += NDelegation(this, (Delegate)&Control::InternalOnChildFocusChanged);
 	c->Draw();
 }
 
 void Control::ChildControlRemove(Control *c)
 {
-	c->DelegationOnFocus() -= NDelegation(this, (Delegate)&Control::InternalOnChildFocusChanged);
 	children->Remove(c);
 	window->Invalidate();
 }
@@ -310,11 +384,6 @@ Collection<Control *> Control::EnumFocusableChildren()
 	return result;
 }
 
-NDelegationManager &Control::DelegationOnControlChanged()
-{
-	return *onControlChanged;
-}
-
 NDelegationManager &Control::DelegationOnMouseDown()
 {
 	return *onMouseDown;
@@ -338,6 +407,11 @@ NDelegationManager &Control::DelegationOnClick()
 NDelegationManager &Control::DelegationOnDoubleClick()
 {
 	return *onDoubleClick;
+}
+
+NDelegationManager &Control::DelegationOnKeyPreview()
+{
+	return *onKeyPreview;
 }
 
 NDelegationManager &Control::DelegationOnKeyPress()

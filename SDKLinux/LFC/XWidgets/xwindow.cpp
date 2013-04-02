@@ -46,6 +46,7 @@
 #include "Events/colormapevent.h"
 #include "Events/controleventfocused.h"
 #include "Events/controleventkey.h"
+#include "Events/controleventmousebutton.h"
 #include <string.h>
 
 XWindow::XWindow()
@@ -300,61 +301,46 @@ int XWindow::RunModal()
 			DelegationOnWindowKeyPress().Execute(&e);
 			
 			// Key redirection to controls
-			bool windowAccept = false;
-			bool windowCancel = false;
-			bool redirectKey = false;
-			bool focusRotate = false;
-			Control *cc = ControlGetFocused();
-			if (cc != NULL) {
-				if (e.KeyCode().Value() == 23 && !cc->CaptureTabKey()) {
-					focusRotate = true;
-				} else if (e.KeyCode().Value() == 13 && !cc->CaptureEnterKey()) {
-					windowAccept = true;
-				} else if (e.KeyCode().Value() == 27 && !cc->CaptureEscapeKey()) {
-					windowCancel = true;
-				} else if (e.KeyCode().Value() == 20 && !cc->CaptureSpaceKey()) {
-					windowAccept = true;					
-				} else {
-					redirectKey = true;
-				}
-			} else {
-				if (e.KeyCode().Value() == 23) {
-					focusRotate = true;
-				} else if (e.KeyCode().Value() == 13) {
-					windowAccept = true;
-				} else if (e.KeyCode().Value() == 27) {
-					windowCancel = true;
-				} else if (e.KeyCode().Value() == 20) {
-					windowAccept = true;
-				} else {
-					redirectKey = true;
-				}
-			}
+			ControlEventKey ee(e);
+			bool redirected = false;
+			for (int i=0; i<controls->Count() && !redirected; i++)
+				redirected = (*controls)[i]->OnKeyPressed(&ee);
 			
-			if (redirectKey) {
-				// Redirect key
-				ControlEventKey ee(e);
-				if (cc != NULL) cc->DelegationOnKeyPress().Execute(&ee);
-			} else if (focusRotate) {
-				// Window focus rotate
-				if (!e.PressedShift()) ControlFocusNext();
-				else ControlFocusPrevious();
-			} else if (windowAccept) {
-			} else if (windowCancel) {
+			// Noone catched the event?
+			if (!redirected) {
+				if (e.KeyCode().Value() == 23) {
+					// Window focus rotate
+					if (!e.PressedShift()) ControlFocusNext();
+					else ControlFocusPrevious();
+				} else if (e.KeyCode().Value() == 13) {
+					// Return: Window Accept
+				} else if (e.KeyCode().Value() == 27) {
+					// Escape: Window Cancel
+				} else if (e.KeyCode().Value() == 20) {
+					// Return: Window Accept
+				}
 			}
 		} else if (event.type == KeyRelease) {
 			KeyEvent e(&event.xkey);
 			DelegationOnWindowKeyRelease().Execute(&e);
 
+			// Key redirection to controls
 			ControlEventKey ee(e);
-			Control *cc = ControlGetFocused();
-			if (cc != NULL) cc->DelegationOnKeyPress().Execute(&ee);
+			bool redirected = false;
+			for (int i=0; i<controls->Count() && !redirected; i++)
+				redirected = (*controls)[i]->OnKeyReleased(&ee);
 		} else if (event.type == ButtonPress) {
 			ButtonEvent e(&event.xbutton);
 			DelegationOnWindowMouseDown().Execute(&e);
+			ControlEventMouseButton ee(e);
+			for (int i=0; i<controls->Count(); i++)
+				(*controls)[i]->OnMouseButtonDown(&ee);
 		} else if (event.type == ButtonRelease) {
 			ButtonEvent e(&event.xbutton);
 			DelegationOnWindowMouseUp().Execute(&e);
+			ControlEventMouseButton ee(e);
+			for (int i=0; i<controls->Count(); i++)
+				(*controls)[i]->OnMouseButtonUp(&ee);
 		} else if (event.type == MotionNotify) {
 			MoveEvent e(&event.xmotion);
 			DelegationOnWindowMouseMove().Execute(&e);
