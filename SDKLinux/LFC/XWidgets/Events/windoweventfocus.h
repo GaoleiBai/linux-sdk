@@ -28,7 +28,7 @@
 class DateTime;
 class NPoint;
 
-class FocusEvent : public NObject {
+class WindowEventFocus : public NObject {
 	XFocusChangeEvent *e;
 	
 public:
@@ -46,8 +46,8 @@ public:
 	static const int NotifyDetailPointerRoot = 6;
 	static const int NotifyDetailNONE = 7;
 	
-	FocusEvent(XFocusChangeEvent *e);
-	virtual ~FocusEvent();
+	WindowEventFocus(XFocusChangeEvent *e);
+	virtual ~WindowEventFocus();
 	
 	int NotifyMode();
 	int NotifyDetail();

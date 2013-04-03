@@ -19,20 +19,20 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#include "focusevent.h"
+#include "windoweventfocus.h"
 #include "../Graphics/npoint.h"
 #include "../../Time/datetime.h"
 
-FocusEvent::FocusEvent(XFocusChangeEvent *e)
+WindowEventFocus::WindowEventFocus(XFocusChangeEvent *e)
 {
 	this->e = e;
 }
 
-FocusEvent::~FocusEvent()
+WindowEventFocus::~WindowEventFocus()
 {
 }
 
-int FocusEvent::NotifyMode()
+int WindowEventFocus::NotifyMode()
 {
 	if (e->mode == NotifyNormal) return NotifyModeNormal;
 	else if (e->mode == NotifyGrab) return NotifyModeGrab;
@@ -41,7 +41,7 @@ int FocusEvent::NotifyMode()
 	return -1;
 }
 
-int FocusEvent::NotifyDetail()
+int WindowEventFocus::NotifyDetail()
 {
 	if (e->detail == NotifyAncestor) return NotifyDetailAncestor;
 	else if (e->detail == NotifyVirtual) return NotifyDetailVirtual;
