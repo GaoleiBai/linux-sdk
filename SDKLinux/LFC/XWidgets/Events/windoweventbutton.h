@@ -19,44 +19,22 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef CONTROLEVENTMOUSEBUTTON_H
-#define CONTROLEVENTMOUSEBUTTON_H
+#ifndef WINDOWEVENTBUTTON_H
+#define WINDOWEVENTBUTTON_H
 
-#include "controlevent.h"
+#include <X11/Xlib.h>
+#include "../../n_object.h"
 
-class WindowEventButton;
 class DateTime;
 class NPoint;
 
-class ControlEventMouseButton : public ControlEvent {
-	int status;
-	DateTime *time;
-	NPoint *position;
-	NPoint *positionroot;
+class WindowEventButton : public NObject {
+	XButtonEvent *e;
 	
 public:
-	static const int StatusPressedButton1 = 1;
-	static const int StatusPressedButton2 = 2;
-	static const int StatusPressedButton3 = 4;
-	static const int StatusPressedButton4 = 8;
-	static const int StatusPressedButton5 = 16;
-	static const int StatusPressedControl = 32;
-	static const int StatusPressedLock = 64;
-	static const int StatusPressedShift = 128;
-	static const int StatusPressedMod1 = 256;
-	static const int StatusPressedMod2 = 512;
-	static const int StatusPressedMod3 = 1024;
-	static const int StatusPressedMod4 = 2048;
-	static const int StatusPressedMod5 = 4096;
-	static const int StatusSourceButton1 = 8192;
-	static const int StatusSourceButton2 = 16384;
-	static const int StatusSourceButton3 = 32768;
-	static const int StatusSourceButton4 = 65536;
-	static const int StatusSourceButton5 = 131072;
-
-	ControlEventMouseButton(const WindowEventButton &e);
-	virtual ~ControlEventMouseButton();
-
+	WindowEventButton(XButtonEvent *e);
+	virtual ~WindowEventButton();
+	
 	DateTime Time();
 	NPoint Position();
 	NPoint PositionRoot();	
@@ -81,6 +59,7 @@ public:
 	bool SourceButton4();
 	bool SourceButton5();
 	
+
 };
 
-#endif // CONTROLEVENTMOUSEBUTTON_H
+#endif // WINDOWEVENTBUTTON_H
