@@ -20,13 +20,14 @@
 *
 **/
 #include "controleventkey.h"
+#include "windoweventkey.h"
 #include "../Graphics/npoint.h"
 #include "../../nwchar.h"
 #include "../../Time/datetime.h"
 
-ControlEventKey::ControlEventKey(const KeyEvent &e)
+ControlEventKey::ControlEventKey(const WindowEventKey &e)
 {
-	KeyEvent *ee = (KeyEvent *)&e;
+	WindowEventKey *ee = (WindowEventKey *)&e;
 	
 	status = 0;
 	if (ee->PressedButton1()) status |= StatusPressedButton1;

@@ -23,8 +23,8 @@
 #define CONTROLEVENTKEY_H
 
 #include "controlevent.h"
-#include "keyevent.h"
 
+class WindowEventKey;
 class DateTime;
 class NWChar;
 class NPoint;
@@ -52,7 +52,7 @@ public:
 	static const int StatusPressedMod4 = 2048;
 	static const int StatusPressedMod5 = 4096;
 
-	ControlEventKey(const KeyEvent &e);
+	ControlEventKey(const WindowEventKey &e);
 	virtual ~ControlEventKey();
 	
 	DateTime Time();

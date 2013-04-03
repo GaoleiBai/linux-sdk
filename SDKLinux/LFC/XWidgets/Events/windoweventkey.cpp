@@ -19,101 +19,101 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#include "keyevent.h"
+#include "windoweventkey.h"
 #include "../../Time/datetime.h"
 #include "../../nwchar.h"
 #include "../Graphics/npoint.h"
 
-KeyEvent::KeyEvent(XKeyEvent *e)
+WindowEventKey::WindowEventKey(XKeyEvent *e)
 {
 	keyEvent = e;
 }
 
-KeyEvent::~KeyEvent()
+WindowEventKey::~WindowEventKey()
 {
 }
 
-DateTime KeyEvent::Time()
+DateTime WindowEventKey::Time()
 {
 	return DateTime((time_t)keyEvent->time);
 }
 
-NWChar KeyEvent::KeyCode()
+NWChar WindowEventKey::KeyCode()
 {
 	return NWChar(keyEvent->keycode);
 }
 
-NPoint KeyEvent::Position()
+NPoint WindowEventKey::Position()
 {
 	return NPoint(keyEvent->x, keyEvent->y);
 }
 
-NPoint KeyEvent::PositionRoot()
+NPoint WindowEventKey::PositionRoot()
 {
 	return NPoint(keyEvent->x_root, keyEvent->y_root);
 }
 
-bool KeyEvent::PressedButton1()
+bool WindowEventKey::PressedButton1()
 {
 	return keyEvent->state & Button1Mask != 0;
 }
 
-bool KeyEvent::PressedButton2()
+bool WindowEventKey::PressedButton2()
 {
 	return keyEvent->state & Button2Mask != 0;
 }
 
-bool KeyEvent::PressedButton3()
+bool WindowEventKey::PressedButton3()
 {
 	return keyEvent->state & Button3Mask != 0;
 }
 
-bool KeyEvent::PressedButton4()
+bool WindowEventKey::PressedButton4()
 {
 	return keyEvent->state & Button4Mask != 0;
 }
 
-bool KeyEvent::PressedButton5()
+bool WindowEventKey::PressedButton5()
 {
 	return keyEvent->state & Button5Mask != 0;
 }
 
-bool KeyEvent::PressedControl()
+bool WindowEventKey::PressedControl()
 {
 	return keyEvent->state & ControlMask != 0;
 }
 
-bool KeyEvent::PressedLock()
+bool WindowEventKey::PressedLock()
 {
 	return keyEvent->state & LockMask != 0;
 }
 
-bool KeyEvent::PressedShift()
+bool WindowEventKey::PressedShift()
 {
 	return keyEvent->state & ShiftMask != 0;
 }
 
-bool KeyEvent::PressedMod1()
+bool WindowEventKey::PressedMod1()
 {
 	return keyEvent->state & Mod1Mask != 0;
 }
 
-bool KeyEvent::PressedMod2()
+bool WindowEventKey::PressedMod2()
 {
 	return keyEvent->state & Mod2Mask != 0;
 }
 
-bool KeyEvent::PressedMod3()
+bool WindowEventKey::PressedMod3()
 {
 	return keyEvent->state & Mod3Mask != 0;
 }
 
-bool KeyEvent::PressedMod4()
+bool WindowEventKey::PressedMod4()
 {
 	return keyEvent->state & Mod4Mask != 0;
 }
 
-bool KeyEvent::PressedMod5()
+bool WindowEventKey::PressedMod5()
 {
 	return keyEvent->state & Mod5Mask != 0;
 }

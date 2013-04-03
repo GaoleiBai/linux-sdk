@@ -19,8 +19,8 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef KEYPRESSEVENT_H
-#define KEYPRESSEVENT_H
+#ifndef WINDOWEVENTKEY_H
+#define WINDOWEVENTKEY_H
 
 #include "../../n_object.h"
 #include <X11/Xlib.h>
@@ -29,12 +29,12 @@ class DateTime;
 class NWChar;
 class NPoint;
 
-class KeyEvent : public NObject {
+class WindowEventKey : public NObject {
 	XKeyEvent *keyEvent;
 	
 public:
-	KeyEvent(XKeyEvent *e);
-	virtual ~KeyEvent();
+	WindowEventKey(XKeyEvent *e);
+	virtual ~WindowEventKey();
 
 	DateTime Time();
 	NPoint Position();
@@ -57,4 +57,4 @@ public:
 
 };
 
-#endif // KEYPRESSEVENT_H
+#endif // WINDOWEVENTKEY_H
