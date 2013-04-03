@@ -37,6 +37,8 @@ class ControlEventBackColor;
 class ControlEventVisible;
 
 class Control : public NObject {
+	friend class XWindow;
+	
 protected:
 	XWindow *window;
 	NRectangle *area;
@@ -96,7 +98,9 @@ public:
 	virtual bool CaptureEnterKey();
 	virtual bool CaptureSpaceKey();
 	virtual bool CaptureEscapeKey();
-	
+
+protected:
+
 	virtual bool OnMove(ControlEventMoved *e);
 	virtual bool OnBackColor(ControlEventBackColor *e);
 	virtual bool OnVisible(ControlEventVisible *e);
@@ -107,6 +111,8 @@ public:
 	virtual bool OnMouseButtonUp(ControlEventMouseButton *e);
 	virtual bool OnFocus(ControlEventFocused *e);
 		
+public:
+
 	Collection<Control *> EnumFocusableChildren();
 	
 	NDelegationManager &DelegationOnMouseDown();	// Arg: ControlEventMouseButton *

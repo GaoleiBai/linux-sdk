@@ -237,6 +237,8 @@
         <File Name="LFC/XWidgets/Events/controleventkey.cpp"/>
         <File Name="LFC/XWidgets/Events/controleventmousebutton.h"/>
         <File Name="LFC/XWidgets/Events/controleventmousebutton.cpp"/>
+        <File Name="LFC/XWidgets/Events/controleventmousemove.h"/>
+        <File Name="LFC/XWidgets/Events/controleventmousemove.cpp"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Controls">
         <File Name="LFC/XWidgets/Controls/control.h"/>
