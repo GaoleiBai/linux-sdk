@@ -19,23 +19,23 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#include "createevent.h"
+#include "windoweventcreate.h"
 
-CreateEvent::CreateEvent(XCreateWindowEvent *e)
+WindowEventCreate::WindowEventCreate(XCreateWindowEvent *e)
 {
 	this->e = e;
 }
 
-CreateEvent::~CreateEvent()
+WindowEventCreate::~WindowEventCreate()
 {
 }
 
-NRectangle CreateEvent::Area()
+NRectangle WindowEventCreate::Area()
 {
 	return NRectangle(e->x, e->y, e->width, e->height);
 }
 
-int CreateEvent::BorderWidth()
+int WindowEventCreate::BorderWidth()
 {
 	return e->border_width;
 }

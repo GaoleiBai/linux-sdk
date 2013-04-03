@@ -19,23 +19,23 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef CREATEEVENT_H
-#define CREATEEVENT_H
+#ifndef WINDOWEVENTCREATE_H
+#define WINDOWEVENTCREATE_H
 
 #include "../../n_object.h"
 #include "../Graphics/nrectangle.h"
 #include <X11/Xlib.h>
 
-class CreateEvent : public NObject {
+class WindowEventCreate : public NObject {
 	XCreateWindowEvent *e;
 	
 public:
-	CreateEvent(XCreateWindowEvent *e);
-	virtual ~CreateEvent();
+	WindowEventCreate(XCreateWindowEvent *e);
+	virtual ~WindowEventCreate();
 
 	NRectangle Area();
 	int BorderWidth();
 	
 };
 
-#endif // CREATEEVENT_H
+#endif // WINDOWEVENTCREATE_H
