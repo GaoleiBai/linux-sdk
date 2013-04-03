@@ -19,26 +19,21 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#include "keymapevent.h"
-#include "../xexception.h"
-#include "../../Text/text.h"
+#ifndef WINDOWEVENTKEYMAP_H
+#define WINDOWEVENTKEYMAP_H
 
-KeymapEvent::KeymapEvent(XKeymapEvent *e)
-{
-	this->e = e;
-}
+#include "../../n_object.h"
+#include <X11/Xlib.h>
 
-KeymapEvent::~KeymapEvent()
-{
-}
+class WindowEventKeymap : public NObject {
+	XKeymapEvent *e;
+	
+public:
+	WindowEventKeymap(XKeymapEvent *e);
+	virtual ~WindowEventKeymap();
 
-bool KeymapEvent::KeyPressed(int i)
-{
-	if (i < 0 || i >= 256)
-		throw new XException((Text)"Key index " + i + " doesn't exist", __FILE__, __LINE__, __func__);
-		
-	int byte_ix = i >> 3; 		// (i / 8)
-	int bit_ix = i & 0x0007; 	// (i % 8)
-	return e->key_vector[byte_ix] & (1 << bit_ix);
-}
+	bool KeyPressed(int i);
+	
+};
 
+#endif // WINDOWEVENTKEYMAP_H
