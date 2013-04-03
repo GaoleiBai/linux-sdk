@@ -19,8 +19,8 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef MOVEEVENT_H
-#define MOVEEVENT_H
+#ifndef WINDOWEVENTMOUSEMOVE_H
+#define WINDOWEVENTMOUSEMOVE_H
 
 #include "../../n_object.h"
 #include <X11/Xlib.h>
@@ -28,12 +28,12 @@
 class DateTime;
 class NPoint;
 
-class MoveEvent : public NObject {
+class WindowEventMouseMove : public NObject {
 	XMotionEvent *e;
 	
 public:
-	MoveEvent(XMotionEvent *e);
-	virtual ~MoveEvent();
+	WindowEventMouseMove(XMotionEvent *e);
+	virtual ~WindowEventMouseMove();
 
 	DateTime Time();
 	NPoint Position();
@@ -57,4 +57,4 @@ public:
 
 };
 
-#endif // MOVEEVENT_H
+#endif // WINDOWEVENTMOUSEMOVE_H

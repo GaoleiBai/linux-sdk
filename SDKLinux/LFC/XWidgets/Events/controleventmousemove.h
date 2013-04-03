@@ -3,7 +3,7 @@
 
 #include "controlevent.h"
 
-class MoveEvent;
+class WindowEventMouseMove;
 class NPoint;
 class DateTime;
 
@@ -29,7 +29,7 @@ protected:
 	static const int StatusPressedMod5 = 4096;	
 	
 public:
-	ControlEventMouseMove(const MoveEvent &e);
+	ControlEventMouseMove(const WindowEventMouseMove &e);
 	virtual ~ControlEventMouseMove();
 	
 	DateTime Time();

@@ -19,100 +19,100 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#include "moveevent.h"
+#include "windoweventmousemove.h"
 #include "../../Time/datetime.h"
 #include "../Graphics/npoint.h"
 
-MoveEvent::MoveEvent(XMotionEvent *e)
+WindowEventMouseMove::WindowEventMouseMove(XMotionEvent *e)
 {
 	this->e = e;
 }
 
-MoveEvent::~MoveEvent()
+WindowEventMouseMove::~WindowEventMouseMove()
 {
 }
 
-DateTime MoveEvent::Time()
+DateTime WindowEventMouseMove::Time()
 {
 	return DateTime((time_t)e->time);
 }
 
-NPoint MoveEvent::Position()
+NPoint WindowEventMouseMove::Position()
 {
 	return NPoint(e->x, e->y);
 }
 
-NPoint MoveEvent::PositionRoot()
+NPoint WindowEventMouseMove::PositionRoot()
 {
 	return NPoint(e->x_root, e->y_root);
 }
 
-bool MoveEvent::PressedButton1()
+bool WindowEventMouseMove::PressedButton1()
 {
 	return e->state & Button1Mask != 0;
 }
 
-bool MoveEvent::PressedButton2()
+bool WindowEventMouseMove::PressedButton2()
 {
 	return e->state & Button2Mask != 0;
 }
 
-bool MoveEvent::PressedButton3()
+bool WindowEventMouseMove::PressedButton3()
 {
 	return e->state & Button3Mask != 0;
 }
 
-bool MoveEvent::PressedButton4()
+bool WindowEventMouseMove::PressedButton4()
 {
 	return e->state & Button4Mask != 0;
 }
 
-bool MoveEvent::PressedButton5()
+bool WindowEventMouseMove::PressedButton5()
 {
 	return e->state & Button5Mask != 0;
 }
 
-bool MoveEvent::PressedControl()
+bool WindowEventMouseMove::PressedControl()
 {
 	return e->state & ControlMask != 0;
 }
 
-bool MoveEvent::PressedLock()
+bool WindowEventMouseMove::PressedLock()
 {
 	return e->state & LockMask != 0;
 }
 
-bool MoveEvent::PressedShift()
+bool WindowEventMouseMove::PressedShift()
 {
 	return e->state & ShiftMask != 0;
 }
 
-bool MoveEvent::PressedMod1()
+bool WindowEventMouseMove::PressedMod1()
 {
 	return e->state & Mod1Mask != 0;
 }
 
-bool MoveEvent::PressedMod2()
+bool WindowEventMouseMove::PressedMod2()
 {
 	return e->state & Mod2Mask != 0;
 }
 
-bool MoveEvent::PressedMod3()
+bool WindowEventMouseMove::PressedMod3()
 {
 	return e->state & Mod3Mask != 0;
 }
 
-bool MoveEvent::PressedMod4()
+bool WindowEventMouseMove::PressedMod4()
 {
 	return e->state & Mod4Mask != 0;
 }
 
-bool MoveEvent::PressedMod5()
+bool WindowEventMouseMove::PressedMod5()
 {
 	return e->state & Mod5Mask != 0;
 }
 
-bool MoveEvent::IsHint()
+bool WindowEventMouseMove::IsHint()
 {
 	return e->is_hint;
 }

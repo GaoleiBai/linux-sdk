@@ -1,11 +1,11 @@
 #include "controleventmousemove.h"
-#include "moveevent.h"
+#include "windoweventmousemove.h"
 #include "../../Time/datetime.h"
 #include "../Graphics/npoint.h"
 
-ControlEventMouseMove::ControlEventMouseMove(const MoveEvent &e)
+ControlEventMouseMove::ControlEventMouseMove(const WindowEventMouseMove &e)
 {
-	MoveEvent *ee = (MoveEvent *)&e;
+	WindowEventMouseMove *ee = (WindowEventMouseMove *)&e;
 	status = 0;
 	if (ee->PressedButton1()) status |= StatusPressedButton1;
 	if (ee->PressedButton2()) status |= StatusPressedButton2;
