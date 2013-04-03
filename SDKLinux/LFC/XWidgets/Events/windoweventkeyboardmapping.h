@@ -19,13 +19,13 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef KEYBOARDMAPPINGEVENT_H
-#define KEYBOARDMAPPINGEVENT_H
+#ifndef WINDOWEVENTKEYBOARDMAPPING_H
+#define WINDOWEVENTKEYBOARDMAPPING_H
 
 #include "../../n_object.h"
 #include <X11/Xlib.h>
 
-class KeyboardMappingEvent : public NObject {
+class WindowEventKeyboardMapping : public NObject {
 	XMappingEvent *e;
 	
 public:
@@ -33,12 +33,12 @@ public:
 	static const int MappingRequestKeyboard = MappingKeyboard;
 	static const int MappintRequestPointer = MappingPointer;
 	
-	KeyboardMappingEvent(XMappingEvent *e);
-	virtual ~KeyboardMappingEvent();
+	WindowEventKeyboardMapping(XMappingEvent *e);
+	virtual ~WindowEventKeyboardMapping();
 	
 	int FirstKeycode();
 	int Count();
 
 };
 
-#endif // KEYBOARDMAPPINGEVENT_H
+#endif // WINDOWEVENTKEYBOARDMAPPING_H

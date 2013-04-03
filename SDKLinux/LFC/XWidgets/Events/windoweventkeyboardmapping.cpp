@@ -19,23 +19,23 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#include "keyboardmappingevent.h"
+#include "windoweventkeyboardmapping.h"
 
-KeyboardMappingEvent::KeyboardMappingEvent(XMappingEvent *e)
+WindowEventKeyboardMapping::WindowEventKeyboardMapping(XMappingEvent *e)
 {
 	this->e = e;
 }
 
-KeyboardMappingEvent::~KeyboardMappingEvent()
+WindowEventKeyboardMapping::~WindowEventKeyboardMapping()
 {
 }
 
-int KeyboardMappingEvent::FirstKeycode()
+int WindowEventKeyboardMapping::FirstKeycode()
 {
 	return e->first_keycode;
 }
 
-int KeyboardMappingEvent::Count()
+int WindowEventKeyboardMapping::Count()
 {
 	return e->count;
 }
