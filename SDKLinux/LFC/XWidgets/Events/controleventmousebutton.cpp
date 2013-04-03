@@ -20,13 +20,13 @@
 *
 **/
 #include "controleventmousebutton.h"
-#include "windoweventbutton.h"
+#include "windoweventmousebutton.h"
 #include "../../Time/datetime.h"
 #include "../Graphics/npoint.h"
 
-ControlEventMouseButton::ControlEventMouseButton(const WindowEventButton &e)
+ControlEventMouseButton::ControlEventMouseButton(const WindowEventMouseButton &e)
 {
-	WindowEventButton *ee = (WindowEventButton *)&e;
+	WindowEventMouseButton *ee = (WindowEventMouseButton *)&e;
 	
 	status = 0;
 	if (ee->PressedButton1()) status |= StatusPressedButton1;
