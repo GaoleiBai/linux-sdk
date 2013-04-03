@@ -19,30 +19,19 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#include "colormapevent.h"
+#include "windoweventmove.h"
 
-ColormapEvent::ColormapEvent(XColormapEvent *e)
+WindowEventMove::WindowEventMove(XConfigureEvent *e)
 {
 	this->e = e;
 }
 
-ColormapEvent::~ColormapEvent()
+WindowEventMove::~WindowEventMove()
 {
 }
 
-Colormap ColormapEvent::NewColormap()
+NRectangle WindowEventMove::Area()
 {
-	return e->colormap;
+	return NRectangle(e->x, e->y, e->width, e->height);
 }
 
-bool ColormapEvent::ColormapChanged()
-{
-	return e->c_new;
-}
-
-int ColormapEvent::ColormapState()
-{
-	if (e->state == ColormapInstalled || e->state == ColormapUninstalled) 
-		return e->state;
-	return -1;
-}

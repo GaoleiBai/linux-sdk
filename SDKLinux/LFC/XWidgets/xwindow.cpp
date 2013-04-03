@@ -29,21 +29,21 @@
 #include "Graphics/xwindowgraphics.h"
 #include "Graphics/ncolor.h"
 #include "Controls/control.h"
-#include "Events/keyevent.h"
-#include "Events/buttonevent.h"
-#include "Events/moveevent.h"
-#include "Events/enterleaveevent.h"
-#include "Events/focusevent.h"
-#include "Events/keymapevent.h"
-#include "Events/drawevent.h"
-#include "Events/visibilityevent.h"
-#include "Events/showevent.h"
-#include "Events/createevent.h"
-#include "Events/destroyevent.h"
-#include "Events/windowmoveevent.h"
-#include "Events/windowresizeevent.h"
-#include "Events/keyboardmappingevent.h"
-#include "Events/colormapevent.h"
+#include "Events/windoweventkey.h"
+#include "Events/windoweventmousebutton.h"
+#include "Events/windoweventmousemove.h"
+#include "Events/windowevententerleave.h"
+#include "Events/windoweventfocus.h"
+#include "Events/windoweventkeymap.h"
+#include "Events/windoweventdraw.h"
+#include "Events/windoweventvisible.h"
+#include "Events/windoweventshow.h"
+#include "Events/windoweventmove.h"
+#include "Events/windoweventresize.h"
+#include "Events/windoweventkeyboardmapping.h"
+#include "Events/windoweventcreate.h"
+#include "Events/windoweventdestroy.h"
+#include "Events/windoweventcolormap.h"
 #include "Events/controleventfocused.h"
 #include "Events/controleventkey.h"
 #include "Events/controleventmousebutton.h"
@@ -297,7 +297,7 @@ int XWindow::RunModal()
 		
 		// Processes the events
 		if (event.type == KeyPress) {
-			KeyEvent e(&event.xkey);
+			WindowEventKey e(&event.xkey);
 			DelegationOnWindowKeyPress().Execute(&e);
 			
 			// Key redirection to controls
@@ -321,7 +321,7 @@ int XWindow::RunModal()
 				}
 			}
 		} else if (event.type == KeyRelease) {
-			KeyEvent e(&event.xkey);
+			WindowEventKey e(&event.xkey);
 			DelegationOnWindowKeyRelease().Execute(&e);
 
 			// Key redirection to controls
@@ -330,47 +330,47 @@ int XWindow::RunModal()
 			for (int i=0; i<controls->Count() && !redirected; i++)
 				redirected = (*controls)[i]->OnKeyReleased(&ee);
 		} else if (event.type == ButtonPress) {
-			ButtonEvent e(&event.xbutton);
+			WindowEventMouseButton e(&event.xbutton);
 			DelegationOnWindowMouseDown().Execute(&e);
 			ControlEventMouseButton ee(e);
 			for (int i=0; i<controls->Count(); i++)
 				(*controls)[i]->OnMouseButtonDown(&ee);
 		} else if (event.type == ButtonRelease) {
-			ButtonEvent e(&event.xbutton);
+			WindowEventMouseButton e(&event.xbutton);
 			DelegationOnWindowMouseUp().Execute(&e);
 			ControlEventMouseButton ee(e);
 			for (int i=0; i<controls->Count(); i++)
 				(*controls)[i]->OnMouseButtonUp(&ee);
 		} else if (event.type == MotionNotify) {
-			MoveEvent e(&event.xmotion);
+			WindowEventMouseMove e(&event.xmotion);
 			DelegationOnWindowMouseMove().Execute(&e);
 		} else if (event.type == EnterNotify) {
-			EnterLeaveEvent e(&event.xcrossing);
+			WindowEventEnterLeave e(&event.xcrossing);
 			DelegationOnWindowEnter().Execute(&e);
 		} else if (event.type == LeaveNotify) {
-			EnterLeaveEvent e(&event.xcrossing);
+			WindowEventEnterLeave e(&event.xcrossing);
 			DelegationOnWindowLeave().Execute(&e);
 		} else if (event.type == FocusIn) {
-			FocusEvent e(&event.xfocus);
+			WindowEventFocus e(&event.xfocus);
 			DelegationOnWindowFocus().Execute(&e);
 		} else if (event.type == FocusOut) {
-			FocusEvent e(&event.xfocus);
+			WindowEventFocus e(&event.xfocus);
 			DelegationOnWindowFocus().Execute(&e);
 		} else if (event.type == KeymapNotify) {
-			KeymapEvent e(&event.xkeymap);
+			WindowEventKeymap e(&event.xkeymap);
 			DelegationOnWindowKeymap().Execute(&e);
 		} else if (event.type == Expose && event.xexpose.count == 0) { 
-			DrawEvent e(gc, &event.xexpose);
+			WindowEventDraw e(gc, &event.xexpose);
 			Draw();
 			DelegationOnWindowDraw().Execute(&e);
 		} else if (event.type == VisibilityNotify) {
-			VisibilityEvent e(&event.xvisibility);
+			WindowEventVisible e(&event.xvisibility);
 			DelegationOnWindowVisibilityChange().Execute(&e);
 		} else if (event.type == UnmapNotify) {
-			ShowEvent e(false);
+			WindowEventShow e(false);
 			DelegationOnWindowShow().Execute(&e);
 		} else if (event.type == MapNotify) {
-			ShowEvent e(true);
+			WindowEventShow e(true);
 			DelegationOnWindowShow().Execute(&e);
 		} else if (event.type == ConfigureNotify) {			
 			bool generateWindowMoveEvent = 
@@ -384,19 +384,19 @@ int XWindow::RunModal()
 			borderwidth = event.xconfigure.border_width;		
 						
 			if (generateWindowMoveEvent) {
-				WindowMoveEvent e(&event.xconfigure);
+				WindowEventMove e(&event.xconfigure);
 				DelegationOnWindowMove().Execute(&e);
 			}
 			if (generateWindowResizeEvent) {
 				gc->Resize(area->GetWidth(), area->GetHeight());	// Resize XWindowGraphics
-				WindowResizeEvent e(&event.xconfigure);
+				WindowEventResize e(&event.xconfigure);
 				DelegationOnWindowResize().Execute(&e);
 			}			
 		} else if (event.type == ColormapNotify) {
-			ColormapEvent e(&event.xcolormap);
+			WindowEventColormap e(&event.xcolormap);
 			DelegationOnWindowColormapChange().Execute(&e);
 		} else if (event.type == MappingNotify) {
-			KeyboardMappingEvent e(&event.xmapping);
+			WindowEventKeyboardMapping e(&event.xmapping);
 			DelegationOnWindowKeymap().Execute(&e);
 		} else if (event.type == ClientMessage) {
 			if (event.xclient.data.l[0] == wmDeleteMessage)

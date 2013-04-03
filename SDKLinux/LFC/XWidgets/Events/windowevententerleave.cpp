@@ -19,100 +19,100 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#include "enterleaveevent.h"
+#include "windowevententerleave.h"
 #include "../../Time/datetime.h"
 #include "../Graphics/npoint.h"
 
-EnterLeaveEvent::EnterLeaveEvent(XCrossingEvent *e)
+WindowEventEnterLeave::WindowEventEnterLeave(XCrossingEvent *e)
 {
 	this->e = e;
 }
 
-EnterLeaveEvent::~EnterLeaveEvent()
+WindowEventEnterLeave::~WindowEventEnterLeave()
 {
 }
 
-DateTime EnterLeaveEvent::Time()
+DateTime WindowEventEnterLeave::Time()
 {
 	return DateTime((time_t)e->time);
 }
 
-NPoint EnterLeaveEvent::Position()
+NPoint WindowEventEnterLeave::Position()
 {
 	return NPoint(e->x, e->y);
 }
 
-NPoint EnterLeaveEvent::PositionRoot()
+NPoint WindowEventEnterLeave::PositionRoot()
 {
 	return NPoint(e->x_root, e->y_root);
 }
 
-bool EnterLeaveEvent::PressedButton1()
+bool WindowEventEnterLeave::PressedButton1()
 {
 	return e->state & Button1Mask != 0;
 }
 
-bool EnterLeaveEvent::PressedButton2()
+bool WindowEventEnterLeave::PressedButton2()
 {
 	return e->state & Button2Mask != 0;
 }
 
-bool EnterLeaveEvent::PressedButton3()
+bool WindowEventEnterLeave::PressedButton3()
 {
 	return e->state & Button3Mask != 0;
 }
 
-bool EnterLeaveEvent::PressedButton4()
+bool WindowEventEnterLeave::PressedButton4()
 {
 	return e->state & Button4Mask != 0;
 }
 
-bool EnterLeaveEvent::PressedButton5()
+bool WindowEventEnterLeave::PressedButton5()
 {
 	return e->state & Button5Mask != 0;
 }
 
-bool EnterLeaveEvent::PressedControl()
+bool WindowEventEnterLeave::PressedControl()
 {
 	return e->state & ControlMask != 0;
 }
 
-bool EnterLeaveEvent::PressedLock()
+bool WindowEventEnterLeave::PressedLock()
 {
 	return e->state & LockMask != 0;
 }
 
-bool EnterLeaveEvent::PressedShift()
+bool WindowEventEnterLeave::PressedShift()
 {
 	return e->state & ShiftMask != 0;
 }
 
-bool EnterLeaveEvent::PressedMod1()
+bool WindowEventEnterLeave::PressedMod1()
 {
 	return e->state & Mod1Mask != 0;
 }
 
-bool EnterLeaveEvent::PressedMod2()
+bool WindowEventEnterLeave::PressedMod2()
 {
 	return e->state & Mod2Mask != 0;
 }
 
-bool EnterLeaveEvent::PressedMod3()
+bool WindowEventEnterLeave::PressedMod3()
 {
 	return e->state & Mod3Mask != 0;
 }
 
-bool EnterLeaveEvent::PressedMod4()
+bool WindowEventEnterLeave::PressedMod4()
 {
 	return e->state & Mod4Mask != 0;
 }
 
-bool EnterLeaveEvent::PressedMod5()
+bool WindowEventEnterLeave::PressedMod5()
 {
 	return e->state & Mod5Mask != 0;
 }
 
-int EnterLeaveEvent::NotifyMode()
+int WindowEventEnterLeave::NotifyMode()
 {
 	if (e->mode == NotifyNormal) return NotifyModeNormal;
 	else if (e->mode == NotifyGrab) return NotifyModeGrab;
@@ -121,7 +121,7 @@ int EnterLeaveEvent::NotifyMode()
 	return -1;
 }
 
-int EnterLeaveEvent::NotifyDetail()
+int WindowEventEnterLeave::NotifyDetail()
 {
 	if (e->detail == NotifyAncestor) return NotifyDetailAncestor;
 	else if (e->detail == NotifyVirtual) return NotifyDetailVirtual;
@@ -133,7 +133,7 @@ int EnterLeaveEvent::NotifyDetail()
 	else if (e->detail == NotifyDetailNone) return NotifyDetailNONE;
 }
 
-bool EnterLeaveEvent::IsTheFocusWindow()
+bool WindowEventEnterLeave::IsTheFocusWindow()
 {
 	return e->focus;
 }

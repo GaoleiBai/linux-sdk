@@ -43,7 +43,7 @@ int TestWindow::Perform()
 		public:
 			VentanaInicio(const XDisplay &d) : XWindow(d) { }
 			
-			void *OnDraw(DrawEvent *e) {
+			void *OnDraw(WindowEventDraw *e) {
 				e->Graphics().ClipRegionSet(50, 50, 50, 50);
 				e->Graphics().SetLineWidth(1);
 				e->Graphics().SetColor(1.0, 0, 0, 1.0);

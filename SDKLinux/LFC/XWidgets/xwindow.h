@@ -30,7 +30,7 @@
 class XDisplay;
 class Mutex;
 class XWindowGraphics;
-class DrawEvent;
+class WindowEventDraw;
 class Control;
 class NColor;
 class NRectangle;

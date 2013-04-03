@@ -19,19 +19,30 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#include "windowresizeevent.h"
+#include "windoweventcolormap.h"
 
-WindowResizeEvent::WindowResizeEvent(XConfigureEvent *e)
+WindowEventColormap::WindowEventColormap(XColormapEvent *e)
 {
 	this->e = e;
 }
 
-WindowResizeEvent::~WindowResizeEvent()
+WindowEventColormap::~WindowEventColormap()
 {
 }
 
-NRectangle WindowResizeEvent::Area()
+Colormap WindowEventColormap::NewColormap()
 {
-	return NRectangle(e->x, e->y, e->width, e->height);
+	return e->colormap;
 }
 
+bool WindowEventColormap::ColormapChanged()
+{
+	return e->c_new;
+}
+
+int WindowEventColormap::ColormapState()
+{
+	if (e->state == ColormapInstalled || e->state == ColormapUninstalled) 
+		return e->state;
+	return -1;
+}

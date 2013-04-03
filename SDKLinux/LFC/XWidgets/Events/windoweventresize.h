@@ -19,19 +19,22 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#include "windowmoveevent.h"
+#ifndef WINDOWEVENTRESIZE_H
+#define WINDOWEVENTRESIZE_H
 
-WindowMoveEvent::WindowMoveEvent(XConfigureEvent *e)
-{
-	this->e = e;
-}
+#include "../../n_object.h"
+#include "../Graphics/nrectangle.h"
+#include <X11/Xlib.h>
 
-WindowMoveEvent::~WindowMoveEvent()
-{
-}
+class WindowEventResize {
+	XConfigureEvent *e;
+	
+public:
+	WindowEventResize(XConfigureEvent *e);
+	virtual ~WindowEventResize();
 
-NRectangle WindowMoveEvent::Area()
-{
-	return NRectangle(e->x, e->y, e->width, e->height);
-}
+	NRectangle Area();
+	
+};
 
+#endif // WINDOWEVENTRESIZE_H

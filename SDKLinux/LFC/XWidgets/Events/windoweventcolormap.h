@@ -19,22 +19,26 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef WINDOWRESIZEEVENT_H
-#define WINDOWRESIZEEVENT_H
+#ifndef WINDOWEVENTCOLORMAP_H
+#define WINDOWEVENTCOLORMAP_H
 
 #include "../../n_object.h"
-#include "../Graphics/nrectangle.h"
 #include <X11/Xlib.h>
 
-class WindowResizeEvent {
-	XConfigureEvent *e;
+class WindowEventColormap : public NObject {
+	XColormapEvent *e;
 	
 public:
-	WindowResizeEvent(XConfigureEvent *e);
-	virtual ~WindowResizeEvent();
+	static const int ColormapStateInstalled = ColormapInstalled;
+	static const int ColormapStateUninstalled = ColormapUninstalled;
+	
+	WindowEventColormap(XColormapEvent *e);
+	virtual ~WindowEventColormap();
 
-	NRectangle Area();
+	Colormap NewColormap();
+	bool ColormapChanged();
+	int ColormapState();
 	
 };
 
-#endif // WINDOWRESIZEEVENT_H
+#endif // WINDOWEVENTCOLORMAP_H

@@ -19,8 +19,8 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef ENTERLEAVEEVENT_H
-#define ENTERLEAVEEVENT_H
+#ifndef WINDOWEVENTENTERLEAVE_H
+#define WINDOWEVENTENTERLEAVE_H
 
 #include "../../n_object.h"
 #include <X11/Xlib.h>
@@ -28,7 +28,7 @@
 class DateTime;
 class NPoint;
 
-class EnterLeaveEvent : public NObject {
+class WindowEventEnterLeave : public NObject {
 	XCrossingEvent *e;
 	
 public:
@@ -46,8 +46,8 @@ public:
 	static const int NotifyDetailPointerRoot = 6;
 	static const int NotifyDetailNONE = 7;
 	
-	EnterLeaveEvent(XCrossingEvent *e);
-	virtual ~EnterLeaveEvent();
+	WindowEventEnterLeave(XCrossingEvent *e);
+	virtual ~WindowEventEnterLeave();
 
 	DateTime Time();
 	NPoint Position();
@@ -74,4 +74,4 @@ public:
 
 };
 
-#endif // ENTERLEAVEEVENT_H
+#endif // WINDOWEVENTENTERLEAVE_H

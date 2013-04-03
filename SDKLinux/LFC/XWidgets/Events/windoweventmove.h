@@ -26,12 +26,12 @@
 #include "../Graphics/nrectangle.h"
 #include <X11/Xlib.h>
 
-class WindowMoveEvent : public NObject {
+class WindowEventMove : public NObject {
 	XConfigureEvent *e;
 	
 public:
-	WindowMoveEvent(XConfigureEvent *e);
-	virtual ~WindowMoveEvent();
+	WindowEventMove(XConfigureEvent *e);
+	virtual ~WindowEventMove();
 
 	NRectangle Area();
 };
