@@ -19,19 +19,19 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef DESTROYEVENT_H
-#define DESTROYEVENT_H
+#ifndef WINDOWEVENTDESTROY_H
+#define WINDOWEVENTDESTROY_H
 
 #include "../../n_object.h"
 #include <X11/Xlib.h>
 
-class DestroyEvent : public NObject {
+class WindowEventDestroy : public NObject {
 	XDestroyWindowEvent *e;
 	
 public:
-	DestroyEvent(XDestroyWindowEvent *e);
-	virtual ~DestroyEvent();
+	WindowEventDestroy(XDestroyWindowEvent *e);
+	virtual ~WindowEventDestroy();
 
 };
 
-#endif // DESTROYEVENT_H
+#endif // WINDOWEVENTDESTROY_H

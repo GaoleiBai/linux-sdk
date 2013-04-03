@@ -21,12 +21,12 @@
 **/
 #include "destroyevent.h"
 
-DestroyEvent::DestroyEvent(XDestroyWindowEvent *e)
+WindowEventDestroy::WindowEventDestroy(XDestroyWindowEvent *e)
 {
 	this->e = e;
 }
 
-DestroyEvent::~DestroyEvent()
+WindowEventDestroy::~WindowEventDestroy()
 {
 }
 
