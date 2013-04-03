@@ -19,20 +19,20 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef SHOWEVENT_H
-#define SHOWEVENT_H
+#ifndef WINDOWEVENTSHOW_H
+#define WINDOWEVENTSHOW_H
 
 #include "../../n_object.h"
 
-class ShowEvent {
+class WindowEventShow : public NObject {
 	bool shown;
 	
 public:
-	ShowEvent(bool shown);
-	virtual ~ShowEvent();
+	WindowEventShow(bool shown);
+	virtual ~WindowEventShow();
 
 	bool Shown();
 	
 };
 
-#endif // SHOWEVENT_H
+#endif // WINDOWEVENTSHOW_H

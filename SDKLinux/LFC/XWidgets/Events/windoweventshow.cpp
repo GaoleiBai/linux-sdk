@@ -19,18 +19,18 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#include "showevent.h"
+#include "windoweventshow.h"
 
-ShowEvent::ShowEvent(bool shown)
+WindowEventShow::WindowEventShow(bool shown)
 {
 	this->shown = shown;
 }
 
-ShowEvent::~ShowEvent()
+WindowEventShow::~WindowEventShow()
 {
 }
 
-bool ShowEvent::Shown()
+bool WindowEventShow::Shown()
 {
 	return shown;
 }
