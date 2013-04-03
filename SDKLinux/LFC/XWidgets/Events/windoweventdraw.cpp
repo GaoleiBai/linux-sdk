@@ -19,30 +19,30 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#include "drawevent.h"
+#include "windoweventdraw.h"
 #include "../Graphics/nrectangle.h"
 
-DrawEvent::DrawEvent(IGraphics *g, XExposeEvent *e)
+WindowEventDraw::WindowEventDraw(IGraphics *g, XExposeEvent *e)
 {
 	this->g = g;
 	this->e = e;
 }
 
-DrawEvent::~DrawEvent()
+WindowEventDraw::~WindowEventDraw()
 {
 }
 
-NRectangle DrawEvent::Area()
+NRectangle WindowEventDraw::Area()
 {
 	return NRectangle(e->x, e->y, e->width, e->height);
 }
 
-int DrawEvent::NumberOfFollowingDrawEvents()
+int WindowEventDraw::NumberOfFollowingDrawEvents()
 {
 	return e->count;
 }
 
-IGraphics &DrawEvent::Graphics()
+IGraphics &WindowEventDraw::Graphics()
 {
 	return *g;
 }

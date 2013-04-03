@@ -19,14 +19,25 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#include "windoweventdestroy.h"
+#ifndef VISIBILITYEVENT_H
+#define VISIBILITYEVENT_H
 
-WindowEventDestroy::WindowEventDestroy(XDestroyWindowEvent *e)
-{
-	this->e = e;
-}
+#include "../../n_object.h"
+#include <X11/Xlib.h>
 
-WindowEventDestroy::~WindowEventDestroy()
-{
-}
+class WindowEventVisible : public NObject {
+	XVisibilityEvent *e;
+	
+public:
+	static const int VisibilityStateUnobscured = 0;
+	static const int VisibilityStatePartiallyObscured = 1;
+	static const int VisibilityStateFullyObscured = 2;
 
+	WindowEventVisible(XVisibilityEvent *e);
+	virtual ~WindowEventVisible();
+
+	int VisibilityState();
+
+};
+
+#endif // VISIBILITYEVENT_H

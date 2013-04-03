@@ -19,14 +19,27 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#include "windoweventdestroy.h"
+#ifndef WINDOWEVENTDRAW_H
+#define WINDOWEVENTDRAW_H
 
-WindowEventDestroy::WindowEventDestroy(XDestroyWindowEvent *e)
-{
-	this->e = e;
-}
+#include "../../n_object.h"
+#include <X11/Xlib.h>
 
-WindowEventDestroy::~WindowEventDestroy()
-{
-}
+class NRectangle;
+class IGraphics;
 
+class WindowEventDraw : public NObject {
+	IGraphics *g;
+	XExposeEvent *e;
+	
+public:
+	WindowEventDraw(IGraphics *g, XExposeEvent *e);
+	virtual ~WindowEventDraw();
+
+	NRectangle Area();
+	int NumberOfFollowingDrawEvents();
+	IGraphics &Graphics();
+
+};
+
+#endif // WINDOWEVENTDRAW_H

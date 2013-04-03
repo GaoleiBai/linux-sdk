@@ -19,27 +19,24 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef DRAWEVENT_H
-#define DRAWEVENT_H
+#include "windoweventvisible.h"
+#include "../xexception.h"
+#include "../../Text/text.h"
 
-#include "../../n_object.h"
-#include <X11/Xlib.h>
+WindowEventVisible::WindowEventVisible(XVisibilityEvent *e)
+{
+	this->e = e;
+}
 
-class NRectangle;
-class IGraphics;
+WindowEventVisible::~WindowEventVisible()
+{
+}
 
-class DrawEvent : public NObject {
-	IGraphics *g;
-	XExposeEvent *e;
+int WindowEventVisible::VisibilityState()
+{
+	if (e->state == VisibilityUnobscured) return VisibilityStateUnobscured;
+	else if (e->state == VisibilityPartiallyObscured) return VisibilityStatePartiallyObscured;
+	else if (e->state == VisibilityFullyObscured) return VisibilityStateFullyObscured;
 	
-public:
-	DrawEvent(IGraphics *g, XExposeEvent *e);
-	virtual ~DrawEvent();
-
-	NRectangle Area();
-	int NumberOfFollowingDrawEvents();
-	IGraphics &Graphics();
-
-};
-
-#endif // DRAWEVENT_H
+	throw new XException((Text)"Unrecognized visibility state", __FILE__, __LINE__, __func__);
+}
