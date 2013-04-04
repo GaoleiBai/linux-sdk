@@ -35,6 +35,8 @@ class ControlEventFocused;
 class ControlEventMouseButton;
 class ControlEventBackColor;
 class ControlEventVisible;
+class ControlEventMouseMove;
+class ControlEventEnterLeave;
 
 class Control : public NObject {
 	friend class XWindow;
@@ -61,6 +63,7 @@ protected:
 	NDelegationManager *onMove;
 	NDelegationManager *onVisible;
 	NDelegationManager *onEnter;
+	NDelegationManager *onLeave;
 	NDelegationManager *onFocus;
 	NDelegationManager *onBackColor;
 	
@@ -105,10 +108,13 @@ protected:
 	virtual bool OnBackColor(ControlEventBackColor *e);
 	virtual bool OnVisible(ControlEventVisible *e);
 	virtual bool OnKeyPreview(ControlEventKey *e);
-	virtual bool OnKeyPressed(ControlEventKey *e);
-	virtual bool OnKeyReleased(ControlEventKey *e);
+	virtual bool OnKeyPress(ControlEventKey *e);
+	virtual bool OnKeyRelease(ControlEventKey *e);
 	virtual bool OnMouseButtonDown(ControlEventMouseButton *e);
 	virtual bool OnMouseButtonUp(ControlEventMouseButton *e);
+	virtual bool OnMouseMove(ControlEventMouseMove *e);
+	virtual bool OnMouseEnter(ControlEventEnterLeave *e);
+	virtual bool OnMouseLeave(ControlEventEnterLeave *e);
 	virtual bool OnFocus(ControlEventFocused *e);
 		
 public:
@@ -117,7 +123,7 @@ public:
 	
 	NDelegationManager &DelegationOnMouseDown();	// Arg: ControlEventMouseButton *
 	NDelegationManager &DelegationOnMouseUp();		// Arg: ControlEventMouseButton *
-	NDelegationManager &DelegationOnMouseMove();
+	NDelegationManager &DelegationOnMouseMove();	// Arg: ControlEventMouseMove *
 	NDelegationManager &DelegationOnClick();
 	NDelegationManager &DelegationOnDoubleClick();
 	NDelegationManager &DelegationOnKeyPreview();	// Arg: ControlEventKey *
@@ -125,7 +131,8 @@ public:
 	NDelegationManager &DelegationOnKeyRelease();	// Arg: ControlEventKey *
 	NDelegationManager &DelegationOnMove();			// Arg: ControlEventMoved *
 	NDelegationManager &DelegationOnVisible();		// Arg: ControlEventVisible *
-	NDelegationManager &DelegationOnEnter();
+	NDelegationManager &DelegationOnMouseEnter();	// Arg: ControlEventEnterLeave *
+	NDelegationManager &DelegationOnMouseLeave();	// Arg: ControlEventEnterLeave *
 	NDelegationManager &DelegationOnFocus();		// Arg: ControlEventFocus *
 	NDelegationManager &DelegationOnBackColor();	// Arg: ControlEventBackColor *
 	

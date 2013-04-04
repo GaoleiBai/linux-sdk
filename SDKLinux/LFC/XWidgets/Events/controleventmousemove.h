@@ -30,6 +30,7 @@ protected:
 	
 public:
 	ControlEventMouseMove(const WindowEventMouseMove &e);
+	ControlEventMouseMove(const ControlEventMouseMove &e, const NPoint &parentposition);
 	virtual ~ControlEventMouseMove();
 	
 	DateTime Time();

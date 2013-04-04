@@ -36,14 +36,14 @@ int TestWindow::Perform()
 		class VentanaInicio : public XWindow {
 		protected:
 			virtual void Prepare() {
-				DelegationOnWindowDraw() += NDelegation(this, (Delegate)&VentanaInicio::OnDraw);
+				DelegationOnDraw() += NDelegation(this, (Delegate)&VentanaInicio::UserDraw);
 			}
 			
 			
 		public:
 			VentanaInicio(const XDisplay &d) : XWindow(d) { }
 			
-			void *OnDraw(WindowEventDraw *e) {
+			void *UserDraw(WindowEventDraw *e) {
 				e->Graphics().ClipRegionSet(50, 50, 50, 50);
 				e->Graphics().SetLineWidth(1);
 				e->Graphics().SetColor(1.0, 0, 0, 1.0);

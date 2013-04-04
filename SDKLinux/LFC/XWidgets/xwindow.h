@@ -30,13 +30,20 @@
 class XDisplay;
 class Mutex;
 class XWindowGraphics;
-class WindowEventDraw;
 class Control;
 class NColor;
 class NRectangle;
 class NFont;
 class ControlEventFocused;
 class IGraphics;
+class WindowEventDraw;
+class WindowEventKey;
+class WindowEventMouseButton;
+class WindowEventMouseMove;
+class WindowEventEnterLeave;
+class WindowEventFocus;
+class WindowEventKeymap;
+class WindowEventDraw;
 
 class XWindow : public NObject {
 	
@@ -65,8 +72,7 @@ protected:
 	NDelegationManager *dOnWindowMouseDown;
 	NDelegationManager *dOnWindowMouseUp;
 	NDelegationManager *dOnWindowMouseMove;
-	NDelegationManager *dOnWindowEnter;
-	NDelegationManager *dOnWindowLeave;
+	NDelegationManager *dOnWindowEnterLeave;
 	NDelegationManager *dOnWindowDraw;
 	NDelegationManager *dOnWindowShow;
 	NDelegationManager *dOnWindowMove;
@@ -84,23 +90,22 @@ public:
 	XWindow(const XDisplay &d);
 	virtual ~XWindow();
 	
-	NDelegationManager &DelegationOnWindowKeyPress();
-	NDelegationManager &DelegationOnWindowKeyRelease();
-	NDelegationManager &DelegationOnWindowKeymap();
-	NDelegationManager &DelegationOnWindowMouseDown();
-	NDelegationManager &DelegationOnWindowMouseUp();
-	NDelegationManager &DelegationOnWindowMouseMove();
-	NDelegationManager &DelegationOnWindowEnter();
-	NDelegationManager &DelegationOnWindowLeave();
-	NDelegationManager &DelegationOnWindowDraw();
-	NDelegationManager &DelegationOnWindowShow();
-	NDelegationManager &DelegationOnWindowMove();
-	NDelegationManager &DelegationOnWindowResize();
-	NDelegationManager &DelegationOnWindowFocus();
-	NDelegationManager &DelegationOnWindowPropertyChange();
-	NDelegationManager &DelegationOnWindowColormapChange();
-	NDelegationManager &DelegationOnWindowGrabButton();
-	NDelegationManager &DelegationOnWindowVisibilityChange();
+	NDelegationManager &DelegationOnKeyPress();			// Arg: WindowEventKey *
+	NDelegationManager &DelegationOnKeyRelease();		// Arg: WindowEventKey *
+	NDelegationManager &DelegationOnKeymap();			// Arg: WindowKeymap *
+	NDelegationManager &DelegationOnMouseDown();		// Arg: WindowEventMouseButton *
+	NDelegationManager &DelegationOnMouseUp();		// Arg: WindowEventMouseButton *
+	NDelegationManager &DelegationOnMouseMove();
+	NDelegationManager &DelegationOnEnterLeave();		// Arg: WindowEventEnterLeave *
+	NDelegationManager &DelegationOnDraw();			// Arg: WindowEventDraw *
+	NDelegationManager &DelegationOnShow();
+	NDelegationManager &DelegationOnMove();
+	NDelegationManager &DelegationOnResize();
+	NDelegationManager &DelegationOnFocus();
+	NDelegationManager &DelegationOnProperty();
+	NDelegationManager &DelegationOnColormap();
+	NDelegationManager &DelegationOnGrabButton();
+	NDelegationManager &DelegationOnVisible();
 	
 	Display *HandlerDisplay();
 	Window HandlerWindow();
@@ -142,8 +147,16 @@ protected:
 
 	virtual void Prepare();
 	virtual void Dispose();
-	void Draw();
-	void *OnControlFocusChanged(ControlEventFocused *e);
+	virtual void Draw();
+	virtual void OnKeyPress(WindowEventKey *e);
+	virtual void OnKeyRelease(WindowEventKey *e);
+	virtual void OnMouseDown(WindowEventMouseButton *e);
+	virtual void OnMouseUp(WindowEventMouseButton *e);
+	virtual void OnMouseMove(WindowEventMouseMove *e);
+	virtual void OnMouseEnterLeave(WindowEventEnterLeave *e);
+	virtual void OnFocus(WindowEventFocus *e);
+	virtual void OnKeymap(WindowEventKeymap *e);
+	virtual void OnDraw(WindowEventDraw *e);
 	
 };
 

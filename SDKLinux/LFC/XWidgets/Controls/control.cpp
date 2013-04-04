@@ -29,6 +29,8 @@
 #include "../Events/controleventvisible.h"
 #include "../Events/controleventkey.h"
 #include "../Events/controleventmousebutton.h"
+#include "../Events/controleventmousemove.h"
+#include "../Events/controlevententerleave.h"
 #include "../../Delegations/ndelegation.h"
 #include "../../nwchar.h"
 #include <stdlib.h>
@@ -55,6 +57,7 @@ Control::Control()
 	onMove = new NDelegationManager();
 	onVisible = new NDelegationManager();
 	onEnter = new NDelegationManager();
+	onLeave = new NDelegationManager();
 	onFocus = new NDelegationManager();
 	onBackColor = new NDelegationManager();
 	
@@ -82,6 +85,7 @@ Control::Control(const NRectangle &area)
 	onMove = new NDelegationManager();
 	onVisible = new NDelegationManager();
 	onEnter = new NDelegationManager();
+	onLeave = new NDelegationManager();
 	onFocus = new NDelegationManager();
 	onBackColor = new NDelegationManager();
 		
@@ -107,6 +111,7 @@ Control::~Control()
 	delete onMove;
 	delete onVisible;
 	delete onEnter;
+	delete onLeave;
 	delete onFocus;
 	delete onBackColor;
 		
@@ -148,10 +153,10 @@ bool Control::OnKeyPreview(ControlEventKey *e)
 	DelegationOnKeyPreview().Execute(e);
 }
 
-bool Control::OnKeyPressed(ControlEventKey *e)
+bool Control::OnKeyPress(ControlEventKey *e)
 {
 	for (int i=0;i<children->Count(); i++) 
-		if ((*children)[i]->OnKeyPressed(e)) 
+		if ((*children)[i]->OnKeyPress(e)) 
 			return true;
 	
 	if (!IsVisible()) return false;
@@ -168,10 +173,10 @@ bool Control::OnKeyPressed(ControlEventKey *e)
 	return true;
 }
 
-bool Control::OnKeyReleased(ControlEventKey *e)
+bool Control::OnKeyRelease(ControlEventKey *e)
 {
 	for (int i=0;i<children->Count(); i++) 
-		if ((*children)[i]->OnKeyReleased(e)) 
+		if ((*children)[i]->OnKeyRelease(e)) 
 			return true;
 	
 	if (!IsVisible()) return false;
@@ -190,14 +195,26 @@ bool Control::OnKeyReleased(ControlEventKey *e)
 
 bool Control::OnMouseButtonDown(ControlEventMouseButton *e)
 {
+	ControlEventMouseButton eee(*e, NPoint(area->GetX(), area->GetY()));
 	for (int i=0;i<children->Count(); i++) 
-		if ((*children)[i]->OnMouseButtonDown(e)) 
+		if ((*children)[i]->OnMouseButtonDown(&eee)) 
 			return true;
 	
 	if (!IsVisible()) return false;
-	if (!area->Contains(e->Position())) return false;
-	DelegationOnMouseDown().Execute(e);
-	return true;
+	if (area->Contains(e->Position())) {
+		DelegationOnMouseDown().Execute(e);
+		if (IsFocusable()) {
+			ControlEventFocused ee(this, true);
+			OnFocus(&ee);
+		}
+		return true;
+	} else {
+		if (IsFocusable()) {
+			ControlEventFocused ee(this, true);
+			OnFocus(&ee);
+		}
+		return false;
+	}
 }
 
 bool Control::OnMouseButtonUp(ControlEventMouseButton *e)
@@ -207,15 +224,48 @@ bool Control::OnMouseButtonUp(ControlEventMouseButton *e)
 			return true;
 	
 	if (!IsVisible()) return false;
-	DelegationOnMouseUp().Execute(e);
+	if (area->Contains(e->Position())) {
+		DelegationOnMouseUp().Execute(e);
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool Control::OnMouseMove(ControlEventMouseMove *e)
+{
+	ControlEventMouseMove ee(*e, NPoint(area->GetX(), area->GetY()));
+	for (int i=0; children->Count(); i++)
+		(*children)[i]->OnMouseMove(&ee);
+		
+	if (!IsVisible()) return false;
+	DelegationOnMouseMove().Execute(e);
+	if (!entered && area->Contains(e->Position())) {
+		ControlEventEnterLeave eee(true);
+		OnMouseEnter(&eee);
+	} else { 
+		ControlEventEnterLeave eee(false);
+		OnMouseLeave(&eee);
+	}
 	return true;
 }
 
+bool Control::OnMouseEnter(ControlEventEnterLeave *e)
+{
+	DelegationOnMouseEnter().Execute(e);
+	return true;
+}
 
+bool Control::OnMouseLeave(ControlEventEnterLeave *e)
+{
+	DelegationOnMouseLeave().Execute(e);
+	return true;
+}
 
 bool Control::OnFocus(ControlEventFocused *e)
 {
 	DelegationOnFocus().Execute(e);
+	return true;
 }
 
 NRectangle Control::Area()
@@ -436,9 +486,14 @@ NDelegationManager &Control::DelegationOnVisible()
 	return *onVisible;
 }
 
-NDelegationManager &Control::DelegationOnEnter()
+NDelegationManager &Control::DelegationOnMouseEnter()
 {
 	return *onEnter;
+}
+
+NDelegationManager &Control::DelegationOnMouseLeave()
+{
+	return *onLeave;
 }
 
 NDelegationManager &Control::DelegationOnFocus()

@@ -22,6 +22,15 @@ ControlEventMouseMove::ControlEventMouseMove(const WindowEventMouseMove &e)
 	if (ee->PressedMod5()) status |= StatusPressedMod5;
 }
 
+ControlEventMouseMove::ControlEventMouseMove(const ControlEventMouseMove &e, const NPoint &parentposition)
+{
+	status = e.status;
+	time = new DateTime(*time);
+	NPoint *pp = (NPoint *)&parentposition;
+	position = new NPoint(e.position->GetX() - pp->GetX(), e.position->GetY() - pp->GetY());
+	positionroot = new NPoint(*e.positionroot);
+}
+
 ControlEventMouseMove::~ControlEventMouseMove()
 {
 	delete time;

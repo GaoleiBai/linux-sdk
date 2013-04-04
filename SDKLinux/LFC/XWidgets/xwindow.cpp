@@ -47,6 +47,7 @@
 #include "Events/controleventfocused.h"
 #include "Events/controleventkey.h"
 #include "Events/controleventmousebutton.h"
+#include "Events/controleventmousemove.h"
 #include <string.h>
 
 XWindow::XWindow()
@@ -85,8 +86,7 @@ XWindow::~XWindow()
 	delete dOnWindowMouseDown;
 	delete dOnWindowMouseUp;
 	delete dOnWindowMouseMove;
-	delete dOnWindowEnter;
-	delete dOnWindowLeave;
+	delete dOnWindowEnterLeave;
 	delete dOnWindowDraw;
 	delete dOnWindowShow;
 	delete dOnWindowMove;
@@ -125,9 +125,7 @@ void XWindow::init(const XDisplay &d)
 	dOnWindowMouseDown = new NDelegationManager();
 	dOnWindowMouseUp = new NDelegationManager();
 	dOnWindowMouseMove = new NDelegationManager();
-	dOnWindowEnter = new NDelegationManager();
-	dOnWindowLeave = new NDelegationManager();
-	dOnWindowDraw = new NDelegationManager();
+	dOnWindowEnterLeave = new NDelegationManager();
 	dOnWindowShow = new NDelegationManager();
 	dOnWindowMove = new NDelegationManager();
 	dOnWindowResize = new NDelegationManager();
@@ -165,87 +163,82 @@ void XWindow::init(const XDisplay &d)
 	SetVisible(true);
 }
 
-NDelegationManager &XWindow::DelegationOnWindowKeyPress()
+NDelegationManager &XWindow::DelegationOnKeyPress()
 {
 	return *dOnWindowKeyPress;
 }
 
-NDelegationManager &XWindow::DelegationOnWindowKeyRelease()
+NDelegationManager &XWindow::DelegationOnKeyRelease()
 {
 	return *dOnWindowKeyRelease;
 }
 
-NDelegationManager &XWindow::DelegationOnWindowKeymap()
+NDelegationManager &XWindow::DelegationOnKeymap()
 {
 	return *dOnWindowKeymap;
 }
 
-NDelegationManager &XWindow::DelegationOnWindowMouseDown()
+NDelegationManager &XWindow::DelegationOnMouseDown()
 {
 	return *dOnWindowMouseDown;
 }
 
-NDelegationManager &XWindow::DelegationOnWindowMouseUp()
+NDelegationManager &XWindow::DelegationOnMouseUp()
 {
 	return *dOnWindowMouseUp;
 }
 
-NDelegationManager &XWindow::DelegationOnWindowMouseMove()
+NDelegationManager &XWindow::DelegationOnMouseMove()
 {
 	return *dOnWindowMouseMove;
 }
 
-NDelegationManager &XWindow::DelegationOnWindowEnter()
+NDelegationManager &XWindow::DelegationOnEnterLeave()
 {
-	return *dOnWindowEnter;
+	return *dOnWindowEnterLeave;
 }
 
-NDelegationManager &XWindow::DelegationOnWindowLeave()
-{
-	return *dOnWindowLeave;
-}
-
-NDelegationManager &XWindow::DelegationOnWindowDraw()
+NDelegationManager &XWindow::DelegationOnDraw()
 {
 	return *dOnWindowDraw;
 }
 
-NDelegationManager &XWindow::DelegationOnWindowShow()
+NDelegationManager &XWindow::DelegationOnShow()
 {
 	return *dOnWindowShow;
 }
 
-NDelegationManager &XWindow::DelegationOnWindowMove()
+NDelegationManager &XWindow::DelegationOnMove()
 {
 	return *dOnWindowMove;
 }
 
-NDelegationManager &XWindow::DelegationOnWindowResize()
+NDelegationManager &XWindow::DelegationOnResize()
 {
 	return *dOnWindowResize;
 }
 
-NDelegationManager &XWindow::DelegationOnWindowFocus()
+NDelegationManager &XWindow::DelegationOnFocus()
 {
 	return *dOnWindowFocus;
 }
 
-NDelegationManager &XWindow::DelegationOnWindowPropertyChange()
+NDelegationManager &XWindow::DelegationOnProperty()
 {
 	return *dOnWindowPropertyChange;
 }
 
-NDelegationManager &XWindow::DelegationOnWindowColormapChange()
+NDelegationManager &XWindow::DelegationOnColormap()
 {
 	return *dOnWindowColormapChange;
 }
 
-NDelegationManager &XWindow::DelegationOnWindowGrabButton()
+NDelegationManager &XWindow::DelegationOnGrabButton()
 {
 	return *dOnWindowGrabButton;
 }
 
-NDelegationManager &XWindow::DelegationOnWindowVisibilityChange()
+NDelegationManager &XWindow::DelegationOnVisible()
 {
 	return *dOnWindowVisibilityChange;
 }
@@ -298,80 +291,46 @@ int XWindow::RunModal()
 		// Processes the events
 		if (event.type == KeyPress) {
 			WindowEventKey e(&event.xkey);
-			DelegationOnWindowKeyPress().Execute(&e);
-			
-			// Key redirection to controls
-			ControlEventKey ee(e);
-			bool redirected = false;
-			for (int i=0; i<controls->Count() && !redirected; i++)
-				redirected = (*controls)[i]->OnKeyPressed(&ee);
-			
-			// Noone catched the event?
-			if (!redirected) {
-				if (e.KeyCode().Value() == 23) {
-					// Window focus rotate
-					if (!e.PressedShift()) ControlFocusNext();
-					else ControlFocusPrevious();
-				} else if (e.KeyCode().Value() == 13) {
-					// Return: Window Accept
-				} else if (e.KeyCode().Value() == 27) {
-					// Escape: Window Cancel
-				} else if (e.KeyCode().Value() == 20) {
-					// Return: Window Accept
-				}
-			}
+			OnKeyPress(&e);
 		} else if (event.type == KeyRelease) {
 			WindowEventKey e(&event.xkey);
-			DelegationOnWindowKeyRelease().Execute(&e);
-
-			// Key redirection to controls
-			ControlEventKey ee(e);
-			bool redirected = false;
-			for (int i=0; i<controls->Count() && !redirected; i++)
-				redirected = (*controls)[i]->OnKeyReleased(&ee);
+			OnKeyRelease(&e);
 		} else if (event.type == ButtonPress) {
 			WindowEventMouseButton e(&event.xbutton);
-			DelegationOnWindowMouseDown().Execute(&e);
-			ControlEventMouseButton ee(e);
-			for (int i=0; i<controls->Count(); i++)
-				(*controls)[i]->OnMouseButtonDown(&ee);
+			OnMouseDown(&e);
 		} else if (event.type == ButtonRelease) {
 			WindowEventMouseButton e(&event.xbutton);
-			DelegationOnWindowMouseUp().Execute(&e);
-			ControlEventMouseButton ee(e);
-			for (int i=0; i<controls->Count(); i++)
-				(*controls)[i]->OnMouseButtonUp(&ee);
+			OnMouseUp(&e);
 		} else if (event.type == MotionNotify) {
 			WindowEventMouseMove e(&event.xmotion);
-			DelegationOnWindowMouseMove().Execute(&e);
+			OnMouseMove(&e);
 		} else if (event.type == EnterNotify) {
 			WindowEventEnterLeave e(&event.xcrossing);
-			DelegationOnWindowEnter().Execute(&e);
+			OnMouseEnterLeave(&e);
 		} else if (event.type == LeaveNotify) {
 			WindowEventEnterLeave e(&event.xcrossing);
-			DelegationOnWindowLeave().Execute(&e);
+			OnMouseEnterLeave(&e);
 		} else if (event.type == FocusIn) {
 			WindowEventFocus e(&event.xfocus);
-			DelegationOnWindowFocus().Execute(&e);
+			OnFocus(&e);
 		} else if (event.type == FocusOut) {
 			WindowEventFocus e(&event.xfocus);
-			DelegationOnWindowFocus().Execute(&e);
+			OnFocus(&e);
 		} else if (event.type == KeymapNotify) {
 			WindowEventKeymap e(&event.xkeymap);
-			DelegationOnWindowKeymap().Execute(&e);
+			OnKeymap(&e);
 		} else if (event.type == Expose && event.xexpose.count == 0) { 
 			WindowEventDraw e(gc, &event.xexpose);
-			Draw();
-			DelegationOnWindowDraw().Execute(&e);
+			OnDraw(&e);
 		} else if (event.type == VisibilityNotify) {
 			WindowEventVisible e(&event.xvisibility);
-			DelegationOnWindowVisibilityChange().Execute(&e);
+			DelegationOnVisible().Execute(&e);
 		} else if (event.type == UnmapNotify) {
 			WindowEventShow e(false);
-			DelegationOnWindowShow().Execute(&e);
+			DelegationOnShow().Execute(&e);
 		} else if (event.type == MapNotify) {
 			WindowEventShow e(true);
-			DelegationOnWindowShow().Execute(&e);
+			DelegationOnShow().Execute(&e);
 		} else if (event.type == ConfigureNotify) {			
 			bool generateWindowMoveEvent = 
 				area->GetX() != event.xconfigure.x || 
@@ -385,19 +344,19 @@ int XWindow::RunModal()
 						
 			if (generateWindowMoveEvent) {
 				WindowEventMove e(&event.xconfigure);
-				DelegationOnWindowMove().Execute(&e);
+				DelegationOnMove().Execute(&e);
 			}
 			if (generateWindowResizeEvent) {
 				gc->Resize(area->GetWidth(), area->GetHeight());	// Resize XWindowGraphics
 				WindowEventResize e(&event.xconfigure);
-				DelegationOnWindowResize().Execute(&e);
+				DelegationOnResize().Execute(&e);
 			}			
 		} else if (event.type == ColormapNotify) {
 			WindowEventColormap e(&event.xcolormap);
-			DelegationOnWindowColormapChange().Execute(&e);
+			DelegationOnColormap().Execute(&e);
 		} else if (event.type == MappingNotify) {
 			WindowEventKeyboardMapping e(&event.xmapping);
-			DelegationOnWindowKeymap().Execute(&e);
+			DelegationOnKeymap().Execute(&e);
 		} else if (event.type == ClientMessage) {
 			if (event.xclient.data.l[0] == wmDeleteMessage)
 				break;
@@ -547,13 +506,11 @@ void XWindow::ControlAdd(Control *c)
 	if (ControlExists(c)) return;	
 	controls->Add(c);
 	c->Init(this);
-	c->DelegationOnFocus() += NDelegation(this, (Delegate)&XWindow::OnControlFocusChanged);
 	Invalidate();
 }
 
 void XWindow::ControlRemove(Control *c)
 {
-	c->DelegationOnFocus() -= NDelegation(this, (Delegate)&XWindow::OnControlFocusChanged);
 	controls->Remove(c);
 	Invalidate();
 }
@@ -629,12 +586,87 @@ void XWindow::Draw()
 	}
 }
 
-void *XWindow::OnControlFocusChanged(ControlEventFocused *e)
+void XWindow::OnKeyPress(WindowEventKey *e)
 {
-	if (!e->IsFocused()) return NULL;
-	Collection<Control *> focusables = ControlsEnumFocusable();
-	for (int i=0; i<focusables.Count(); i++) {
-		if (focusables[i] == e->Source()) continue;
-		focusables[i]->SetFocus(false);
-	}
+	DelegationOnKeyPress().Execute(e);
+	
+	// Key redirection to controls
+	ControlEventKey ee(*e);
+	bool redirected = false;
+	for (int i=0; i<controls->Count() && !redirected; i++)
+		redirected = (*controls)[i]->OnKeyPress(&ee);
+		
+	// Key preview to every control
+	for (int i=0; i<controls->Count(); i++)
+		(*controls)[i]->OnKeyPreview(&ee);
+	
+	// Noone catched the event?
+	if (!redirected) {
+		if (e->KeyCode().Value() == 23) {
+			// Window focus rotate
+			if (!e->PressedShift()) ControlFocusNext();
+			else ControlFocusPrevious();
+		} else if (e->KeyCode().Value() == 13) {
+			// Return: Window Accept
+		} else if (e->KeyCode().Value() == 27) {
+			// Escape: Window Cancel
+		} else if (e->KeyCode().Value() == 20) {
+			// Return: Window Accept
+		}
+	}	
+}
+
+void XWindow::OnKeyRelease(WindowEventKey *e)
+{
+	DelegationOnKeyRelease().Execute(e);
+
+	// Key redirection to controls
+	ControlEventKey ee(*e);
+	bool redirected = false;
+	for (int i=0; i<controls->Count() && !redirected; i++)
+		redirected = (*controls)[i]->OnKeyRelease(&ee);	
+}
+
+void XWindow::OnMouseDown(WindowEventMouseButton *e)
+{
+	DelegationOnMouseDown().Execute(e);
+	ControlEventMouseButton ee(*e);
+	for (int i=0; i<controls->Count(); i++)
+		(*controls)[i]->OnMouseButtonDown(&ee);
+}
+
+void XWindow::OnMouseUp(WindowEventMouseButton *e)
+{
+	DelegationOnMouseUp().Execute(e);
+	ControlEventMouseButton ee(*e);
+	for (int i=0; i<controls->Count(); i++)
+		(*controls)[i]->OnMouseButtonUp(&ee);	
+}
+
+void XWindow::OnMouseMove(WindowEventMouseMove *e)
+{
+	DelegationOnMouseMove().Execute(e);
+	ControlEventMouseMove ee(*e);
+	for (int i=0; i<controls->Count(); i++)
+		(*controls)[i]->OnMouseMove(&ee);
+}
+
+void XWindow::OnMouseEnterLeave(WindowEventEnterLeave *e)
+{
+	DelegationOnEnterLeave().Execute(e);
+}
+
+void XWindow::OnFocus(WindowEventFocus *e)
+{
+	DelegationOnFocus().Execute(e);
+}
+
+void XWindow::OnKeymap(WindowEventKeymap *e)
+{
+	DelegationOnKeymap().Execute(e);
+}
+
+void XWindow::OnDraw(WindowEventDraw *e)
+{
+	DelegationOnDraw().Execute(e);
 }

@@ -55,6 +55,7 @@ public:
 	static const int StatusSourceButton5 = 131072;
 
 	ControlEventMouseButton(const WindowEventMouseButton &e);
+	ControlEventMouseButton(const ControlEventMouseButton &e, const NPoint &parentposition);
 	virtual ~ControlEventMouseButton();
 
 	DateTime Time();
