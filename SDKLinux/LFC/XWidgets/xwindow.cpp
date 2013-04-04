@@ -83,6 +83,8 @@ XWindow::~XWindow()
 	
 	delete dOnWindowKeyPress;
 	delete dOnWindowKeyRelease;
+	delete dOnWindowKeymap;
+	delete dOnWindowKeyboardMapping;
 	delete dOnWindowMouseDown;
 	delete dOnWindowMouseUp;
 	delete dOnWindowMouseMove;
@@ -122,6 +124,7 @@ void XWindow::init(const XDisplay &d)
 	dOnWindowKeyPress = new NDelegationManager();
 	dOnWindowKeyRelease = new NDelegationManager();
 	dOnWindowKeymap = new NDelegationManager();
+	dOnWindowKeyboardMapping = new NDelegationManager();
 	dOnWindowMouseDown = new NDelegationManager();
 	dOnWindowMouseUp = new NDelegationManager();
 	dOnWindowMouseMove = new NDelegationManager();
@@ -176,6 +179,11 @@ NDelegationManager &XWindow::DelegationOnKeyRelease()
 NDelegationManager &XWindow::DelegationOnKeymap()
 {
 	return *dOnWindowKeymap;
+}
+
+NDelegationManager &XWindow::DelegationOnKeyboardMapping()
+{
+	return *dOnWindowKeyboardMapping;
 }
 
 NDelegationManager &XWindow::DelegationOnMouseDown()
@@ -324,13 +332,13 @@ int XWindow::RunModal()
 			OnDraw(&e);
 		} else if (event.type == VisibilityNotify) {
 			WindowEventVisible e(&event.xvisibility);
-			DelegationOnVisible().Execute(&e);
+			OnVisible(&e);
 		} else if (event.type == UnmapNotify) {
 			WindowEventShow e(false);
-			DelegationOnShow().Execute(&e);
+			OnShow(&e);
 		} else if (event.type == MapNotify) {
 			WindowEventShow e(true);
-			DelegationOnShow().Execute(&e);
+			OnShow(&e);
 		} else if (event.type == ConfigureNotify) {			
 			bool generateWindowMoveEvent = 
 				area->GetX() != event.xconfigure.x || 
@@ -344,19 +352,19 @@ int XWindow::RunModal()
 						
 			if (generateWindowMoveEvent) {
 				WindowEventMove e(&event.xconfigure);
-				DelegationOnMove().Execute(&e);
+				OnMove(&e);
 			}
 			if (generateWindowResizeEvent) {
 				gc->Resize(area->GetWidth(), area->GetHeight());	// Resize XWindowGraphics
 				WindowEventResize e(&event.xconfigure);
-				DelegationOnResize().Execute(&e);
+				OnResize(&e);
 			}			
 		} else if (event.type == ColormapNotify) {
 			WindowEventColormap e(&event.xcolormap);
-			DelegationOnColormap().Execute(&e);
+			OnColormap(&e);
 		} else if (event.type == MappingNotify) {
 			WindowEventKeyboardMapping e(&event.xmapping);
-			DelegationOnKeymap().Execute(&e);
+			OnKeyboardMapping(&e);
 		} else if (event.type == ClientMessage) {
 			if (event.xclient.data.l[0] == wmDeleteMessage)
 				break;
@@ -669,4 +677,34 @@ void XWindow::OnKeymap(WindowEventKeymap *e)
 void XWindow::OnDraw(WindowEventDraw *e)
 {
 	DelegationOnDraw().Execute(e);
+}
+
+void XWindow::OnVisible(WindowEventVisible *e)
+{
+	DelegationOnVisible().Execute(&e);	
+}
+
+void XWindow::OnShow(WindowEventShow *e)
+{
+	DelegationOnVisible().Execute(&e);	
+}
+
+void XWindow::OnMove(WindowEventMove *e)
+{
+	DelegationOnMove().Execute(e);
+}
+
+void XWindow::OnResize(WindowEventResize *e)
+{
+	DelegationOnResize().Execute(e);
+}
+
+void XWindow::OnColormap(WindowEventColormap *e)
+{
+	DelegationOnColormap().Execute(&e);
+}
+
+void XWindow::OnKeyboardMapping(WindowEventKeyboardMapping *e)
+{
+	DelegationOnKeyboardMapping().Execute(e);
 }
