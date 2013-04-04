@@ -203,16 +203,10 @@ bool Control::OnMouseButtonDown(ControlEventMouseButton *e)
 	if (!IsVisible()) return false;
 	if (area->Contains(e->Position())) {
 		DelegationOnMouseDown().Execute(e);
-		if (IsFocusable()) {
-			ControlEventFocused ee(this, true);
-			OnFocus(&ee);
-		}
+		if (IsFocusable() && !IsFocused()) SetFocus(true);
 		return true;
 	} else {
-		if (IsFocusable()) {
-			ControlEventFocused ee(this, true);
-			OnFocus(&ee);
-		}
+		if (IsFocusable() && IsFocused()) SetFocus(false);
 		return false;
 	}
 }
@@ -237,6 +231,8 @@ bool Control::OnMouseMove(ControlEventMouseMove *e)
 	ControlEventMouseMove ee(*e, NPoint(area->GetX(), area->GetY()));
 	for (int i=0; children->Count(); i++)
 		(*children)[i]->OnMouseMove(&ee);
+		
+	//	faltan clic y doble clic
 		
 	if (!IsVisible()) return false;
 	DelegationOnMouseMove().Execute(e);
