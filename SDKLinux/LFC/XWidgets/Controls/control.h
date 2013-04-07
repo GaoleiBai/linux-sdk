@@ -37,6 +37,8 @@ class ControlEventBackColor;
 class ControlEventVisible;
 class ControlEventMouseMove;
 class ControlEventEnterLeave;
+class ControlEventMouseClick;
+class ControlEventMouseDoubleClick;
 
 class Control : public NObject {
 	friend class XWindow;
@@ -51,12 +53,14 @@ protected:
 	bool entered;
 	bool focused;
 	int taborder;
+	ControlEventMouseButton *lastmousedown;
+	ControlEventMouseButton *lastmouseclick;
 	
 	NDelegationManager *onMouseDown;
 	NDelegationManager *onMouseUp;
 	NDelegationManager *onMouseMove;
-	NDelegationManager *onClick;
-	NDelegationManager *onDoubleClick;
+	NDelegationManager *onMouseClick;
+	NDelegationManager *onMouseDoubleClick;
 	NDelegationManager *onKeyPreview;
 	NDelegationManager *onKeyPress;
 	NDelegationManager *onKeyRelease;
@@ -66,6 +70,8 @@ protected:
 	NDelegationManager *onLeave;
 	NDelegationManager *onFocus;
 	NDelegationManager *onBackColor;
+	
+	void Init();
 	
 public:
 	Control();
@@ -112,6 +118,8 @@ protected:
 	virtual bool OnKeyRelease(ControlEventKey *e);
 	virtual bool OnMouseButtonDown(ControlEventMouseButton *e);
 	virtual bool OnMouseButtonUp(ControlEventMouseButton *e);
+	virtual bool OnMouseClick(ControlEventMouseClick *e);
+	virtual bool OnMouseDoubleClick(ControlEventMouseDoubleClick *e);
 	virtual bool OnMouseMove(ControlEventMouseMove *e);
 	virtual bool OnMouseEnter(ControlEventEnterLeave *e);
 	virtual bool OnMouseLeave(ControlEventEnterLeave *e);
@@ -124,8 +132,8 @@ public:
 	NDelegationManager &DelegationOnMouseDown();	// Arg: ControlEventMouseButton *
 	NDelegationManager &DelegationOnMouseUp();		// Arg: ControlEventMouseButton *
 	NDelegationManager &DelegationOnMouseMove();	// Arg: ControlEventMouseMove *
-	NDelegationManager &DelegationOnClick();
-	NDelegationManager &DelegationOnDoubleClick();
+	NDelegationManager &DelegationOnMouseClick();	// Arg: ControlEventMouseClick *
+	NDelegationManager &DelegationOnMouseDoubleClick();	// Arg: ControlEventMouseDoubleClick *
 	NDelegationManager &DelegationOnKeyPreview();	// Arg: ControlEventKey *
 	NDelegationManager &DelegationOnKeyPress();		// Arg: ControlEventKey *
 	NDelegationManager &DelegationOnKeyRelease();	// Arg: ControlEventKey *

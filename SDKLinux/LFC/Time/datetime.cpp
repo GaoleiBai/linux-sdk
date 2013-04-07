@@ -185,19 +185,14 @@ long double DateTime::TotalDays()
 	return d / 86400.0;
 }
 
-DateTime & DateTime::operator =(const time_t t)
+long double DateTime::TotalHours()
 {
-	currentTime.tv_sec = t;
-	currentTime.tv_nsec = 0;
-	updatetmhelper();
+	return TotalDays() * 24;
 }
 
-DateTime & DateTime::operator =(const long double days)
+long double DateTime::TotalSeconds()
 {
-	double secs = (days * 86400);
-	currentTime.tv_sec = secs;
-	currentTime.tv_nsec = (secs - currentTime.tv_sec) * 1000000000;
-	updatetmhelper();
+	return TotalDays() * 86400;
 }
 
 DateTime & DateTime::operator =(const DateTime &d)
@@ -207,80 +202,24 @@ DateTime & DateTime::operator =(const DateTime &d)
 	return *this;
 }
 
-DateTime DateTime::operator +(const time_t t)
+DateTime DateTime::operator +(const DateTime &d)
 {
-	DateTime q = *this;
-	q.currentTime.tv_sec += t;
-	q.updatetmhelper();
-	return q;
+	return *this + ((DateTime *)&d)->TotalDays();
 }
 
-DateTime DateTime::operator +(const long double days)
+DateTime DateTime::operator -(const DateTime &d)
 {
-	DateTime q = *this;
-	
-	double secs = (days * 86400);
-	int secondsToAdd = secs;
-	unsigned long nsecToAdd = (secs - secondsToAdd) * 1000000000;
-	
-	q.currentTime.tv_sec += secondsToAdd + (q.currentTime.tv_nsec + nsecToAdd) / 1000000000;
-	q.currentTime.tv_nsec = (q.currentTime.tv_nsec + nsecToAdd) % 1000000000;
-	q.updatetmhelper();
-	
-	return q;
+	return *this + (-((DateTime *)&d)->TotalDays());
 }
 
-DateTime DateTime::operator +(DateTime &d)
+void DateTime::operator +=(const DateTime &t)
 {
-	return *this + d.TotalDays();
+	*this = *this + ((DateTime *)&t)->TotalDays();
 }
 
-DateTime DateTime::operator -(const time_t t)
+void DateTime::operator -=(const DateTime &t)
 {
-	DateTime q = *this;
-	q.currentTime.tv_sec -= t;
-	q.updatetmhelper();
-	return q;
-}
-
-DateTime DateTime::operator -(const long double d)
-{
-	return *this + (-d);
-}
-
-DateTime DateTime::operator -(DateTime &d)
-{
-	return *this + (-d.TotalDays());
-}
-
-void DateTime::operator +=(const time_t t)
-{
-	*this = *this + t;
-}
-
-void DateTime::operator +=(const long double days)
-{
-	*this = *this + days;
-}
-
-void DateTime::operator +=(DateTime &t)
-{
-	*this = *this + t.TotalDays();
-}
-
-void DateTime::operator -=(const time_t t)
-{
-	*this = *this - t;
-}
-
-void DateTime::operator -=(const long double days)
-{
-	*this = *this - days;
-}
-
-void DateTime::operator -=(DateTime &t)
-{
-	*this = *this - t.TotalDays();
+	*this = *this - ((DateTime *)&t)->TotalDays();
 }
 
 bool DateTime::operator ==(const DateTime &d)

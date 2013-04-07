@@ -137,6 +137,8 @@
 #include "XWidgets/Events/controleventbackcolor.h"
 #include "XWidgets/Events/controleventmoved.h"
 #include "XWidgets/Events/controleventkey.h"
+#include "XWidgets/Events/controleventmouseclick.h"
+#include "XWidgets/Events/controleventmousedoubleclick.h"
 #include "XWidgets/Controls/control.h"
 
 void lfc_init();

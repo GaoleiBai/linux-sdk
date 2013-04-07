@@ -31,41 +31,27 @@
 #include "../Events/controleventmousebutton.h"
 #include "../Events/controleventmousemove.h"
 #include "../Events/controlevententerleave.h"
+#include "../Events/controleventmouseclick.h"
+#include "../Events/controleventmousedoubleclick.h"
 #include "../../Delegations/ndelegation.h"
 #include "../../nwchar.h"
+#include "../../Time/datetime.h"
 #include <stdlib.h>
 
 Control::Control()
 {
 	area = new NRectangle();
-	backcolor = new NColor(0, 0, 0, 1.0);
-	userdata = NULL;
-	children = new Collection<Control *>();
-	visible = true;
-	focused = false;
-	entered = false;
-	taborder = 0;
-	
-	onMouseDown = new NDelegationManager();
-	onMouseUp = new NDelegationManager();
-	onMouseMove = new NDelegationManager();
-	onClick = new NDelegationManager();
-	onDoubleClick = new NDelegationManager();
-	onKeyPreview = new NDelegationManager();
-	onKeyPress = new NDelegationManager();
-	onKeyRelease = new NDelegationManager();
-	onMove = new NDelegationManager();
-	onVisible = new NDelegationManager();
-	onEnter = new NDelegationManager();
-	onLeave = new NDelegationManager();
-	onFocus = new NDelegationManager();
-	onBackColor = new NDelegationManager();
-	
+	Init();
 }
 
 Control::Control(const NRectangle &area)
 {
 	this->area = new NRectangle(area);
+	Init();
+}
+
+void Control::Init()
+{
 	backcolor = new NColor(0, 0, 0, 1.0);
 	userdata = NULL;
 	children = new Collection<Control *>();
@@ -73,12 +59,14 @@ Control::Control(const NRectangle &area)
 	focused = false;
 	entered = false;
 	taborder = 0;
+	lastmousedown = NULL;
+	lastmouseclick = NULL;
 	
 	onMouseDown = new NDelegationManager();
 	onMouseUp = new NDelegationManager();
 	onMouseMove = new NDelegationManager();
-	onClick = new NDelegationManager();
-	onDoubleClick = new NDelegationManager();
+	onMouseClick = new NDelegationManager();
+	onMouseDoubleClick = new NDelegationManager();
 	onKeyPreview = new NDelegationManager();
 	onKeyPress = new NDelegationManager();
 	onKeyRelease = new NDelegationManager();
@@ -88,7 +76,6 @@ Control::Control(const NRectangle &area)
 	onLeave = new NDelegationManager();
 	onFocus = new NDelegationManager();
 	onBackColor = new NDelegationManager();
-		
 }
 
 Control::~Control()
@@ -99,12 +86,14 @@ Control::~Control()
 	delete backcolor;
 	children->DeleteAndClear();
 	delete children;
+	if (lastmousedown != NULL) delete lastmousedown;
+	if (lastmouseclick != NULL) delete lastmouseclick;
 			
 	delete onMouseDown;
 	delete onMouseUp;
 	delete onMouseMove;
-	delete onClick;
-	delete onDoubleClick;
+	delete onMouseClick;
+	delete onMouseDoubleClick;
 	delete onKeyPreview;
 	delete onKeyPress;
 	delete onKeyRelease;
@@ -195,55 +184,104 @@ bool Control::OnKeyRelease(ControlEventKey *e)
 
 bool Control::OnMouseButtonDown(ControlEventMouseButton *e)
 {
-	ControlEventMouseButton eee(*e, NPoint(area->GetX(), area->GetY()));
-	for (int i=0;i<children->Count(); i++) 
-		if ((*children)[i]->OnMouseButtonDown(&eee)) 
-			return true;
-	
 	if (!IsVisible()) return false;
-	if (area->Contains(e->Position())) {
-		DelegationOnMouseDown().Execute(e);
-		if (IsFocusable() && !IsFocused()) SetFocus(true);
-		return true;
-	} else {
-		if (IsFocusable() && IsFocused()) SetFocus(false);
-		return false;
+	bool mousedownonchildren = false;
+	bool inarea = area->Contains(e->Position());
+	if (inarea) {
+		ControlEventMouseButton eee(*e, NPoint(area->GetX() - e->Position().GetX(), area->GetY() - e->Position().GetY()));
+		for (int i=0;i<children->Count() && !mousedownonchildren; i++) 
+			mousedownonchildren |= (*children)[i]->OnMouseButtonDown(&eee);
 	}
+	if (inarea && !mousedownonchildren) {
+		lastmousedown = new ControlEventMouseButton(*e);
+		if (IsFocusable() && !IsFocused()) SetFocus(true);
+	} else {
+		if (IsFocusable() && IsFocused()) SetFocus(false);		
+	}
+	
+	return inarea;
 }
 
 bool Control::OnMouseButtonUp(ControlEventMouseButton *e)
 {
-	for (int i=0;i<children->Count(); i++) 
-		if ((*children)[i]->OnMouseButtonUp(e)) 
-			return true;
-	
 	if (!IsVisible()) return false;
-	if (area->Contains(e->Position())) {
-		DelegationOnMouseUp().Execute(e);
-		return true;
-	} else {
-		return false;
+	bool mouseuponchildren = false;
+	bool inarea = area->Contains(e->Position());
+	if (inarea) {
+		ControlEventMouseButton eee(*e, NPoint(area->GetX() - e->Position().GetX(), area->GetY() - e->Position().GetY()));
+		for (int i=0;i<children->Count() && !mouseuponchildren; i++) 
+			mouseuponchildren |= (*children)[i]->OnMouseButtonUp(e);
 	}
+	if (inarea && !mouseuponchildren) {		
+		DelegationOnMouseUp().Execute(e);
+		
+		bool samebuttonsclick = lastmousedown != NULL &&
+			lastmousedown->SourceButton1() == e->SourceButton1() &&
+			lastmousedown->SourceButton2() == e->SourceButton2() &&
+			lastmousedown->SourceButton3() == e->SourceButton3() &&
+			lastmousedown->SourceButton4() == e->SourceButton4() &&
+			lastmousedown->SourceButton5() == e->SourceButton5();
+		
+		if (samebuttonsclick) {
+			ControlEventMouseClick ee(*e, DateTime() - lastmousedown->Time());
+			OnMouseClick(&ee);
+			
+			bool samebuttonsdoubleclick = lastmouseclick != NULL &&
+				lastmouseclick->SourceButton1() == e->SourceButton1() &&
+				lastmouseclick->SourceButton2() == e->SourceButton2() &&
+				lastmouseclick->SourceButton3() == e->SourceButton3() &&
+				lastmouseclick->SourceButton4() == e->SourceButton4() &&
+				lastmouseclick->SourceButton5() == e->SourceButton5();
+			
+			if (samebuttonsdoubleclick) {
+				ControlEventMouseDoubleClick eee(*e, DateTime() - lastmouseclick->Time());
+				OnMouseDoubleClick(&eee);
+				
+				if (lastmouseclick) delete lastmouseclick;
+				lastmouseclick = NULL;
+			}
+			
+			if (lastmouseclick == NULL) lastmouseclick = new ControlEventMouseButton(*e);
+			else *lastmouseclick = *e;
+		}
+	}
+	if (lastmousedown != NULL) delete lastmousedown;
+	lastmousedown = NULL;
+	
+	return inarea;
+}
+
+bool Control::OnMouseClick(ControlEventMouseClick *e)
+{
+	DelegationOnMouseClick().Execute(e);
+}
+
+bool Control::OnMouseDoubleClick(ControlEventMouseDoubleClick *e)
+{
+	DelegationOnMouseDoubleClick().Execute(e);
 }
 
 bool Control::OnMouseMove(ControlEventMouseMove *e)
 {
-	ControlEventMouseMove ee(*e, NPoint(area->GetX(), area->GetY()));
-	for (int i=0; children->Count(); i++)
-		(*children)[i]->OnMouseMove(&ee);
-		
-	//	faltan clic y doble clic
-		
 	if (!IsVisible()) return false;
-	DelegationOnMouseMove().Execute(e);
-	if (!entered && area->Contains(e->Position())) {
+	bool inarea = area->Contains(e->Position());
+	if (inarea) {
+		ControlEventMouseMove ee(*e, NPoint(area->GetX() - e->Position().GetX(), area->GetY() - e->Position().GetY()));
+		for (int i=0; children->Count(); i++)
+			(*children)[i]->OnMouseMove(&ee);
+			
+		DelegationOnMouseMove().Execute(e);
+	}
+		
+	if (!entered && inarea) {
 		ControlEventEnterLeave eee(true);
 		OnMouseEnter(&eee);
-	} else { 
+	} else if (entered && !inarea) {
 		ControlEventEnterLeave eee(false);
 		OnMouseLeave(&eee);
 	}
-	return true;
+	
+	return inarea;
 }
 
 bool Control::OnMouseEnter(ControlEventEnterLeave *e)
@@ -447,14 +485,14 @@ NDelegationManager &Control::DelegationOnMouseMove()
 	return *onMouseMove;
 }
 
-NDelegationManager &Control::DelegationOnClick()
+NDelegationManager &Control::DelegationOnMouseClick()
 {
-	return *onClick;
+	return *onMouseClick;
 }
 
-NDelegationManager &Control::DelegationOnDoubleClick()
+NDelegationManager &Control::DelegationOnMouseDoubleClick()
 {
-	return *onDoubleClick;
+	return *onMouseDoubleClick;
 }
 
 NDelegationManager &Control::DelegationOnKeyPreview()

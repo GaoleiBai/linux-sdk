@@ -60,7 +60,7 @@ public:
 
 	DateTime Time();
 	NPoint Position();
-	NPoint PositionRoot();	
+	NPoint PositionRoot();
 	
 	bool PressedButton1();
 	bool PressedButton2();

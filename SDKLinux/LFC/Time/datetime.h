@@ -56,22 +56,14 @@ public:
 	int YearDay();
 	
 	long double TotalDays();
+	long double TotalHours();
+	long double TotalSeconds();
 	
-	DateTime &operator=(const time_t t);
-	DateTime &operator=(const long double days);
 	DateTime &operator=(const DateTime &t);
-	DateTime operator+(const time_t t);
-	DateTime operator+(const long double days);
-	DateTime operator+(DateTime &d);
-	DateTime operator-(const time_t t);
-	DateTime operator-(const long double days);
-	DateTime operator-(DateTime &d);
-	void operator+=(const time_t t);
-	void operator+=(const long double days);
-	void operator+=(DateTime &d);
-	void operator-=(const time_t t);
-	void operator-=(const long double days);
-	void operator-=(DateTime &d);
+	DateTime operator+(const DateTime &d);
+	DateTime operator-(const DateTime &d);
+	void operator+=(const DateTime &d);
+	void operator-=(const DateTime &d);
 	bool operator==(const DateTime &d);
 	bool operator!=(const DateTime &d);
 	bool operator>(const DateTime &d);

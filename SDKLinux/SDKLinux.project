@@ -241,6 +241,10 @@
         <File Name="LFC/XWidgets/Events/windoweventcolormap.h"/>
         <File Name="LFC/XWidgets/Events/controlevententerleave.h"/>
         <File Name="LFC/XWidgets/Events/controlevententerleave.cpp"/>
+        <File Name="LFC/XWidgets/Events/controleventmouseclick.h"/>
+        <File Name="LFC/XWidgets/Events/controleventmouseclick.cpp"/>
+        <File Name="LFC/XWidgets/Events/controleventmousedoubleclick.h"/>
+        <File Name="LFC/XWidgets/Events/controleventmousedoubleclick.cpp"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Controls">
         <File Name="LFC/XWidgets/Controls/control.h"/>

@@ -23,6 +23,7 @@
 #include "windoweventmousebutton.h"
 #include "../../Time/datetime.h"
 #include "../Graphics/npoint.h"
+#include <typeinfo>
 
 ControlEventMouseButton::ControlEventMouseButton(const WindowEventMouseButton &e)
 {
