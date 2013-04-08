@@ -59,11 +59,11 @@ void Control::Init()
 	focused = false;
 	entered = false;
 	taborder = 0;
-	lastmousedown = NULL;
-	lastmouseclick = NULL;
+	lastMouseDown = NULL;
+	lastMouseClick = NULL;
 	
-	onMouseDown = new NDelegationManager();
-	onMouseUp = new NDelegationManager();
+	onMouseButtonDown = new NDelegationManager();
+	onMouseButtonUp = new NDelegationManager();
 	onMouseMove = new NDelegationManager();
 	onMouseClick = new NDelegationManager();
 	onMouseDoubleClick = new NDelegationManager();
@@ -86,11 +86,11 @@ Control::~Control()
 	delete backcolor;
 	children->DeleteAndClear();
 	delete children;
-	if (lastmousedown != NULL) delete lastmousedown;
-	if (lastmouseclick != NULL) delete lastmouseclick;
+	if (lastMouseDown != NULL) delete lastMouseDown;
+	if (lastMouseClick != NULL) delete lastMouseClick;
 			
-	delete onMouseDown;
-	delete onMouseUp;
+	delete onMouseButtonDown;
+	delete onMouseButtonUp;
 	delete onMouseMove;
 	delete onMouseClick;
 	delete onMouseDoubleClick;
@@ -121,17 +121,29 @@ int Control::COMPARER(const void *u, const void *v)
 
 bool Control::OnMove(ControlEventMoved *e)
 {
-	DelegationOnMove().Execute(e);
+	try {
+		DelegationOnMove().Execute(e);
+	} catch (Exception *e) {
+		delete e;
+	}
 }
 
 bool Control::OnBackColor(ControlEventBackColor *e)
 {
-	DelegationOnBackColor().Execute(e);
+	try {
+		DelegationOnBackColor().Execute(e);
+	} catch (Exception *e) {
+		delete e;
+	}
 }
 
 bool Control::OnVisible(ControlEventVisible *e)
 {
-	DelegationOnVisible().Execute(e);
+	try {
+		DelegationOnVisible().Execute(e);
+	} catch (Exception *e) {
+		delete e;
+	}
 }
 
 bool Control::OnKeyPreview(ControlEventKey *e)
@@ -139,7 +151,11 @@ bool Control::OnKeyPreview(ControlEventKey *e)
 	for (int i=0;i<children->Count(); i++) 
 		(*children)[i]->OnKeyPreview(e);
 	
-	DelegationOnKeyPreview().Execute(e);
+	try {
+		DelegationOnKeyPreview().Execute(e);
+	} catch (Exception *e) {
+		delete e;
+	}
 }
 
 bool Control::OnKeyPress(ControlEventKey *e)
@@ -158,7 +174,11 @@ bool Control::OnKeyPress(ControlEventKey *e)
 		return false;
 	}
 	
-	DelegationOnKeyPress().Execute(e);
+	try {
+		DelegationOnKeyPress().Execute(e);
+	} catch (Exception *e) {
+		delete e;
+	}
 	return true;
 }
 
@@ -178,127 +198,189 @@ bool Control::OnKeyRelease(ControlEventKey *e)
 		return false;
 	}
 	
-	DelegationOnKeyRelease().Execute(e);
+	try {
+		DelegationOnKeyRelease().Execute(e);
+	} catch (Exception *e) {
+		delete e;
+	}
+	return true;
+}
+
+bool Control::OnCheckFocus(ControlEventMouseButton *e)
+{
+	if (!IsVisible()) return false;
+	
+	if (!area->Contains(e->Position())) {
+		if (IsFocusable() && IsFocused()) SetFocus(false);
+		return false;
+	} 
+	
+	ControlEventMouseButton mb(*e, NPoint(area->GetX() - e->Position().GetX(), area->GetY() - e->Position().GetY()));
+	for (int i=0; i<children->Count(); i++) 
+		if ((*children)[i]->OnMouseButtonDown(&mb))
+			return true;
+	
+	if (!IsFocusable()) return false;
+	if (!IsFocused()) SetFocus(true);
 	return true;
 }
 
 bool Control::OnMouseButtonDown(ControlEventMouseButton *e)
 {
 	if (!IsVisible()) return false;
-	bool mousedownonchildren = false;
-	bool inarea = area->Contains(e->Position());
-	if (inarea) {
-		ControlEventMouseButton eee(*e, NPoint(area->GetX() - e->Position().GetX(), area->GetY() - e->Position().GetY()));
-		for (int i=0;i<children->Count() && !mousedownonchildren; i++) 
-			mousedownonchildren |= (*children)[i]->OnMouseButtonDown(&eee);
-	}
-	if (inarea && !mousedownonchildren) {
-		lastmousedown = new ControlEventMouseButton(*e);
-		if (IsFocusable() && !IsFocused()) SetFocus(true);
-	} else {
-		if (IsFocusable() && IsFocused()) SetFocus(false);		
-	}
+	if (!area->Contains(e->Position())) return false;
 	
-	return inarea;
+	ControlEventMouseButton mb(*e, NPoint(area->GetX() - e->Position().GetX(), area->GetY() - e->Position().GetY()));
+	for (int i=0;i<children->Count(); i++) 
+		if ((*children)[i]->OnMouseButtonDown(&mb))
+			return true;
+	
+	try {
+		DelegationOnMouseButtonDown().Execute(&mb);	
+	} catch (Exception *e) {
+		delete e;
+	}
+	return true;
 }
 
 bool Control::OnMouseButtonUp(ControlEventMouseButton *e)
 {
 	if (!IsVisible()) return false;
-	bool mouseuponchildren = false;
-	bool inarea = area->Contains(e->Position());
-	if (inarea) {
-		ControlEventMouseButton eee(*e, NPoint(area->GetX() - e->Position().GetX(), area->GetY() - e->Position().GetY()));
-		for (int i=0;i<children->Count() && !mouseuponchildren; i++) 
-			mouseuponchildren |= (*children)[i]->OnMouseButtonUp(e);
-	}
-	if (inarea && !mouseuponchildren) {		
-		DelegationOnMouseUp().Execute(e);
-		
-		bool samebuttonsclick = lastmousedown != NULL &&
-			lastmousedown->SourceButton1() == e->SourceButton1() &&
-			lastmousedown->SourceButton2() == e->SourceButton2() &&
-			lastmousedown->SourceButton3() == e->SourceButton3() &&
-			lastmousedown->SourceButton4() == e->SourceButton4() &&
-			lastmousedown->SourceButton5() == e->SourceButton5();
-		
-		if (samebuttonsclick) {
-			ControlEventMouseClick ee(*e, DateTime() - lastmousedown->Time());
-			OnMouseClick(&ee);
-			
-			bool samebuttonsdoubleclick = lastmouseclick != NULL &&
-				lastmouseclick->SourceButton1() == e->SourceButton1() &&
-				lastmouseclick->SourceButton2() == e->SourceButton2() &&
-				lastmouseclick->SourceButton3() == e->SourceButton3() &&
-				lastmouseclick->SourceButton4() == e->SourceButton4() &&
-				lastmouseclick->SourceButton5() == e->SourceButton5();
-			
-			if (samebuttonsdoubleclick) {
-				ControlEventMouseDoubleClick eee(*e, DateTime() - lastmouseclick->Time());
-				OnMouseDoubleClick(&eee);
-				
-				if (lastmouseclick) delete lastmouseclick;
-				lastmouseclick = NULL;
-			}
-			
-			if (lastmouseclick == NULL) lastmouseclick = new ControlEventMouseButton(*e);
-			else *lastmouseclick = *e;
-		}
-	}
-	if (lastmousedown != NULL) delete lastmousedown;
-	lastmousedown = NULL;
+	if (!area->Contains(e->Position())) return false;
 	
-	return inarea;
+	ControlEventMouseButton mb(*e, NPoint(area->GetX() - e->Position().GetX(), area->GetY() - e->Position().GetY()));
+	for (int i=0;i<children->Count(); i++) 
+		if ((*children)[i]->OnMouseButtonUp(e)) 
+			return true;
+				
+	bool samebuttonsclick = lastMouseDown != NULL &&
+		lastMouseDown->SourceButton1() == e->SourceButton1() &&
+		lastMouseDown->SourceButton2() == e->SourceButton2() &&
+		lastMouseDown->SourceButton3() == e->SourceButton3() &&
+		lastMouseDown->SourceButton4() == e->SourceButton4() &&
+		lastMouseDown->SourceButton5() == e->SourceButton5();
+	
+	if (samebuttonsclick) {
+		// Throws click event
+		ControlEventMouseClick mc(mb, DateTime() - lastMouseDown->Time());
+		OnMouseClick(&mc);
+		
+		bool samebuttonsdoubleclick = lastMouseClick != NULL &&
+			lastMouseClick->SourceButton1() == e->SourceButton1() &&
+			lastMouseClick->SourceButton2() == e->SourceButton2() &&
+			lastMouseClick->SourceButton3() == e->SourceButton3() &&
+			lastMouseClick->SourceButton4() == e->SourceButton4() &&
+			lastMouseClick->SourceButton5() == e->SourceButton5();
+		
+		if (samebuttonsdoubleclick) {
+			// Throws double click event
+			ControlEventMouseDoubleClick mdc(mb, DateTime() - lastMouseClick->Time());
+			OnMouseDoubleClick(&mdc);
+			
+			// Deletes lastMouseClick
+			if (lastMouseClick) delete lastMouseClick;
+			lastMouseClick = NULL;
+		}
+		
+		// Updates lastMouseClick
+		if (lastMouseClick == NULL) lastMouseClick = new ControlEventMouseButton(*e);
+		else *lastMouseClick = *e;
+	}
+	
+	// Deletes lastMouseDown 
+	if (lastMouseDown != NULL) delete lastMouseDown;
+	lastMouseDown = NULL;
+	
+	try {
+		DelegationOnMouseButtonUp().Execute(e);
+	} catch (Exception *e) {
+		delete e;
+	}
+	return true;
 }
 
 bool Control::OnMouseClick(ControlEventMouseClick *e)
 {
-	DelegationOnMouseClick().Execute(e);
+	try {
+		DelegationOnMouseClick().Execute(e);
+	} catch (Exception *e) {
+		delete e;
+	}
 }
 
 bool Control::OnMouseDoubleClick(ControlEventMouseDoubleClick *e)
 {
-	DelegationOnMouseDoubleClick().Execute(e);
+	try {
+		DelegationOnMouseDoubleClick().Execute(e);
+	} catch (Exception *e) {
+		delete e;
+	}
+}
+
+bool Control::OnCheckEnterLeave(ControlEventMouseMove *e)
+{
+	if (!IsVisible()) return false;
+	bool inarea = area->Contains(e->Position());
+	
+	ControlEventMouseMove mm(*e, NPoint(area->GetX() - e->Position().GetX(), area->GetY() - e->Position().GetY()));
+	for (int i=0; children->Count(); i++)
+		(*children)[i]->OnCheckEnterLeave(&mm);
+	
+	if (!entered && inarea) {
+		ControlEventEnterLeave el(true);
+		OnMouseEnter(&el);
+	} else if (entered && !inarea) {
+		ControlEventEnterLeave el(false);
+		OnMouseLeave(&el);
+	}
+	return true;
 }
 
 bool Control::OnMouseMove(ControlEventMouseMove *e)
 {
 	if (!IsVisible()) return false;
-	bool inarea = area->Contains(e->Position());
-	if (inarea) {
-		ControlEventMouseMove ee(*e, NPoint(area->GetX() - e->Position().GetX(), area->GetY() - e->Position().GetY()));
-		for (int i=0; children->Count(); i++)
-			(*children)[i]->OnMouseMove(&ee);
-			
+	if (!area->Contains(e->Position())) return false;
+
+	ControlEventMouseMove ee(*e, NPoint(area->GetX() - e->Position().GetX(), area->GetY() - e->Position().GetY()));
+	for (int i=0; children->Count(); i++)
+		if ((*children)[i]->OnMouseMove(&ee))
+			return true;
+
+	try {
 		DelegationOnMouseMove().Execute(e);
+	} catch (Exception *e) {
+		delete e;
 	}
-		
-	if (!entered && inarea) {
-		ControlEventEnterLeave eee(true);
-		OnMouseEnter(&eee);
-	} else if (entered && !inarea) {
-		ControlEventEnterLeave eee(false);
-		OnMouseLeave(&eee);
-	}
-	
-	return inarea;
+	return true;
 }
 
 bool Control::OnMouseEnter(ControlEventEnterLeave *e)
 {
-	DelegationOnMouseEnter().Execute(e);
+	try {
+		DelegationOnMouseEnter().Execute(e);
+	} catch (Exception *e) {
+		delete e;
+	}
 	return true;
 }
 
 bool Control::OnMouseLeave(ControlEventEnterLeave *e)
 {
-	DelegationOnMouseLeave().Execute(e);
+	try {
+		DelegationOnMouseLeave().Execute(e);
+	} catch (Exception *e) {
+		delete e;
+	}
 	return true;
 }
 
 bool Control::OnFocus(ControlEventFocused *e)
 {
-	DelegationOnFocus().Execute(e);
+	try {
+		DelegationOnFocus().Execute(e);
+	} catch (Exception * e) {
+		delete e;
+	}
 	return true;
 }
 
@@ -420,10 +502,13 @@ void Control::Draw()
 	gc->ClipRegionSet(*area);
 	gc->SetColor(*backcolor);
 	gc->FillRectangle(*area);
-	gc->ClipRegionReset();
 	
-	for (int i=0; i<children->Count(); i++)
-		(*children)[i]->Draw();
+	cairo_save(gc->Handle());
+	cairo_translate(gc->Handle(), area->GetX(), area->GetY());
+	for (int i=0; i<children->Count(); i++) (*children)[i]->Draw();
+	cairo_restore(gc->Handle());
+	
+	gc->ClipRegionReset();	
 }
 
 void Control::Prepare()
@@ -470,14 +555,14 @@ Collection<Control *> Control::EnumFocusableChildren()
 	return result;
 }
 
-NDelegationManager &Control::DelegationOnMouseDown()
+NDelegationManager &Control::DelegationOnMouseButtonDown()
 {
-	return *onMouseDown;
+	return *onMouseButtonDown;
 }
 
-NDelegationManager &Control::DelegationOnMouseUp()
+NDelegationManager &Control::DelegationOnMouseButtonUp()
 {
-	return *onMouseUp;
+	return *onMouseButtonUp;
 }
 
 NDelegationManager &Control::DelegationOnMouseMove()

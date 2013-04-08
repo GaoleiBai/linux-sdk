@@ -596,18 +596,17 @@ void XWindow::Draw()
 
 void XWindow::OnKeyPress(WindowEventKey *e)
 {
-	DelegationOnKeyPress().Execute(e);
+	ControlEventKey ek(*e);
 	
-	// Key redirection to controls
-	ControlEventKey ee(*e);
-	bool redirected = false;
-	for (int i=0; i<controls->Count() && !redirected; i++)
-		redirected = (*controls)[i]->OnKeyPress(&ee);
-		
 	// Key preview to every control
 	for (int i=0; i<controls->Count(); i++)
-		(*controls)[i]->OnKeyPreview(&ee);
+		(*controls)[i]->OnKeyPreview(&ek);
 	
+	// OnKeyPress until the focused control catches it
+	bool redirected = false;
+	for (int i=0; i<controls->Count() && !redirected; i++)
+		redirected = (*controls)[i]->OnKeyPress(&ek);
+		
 	// Noone catched the event?
 	if (!redirected) {
 		if (e->KeyCode().Value() == 23) {
@@ -622,41 +621,79 @@ void XWindow::OnKeyPress(WindowEventKey *e)
 			// Return: Window Accept
 		}
 	}	
+	
+	try {
+		DelegationOnKeyPress().Execute(e);	
+	} catch (Exception *e) {
+		delete e;
+	}
 }
 
 void XWindow::OnKeyRelease(WindowEventKey *e)
 {
-	DelegationOnKeyRelease().Execute(e);
-
-	// Key redirection to controls
-	ControlEventKey ee(*e);
+	ControlEventKey kr(*e);
+	
+	// Key redirection until the focused control catches it
 	bool redirected = false;
 	for (int i=0; i<controls->Count() && !redirected; i++)
-		redirected = (*controls)[i]->OnKeyRelease(&ee);	
+		redirected = (*controls)[i]->OnKeyRelease(&kr);	
+		
+	try {
+		DelegationOnKeyRelease().Execute(e);
+	} catch (Exception *e) {
+		delete e;
+	}
 }
 
 void XWindow::OnMouseDown(WindowEventMouseButton *e)
 {
-	DelegationOnMouseDown().Execute(e);
-	ControlEventMouseButton ee(*e);
+	ControlEventMouseButton mb(*e);
+	
+	// OnCheckFocus to every control
 	for (int i=0; i<controls->Count(); i++)
-		(*controls)[i]->OnMouseButtonDown(&ee);
+		(*controls)[i]->OnCheckFocus(&mb);
+
+	// OnMouseDown until one control catch it
+	bool controlMouseDown = false;
+	for (int i=0; i<controls->Count() && !controlMouseDown; i++)
+		controlMouseDown = (*controls)[i]->OnMouseButtonDown(&mb);
+	
+	try {
+		DelegationOnMouseDown().Execute(e);		
+	} catch (Exception *e) {
+		delete e;
+	}
 }
 
 void XWindow::OnMouseUp(WindowEventMouseButton *e)
 {
-	DelegationOnMouseUp().Execute(e);
-	ControlEventMouseButton ee(*e);
-	for (int i=0; i<controls->Count(); i++)
-		(*controls)[i]->OnMouseButtonUp(&ee);	
+	ControlEventMouseButton mb(*e);
+	
+	// OnMouseUp until one control catch it
+	bool controlMouseUp = false;
+	for (int i=0; i<controls->Count() && !controlMouseUp; i++)
+		controlMouseUp = (*controls)[i]->OnMouseButtonUp(&mb);	
+		
+	try {
+		DelegationOnMouseUp().Execute(e);
+	} catch (Exception *e) {
+		delete e;
+	}
 }
 
 void XWindow::OnMouseMove(WindowEventMouseMove *e)
 {
 	DelegationOnMouseMove().Execute(e);
-	ControlEventMouseMove ee(*e);
+	ControlEventMouseMove mm(*e);
+	
+	// OnCheckEnterLeave for all
 	for (int i=0; i<controls->Count(); i++)
-		(*controls)[i]->OnMouseMove(&ee);
+		(*controls)[i]->OnCheckEnterLeave(&mm);
+	
+	// OnMouseMove until one control catch it
+	for (int i=0; i<controls->Count(); i++)
+		if ((*controls)[i]->OnMouseMove(&mm))
+			return;
 }
 
 void XWindow::OnMouseEnterLeave(WindowEventEnterLeave *e)

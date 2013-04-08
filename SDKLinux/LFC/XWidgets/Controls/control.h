@@ -53,11 +53,11 @@ protected:
 	bool entered;
 	bool focused;
 	int taborder;
-	ControlEventMouseButton *lastmousedown;
-	ControlEventMouseButton *lastmouseclick;
+	ControlEventMouseButton *lastMouseDown;
+	ControlEventMouseButton *lastMouseClick;
 	
-	NDelegationManager *onMouseDown;
-	NDelegationManager *onMouseUp;
+	NDelegationManager *onMouseButtonDown;
+	NDelegationManager *onMouseButtonUp;
 	NDelegationManager *onMouseMove;
 	NDelegationManager *onMouseClick;
 	NDelegationManager *onMouseDoubleClick;
@@ -116,10 +116,12 @@ protected:
 	virtual bool OnKeyPreview(ControlEventKey *e);
 	virtual bool OnKeyPress(ControlEventKey *e);
 	virtual bool OnKeyRelease(ControlEventKey *e);
+	virtual bool OnCheckFocus(ControlEventMouseButton *e);
 	virtual bool OnMouseButtonDown(ControlEventMouseButton *e);
 	virtual bool OnMouseButtonUp(ControlEventMouseButton *e);
 	virtual bool OnMouseClick(ControlEventMouseClick *e);
 	virtual bool OnMouseDoubleClick(ControlEventMouseDoubleClick *e);
+	virtual bool OnCheckEnterLeave(ControlEventMouseMove *e);
 	virtual bool OnMouseMove(ControlEventMouseMove *e);
 	virtual bool OnMouseEnter(ControlEventEnterLeave *e);
 	virtual bool OnMouseLeave(ControlEventEnterLeave *e);
@@ -129,8 +131,8 @@ public:
 
 	Collection<Control *> EnumFocusableChildren();
 	
-	NDelegationManager &DelegationOnMouseDown();	// Arg: ControlEventMouseButton *
-	NDelegationManager &DelegationOnMouseUp();		// Arg: ControlEventMouseButton *
+	NDelegationManager &DelegationOnMouseButtonDown();	// Arg: ControlEventMouseButton *
+	NDelegationManager &DelegationOnMouseButtonUp();		// Arg: ControlEventMouseButton *
 	NDelegationManager &DelegationOnMouseMove();	// Arg: ControlEventMouseMove *
 	NDelegationManager &DelegationOnMouseClick();	// Arg: ControlEventMouseClick *
 	NDelegationManager &DelegationOnMouseDoubleClick();	// Arg: ControlEventMouseDoubleClick *
