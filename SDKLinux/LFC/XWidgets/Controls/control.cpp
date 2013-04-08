@@ -414,19 +414,23 @@ void Control::SetVisible(bool visible)
 {
 	if (this->visible == visible) return;
 	this->visible = visible;
+	
 	ControlEventVisible ve(this, visible);
-	DelegationOnVisible().Execute(&ve);
 	if (visible) 
 		Draw();
 	else 
 		window->Invalidate();
+		
+	DelegationOnVisible().Execute(&ve);		
 }
 
 void Control::SetFocus(bool focus)
 {
+	if (!IsVisible()) return;
 	if (!IsFocusable()) return;
 	if (this->focused == focus) return;
 	this->focused = focus;
+	
 	ControlEventFocused fe(this, focus);
 	OnFocus(&fe);
 	Draw();
