@@ -52,7 +52,8 @@ protected:
 	bool visible;
 	bool entered;
 	bool focused;
-	int taborder;
+	int orderTabulation;
+	int orderVisibility;
 	ControlEventMouseButton *lastMouseDown;
 	ControlEventMouseButton *lastMouseClick;
 	
@@ -78,7 +79,8 @@ public:
 	Control(const NRectangle &area);
 	virtual ~Control();
 	
-	static int COMPARER(const void *u, const void *v);
+	static int COMPARER_BY_ORDER_TABULATION(const void *u, const void *v);
+	static int COMPARER_BY_ORDER_VISIBILITY(const void *u, const void *v);
 
 	void Init(XWindow *w);
 	void ChildControlAdd(Control *c);
@@ -90,14 +92,16 @@ public:
 	void *GetUserData();
 	bool IsVisible();
 	bool IsFocused();
-	int TabOrder();
+	int OrderTabulation();
+	int OrderVisibility();
 	
 	void SetArea(const NRectangle &area);
 	void SetBackColor(const NColor &backcolor);
 	void SetUserData(void *userdata);
 	void SetVisible(bool visible);
 	void SetFocus(bool focused);
-	void SetTabOrder(int taborder);
+	void SetOrderTabulation(int orderTabulation);
+	void SetOrderVisibility(int orderVisibility);
 	
 	virtual void Draw();
 	virtual void Prepare();

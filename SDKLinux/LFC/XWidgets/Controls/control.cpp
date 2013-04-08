@@ -58,7 +58,7 @@ void Control::Init()
 	visible = true;
 	focused = false;
 	entered = false;
-	taborder = 0;
+	orderTabulation = 0;
 	lastMouseDown = NULL;
 	lastMouseClick = NULL;
 	
@@ -106,11 +106,24 @@ Control::~Control()
 		
 }
 
-int Control::COMPARER(const void *u, const void *v)
+int Control::COMPARER_BY_ORDER_TABULATION(const void *u, const void *v)
 {
 	Control **uu = (Control **)u;
 	Control **vv = (Control **)v;
-	int diff = (*uu)->TabOrder() - (*vv)->TabOrder();
+	int diff = (*uu)->OrderTabulation() - (*vv)->OrderTabulation();
+	if (diff > 0)
+		return 1;
+	else if (diff < 0)
+		return -1;
+	else 
+		return 0;
+}
+
+int Control::COMPARER_BY_ORDER_VISIBILITY(const void *u, const void *v)
+{
+	Control **uu = (Control **)u;
+	Control **vv = (Control **)v;
+	int diff = (*uu)->OrderVisibility() - (*vv)->OrderVisibility();
 	if (diff > 0)
 		return 1;
 	else if (diff < 0)
@@ -121,29 +134,20 @@ int Control::COMPARER(const void *u, const void *v)
 
 bool Control::OnMove(ControlEventMoved *e)
 {
-	try {
-		DelegationOnMove().Execute(e);
-	} catch (Exception *e) {
-		delete e;
-	}
+	DelegationOnMove().Execute(e);
+	return true;
 }
 
 bool Control::OnBackColor(ControlEventBackColor *e)
 {
-	try {
-		DelegationOnBackColor().Execute(e);
-	} catch (Exception *e) {
-		delete e;
-	}
+	DelegationOnBackColor().Execute(e);
+	return true;
 }
 
 bool Control::OnVisible(ControlEventVisible *e)
 {
-	try {
-		DelegationOnVisible().Execute(e);
-	} catch (Exception *e) {
-		delete e;
-	}
+	DelegationOnVisible().Execute(e);
+	return true;
 }
 
 bool Control::OnKeyPreview(ControlEventKey *e)
@@ -151,11 +155,8 @@ bool Control::OnKeyPreview(ControlEventKey *e)
 	for (int i=0;i<children->Count(); i++) 
 		(*children)[i]->OnKeyPreview(e);
 	
-	try {
-		DelegationOnKeyPreview().Execute(e);
-	} catch (Exception *e) {
-		delete e;
-	}
+	DelegationOnKeyPreview().Execute(e);
+	return true;
 }
 
 bool Control::OnKeyPress(ControlEventKey *e)
@@ -174,11 +175,7 @@ bool Control::OnKeyPress(ControlEventKey *e)
 		return false;
 	}
 	
-	try {
-		DelegationOnKeyPress().Execute(e);
-	} catch (Exception *e) {
-		delete e;
-	}
+	DelegationOnKeyPress().Execute(e);
 	return true;
 }
 
@@ -198,11 +195,7 @@ bool Control::OnKeyRelease(ControlEventKey *e)
 		return false;
 	}
 	
-	try {
-		DelegationOnKeyRelease().Execute(e);
-	} catch (Exception *e) {
-		delete e;
-	}
+	DelegationOnKeyRelease().Execute(e);
 	return true;
 }
 
@@ -235,11 +228,7 @@ bool Control::OnMouseButtonDown(ControlEventMouseButton *e)
 		if ((*children)[i]->OnMouseButtonDown(&mb))
 			return true;
 	
-	try {
-		DelegationOnMouseButtonDown().Execute(&mb);	
-	} catch (Exception *e) {
-		delete e;
-	}
+	DelegationOnMouseButtonDown().Execute(&mb);	
 	return true;
 }
 
@@ -291,30 +280,20 @@ bool Control::OnMouseButtonUp(ControlEventMouseButton *e)
 	if (lastMouseDown != NULL) delete lastMouseDown;
 	lastMouseDown = NULL;
 	
-	try {
-		DelegationOnMouseButtonUp().Execute(e);
-	} catch (Exception *e) {
-		delete e;
-	}
+	DelegationOnMouseButtonUp().Execute(e);
 	return true;
 }
 
 bool Control::OnMouseClick(ControlEventMouseClick *e)
 {
-	try {
-		DelegationOnMouseClick().Execute(e);
-	} catch (Exception *e) {
-		delete e;
-	}
+	DelegationOnMouseClick().Execute(e);
+	return true;
 }
 
 bool Control::OnMouseDoubleClick(ControlEventMouseDoubleClick *e)
 {
-	try {
-		DelegationOnMouseDoubleClick().Execute(e);
-	} catch (Exception *e) {
-		delete e;
-	}
+	DelegationOnMouseDoubleClick().Execute(e);
+	return true;
 }
 
 bool Control::OnCheckEnterLeave(ControlEventMouseMove *e)
@@ -346,41 +325,25 @@ bool Control::OnMouseMove(ControlEventMouseMove *e)
 		if ((*children)[i]->OnMouseMove(&ee))
 			return true;
 
-	try {
-		DelegationOnMouseMove().Execute(e);
-	} catch (Exception *e) {
-		delete e;
-	}
+	DelegationOnMouseMove().Execute(e);
 	return true;
 }
 
 bool Control::OnMouseEnter(ControlEventEnterLeave *e)
 {
-	try {
-		DelegationOnMouseEnter().Execute(e);
-	} catch (Exception *e) {
-		delete e;
-	}
+	DelegationOnMouseEnter().Execute(e);
 	return true;
 }
 
 bool Control::OnMouseLeave(ControlEventEnterLeave *e)
 {
-	try {
-		DelegationOnMouseLeave().Execute(e);
-	} catch (Exception *e) {
-		delete e;
-	}
+	DelegationOnMouseLeave().Execute(e);
 	return true;
 }
 
 bool Control::OnFocus(ControlEventFocused *e)
 {
-	try {
-		DelegationOnFocus().Execute(e);
-	} catch (Exception * e) {
-		delete e;
-	}
+	DelegationOnFocus().Execute(e);
 	return true;
 }
 
@@ -413,15 +376,21 @@ bool Control::IsFocused()
 	return false;
 }
 
-int Control::TabOrder()
+int Control::OrderTabulation()
 {
-	return taborder;
+	return orderTabulation;
+}
+
+int Control::OrderVisibility()
+{
+	return orderVisibility;
 }
 
 void Control::SetArea(const NRectangle &area)
 {
 	if (this->area->Equals(area)) return;
-	*this->area = area;	
+	*this->area = area;
+	
 	ControlEventMoved me(this, area);
 	OnMove(&me);
 	window->Invalidate();
@@ -463,9 +432,14 @@ void Control::SetFocus(bool focus)
 	Draw();
 }
 
-void Control::SetTabOrder(int taborder)
+void Control::SetOrderTabulation(int taborder)
 {
-	this->taborder = taborder;
+	this->orderTabulation = orderTabulation;
+}
+
+void Control::SetOrderVisibility(int orderVisibility)
+{
+	this->orderVisibility = orderVisibility;
 }
 
 void Control::Init(XWindow *w)
@@ -480,15 +454,15 @@ void Control::Init(XWindow *w)
 void Control::ChildControlAdd(Control *c)
 {
 	if (ChildControlExists(c)) return;
-	children->Add(c);
 	c->Init(window);
-	c->Draw();
+	children->Add(c);	
+	Draw();
 }
 
 void Control::ChildControlRemove(Control *c)
 {
 	children->Remove(c);
-	window->Invalidate();
+	Draw();
 }
 
 bool Control::ChildControlExists(Control *c)
@@ -498,6 +472,8 @@ bool Control::ChildControlExists(Control *c)
 
 void Control::Draw()
 {
+	if (!IsVisible()) return;
+	
 	IGraphics *gc = window->HandlerGraphics();
 	gc->ClipRegionSet(*area);
 	gc->SetColor(*backcolor);
@@ -548,10 +524,13 @@ bool Control::CaptureEscapeKey()
 
 Collection<Control *> Control::EnumFocusableChildren()
 {
+	children->QuickSort(Control::COMPARER_BY_ORDER_TABULATION);
+
 	Collection<Control *> result;
-	if (IsFocusable()) result.Add(this);
+	if (IsFocusable()) result.Add(this);	
 	for (int i=0; i<children->Count(); i++) 
 		result.AddRange((*children)[i]->EnumFocusableChildren());
+		
 	return result;
 }
 

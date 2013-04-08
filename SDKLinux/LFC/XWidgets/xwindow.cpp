@@ -533,7 +533,7 @@ Collection<Control *> XWindow::ControlsEnumFocusable()
 	Collection<Control *> focusables;
 	for (int i=0; i<controls->Count(); i++)
 		focusables.AddRange((*controls)[i]->EnumFocusableChildren());
-	focusables.QuickSort(Control::COMPARER);
+	focusables.QuickSort(Control::COMPARER_BY_ORDER_TABULATION);
 	return focusables;
 }
 
@@ -586,12 +586,10 @@ void XWindow::Dispose()
 void XWindow::Draw()
 {
 	if (!drawEnabled) return;
-	
 	gc->Clear(*backcolor);
-	for (int i=0; i<controls->Count(); i++) {
-		if (!(*controls)[i]->IsVisible()) continue;
-		(*controls)[i]->Draw();
-	}
+	
+	controls->QuickSort(Control::COMPARER_BY_ORDER_VISIBILITY);
+	for (int i=0; i<controls->Count(); i++) (*controls)[i]->Draw();
 }
 
 void XWindow::OnKeyPress(WindowEventKey *e)
@@ -622,11 +620,7 @@ void XWindow::OnKeyPress(WindowEventKey *e)
 		}
 	}	
 	
-	try {
-		DelegationOnKeyPress().Execute(e);	
-	} catch (Exception *e) {
-		delete e;
-	}
+	DelegationOnKeyPress().Execute(e);	
 }
 
 void XWindow::OnKeyRelease(WindowEventKey *e)
@@ -638,11 +632,7 @@ void XWindow::OnKeyRelease(WindowEventKey *e)
 	for (int i=0; i<controls->Count() && !redirected; i++)
 		redirected = (*controls)[i]->OnKeyRelease(&kr);	
 		
-	try {
-		DelegationOnKeyRelease().Execute(e);
-	} catch (Exception *e) {
-		delete e;
-	}
+	DelegationOnKeyRelease().Execute(e);
 }
 
 void XWindow::OnMouseDown(WindowEventMouseButton *e)
@@ -658,11 +648,7 @@ void XWindow::OnMouseDown(WindowEventMouseButton *e)
 	for (int i=0; i<controls->Count() && !controlMouseDown; i++)
 		controlMouseDown = (*controls)[i]->OnMouseButtonDown(&mb);
 	
-	try {
-		DelegationOnMouseDown().Execute(e);		
-	} catch (Exception *e) {
-		delete e;
-	}
+	DelegationOnMouseDown().Execute(e);		
 }
 
 void XWindow::OnMouseUp(WindowEventMouseButton *e)
@@ -674,16 +660,11 @@ void XWindow::OnMouseUp(WindowEventMouseButton *e)
 	for (int i=0; i<controls->Count() && !controlMouseUp; i++)
 		controlMouseUp = (*controls)[i]->OnMouseButtonUp(&mb);	
 		
-	try {
-		DelegationOnMouseUp().Execute(e);
-	} catch (Exception *e) {
-		delete e;
-	}
+	DelegationOnMouseUp().Execute(e);
 }
 
 void XWindow::OnMouseMove(WindowEventMouseMove *e)
 {
-	DelegationOnMouseMove().Execute(e);
 	ControlEventMouseMove mm(*e);
 	
 	// OnCheckEnterLeave for all
@@ -694,6 +675,8 @@ void XWindow::OnMouseMove(WindowEventMouseMove *e)
 	for (int i=0; i<controls->Count(); i++)
 		if ((*controls)[i]->OnMouseMove(&mm))
 			return;
+			
+	DelegationOnMouseMove().Execute(e);
 }
 
 void XWindow::OnMouseEnterLeave(WindowEventEnterLeave *e)
