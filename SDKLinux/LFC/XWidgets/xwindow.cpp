@@ -513,7 +513,7 @@ void XWindow::ControlAdd(Control *c)
 {
 	if (ControlExists(c)) return;	
 	controls->Add(c);
-	c->Init(this);
+	c->Init(this, NULL);
 	Invalidate();
 }
 
@@ -585,11 +585,12 @@ void XWindow::Dispose()
 
 void XWindow::Draw()
 {
-	if (!drawEnabled) return;
-	gc->Clear(*backcolor);
-	
+	if (!drawEnabled) return;	
 	controls->QuickSort(Control::COMPARER_BY_ORDER_VISIBILITY);
-	for (int i=0; i<controls->Count(); i++) (*controls)[i]->Draw();
+	
+	gc->Clear(*backcolor);
+	for (int i=0; i<controls->Count(); i++)
+		(*controls)[i]->Draw();
 }
 
 void XWindow::OnKeyPress(WindowEventKey *e)

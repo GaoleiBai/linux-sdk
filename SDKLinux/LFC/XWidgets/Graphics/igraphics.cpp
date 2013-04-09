@@ -148,6 +148,36 @@ void IGraphics::SetPattern(const GraphicsPattern &p)
 	XException::CheckCairo(gc);
 }
 
+void IGraphics::Save()
+{
+	cairo_save(gc);
+}
+
+void IGraphics::Restore()
+{
+	cairo_restore(gc);
+}
+
+void IGraphics::TransformReset()
+{
+	cairo_identity_matrix(gc);
+}
+
+void IGraphics::TransformTranslate(double x, double y)
+{
+	cairo_translate(gc, x, y);
+}
+
+void IGraphics::TransformScale(double sx, double sy)
+{
+	cairo_scale(gc, sx, sy);
+}
+
+void IGraphics::TransformRotate(double radians)
+{
+	cairo_rotate(gc, radians);
+}
+
 void IGraphics::Clear(const NColor &color)
 {
 	ClipRegionReset();

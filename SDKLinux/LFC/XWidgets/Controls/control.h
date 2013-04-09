@@ -45,6 +45,7 @@ class Control : public NObject {
 	
 protected:
 	XWindow *window;
+	Control *parent;
 	NRectangle *area;
 	NColor *backcolor;
 	void *userdata;
@@ -73,6 +74,7 @@ protected:
 	NDelegationManager *onBackColor;
 	
 	void Init();
+	NPoint GetLocation();
 	
 public:
 	Control();
@@ -82,7 +84,7 @@ public:
 	static int COMPARER_BY_ORDER_TABULATION(const void *u, const void *v);
 	static int COMPARER_BY_ORDER_VISIBILITY(const void *u, const void *v);
 
-	void Init(XWindow *w);
+	void Init(XWindow *w, Control *parent);
 	void ChildControlAdd(Control *c);
 	void ChildControlRemove(Control *c);
 	bool ChildControlExists(Control *c);

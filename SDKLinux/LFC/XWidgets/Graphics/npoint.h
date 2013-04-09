@@ -39,6 +39,9 @@ public:
 	void SetY(int y);
 	int GetX();
 	int GetY();
+	
+	NPoint operator +(const NPoint &p);
+	NPoint operator -(const NPoint &p);
 
 	NObject *NewInstance();
 	bool Equals(const NObject &o);

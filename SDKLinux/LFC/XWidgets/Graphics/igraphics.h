@@ -79,6 +79,13 @@ public:
 	void SetColor(const NColor &c);
 	void SetPattern(const GraphicsPattern &p);
 
+	void Save();
+	void Restore();
+	void TransformReset();
+	void TransformTranslate(double x, double y);
+	void TransformScale(double sx, double sy);
+	void TransformRotate(double radians);
+	
 	void Clear(const NColor &color);
 	void DrawLine(int x1, int y1, int x2, int y2);
 	void DrawRectangle(int x, int y, int width, int height);

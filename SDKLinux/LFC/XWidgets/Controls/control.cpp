@@ -78,6 +78,14 @@ void Control::Init()
 	onBackColor = new NDelegationManager();
 }
 
+NPoint Control::GetLocation()
+{
+	if (parent != NULL) 
+		return area->GetOrigin() + parent->GetLocation();
+	
+	return area->GetOrigin();
+}
+
 Control::~Control()
 {
 	Release();
@@ -393,6 +401,7 @@ void Control::SetArea(const NRectangle &area)
 	
 	ControlEventMoved me(this, area);
 	OnMove(&me);
+	
 	window->Invalidate();
 }
 
@@ -400,9 +409,11 @@ void Control::SetBackColor(const NColor &backcolor)
 {
 	if (this->backcolor->Equals(backcolor)) return;
 	*this->backcolor = backcolor;
+	
 	ControlEventBackColor bce(this, backcolor);
 	OnBackColor(&bce);
-	Draw();
+	
+	window->Invalidate();
 }
 
 void Control::SetUserData(void *userdata)
@@ -414,14 +425,11 @@ void Control::SetVisible(bool visible)
 {
 	if (this->visible == visible) return;
 	this->visible = visible;
-	
-	ControlEventVisible ve(this, visible);
-	if (visible) 
-		Draw();
-	else 
-		window->Invalidate();
 		
-	DelegationOnVisible().Execute(&ve);		
+	ControlEventVisible ve(this, visible);
+	OnVisible(&ve);
+	
+	window->Invalidate();
 }
 
 void Control::SetFocus(bool focus)
@@ -433,7 +441,8 @@ void Control::SetFocus(bool focus)
 	
 	ControlEventFocused fe(this, focus);
 	OnFocus(&fe);
-	Draw();
+	
+	window->Invalidate();
 }
 
 void Control::SetOrderTabulation(int taborder)
@@ -446,10 +455,11 @@ void Control::SetOrderVisibility(int orderVisibility)
 	this->orderVisibility = orderVisibility;
 }
 
-void Control::Init(XWindow *w)
+void Control::Init(XWindow *w, Control *parent)
 {
 	// Get the graphics context
 	this->window = w;
+	this->parent = parent;
 	
 	// Call prepare
 	Prepare();
@@ -458,15 +468,15 @@ void Control::Init(XWindow *w)
 void Control::ChildControlAdd(Control *c)
 {
 	if (ChildControlExists(c)) return;
-	c->Init(window);
+	c->Init(window, this);
 	children->Add(c);	
-	Draw();
+	window->Invalidate();
 }
 
 void Control::ChildControlRemove(Control *c)
 {
 	children->Remove(c);
-	Draw();
+	window->Invalidate();
 }
 
 bool Control::ChildControlExists(Control *c)
@@ -478,15 +488,18 @@ void Control::Draw()
 {
 	if (!IsVisible()) return;
 	
-	IGraphics *gc = window->HandlerGraphics();
-	gc->ClipRegionSet(*area);
-	gc->SetColor(*backcolor);
-	gc->FillRectangle(*area);
+	NPoint p = GetLocation();
+	NRectangle r(p.GetX(), p.GetY(), area->GetWidth(), area->GetHeight());
 	
-	cairo_save(gc->Handle());
-	cairo_translate(gc->Handle(), area->GetX(), area->GetY());
-	for (int i=0; i<children->Count(); i++) (*children)[i]->Draw();
-	cairo_restore(gc->Handle());
+	IGraphics *gc = window->HandlerGraphics();
+	gc->ClipRegionSet(r);
+	
+	// Draw background
+	gc->SetColor(*backcolor);
+	gc->FillRectangle(r);
+	
+	// Draw children controls
+	for (int i=0; i<children->Count(); i++)	(*children)[i]->Draw();
 	
 	gc->ClipRegionReset();	
 }

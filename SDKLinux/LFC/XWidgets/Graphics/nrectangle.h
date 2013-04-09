@@ -26,6 +26,7 @@
 
 class Serializator;
 class NPoint;
+class NSize;
 
 class NRectangle : public NObject {
 	int x, y, width, height;
@@ -44,6 +45,9 @@ public:
 	void SetY(int y);
 	void SetWidth(int width);
 	void SetHeight(int height);
+	
+	NPoint GetOrigin();
+	NSize GetSize();
 	
 	bool Contains(int x, int y);
 	bool Contains(const NPoint &p);

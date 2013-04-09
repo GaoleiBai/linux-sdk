@@ -21,6 +21,7 @@
 **/
 #include "nrectangle.h"
 #include "npoint.h"
+#include "nsize.h"
 #include "../../FileSystem/serializator.h"
 #include <typeinfo>
 
@@ -90,6 +91,16 @@ void NRectangle::SetWidth(int width)
 void NRectangle::SetHeight(int height)
 {
 	this->height = height;
+}
+
+NPoint NRectangle::GetOrigin()
+{
+	return NPoint(x, y);
+}
+
+NSize NRectangle::GetSize()
+{
+	return NSize(width, height);
 }
 
 bool NRectangle::Contains(int x, int y)

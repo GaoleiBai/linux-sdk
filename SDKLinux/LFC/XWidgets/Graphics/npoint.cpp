@@ -65,6 +65,16 @@ void NPoint::SetY(int y)
 	this->y = y;
 }
 
+NPoint NPoint::operator +(const NPoint &p)
+{
+	return NPoint(x + p.x, y + p.y);
+}
+
+NPoint NPoint::operator -(const NPoint &p)
+{
+	return NPoint(x - p.x, y - p.y);
+}
+
 NObject *NPoint::NewInstance()
 {
 	return new NPoint();
