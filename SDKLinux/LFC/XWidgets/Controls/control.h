@@ -74,7 +74,7 @@ protected:
 	NDelegationManager *onBackColor;
 	
 	void Init();
-	NPoint GetLocation();
+	NPoint Position();
 	
 public:
 	Control();
@@ -132,6 +132,8 @@ protected:
 	virtual bool OnMouseEnter(ControlEventEnterLeave *e);
 	virtual bool OnMouseLeave(ControlEventEnterLeave *e);
 	virtual bool OnFocus(ControlEventFocused *e);
+	virtual bool OnDrawBackground(IGraphics *g, NRectangle *r);
+	virtual bool OnDraw(IGraphics *g, NRectangle *r);
 		
 public:
 

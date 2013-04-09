@@ -46,8 +46,8 @@ public:
 	void SetWidth(int width);
 	void SetHeight(int height);
 	
-	NPoint GetOrigin();
-	NSize GetSize();
+	NPoint Position();
+	NSize Size();
 	
 	bool Contains(int x, int y);
 	bool Contains(const NPoint &p);

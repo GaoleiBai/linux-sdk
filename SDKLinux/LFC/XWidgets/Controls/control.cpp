@@ -78,12 +78,12 @@ void Control::Init()
 	onBackColor = new NDelegationManager();
 }
 
-NPoint Control::GetLocation()
+NPoint Control::Position()
 {
 	if (parent != NULL) 
-		return area->GetOrigin() + parent->GetLocation();
+		return area->Position() + parent->Position();
 	
-	return area->GetOrigin();
+	return area->Position();
 }
 
 Control::~Control()
@@ -216,7 +216,7 @@ bool Control::OnCheckFocus(ControlEventMouseButton *e)
 		return false;
 	} 
 	
-	ControlEventMouseButton mb(*e, NPoint(area->GetX() - e->Position().GetX(), area->GetY() - e->Position().GetY()));
+	ControlEventMouseButton mb(*e, e->Position() - area->Position());
 	for (int i=0; i<children->Count(); i++) 
 		if ((*children)[i]->OnMouseButtonDown(&mb))
 			return true;
@@ -231,7 +231,7 @@ bool Control::OnMouseButtonDown(ControlEventMouseButton *e)
 	if (!IsVisible()) return false;
 	if (!area->Contains(e->Position())) return false;
 	
-	ControlEventMouseButton mb(*e, NPoint(area->GetX() - e->Position().GetX(), area->GetY() - e->Position().GetY()));
+	ControlEventMouseButton mb(*e, e->Position() - area->Position());
 	for (int i=0;i<children->Count(); i++) 
 		if ((*children)[i]->OnMouseButtonDown(&mb))
 			return true;
@@ -245,7 +245,7 @@ bool Control::OnMouseButtonUp(ControlEventMouseButton *e)
 	if (!IsVisible()) return false;
 	if (!area->Contains(e->Position())) return false;
 	
-	ControlEventMouseButton mb(*e, NPoint(area->GetX() - e->Position().GetX(), area->GetY() - e->Position().GetY()));
+	ControlEventMouseButton mb(*e, e->Position() - area->Position());
 	for (int i=0;i<children->Count(); i++) 
 		if ((*children)[i]->OnMouseButtonUp(e)) 
 			return true;
@@ -309,7 +309,7 @@ bool Control::OnCheckEnterLeave(ControlEventMouseMove *e)
 	if (!IsVisible()) return false;
 	bool inarea = area->Contains(e->Position());
 	
-	ControlEventMouseMove mm(*e, NPoint(area->GetX() - e->Position().GetX(), area->GetY() - e->Position().GetY()));
+	ControlEventMouseMove mm(*e, e->Position() - area->Position());
 	for (int i=0; children->Count(); i++)
 		(*children)[i]->OnCheckEnterLeave(&mm);
 	
@@ -328,7 +328,7 @@ bool Control::OnMouseMove(ControlEventMouseMove *e)
 	if (!IsVisible()) return false;
 	if (!area->Contains(e->Position())) return false;
 
-	ControlEventMouseMove ee(*e, NPoint(area->GetX() - e->Position().GetX(), area->GetY() - e->Position().GetY()));
+	ControlEventMouseMove ee(*e, e->Position() - area->Position());
 	for (int i=0; children->Count(); i++)
 		if ((*children)[i]->OnMouseMove(&ee))
 			return true;
@@ -484,24 +484,42 @@ bool Control::ChildControlExists(Control *c)
 	return children->Contains(c);
 }
 
+bool Control::OnDrawBackground(IGraphics *g, NRectangle *r)
+{
+	return false;
+}
+
+bool Control::OnDraw(IGraphics *g, NRectangle *r)
+{
+	return true;
+}
+
 void Control::Draw()
 {
 	if (!IsVisible()) return;
 	
-	NPoint p = GetLocation();
-	NRectangle r(p.GetX(), p.GetY(), area->GetWidth(), area->GetHeight());
+	NPoint p = Position();
+	NRectangle r(0, 0, area->GetWidth(), area->GetHeight());
 	
 	IGraphics *gc = window->HandlerGraphics();
+	gc->Save();
+	gc->TransformTranslate(p.GetX(), p.GetY());
 	gc->ClipRegionSet(r);
 	
-	// Draw background
-	gc->SetColor(*backcolor);
-	gc->FillRectangle(r);
+	// Draw background if not implemented OnDrawBackground
+	if (!OnDrawBackground(gc, &r)) {
+		gc->SetColor(*backcolor);
+		gc->FillRectangle(r);
+	}
+	
+	// Draw
+	OnDraw(gc, &r);
 	
 	// Draw children controls
 	for (int i=0; i<children->Count(); i++)	(*children)[i]->Draw();
 	
 	gc->ClipRegionReset();	
+	gc->Restore();
 }
 
 void Control::Prepare()

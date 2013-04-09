@@ -93,12 +93,12 @@ void NRectangle::SetHeight(int height)
 	this->height = height;
 }
 
-NPoint NRectangle::GetOrigin()
+NPoint NRectangle::Position()
 {
 	return NPoint(x, y);
 }
 
-NSize NRectangle::GetSize()
+NSize NRectangle::Size()
 {
 	return NSize(width, height);
 }
