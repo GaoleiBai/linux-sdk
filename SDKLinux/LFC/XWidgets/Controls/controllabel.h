@@ -33,6 +33,10 @@ public:
 	ControlLabel(const Text &text, const NRectangle &area);
 	virtual ~ControlLabel();
 
+	void SetText(const Text &text);
+	Text GetText();
+
+	virtual void Init(XWindow *w, Control *parent);
 	virtual bool OnDraw(IGraphics *gc, NRectangle *r);
 	
 };
