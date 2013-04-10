@@ -211,15 +211,20 @@ bool Control::OnCheckFocus(ControlEventMouseButton *e)
 {
 	if (!IsVisible()) return false;
 	
-	if (!area->Contains(e->Position())) {
+	if (!NRectangle(0, 0, area->GetWidth(), area->GetHeight()).Contains(e->Position())) {
 		if (IsFocusable() && IsFocused()) SetFocus(false);
 		return false;
-	} 
+	}
 	
-	ControlEventMouseButton mb(*e, e->Position() - area->Position());
-	for (int i=0; i<children->Count(); i++) 
-		if ((*children)[i]->OnMouseButtonDown(&mb))
-			return true;
+	for (int i=0; i<children->Count(); i++) {
+		ControlEventMouseButton *mb = new ControlEventMouseButton(*e, (*children)[i]->Area().Position());
+		try {
+			(*children)[i]->OnCheckFocus(mb);
+		} catch (Exception *e) {
+			delete e;
+		}
+		delete mb;
+	}
 	
 	if (!IsFocusable()) return false;
 	if (!IsFocused()) SetFocus(true);
@@ -229,26 +234,42 @@ bool Control::OnCheckFocus(ControlEventMouseButton *e)
 bool Control::OnMouseButtonDown(ControlEventMouseButton *e)
 {
 	if (!IsVisible()) return false;
-	if (!area->Contains(e->Position())) return false;
+	if (!NRectangle(0, 0, area->GetWidth(), area->GetHeight()).Contains(e->Position())) 
+		return false;
 	
-	ControlEventMouseButton mb(*e, e->Position() - area->Position());
-	for (int i=0;i<children->Count(); i++) 
-		if ((*children)[i]->OnMouseButtonDown(&mb))
-			return true;
+	for (int i=0; i<children->Count(); i++) {
+		bool res = false;
+		ControlEventMouseButton *mb = new ControlEventMouseButton(*e, (*children)[i]->Area().Position());
+		try {
+			res = (*children)[i]->OnMouseButtonDown(mb);
+		} catch (Exception *e) {
+			delete e;
+		}
+		delete mb;
+		if (res) return true;
+	}
 	
-	DelegationOnMouseButtonDown().Execute(&mb);	
+	DelegationOnMouseButtonDown().Execute(e);	
 	return true;
 }
 
 bool Control::OnMouseButtonUp(ControlEventMouseButton *e)
 {
 	if (!IsVisible()) return false;
-	if (!area->Contains(e->Position())) return false;
+	if (!NRectangle(0, 0, area->GetWidth(), area->GetHeight()).Contains(e->Position())) 
+		return false;
 	
-	ControlEventMouseButton mb(*e, e->Position() - area->Position());
-	for (int i=0;i<children->Count(); i++) 
-		if ((*children)[i]->OnMouseButtonUp(e)) 
-			return true;
+	for (int i=0; i<children->Count(); i++) {
+		bool res = false;
+		ControlEventMouseButton *mb = new ControlEventMouseButton(*e, (*children)[i]->Area().Position());
+		try {
+			res = (*children)[i]->OnMouseButtonDown(mb);
+		} catch (Exception *e) {
+			delete e;
+		}
+		delete mb;
+		if (res) return true;
+	}
 				
 	bool samebuttonsclick = lastMouseDown != NULL &&
 		lastMouseDown->SourceButton1() == e->SourceButton1() &&
@@ -259,7 +280,7 @@ bool Control::OnMouseButtonUp(ControlEventMouseButton *e)
 	
 	if (samebuttonsclick) {
 		// Throws click event
-		ControlEventMouseClick mc(mb, DateTime() - lastMouseDown->Time());
+		ControlEventMouseClick mc(*e, DateTime() - lastMouseDown->Time());
 		OnMouseClick(&mc);
 		
 		bool samebuttonsdoubleclick = lastMouseClick != NULL &&
@@ -271,7 +292,7 @@ bool Control::OnMouseButtonUp(ControlEventMouseButton *e)
 		
 		if (samebuttonsdoubleclick) {
 			// Throws double click event
-			ControlEventMouseDoubleClick mdc(mb, DateTime() - lastMouseClick->Time());
+			ControlEventMouseDoubleClick mdc(*e, DateTime() - lastMouseClick->Time());
 			OnMouseDoubleClick(&mdc);
 			
 			// Deletes lastMouseClick
@@ -307,16 +328,22 @@ bool Control::OnMouseDoubleClick(ControlEventMouseDoubleClick *e)
 bool Control::OnCheckEnterLeave(ControlEventMouseMove *e)
 {
 	if (!IsVisible()) return false;
-	bool inarea = area->Contains(e->Position());
+	bool inArea = NRectangle(0, 0, area->GetWidth(), area->GetHeight()).Contains(e->Position());
 	
-	ControlEventMouseMove mm(*e, e->Position() - area->Position());
-	for (int i=0; children->Count(); i++)
-		(*children)[i]->OnCheckEnterLeave(&mm);
+	for (int i=0; i<children->Count(); i++) {
+		ControlEventMouseMove *mm = new ControlEventMouseMove(*e, (*children)[i]->Area().Position());
+		try {
+			(*children)[i]->OnCheckEnterLeave(mm);
+		} catch (Exception *e) {
+			delete e;
+		}
+		delete mm;
+	}
 	
-	if (!entered && inarea) {
+	if (!entered && inArea) {
 		ControlEventEnterLeave el(true);
 		OnMouseEnter(&el);
-	} else if (entered && !inarea) {
+	} else if (entered && !inArea) {
 		ControlEventEnterLeave el(false);
 		OnMouseLeave(&el);
 	}
@@ -326,13 +353,21 @@ bool Control::OnCheckEnterLeave(ControlEventMouseMove *e)
 bool Control::OnMouseMove(ControlEventMouseMove *e)
 {
 	if (!IsVisible()) return false;
-	if (!area->Contains(e->Position())) return false;
-
-	ControlEventMouseMove ee(*e, e->Position() - area->Position());
-	for (int i=0; children->Count(); i++)
-		if ((*children)[i]->OnMouseMove(&ee))
-			return true;
-
+	if (!NRectangle(0, 0, area->GetWidth(), area->GetHeight()).Contains(e->Position())) 
+		return false;
+	
+	for (int i=0; i<children->Count(); i++) {
+		bool res = false;
+		ControlEventMouseMove *mm = new ControlEventMouseMove(*e, (*children)[i]->Area().Position());
+		try {
+			res = (*children)[i]->OnMouseMove(mm);
+		} catch (Exception *e) {
+			delete e;
+		}
+		delete mm;
+		if (res) return true;
+	}
+	
 	DelegationOnMouseMove().Execute(e);
 	return true;
 }
@@ -402,7 +437,8 @@ void Control::SetArea(const NRectangle &area)
 	ControlEventMoved me(this, area);
 	OnMove(&me);
 	
-	window->Invalidate();
+	if (parent == NULL) window->Invalidate();
+	else parent->Draw();
 }
 
 void Control::SetBackColor(const NColor &backcolor)
@@ -413,7 +449,7 @@ void Control::SetBackColor(const NColor &backcolor)
 	ControlEventBackColor bce(this, backcolor);
 	OnBackColor(&bce);
 	
-	window->Invalidate();
+	Draw();
 }
 
 void Control::SetUserData(void *userdata)
@@ -429,7 +465,7 @@ void Control::SetVisible(bool visible)
 	ControlEventVisible ve(this, visible);
 	OnVisible(&ve);
 	
-	window->Invalidate();
+	if (this->visible) Draw();
 }
 
 void Control::SetFocus(bool focus)
@@ -442,7 +478,7 @@ void Control::SetFocus(bool focus)
 	ControlEventFocused fe(this, focus);
 	OnFocus(&fe);
 	
-	window->Invalidate();
+	Draw();
 }
 
 void Control::SetOrderTabulation(int taborder)
@@ -468,15 +504,15 @@ void Control::Init(XWindow *w, Control *parent)
 void Control::ChildControlAdd(Control *c)
 {
 	if (ChildControlExists(c)) return;
-	c->Init(window, this);
 	children->Add(c);	
-	window->Invalidate();
+	c->Init(window, this);
+	Draw();
 }
 
 void Control::ChildControlRemove(Control *c)
 {
 	children->Remove(c);
-	window->Invalidate();
+	Draw();
 }
 
 bool Control::ChildControlExists(Control *c)

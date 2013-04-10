@@ -423,6 +423,8 @@ void XWindow::ExecuteDelegation(const NDelegation &d, void *params)
 
 void XWindow::Invalidate()
 {
+	Draw();
+	/*
 	XEvent ev;
 	ev.type = Expose;
 	ev.xexpose.window = window;
@@ -437,6 +439,7 @@ void XWindow::Invalidate()
 	int res = XSendEvent(windowDisplay, window, false, Expose, &ev);
 	XException::CheckResult(res);
 	XFlush(windowDisplay);
+	 * */
 }
 
 void XWindow::DrawEnable()
