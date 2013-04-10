@@ -86,28 +86,28 @@ public:
 	static int COMPARER_BY_ORDER_TABULATION(const void *u, const void *v);
 	static int COMPARER_BY_ORDER_VISIBILITY(const void *u, const void *v);
 
-	void Init(XWindow *w, Control *parent);
-	void ChildControlAdd(Control *c);
-	void ChildControlRemove(Control *c);
-	bool ChildControlExists(Control *c);
+	virtual void Init(XWindow *w, Control *parent);
+	virtual void ChildControlAdd(Control *c);
+	virtual void ChildControlRemove(Control *c);
+	virtual bool ChildControlExists(Control *c);
 
-	NRectangle Area();
-	NColor BackColor();
-	NFont Font();
-	void *GetUserData();
-	bool IsVisible();
-	bool IsFocused();
-	int OrderTabulation();
-	int OrderVisibility();
+	virtual NRectangle Area();
+	virtual NColor BackColor();
+	virtual NFont Font();
+	virtual void *GetUserData();
+	virtual bool IsVisible();
+	virtual bool IsFocused();
+	virtual int OrderTabulation();
+	virtual int OrderVisibility();
 	
-	void SetArea(const NRectangle &area);
-	void SetBackColor(const NColor &backcolor);
-	void SetFont(const NFont &font);
-	void SetUserData(void *userdata);
-	void SetVisible(bool visible);
-	void SetFocus(bool focused);
-	void SetOrderTabulation(int orderTabulation);
-	void SetOrderVisibility(int orderVisibility);
+	virtual void SetArea(const NRectangle &area);
+	virtual void SetBackColor(const NColor &backcolor);
+	virtual void SetFont(const NFont &font);
+	virtual void SetUserData(void *userdata);
+	virtual void SetVisible(bool visible);
+	virtual void SetFocus(bool focused);
+	virtual void SetOrderTabulation(int orderTabulation);
+	virtual void SetOrderVisibility(int orderVisibility);
 	
 	virtual void Draw();
 	virtual void Prepare();

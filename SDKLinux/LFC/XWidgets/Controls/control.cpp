@@ -461,6 +461,7 @@ void Control::SetBackColor(const NColor &backcolor)
 void Control::SetFont(const NFont &font)
 {
 	*this->font = font;
+	Draw();
 }
 
 void Control::SetUserData(void *userdata)

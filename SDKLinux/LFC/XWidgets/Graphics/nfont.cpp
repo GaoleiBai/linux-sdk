@@ -19,6 +19,14 @@ NFont::NFont(const Text &fontfamily, int weight, int size)
 	pango_font_description_set_absolute_size(fontdescription, size * PANGO_SCALE);
 }
 
+NFont::NFont(const NFont &font)
+{
+	fontdescription = pango_font_description_new();
+	pango_font_description_set_family(fontdescription, pango_font_description_get_family(font.fontdescription));
+	pango_font_description_set_weight(fontdescription, pango_font_description_get_weight(font.fontdescription));
+	pango_font_description_set_absolute_size(fontdescription, pango_font_description_get_size(font.fontdescription) * PANGO_SCALE);
+}
+
 NFont::~NFont()
 {
 	pango_font_description_free(fontdescription);

@@ -22,6 +22,12 @@
 #include "controllabel.h"
 #include "../../Text/text.h"
 
+ControlLabel::ControlLabel(const Text &text) 
+	: Control()
+{
+	
+}
+
 ControlLabel::ControlLabel(const Text &text, const NRectangle &area)
 	: Control(area)
 {
@@ -33,7 +39,7 @@ ControlLabel::~ControlLabel()
 	delete text;
 }
 
-void ControlLabel::Draw(IGraphics *gc)
+bool ControlLabel::OnDraw(IGraphics *gc, NRectangle *r)
 {
 	
 }

@@ -29,10 +29,11 @@ protected:
 	Text *text;
 	
 public:
+	ControlLabel(const Text &text);
 	ControlLabel(const Text &text, const NRectangle &area);
 	virtual ~ControlLabel();
 
-	virtual void Draw(IGraphics *gc);
+	virtual bool OnDraw(IGraphics *gc, NRectangle *r);
 	
 };
 

@@ -18,6 +18,7 @@ public:
 
 	NFont(const Text &fontdescription);
 	NFont(const Text &fontfamily, int weight, int size);
+	NFont(const NFont &font);
 	virtual ~NFont();
 	PangoFontDescription *Handle();
 	
