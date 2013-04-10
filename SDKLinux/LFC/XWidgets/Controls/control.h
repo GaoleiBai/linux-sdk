@@ -28,6 +28,7 @@
 
 class IGraphics;
 class NColor;
+class NFont;
 class XWindow;
 class ControlEventMoved;
 class ControlEventKey;
@@ -48,6 +49,7 @@ protected:
 	Control *parent;
 	NRectangle *area;
 	NColor *backcolor;
+	NFont *font;
 	void *userdata;
 	Collection<Control *> *children;
 	bool visible;
@@ -91,6 +93,7 @@ public:
 
 	NRectangle Area();
 	NColor BackColor();
+	NFont Font();
 	void *GetUserData();
 	bool IsVisible();
 	bool IsFocused();
@@ -99,6 +102,7 @@ public:
 	
 	void SetArea(const NRectangle &area);
 	void SetBackColor(const NColor &backcolor);
+	void SetFont(const NFont &font);
 	void SetUserData(void *userdata);
 	void SetVisible(bool visible);
 	void SetFocus(bool focused);

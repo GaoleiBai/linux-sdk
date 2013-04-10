@@ -26,8 +26,7 @@ ControlEventMouseMove::ControlEventMouseMove(const ControlEventMouseMove &e, con
 {
 	status = e.status;
 	time = new DateTime(*time);
-	NPoint *pp = (NPoint *)&parentposition;
-	position = new NPoint(e.position->GetX() - pp->GetX(), e.position->GetY() - pp->GetY());
+	position = new NPoint(*e.position - parentposition);
 	positionroot = new NPoint(*e.positionroot);
 }
 

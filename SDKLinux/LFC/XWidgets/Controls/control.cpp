@@ -52,6 +52,7 @@ Control::Control(const NRectangle &area)
 
 void Control::Init()
 {
+	font = new NFont("Ubuntu ms", NFont::FontWeightNormal, 8);
 	backcolor = new NColor(0, 0, 0, 1.0);
 	userdata = NULL;
 	children = new Collection<Control *>();
@@ -400,6 +401,11 @@ NColor Control::BackColor()
 	return *backcolor;
 }
 
+NFont Control::Font()
+{
+	return *font;
+}
+
 void *Control::GetUserData()
 {
 	return userdata;
@@ -450,6 +456,11 @@ void Control::SetBackColor(const NColor &backcolor)
 	OnBackColor(&bce);
 	
 	Draw();
+}
+
+void Control::SetFont(const NFont &font)
+{
+	*this->font = font;
 }
 
 void Control::SetUserData(void *userdata)
