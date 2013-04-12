@@ -30,6 +30,7 @@ ControlLabel::ControlLabel(const Text &text)
 	: Control()
 {
 	this->text = NULL;
+	*textcolor = NColor(0, 0, 0, 1.0);
 }
 
 ControlLabel::ControlLabel(const Text &text, const NRectangle &area)
@@ -37,11 +38,13 @@ ControlLabel::ControlLabel(const Text &text, const NRectangle &area)
 {
 	this->text = new Text(text);
 	*this->area = area;
+	*textcolor = NColor(0, 0, 0, 1.0);
 }
 
 ControlLabel::~ControlLabel()
 {
 	if (text != NULL) delete text;
+	delete textcolor;
 }
 
 void ControlLabel::SetText(const Text &t)
@@ -50,7 +53,7 @@ void ControlLabel::SetText(const Text &t)
 	*text = t;
 	
 	NSize ss = window->HandlerGraphics()->GetTextExtents(text == NULL ? "" : *text, *font);
-	*area = NRectangle(area->GetX(), area->GetY(), ss.GetWidth(), ss.GetHeight());
+	*area = NRectangle(area->GetX(), area->GetY(), ss.GetWidth() + 6, ss.GetHeight() + 6);
 	
 	Draw();
 }
@@ -61,6 +64,17 @@ Text ControlLabel::GetText()
 	return *text;
 }
 
+void ControlLabel::SetTextColor(const NColor &c)
+{
+	*textcolor = c;
+	Draw();
+}
+
+NColor ControlLabel::GetTextColor()
+{
+	return *textcolor;
+}
+
 void ControlLabel::Init(XWindow *w, Control *parent)
 {
 	Control::Init(w, parent);
@@ -69,9 +83,16 @@ void ControlLabel::Init(XWindow *w, Control *parent)
 	*area = NRectangle(area->GetX(), area->GetY(), ss.GetWidth(), ss.GetHeight());
 }
 
+bool ControlLabel::OnDrawBackground(IGraphics *gc, NRectangle *r)
+{
+	gc->SetColor(*backcolor);
+	gc->FillRectangle(*r);
+	return true;
+}
 
 bool ControlLabel::OnDraw(IGraphics *gc, NRectangle *r)
 {
-	
+	gc->SetColor(*textcolor);
+	gc->DrawText(*text, 3, 3, *font);
 }
 

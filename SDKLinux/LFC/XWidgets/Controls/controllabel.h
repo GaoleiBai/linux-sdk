@@ -27,6 +27,7 @@
 class ControlLabel : public Control {
 protected:
 	Text *text;
+	NColor *textcolor;
 	
 public:
 	ControlLabel(const Text &text);
@@ -35,8 +36,11 @@ public:
 
 	void SetText(const Text &text);
 	Text GetText();
+	void SetTextColor(const NColor &c);
+	NColor GetTextColor();
 
 	virtual void Init(XWindow *w, Control *parent);
+	virtual bool OnDrawBackground(IGraphics *gc, NRectangle *r);
 	virtual bool OnDraw(IGraphics *gc, NRectangle *r);
 	
 };

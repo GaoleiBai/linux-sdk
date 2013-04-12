@@ -140,6 +140,7 @@
 #include "XWidgets/Events/controleventmouseclick.h"
 #include "XWidgets/Events/controleventmousedoubleclick.h"
 #include "XWidgets/Controls/control.h"
+#include "XWidgets/Controls/controllabel.h"
 
 void lfc_init();
 
