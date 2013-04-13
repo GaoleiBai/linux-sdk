@@ -20,21 +20,25 @@ ControlEventMouseMove::ControlEventMouseMove(const WindowEventMouseMove &e)
 	if (ee->PressedMod3()) status |= StatusPressedMod3;
 	if (ee->PressedMod4()) status |= StatusPressedMod4;
 	if (ee->PressedMod5()) status |= StatusPressedMod5;
+	
+	time = new DateTime(ee->Time());
+	position = new NPoint(ee->Position());
+	positionRoot = new NPoint(ee->PositionRoot());
 }
 
-ControlEventMouseMove::ControlEventMouseMove(const ControlEventMouseMove &e, const NPoint &parentposition)
+ControlEventMouseMove::ControlEventMouseMove(const ControlEventMouseMove &e, const NPoint &controlPosition)
 {
 	status = e.status;
-	time = new DateTime(*time);
-	position = new NPoint(*e.position - parentposition);
-	positionroot = new NPoint(*e.positionroot);
+	time = new DateTime(*e.time);
+	position = new NPoint(*e.position - controlPosition);
+	positionRoot = new NPoint(*e.positionRoot);
 }
 
 ControlEventMouseMove::~ControlEventMouseMove()
 {
 	delete time;
 	delete position;
-	delete positionroot;
+	delete positionRoot;
 }
 
 DateTime ControlEventMouseMove::Time()
@@ -49,7 +53,7 @@ NPoint ControlEventMouseMove::Position()
 
 NPoint ControlEventMouseMove::PositionRoot()
 {
-	return *positionroot;
+	return *positionRoot;
 }
 
 bool ControlEventMouseMove::PressedButton1()

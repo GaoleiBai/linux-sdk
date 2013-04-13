@@ -12,7 +12,7 @@ protected:
 	int status;
 	DateTime *time;
 	NPoint *position;
-	NPoint *positionroot;
+	NPoint *positionRoot;
 	
 	static const int StatusPressedButton1 = 1;
 	static const int StatusPressedButton2 = 2;
@@ -30,7 +30,7 @@ protected:
 	
 public:
 	ControlEventMouseMove(const WindowEventMouseMove &e);
-	ControlEventMouseMove(const ControlEventMouseMove &e, const NPoint &parentposition);
+	ControlEventMouseMove(const ControlEventMouseMove &e, const NPoint &controlPosition);
 	virtual ~ControlEventMouseMove();
 	
 	DateTime Time();

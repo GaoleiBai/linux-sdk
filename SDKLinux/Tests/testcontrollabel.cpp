@@ -44,11 +44,18 @@ int TestControlLabel::Perform()
 			ControlAdd(tagTest);
 			tagTest->SetPosition(NPoint(10, 10));
 			tagTest->SetVisible(true);
+			
+			DelegationOnDraw() += NDelegation(this, (Delegate)&VentanaInicio::CustomDraw);
 		}
 		
 		virtual void Dispose() {
 			ControlRemove(tagTest);
 			delete tagTest;
+		}
+		
+		virtual void *CustomDraw(WindowEventDraw *e) {
+			e->Graphics().SetColor(1.0, 0, 0, 1.0);
+			e->Graphics().DrawLine(0, 0, 100, 100);
 		}
 	};
 	

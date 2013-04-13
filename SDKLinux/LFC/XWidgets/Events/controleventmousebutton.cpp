@@ -54,11 +54,11 @@ ControlEventMouseButton::ControlEventMouseButton(const WindowEventMouseButton &e
 	positionroot = new NPoint(ee->PositionRoot());
 }
 
-ControlEventMouseButton::ControlEventMouseButton(const ControlEventMouseButton &e, const NPoint &parentposition)
+ControlEventMouseButton::ControlEventMouseButton(const ControlEventMouseButton &e, const NPoint &controlPosition)
 {
 	status = e.status;
 	time = new DateTime(*e.time);
-	position = new NPoint((*e.position) - parentposition);
+	position = new NPoint((*e.position) - controlPosition);
 	positionroot = new NPoint(*e.positionroot);
 }
 

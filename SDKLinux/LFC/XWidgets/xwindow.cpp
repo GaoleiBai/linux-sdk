@@ -28,6 +28,7 @@
 #include "../Threading/thread.h"
 #include "Graphics/xwindowgraphics.h"
 #include "Graphics/ncolor.h"
+#include "Graphics/npoint.h"
 #include "Controls/control.h"
 #include "Events/windoweventkey.h"
 #include "Events/windoweventmousebutton.h"
@@ -423,8 +424,7 @@ void XWindow::ExecuteDelegation(const NDelegation &d, void *params)
 
 void XWindow::Invalidate()
 {
-	Draw();
-	/*
+	//Draw();
 	XEvent ev;
 	ev.type = Expose;
 	ev.xexpose.window = window;
@@ -439,7 +439,6 @@ void XWindow::Invalidate()
 	int res = XSendEvent(windowDisplay, window, false, Expose, &ev);
 	XException::CheckResult(res);
 	XFlush(windowDisplay);
-	 * */
 }
 
 void XWindow::DrawEnable()
@@ -641,44 +640,73 @@ void XWindow::OnKeyRelease(WindowEventKey *e)
 
 void XWindow::OnMouseDown(WindowEventMouseButton *e)
 {
-	ControlEventMouseButton mb(*e);
-	
 	// OnCheckFocus to every control
-	for (int i=0; i<controls->Count(); i++)
-		(*controls)[i]->OnCheckFocus(&mb);
+	for (int i=0; i<controls->Count(); i++) {
+		ControlEventMouseButton *mb = new ControlEventMouseButton(*e, (*controls)[i]->Position());
+		try {
+			(*controls)[i]->OnCheckFocus(mb);
+		} catch (Exception *ee) {
+			delete ee;
+		}
+		delete mb;
+	}
 
 	// OnMouseDown until one control catch it
-	bool controlMouseDown = false;
-	for (int i=0; i<controls->Count() && !controlMouseDown; i++)
-		controlMouseDown = (*controls)[i]->OnMouseButtonDown(&mb);
+	bool encontrado = false;
+	for (int i=0; i<controls->Count() && !encontrado; i++) {
+		ControlEventMouseButton *mb = new ControlEventMouseButton(*e, (*controls)[i]->Position());
+		try {
+			encontrado = (*controls)[i]->OnMouseButtonDown(mb);
+		} catch (Exception *ee) {
+			delete ee;
+		}
+		delete mb;
+	}
 	
 	DelegationOnMouseDown().Execute(e);		
 }
 
 void XWindow::OnMouseUp(WindowEventMouseButton *e)
 {
-	ControlEventMouseButton mb(*e);
-	
 	// OnMouseUp until one control catch it
-	bool controlMouseUp = false;
-	for (int i=0; i<controls->Count() && !controlMouseUp; i++)
-		controlMouseUp = (*controls)[i]->OnMouseButtonUp(&mb);	
+	bool encontrado = false;
+	for (int i=0; i<controls->Count() && !encontrado; i++) {
+		ControlEventMouseButton *mb = new ControlEventMouseButton(*e, (*controls)[i]->Position());
+		try {
+			encontrado = (*controls)[i]->OnMouseButtonUp(mb);	
+		} catch (Exception *ee) {
+			delete ee;
+		}
+		delete mb;
+	}
 		
 	DelegationOnMouseUp().Execute(e);
 }
 
 void XWindow::OnMouseMove(WindowEventMouseMove *e)
-{
-	ControlEventMouseMove mm(*e);
-	
+{	
 	// OnCheckEnterLeave for all
-	for (int i=0; i<controls->Count(); i++)
-		(*controls)[i]->OnCheckEnterLeave(&mm);
+	for (int i=0; i<controls->Count(); i++) {
+		ControlEventMouseMove *mm = new ControlEventMouseMove(*e, (*controls)[i]->Position());
+		try {
+			(*controls)[i]->OnCheckEnterLeave(mm);
+		} catch (Exception *ee) {
+			delete ee;
+		}
+		delete mm;
+	}
 	
 	// OnMouseMove until one control catch it
-	for (int i=0; i<controls->Count(); i++)
-		if ((*controls)[i]->OnMouseMove(&mm))
-			return;
+	bool encontrado = false;
+	for (int i=0; i<controls->Count() && !encontrado; i++) {
+		ControlEventMouseMove *mm = new ControlEventMouseMove(*e, (*controls)[i]->Position());
+		try {
+			encontrado = (*controls)[i]->OnMouseMove(mm);
+		} catch (Exception *ee) {
+			delete ee;
+		}
+		delete mm;
+	}
 			
 	DelegationOnMouseMove().Execute(e);
 }
@@ -701,6 +729,7 @@ void XWindow::OnKeymap(WindowEventKeymap *e)
 void XWindow::OnDraw(WindowEventDraw *e)
 {
 	DelegationOnDraw().Execute(e);
+	Draw();
 }
 
 void XWindow::OnVisible(WindowEventVisible *e)
