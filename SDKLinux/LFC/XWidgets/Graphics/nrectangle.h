@@ -34,6 +34,7 @@ class NRectangle : public NObject {
 public:
 	NRectangle();
 	NRectangle(int x, int y, int width, int height);
+	NRectangle(const NPoint &position, const NSize &size);
 	NRectangle(const NRectangle &r);
 	virtual ~NRectangle();
 
@@ -46,17 +47,17 @@ public:
 	void SetWidth(int width);
 	void SetHeight(int height);
 	
-	NPoint Position();
-	NSize Size();
+	NPoint GetPosition();
+	NSize GetSize();
 	
 	bool Contains(int x, int y);
 	bool Contains(const NPoint &p);
 	
-	NObject *NewInstance();
-	bool Equals(const NObject &o);
-	void Serialize(const Serializator &s);
-	void Deserialize(const Serializator &s);
-
+	virtual NObject *NewInstance();
+	virtual bool Equals(const NObject &o);
+	virtual void Serialize(const Serializator &s);
+	virtual void Deserialize(const Serializator &s);
+	
 };
 
 #endif // NRECTANGLE_H

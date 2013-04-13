@@ -19,32 +19,43 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef NCOLOR_H
-#define NCOLOR_H
+#include "testcontrollabel.h"
+#include "../LFC/LFC.h"
 
-#include "../../n_object.h"
+TestControlLabel::TestControlLabel()
+{
+}
 
-class NColor : public NObject {
-	double r, g, b, a;
+TestControlLabel::~TestControlLabel()
+{
+}
+
+int TestControlLabel::Perform()
+{
+	class VentanaInicio : public XWindow {
+	protected:
+		ControlLabel *tagTest;
+		
+	public:
+		VentanaInicio(const XDisplay &d) : XWindow(d) { }
+		
+		virtual void Prepare() {
+			tagTest = new ControlLabel("Hola LFC");
+			ControlAdd(tagTest);
+			tagTest->SetPosition(NPoint(10, 10));
+			tagTest->SetVisible(true);
+		}
+		
+		virtual void Dispose() {
+			ControlRemove(tagTest);
+			delete tagTest;
+		}
+	};
 	
-public:
-	NColor();
-	NColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
-	NColor(double r, double g, double b, double a);
-	NColor(const NColor &c);
-	NColor(const NColor &c, double a);
-	virtual ~NColor();
+	XDisplay d;
+	VentanaInicio w(d);
+	w.RunModal();
 	
-	virtual NObject *NewInstance();
-	virtual bool Equals(const NObject &o);
-	virtual void Serialize(const Serializator &s);
-	virtual void Deserialize(const Serializator &s);
-	
-	double R();
-	double G();
-	double B();
-	double A();
+	return 0;
+}
 
-};
-
-#endif // NCOLOR_H

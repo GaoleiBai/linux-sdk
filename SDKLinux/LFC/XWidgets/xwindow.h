@@ -52,9 +52,11 @@ class WindowEventColormap;
 class WindowEventKeyboardMapping;
 
 class XWindow : public NObject {
-	
-protected:
-	
+private:
+	Mutex *windowMutex;
+	Collection<void *> *delegationsToExecute;
+	Collection<Control *> *controls;
+		
 	Window window;
 	Window windowParent;
 	Display *windowDisplay;
@@ -67,10 +69,6 @@ protected:
 	NColor *backcolor;
 	NFont *font;
 	bool drawEnabled;
-	
-	Mutex *windowMutex;
-	Collection<void *> *delegationsToExecute;
-	Collection<Control *> *controls;
 	
 	NDelegationManager *dOnWindowKeyPress;
 	NDelegationManager *dOnWindowKeyRelease;
@@ -90,7 +88,7 @@ protected:
 	NDelegationManager *dOnWindowGrabButton;
 	NDelegationManager *dOnWindowVisibilityChange;
 	
-	void init(const XDisplay &d);
+	void init(const XDisplay &d);	
 	
 public:
 	XWindow();

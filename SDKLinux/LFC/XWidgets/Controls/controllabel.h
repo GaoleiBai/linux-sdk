@@ -31,6 +31,7 @@ protected:
 	
 public:
 	ControlLabel(const Text &text);
+	ControlLabel(const Text &text, const NPoint &position);
 	ControlLabel(const Text &text, const NRectangle &area);
 	virtual ~ControlLabel();
 

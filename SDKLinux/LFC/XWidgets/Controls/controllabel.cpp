@@ -29,16 +29,23 @@
 ControlLabel::ControlLabel(const Text &text) 
 	: Control()
 {
-	this->text = NULL;
-	*textcolor = NColor(0, 0, 0, 1.0);
+	this->text = new Text(text);
+	textcolor = new NColor(0, 0, 0, 1.0);
+}
+
+ControlLabel::ControlLabel(const Text &text, const NPoint &position)
+{
+	*this->area = NRectangle(position, NSize(0, 0));
+	this->text = new Text(text);
+	textcolor = new NColor(0, 0, 0, 1.0);
 }
 
 ControlLabel::ControlLabel(const Text &text, const NRectangle &area)
 	: Control(area)
 {
-	this->text = new Text(text);
 	*this->area = area;
-	*textcolor = NColor(0, 0, 0, 1.0);
+	this->text = new Text(text);
+	textcolor = new NColor(0, 0, 0, 1.0);
 }
 
 ControlLabel::~ControlLabel()

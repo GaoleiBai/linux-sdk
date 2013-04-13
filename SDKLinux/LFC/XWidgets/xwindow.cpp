@@ -67,8 +67,7 @@ XWindow::~XWindow()
 	// Hide window
 	SetVisible(false);
 
-	// Destroy controls
-	controls->DeleteAndClear();
+	// Destroy controls list
 	delete controls;
 	
 	// Destroy helper objects
@@ -129,6 +128,7 @@ void XWindow::init(const XDisplay &d)
 	dOnWindowMouseUp = new NDelegationManager();
 	dOnWindowMouseMove = new NDelegationManager();
 	dOnWindowEnterLeave = new NDelegationManager();
+	dOnWindowDraw = new NDelegationManager();
 	dOnWindowShow = new NDelegationManager();
 	dOnWindowMove = new NDelegationManager();
 	dOnWindowResize = new NDelegationManager();
@@ -517,13 +517,13 @@ void XWindow::ControlAdd(Control *c)
 	if (ControlExists(c)) return;	
 	controls->Add(c);
 	c->Init(this, NULL);
-	Invalidate();
+	if (c->IsVisible()) Invalidate();
 }
 
 void XWindow::ControlRemove(Control *c)
 {
 	controls->Remove(c);
-	Invalidate();
+	if (c->IsVisible()) Invalidate();
 }
 
 bool XWindow::ControlExists(Control *c)

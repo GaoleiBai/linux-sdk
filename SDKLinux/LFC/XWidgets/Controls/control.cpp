@@ -20,6 +20,7 @@
 *
 **/
 #include "control.h"
+#include "controlexception.h"
 #include "../xwindow.h"
 #include "../Graphics/igraphics.h"
 #include "../Graphics/npoint.h"
@@ -36,6 +37,7 @@
 #include "../../Delegations/ndelegation.h"
 #include "../../nwchar.h"
 #include "../../Time/datetime.h"
+#include "../../Text/text.h"
 #include <stdlib.h>
 
 Control::Control()
@@ -52,11 +54,13 @@ Control::Control(const NRectangle &area)
 
 void Control::Init()
 {
+	parent = NULL;
+	window = NULL;
 	font = new NFont("Ubuntu ms", NFont::FontWeightNormal, 8);
 	backcolor = new NColor(0, 0, 0, 1.0);
 	userdata = NULL;
 	children = new Collection<Control *>();
-	visible = true;
+	visible = false;
 	focused = false;
 	entered = false;
 	orderTabulation = 0;
@@ -82,9 +86,15 @@ void Control::Init()
 NPoint Control::Position()
 {
 	if (parent != NULL) 
-		return area->Position() + parent->Position();
+		return area->GetPosition() + parent->Position();
 	
-	return area->Position();
+	return area->GetPosition();
+}
+
+void Control::CheckControlAdded()
+{
+	if (window == NULL)
+		throw new ControlException("Control must be added to a window or to another control before performing the requested operation", __FILE__, __LINE__, __func__);
 }
 
 Control::~Control()
@@ -218,7 +228,7 @@ bool Control::OnCheckFocus(ControlEventMouseButton *e)
 	}
 	
 	for (int i=0; i<children->Count(); i++) {
-		ControlEventMouseButton *mb = new ControlEventMouseButton(*e, (*children)[i]->Area().Position());
+		ControlEventMouseButton *mb = new ControlEventMouseButton(*e, (*children)[i]->Area().GetPosition());
 		try {
 			(*children)[i]->OnCheckFocus(mb);
 		} catch (Exception *e) {
@@ -240,7 +250,7 @@ bool Control::OnMouseButtonDown(ControlEventMouseButton *e)
 	
 	for (int i=0; i<children->Count(); i++) {
 		bool res = false;
-		ControlEventMouseButton *mb = new ControlEventMouseButton(*e, (*children)[i]->Area().Position());
+		ControlEventMouseButton *mb = new ControlEventMouseButton(*e, (*children)[i]->Area().GetPosition());
 		try {
 			res = (*children)[i]->OnMouseButtonDown(mb);
 		} catch (Exception *e) {
@@ -262,7 +272,7 @@ bool Control::OnMouseButtonUp(ControlEventMouseButton *e)
 	
 	for (int i=0; i<children->Count(); i++) {
 		bool res = false;
-		ControlEventMouseButton *mb = new ControlEventMouseButton(*e, (*children)[i]->Area().Position());
+		ControlEventMouseButton *mb = new ControlEventMouseButton(*e, (*children)[i]->Area().GetPosition());
 		try {
 			res = (*children)[i]->OnMouseButtonDown(mb);
 		} catch (Exception *e) {
@@ -332,7 +342,7 @@ bool Control::OnCheckEnterLeave(ControlEventMouseMove *e)
 	bool inArea = NRectangle(0, 0, area->GetWidth(), area->GetHeight()).Contains(e->Position());
 	
 	for (int i=0; i<children->Count(); i++) {
-		ControlEventMouseMove *mm = new ControlEventMouseMove(*e, (*children)[i]->Area().Position());
+		ControlEventMouseMove *mm = new ControlEventMouseMove(*e, (*children)[i]->Area().GetPosition());
 		try {
 			(*children)[i]->OnCheckEnterLeave(mm);
 		} catch (Exception *e) {
@@ -359,7 +369,7 @@ bool Control::OnMouseMove(ControlEventMouseMove *e)
 	
 	for (int i=0; i<children->Count(); i++) {
 		bool res = false;
-		ControlEventMouseMove *mm = new ControlEventMouseMove(*e, (*children)[i]->Area().Position());
+		ControlEventMouseMove *mm = new ControlEventMouseMove(*e, (*children)[i]->Area().GetPosition());
 		try {
 			res = (*children)[i]->OnMouseMove(mm);
 		} catch (Exception *e) {
@@ -389,6 +399,16 @@ bool Control::OnFocus(ControlEventFocused *e)
 {
 	DelegationOnFocus().Execute(e);
 	return true;
+}
+
+NPoint Control::GetPosition()
+{
+	return area->GetPosition();
+}
+
+NSize Control::GetSize()
+{
+	return area->GetSize();
 }
 
 NRectangle Control::Area()
@@ -435,8 +455,22 @@ int Control::OrderVisibility()
 	return orderVisibility;
 }
 
+void Control::SetPosition(const NPoint &p)
+{
+	CheckControlAdded();
+	SetArea(NRectangle(p, area->GetSize()));
+}
+
+void Control::SetSize(const NSize &s)
+{
+	CheckControlAdded();
+	SetArea(NRectangle(area->GetPosition(), s));
+}
+
 void Control::SetArea(const NRectangle &area)
 {
+	CheckControlAdded();
+
 	if (this->area->Equals(area)) return;
 	*this->area = area;
 	
@@ -449,6 +483,8 @@ void Control::SetArea(const NRectangle &area)
 
 void Control::SetBackColor(const NColor &backcolor)
 {
+	CheckControlAdded();
+
 	if (this->backcolor->Equals(backcolor)) return;
 	*this->backcolor = backcolor;
 	
@@ -460,6 +496,8 @@ void Control::SetBackColor(const NColor &backcolor)
 
 void Control::SetFont(const NFont &font)
 {
+	CheckControlAdded();
+
 	*this->font = font;
 	Draw();
 }
@@ -471,13 +509,16 @@ void Control::SetUserData(void *userdata)
 
 void Control::SetVisible(bool visible)
 {
+	CheckControlAdded();
+
 	if (this->visible == visible) return;
 	this->visible = visible;
 		
 	ControlEventVisible ve(this, visible);
 	OnVisible(&ve);
 	
-	if (this->visible) Draw();
+	if (parent == NULL) window->Invalidate();
+	else parent->Draw();
 }
 
 void Control::SetFocus(bool focus)
@@ -515,6 +556,8 @@ void Control::Init(XWindow *w, Control *parent)
 
 void Control::ChildControlAdd(Control *c)
 {
+	CheckControlAdded();
+
 	if (ChildControlExists(c)) return;
 	children->Add(c);	
 	c->Init(window, this);
@@ -523,6 +566,8 @@ void Control::ChildControlAdd(Control *c)
 
 void Control::ChildControlRemove(Control *c)
 {
+	CheckControlAdded();
+
 	children->Remove(c);
 	Draw();
 }
@@ -544,6 +589,7 @@ bool Control::OnDraw(IGraphics *g, NRectangle *r)
 
 void Control::Draw()
 {
+	CheckControlAdded();
 	if (!IsVisible()) return;
 	
 	NPoint p = Position();

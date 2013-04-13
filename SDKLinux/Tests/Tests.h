@@ -39,6 +39,7 @@
 #include "testsqlite3.h"
 #include "testrandom.h"
 #include "testwindow.h"
+#include "testcontrollabel.h"
 
 class Tests {
 public:

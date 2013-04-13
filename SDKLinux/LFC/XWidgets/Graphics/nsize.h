@@ -43,7 +43,6 @@ public:
 	virtual void Serialize(const Serializator &s);
 	virtual void Deserialize(const Serializator &s);
 	
-
 };
 
 #endif // NSIZE_H

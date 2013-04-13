@@ -33,7 +33,7 @@ TestWindow::~TestWindow()
 int TestWindow::Perform()
 {
 	try {
-		class VentanaInicio : public XWindow {
+		class VentanaInicio : public XWindow {			
 		protected:
 			virtual void Prepare() {
 				DelegationOnDraw() += NDelegation(this, (Delegate)&VentanaInicio::UserDraw);

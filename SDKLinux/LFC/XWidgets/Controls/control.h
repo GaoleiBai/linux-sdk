@@ -77,6 +77,7 @@ protected:
 	
 	void Init();
 	NPoint Position();
+	void CheckControlAdded();
 	
 public:
 	Control();
@@ -91,6 +92,8 @@ public:
 	virtual void ChildControlRemove(Control *c);
 	virtual bool ChildControlExists(Control *c);
 
+	virtual NPoint GetPosition();
+	virtual NSize GetSize();
 	virtual NRectangle Area();
 	virtual NColor BackColor();
 	virtual NFont Font();
@@ -100,6 +103,8 @@ public:
 	virtual int OrderTabulation();
 	virtual int OrderVisibility();
 	
+	virtual void SetPosition(const NPoint &p);
+	virtual void SetSize(const NSize &s);
 	virtual void SetArea(const NRectangle &area);
 	virtual void SetBackColor(const NColor &backcolor);
 	virtual void SetFont(const NFont &font);

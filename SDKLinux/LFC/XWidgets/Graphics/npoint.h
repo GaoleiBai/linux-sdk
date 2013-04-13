@@ -43,10 +43,11 @@ public:
 	NPoint operator +(const NPoint &p);
 	NPoint operator -(const NPoint &p);
 
-	NObject *NewInstance();
-	bool Equals(const NObject &o);
-	void Serialize(const Serializator &s);
-	void Deserialize(const Serializator &s);
+	virtual NObject *NewInstance();
+	virtual bool Equals(const NObject &o);
+	virtual void Serialize(const Serializator &s);
+	virtual void Deserialize(const Serializator &s);
+	
 };
 
 #endif // NPOINT_H

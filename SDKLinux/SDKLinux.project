@@ -251,6 +251,8 @@
         <File Name="LFC/XWidgets/Controls/control.cpp"/>
         <File Name="LFC/XWidgets/Controls/controllabel.h"/>
         <File Name="LFC/XWidgets/Controls/controllabel.cpp"/>
+        <File Name="LFC/XWidgets/Controls/controlexception.h"/>
+        <File Name="LFC/XWidgets/Controls/controlexception.cpp"/>
       </VirtualDirectory>
     </VirtualDirectory>
     <VirtualDirectory Name="Delegations">
@@ -310,6 +312,8 @@
     <File Name="Tests/testrandom.cpp"/>
     <File Name="Tests/testwindow.h"/>
     <File Name="Tests/testwindow.cpp"/>
+    <File Name="Tests/testcontrollabel.h"/>
+    <File Name="Tests/testcontrollabel.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">

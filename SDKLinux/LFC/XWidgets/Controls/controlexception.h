@@ -19,32 +19,18 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef NCOLOR_H
-#define NCOLOR_H
+#ifndef CONTROLEXCEPTION_H
+#define CONTROLEXCEPTION_H
 
-#include "../../n_object.h"
+#include "../../exception.h"
 
-class NColor : public NObject {
-	double r, g, b, a;
-	
+class ControlException : public Exception {
+
 public:
-	NColor();
-	NColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
-	NColor(double r, double g, double b, double a);
-	NColor(const NColor &c);
-	NColor(const NColor &c, double a);
-	virtual ~NColor();
-	
-	virtual NObject *NewInstance();
-	virtual bool Equals(const NObject &o);
-	virtual void Serialize(const Serializator &s);
-	virtual void Deserialize(const Serializator &s);
-	
-	double R();
-	double G();
-	double B();
-	double A();
+	ControlException();
+	ControlException(const Text &t, const char *file, int line, const char *func);
+	virtual ~ControlException();
 
 };
 
-#endif // NCOLOR_H
+#endif // CONTROLEXCEPTION_H
