@@ -22,6 +22,7 @@
 #include "controllabel.h"
 #include "../../Text/text.h"
 #include "../xwindow.h"
+#include "../Graphics/npoint.h"
 #include "../Graphics/nsize.h"
 #include "../Graphics/igraphics.h"
 #include <stdlib.h>
@@ -119,6 +120,9 @@ void ControlLabel::SetFont(const NFont &font)
 
 void ControlLabel::SetArea(const NRectangle &area)
 {
+	NRectangle *r = (NRectangle *)&area;
+	*this->area = NRectangle(r->GetPosition(), this->area->GetSize());
+	
 	if (autosize) {
 		if (window == NULL) {
 			updateAreaOnInit = true;
