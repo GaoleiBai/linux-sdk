@@ -28,7 +28,9 @@ class ControlLabel : public Control {
 protected:
 	Text *text;
 	NColor *textcolor;
+	
 	bool autosize;
+	bool updateAreaOnInit;
 	
 public:
 	ControlLabel(const Text &text);

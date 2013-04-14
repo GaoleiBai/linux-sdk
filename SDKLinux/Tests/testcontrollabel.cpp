@@ -41,10 +41,9 @@ int TestControlLabel::Perform()
 		
 		virtual void Prepare() {
 			tagTest = new ControlLabel("Hola LFC");
-			ControlAdd(tagTest);
 			tagTest->SetPosition(NPoint(10, 10));
-			tagTest->SetText("aaa");
 			tagTest->SetVisible(true);
+			ControlAdd(tagTest);
 			
 			DelegationOnDraw() += NDelegation(this, (Delegate)&VentanaInicio::CustomDraw);
 		}
