@@ -47,6 +47,8 @@ public:
 	void SetWidth(int width);
 	void SetHeight(int height);
 	
+	void SetPosition(const NPoint &p);
+	void SetSize(const NSize &s);
 	NPoint GetPosition();
 	NSize GetSize();
 	

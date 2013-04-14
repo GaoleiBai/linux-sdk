@@ -41,7 +41,7 @@ int TestControlLabel::Perform()
 		
 		virtual void Prepare() {
 			tagTest = new ControlLabel("Hola LFC");
-			tagTest->SetPosition(NPoint(100, 100));
+			tagTest->SetPosition(NPoint(50, 50));
 			tagTest->SetVisible(true);
 			ControlAdd(tagTest);
 			

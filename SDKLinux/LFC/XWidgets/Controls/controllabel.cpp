@@ -120,8 +120,7 @@ void ControlLabel::SetFont(const NFont &font)
 
 void ControlLabel::SetArea(const NRectangle &area)
 {
-	NRectangle *r = (NRectangle *)&area;
-	*this->area = NRectangle(r->GetPosition(), this->area->GetSize());
+	this->area->SetPosition(((NRectangle *)&area)->GetPosition());
 	
 	if (autosize) {
 		if (window == NULL) {
@@ -155,6 +154,6 @@ bool ControlLabel::OnDrawBackground(IGraphics *gc, NRectangle *r)
 bool ControlLabel::OnDraw(IGraphics *gc, NRectangle *r)
 {
 	gc->SetColor(*textcolor);
-	gc->DrawText(*text, 3, 3, *font);
+	gc->DrawText(*text, 1, 1, *font);
 }
 

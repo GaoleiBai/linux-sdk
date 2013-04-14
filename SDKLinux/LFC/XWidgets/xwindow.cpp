@@ -590,7 +590,6 @@ void XWindow::Draw()
 	if (!drawEnabled) return;	
 	controls->QuickSort(Control::COMPARER_BY_ORDER_VISIBILITY);
 	
-	gc->Clear(*backcolor);
 	for (int i=0; i<controls->Count(); i++)
 		(*controls)[i]->Draw();
 }
@@ -728,7 +727,13 @@ void XWindow::OnKeymap(WindowEventKeymap *e)
 
 void XWindow::OnDraw(WindowEventDraw *e)
 {
+	// Clear
+	gc->Clear(*backcolor);
+	
+	// Delegation drawings
 	DelegationOnDraw().Execute(e);
+	
+	// Control drawings
 	Draw();
 }
 

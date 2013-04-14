@@ -103,6 +103,18 @@ void NRectangle::SetHeight(int height)
 	this->height = height;
 }
 
+void NRectangle::SetPosition(const NPoint &p)
+{
+	x = ((NPoint *)&p)->GetX();
+	y = ((NPoint *)&p)->GetY();
+}
+
+void NRectangle::SetSize(const NSize &s)
+{
+	width = ((NSize *)&s)->GetWidth();
+	height = ((NSize *)&s)->GetHeight();
+}
+
 NPoint NRectangle::GetPosition()
 {
 	return NPoint(x, y);
