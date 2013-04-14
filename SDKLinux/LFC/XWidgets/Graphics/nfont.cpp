@@ -58,7 +58,7 @@ int NFont::Size()
 	return size;
 }
 
-NFont NFont::operator =(const NFont &font)
+NFont &NFont::operator =(const NFont &font)
 {
 	pango_font_description_free(fontdescription);
 	delete this->familyName;
@@ -74,6 +74,8 @@ NFont NFont::operator =(const NFont &font)
 	pango_font_description_set_family(fontdescription, family);
 	pango_font_description_set_weight(fontdescription, (PangoWeight)weight);
 	pango_font_description_set_absolute_size(fontdescription, size * PANGO_SCALE);
+	
+	return *this;
 }
 
 Collection<Text *> NFont::GetAvaliableFamilies()

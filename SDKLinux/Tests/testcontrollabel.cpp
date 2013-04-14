@@ -43,6 +43,7 @@ int TestControlLabel::Perform()
 			tagTest = new ControlLabel("Hola LFC");
 			ControlAdd(tagTest);
 			tagTest->SetPosition(NPoint(10, 10));
+			tagTest->SetText("aaa");
 			tagTest->SetVisible(true);
 			
 			DelegationOnDraw() += NDelegation(this, (Delegate)&VentanaInicio::CustomDraw);

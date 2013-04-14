@@ -28,7 +28,7 @@ public:
 	int Weight();
 	int Size();
 	
-	NFont operator =(const NFont &font);
+	NFont &operator =(const NFont &font);
 	
 	static Collection<Text *> GetAvaliableFamilies();
 

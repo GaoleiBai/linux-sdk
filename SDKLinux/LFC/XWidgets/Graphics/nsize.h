@@ -43,7 +43,7 @@ public:
 	virtual void Serialize(const Serializator &s);
 	virtual void Deserialize(const Serializator &s);
 	
-	NSize operator =(const NSize &s);
+	NSize &operator =(const NSize &s);
 };
 
 #endif // NSIZE_H

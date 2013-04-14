@@ -75,6 +75,14 @@ NPoint NPoint::operator -(const NPoint &p)
 	return NPoint(x - p.x, y - p.y);
 }
 
+NPoint &NPoint::operator =(const NPoint &p)
+{
+	x = p.x;
+	y = p.y;
+	
+	return *this;
+}
+
 NObject *NPoint::NewInstance()
 {
 	return new NPoint();

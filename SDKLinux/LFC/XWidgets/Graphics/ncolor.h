@@ -45,7 +45,7 @@ public:
 	double B();
 	double A();
 	
-	NColor operator =(const NColor &color);
+	NColor &operator =(const NColor &color);
 
 };
 

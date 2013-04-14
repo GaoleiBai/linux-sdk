@@ -42,6 +42,7 @@ public:
 	
 	NPoint operator +(const NPoint &p);
 	NPoint operator -(const NPoint &p);
+	NPoint &operator =(const NPoint &p);
 
 	virtual NObject *NewInstance();
 	virtual bool Equals(const NObject &o);
