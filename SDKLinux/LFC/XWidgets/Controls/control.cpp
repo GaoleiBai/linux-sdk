@@ -24,8 +24,10 @@
 #include "../xwindow.h"
 #include "../Graphics/igraphics.h"
 #include "../Graphics/npoint.h"
+#include "../Graphics/nfont.h"
 #include "../Events/controleventmoved.h"
 #include "../Events/controleventbackcolor.h"
+#include "../Events/controleventfont.h"
 #include "../Events/controleventfocused.h"
 #include "../Events/controleventvisible.h"
 #include "../Events/controleventkey.h"
@@ -56,7 +58,7 @@ void Control::Init()
 {
 	parent = NULL;
 	window = NULL;
-	font = new NFont("Ubuntu ms", NFont::FontWeightNormal, 8);
+	font = new NFont("Ubuntu Mono", NFont::FontWeightNormal, 10);
 	backcolor = new NColor(0, 0, 0, 1.0);
 	userdata = NULL;
 	children = new Collection<Control *>();
@@ -81,6 +83,7 @@ void Control::Init()
 	onLeave = new NDelegationManager();
 	onFocus = new NDelegationManager();
 	onBackColor = new NDelegationManager();
+	onFont = new NDelegationManager();
 }
 
 NPoint Control::Position()
@@ -89,12 +92,6 @@ NPoint Control::Position()
 		return area->GetPosition() + parent->Position();
 	
 	return area->GetPosition();
-}
-
-void Control::CheckControlAdded()
-{
-	if (window == NULL)
-		throw new ControlException("Control must be added to a window or to another control before performing the requested operation", __FILE__, __LINE__, __func__);
 }
 
 Control::~Control()
@@ -122,6 +119,7 @@ Control::~Control()
 	delete onLeave;
 	delete onFocus;
 	delete onBackColor;
+	delete onFont;
 		
 }
 
@@ -160,6 +158,12 @@ bool Control::OnMove(ControlEventMoved *e)
 bool Control::OnBackColor(ControlEventBackColor *e)
 {
 	DelegationOnBackColor().Execute(e);
+	return true;
+}
+
+bool Control::OnFont(ControlEventFont *e)
+{
+	DelegationOnFont().Execute(e);
 	return true;
 }
 
@@ -457,34 +461,29 @@ int Control::OrderVisibility()
 
 void Control::SetPosition(const NPoint &p)
 {
-	CheckControlAdded();
 	SetArea(NRectangle(p, area->GetSize()));
 }
 
 void Control::SetSize(const NSize &s)
 {
-	CheckControlAdded();
 	SetArea(NRectangle(area->GetPosition(), s));
 }
 
 void Control::SetArea(const NRectangle &area)
 {
-	CheckControlAdded();
-
 	if (this->area->Equals(area)) return;
 	*this->area = area;
 	
 	ControlEventMoved me(this, area);
 	OnMove(&me);
 	
-	if (parent == NULL) window->Invalidate();
-	else parent->Draw();
+	if (parent == NULL) {
+		if (window != NULL) window->Invalidate();
+	} else parent->Draw();
 }
 
 void Control::SetBackColor(const NColor &backcolor)
 {
-	CheckControlAdded();
-
 	if (this->backcolor->Equals(backcolor)) return;
 	*this->backcolor = backcolor;
 	
@@ -496,9 +495,10 @@ void Control::SetBackColor(const NColor &backcolor)
 
 void Control::SetFont(const NFont &font)
 {
-	CheckControlAdded();
-
 	*this->font = font;
+	ControlEventFont fe(this, font);
+	OnFont(&fe);
+	
 	Draw();
 }
 
@@ -509,16 +509,15 @@ void Control::SetUserData(void *userdata)
 
 void Control::SetVisible(bool visible)
 {
-	CheckControlAdded();
-
 	if (this->visible == visible) return;
 	this->visible = visible;
 		
 	ControlEventVisible ve(this, visible);
 	OnVisible(&ve);
 	
-	if (parent == NULL) window->Invalidate();
-	else parent->Draw();
+	if (parent == NULL) {
+		if (window != NULL) window->Invalidate();
+	} else parent->Draw();
 }
 
 void Control::SetFocus(bool focus)
@@ -550,14 +549,16 @@ void Control::Init(XWindow *w, Control *parent)
 	this->window = w;
 	this->parent = parent;
 	
+	// Copy window cloneable parameters
+	SetBackColor(w->BackColor());
+	SetFont(w->Font());
+	
 	// Call prepare
 	Prepare();
 }
 
 void Control::ChildControlAdd(Control *c)
 {
-	CheckControlAdded();
-
 	if (ChildControlExists(c)) return;
 	children->Add(c);	
 	c->Init(window, this);
@@ -566,8 +567,6 @@ void Control::ChildControlAdd(Control *c)
 
 void Control::ChildControlRemove(Control *c)
 {
-	CheckControlAdded();
-
 	children->Remove(c);
 	Draw();
 }
@@ -589,7 +588,6 @@ bool Control::OnDraw(IGraphics *g, NRectangle *r)
 
 void Control::Draw()
 {
-	CheckControlAdded();
 	if (!IsVisible()) return;
 	
 	NPoint p = Position();
@@ -731,4 +729,9 @@ NDelegationManager &Control::DelegationOnFocus()
 NDelegationManager &Control::DelegationOnBackColor()
 {
 	return *onBackColor;
+}
+
+NDelegationManager &Control::DelegationOnFont()
+{
+	return *onFont;
 }

@@ -116,3 +116,10 @@ double NColor::A()
 	return a;
 }
 
+NColor NColor::operator =(const NColor &color)
+{
+	a = color.a;
+	r = color.r;
+	g = color.g;
+	b = color.b;
+}

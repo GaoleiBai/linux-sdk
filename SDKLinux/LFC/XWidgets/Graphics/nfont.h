@@ -7,6 +7,9 @@
 
 class NFont : public NObject {
 	PangoFontDescription *fontdescription;
+	Text *familyName;
+	int weight;
+	int size;
 	
 public:
 	static const int FontWeightUltraLight = PANGO_WEIGHT_ULTRALIGHT;
@@ -16,17 +19,16 @@ public:
 	static const int FontWeightUltraBold = PANGO_WEIGHT_ULTRABOLD;
 	static const int FontWeightHeavy = PANGO_WEIGHT_HEAVY;
 
-	NFont(const Text &fontdescription);
 	NFont(const Text &fontfamily, int weight, int size);
 	NFont(const NFont &font);
 	virtual ~NFont();
 	PangoFontDescription *Handle();
 	
-	virtual Text ToText();
-	Text Name();
 	Text Family();
 	int Weight();
 	int Size();
+	
+	NFont operator =(const NFont &font);
 	
 	static Collection<Text *> GetAvaliableFamilies();
 

@@ -35,6 +35,7 @@ class ControlEventKey;
 class ControlEventFocused;
 class ControlEventMouseButton;
 class ControlEventBackColor;
+class ControlEventFont;
 class ControlEventVisible;
 class ControlEventMouseMove;
 class ControlEventEnterLeave;
@@ -74,10 +75,10 @@ protected:
 	NDelegationManager *onLeave;
 	NDelegationManager *onFocus;
 	NDelegationManager *onBackColor;
+	NDelegationManager *onFont;
 	
 	void Init();
 	NPoint Position();
-	void CheckControlAdded();
 	
 public:
 	Control();
@@ -127,6 +128,7 @@ protected:
 
 	virtual bool OnMove(ControlEventMoved *e);
 	virtual bool OnBackColor(ControlEventBackColor *e);
+	virtual bool OnFont(ControlEventFont *e);
 	virtual bool OnVisible(ControlEventVisible *e);
 	virtual bool OnKeyPreview(ControlEventKey *e);
 	virtual bool OnKeyPress(ControlEventKey *e);
@@ -162,6 +164,7 @@ public:
 	NDelegationManager &DelegationOnMouseLeave();	// Arg: ControlEventEnterLeave *
 	NDelegationManager &DelegationOnFocus();		// Arg: ControlEventFocus *
 	NDelegationManager &DelegationOnBackColor();	// Arg: ControlEventBackColor *
+	NDelegationManager &DelegationOnFont();			// Arg: ControlEventFont *
 	
 };
 

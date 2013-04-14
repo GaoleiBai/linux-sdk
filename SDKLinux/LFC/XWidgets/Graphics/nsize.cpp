@@ -91,3 +91,9 @@ void NSize::Deserialize(const Serializator &s)
 	width = ss->GetInt();
 	height = ss->GetInt();
 }
+
+NSize NSize::operator =(const NSize &s)
+{
+	width = s.width;
+	height = s.height;
+}

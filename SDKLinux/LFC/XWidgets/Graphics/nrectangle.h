@@ -58,6 +58,7 @@ public:
 	virtual void Serialize(const Serializator &s);
 	virtual void Deserialize(const Serializator &s);
 	
+	NRectangle operator =(const NRectangle &r);
 };
 
 #endif // NRECTANGLE_H

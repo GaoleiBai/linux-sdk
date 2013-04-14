@@ -1,17 +1,15 @@
 #include "nfont.h"
 #include "../../Text/text.h"
-
-NFont::NFont(const Text &fontdescription)
-{
-	char fd[1000];
-	((Text *)&fontdescription)->GetAnsiString(fd, 1000);
-	this->fontdescription = pango_font_description_from_string(fd);
-}
+#include "../../Devices/stdout.h"
 
 NFont::NFont(const Text &fontfamily, int weight, int size)
 {
-	char family[1000];
-	((Text *)&fontfamily)->GetAnsiString(family, 1000);
+	this->familyName = new Text(fontfamily);
+	this->weight = weight;
+	this->size = size;
+	
+	char family[10000];
+	familyName->GetAnsiString(family, 10000);
 	
 	fontdescription = pango_font_description_new();
 	pango_font_description_set_family(fontdescription, family);
@@ -21,20 +19,23 @@ NFont::NFont(const Text &fontfamily, int weight, int size)
 
 NFont::NFont(const NFont &font)
 {
+	this->familyName = new Text(font.familyName);
+	this->weight = font.weight;
+	this->size = font.size;
+	
+	char family[10000];
+	familyName->GetAnsiString(family, 10000);
+	
 	fontdescription = pango_font_description_new();
-	pango_font_description_set_family(fontdescription, pango_font_description_get_family(font.fontdescription));
-	pango_font_description_set_weight(fontdescription, pango_font_description_get_weight(font.fontdescription));
-	pango_font_description_set_absolute_size(fontdescription, pango_font_description_get_size(font.fontdescription) * PANGO_SCALE);
+	pango_font_description_set_family(fontdescription, family);
+	pango_font_description_set_weight(fontdescription, (PangoWeight)weight);
+	pango_font_description_set_absolute_size(fontdescription, size * PANGO_SCALE);
 }
 
 NFont::~NFont()
 {
+	delete familyName;
 	pango_font_description_free(fontdescription);
-}
-
-Text NFont::ToText()
-{
-	return pango_font_description_to_string(fontdescription);
 }
 
 PangoFontDescription *NFont::Handle()
@@ -42,24 +43,37 @@ PangoFontDescription *NFont::Handle()
 	return fontdescription;
 }
 
-Text NFont::Name()
-{
-	return pango_font_description_to_string(fontdescription);
-}
-
 Text NFont::Family()
 {
-	return pango_font_description_get_family(fontdescription);
+	return *familyName;
 }
 
 int NFont::Weight()
 {
-	return pango_font_description_get_weight(fontdescription);
+	return weight;
 }
 
 int NFont::Size()
 {
-	return pango_font_description_get_size(fontdescription) / PANGO_SCALE;
+	return size;
+}
+
+NFont NFont::operator =(const NFont &font)
+{
+	pango_font_description_free(fontdescription);
+	delete this->familyName;
+	
+	this->familyName = new Text(font.familyName);
+	this->weight = font.weight;
+	this->size = font.size;
+	
+	char family[10000];
+	familyName->GetAnsiString(family, 10000);
+	
+	fontdescription = pango_font_description_new();
+	pango_font_description_set_family(fontdescription, family);
+	pango_font_description_set_weight(fontdescription, (PangoWeight)weight);
+	pango_font_description_set_absolute_size(fontdescription, size * PANGO_SCALE);
 }
 
 Collection<Text *> NFont::GetAvaliableFamilies()

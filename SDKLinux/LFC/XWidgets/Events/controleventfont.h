@@ -19,34 +19,23 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef NCOLOR_H
-#define NCOLOR_H
+#ifndef CONTROLEVENTFONT_H
+#define CONTROLEVENTFONT_H
 
-#include "../../n_object.h"
+#include "controlevent.h"
 
-class NColor : public NObject {
-	double r, g, b, a;
-	
+class NFont;
+
+class ControlEventFont : public ControlEvent {
+protected:
+	NFont *font;
+
 public:
-	NColor();
-	NColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
-	NColor(double r, double g, double b, double a);
-	NColor(const NColor &c);
-	NColor(const NColor &c, double a);
-	virtual ~NColor();
-	
-	virtual NObject *NewInstance();
-	virtual bool Equals(const NObject &o);
-	virtual void Serialize(const Serializator &s);
-	virtual void Deserialize(const Serializator &s);
-	
-	double R();
-	double G();
-	double B();
-	double A();
-	
-	NColor operator =(const NColor &color);
+	ControlEventFont(Control *source, const NFont &font);
+	ControlEventFont(const ControlEventFont &e);
+	virtual ~ControlEventFont();
 
+	NFont Font();
 };
 
-#endif // NCOLOR_H
+#endif // CONTROLEVENTFONT_H

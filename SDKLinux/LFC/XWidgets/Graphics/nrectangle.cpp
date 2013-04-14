@@ -156,3 +156,11 @@ void NRectangle::Deserialize(const Serializator &s)
 	width = ((Serializator *)&s)->GetInt();
 	height = ((Serializator *)&s)->GetInt();
 }
+
+NRectangle NRectangle::operator =(const NRectangle &r)
+{
+	x = r.x;
+	y = r.y;
+	width = r.width;
+	height = r.height;
+}

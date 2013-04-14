@@ -19,34 +19,26 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef NCOLOR_H
-#define NCOLOR_H
+#include "controleventfont.h"
+#include "../Graphics/nfont.h"
 
-#include "../../n_object.h"
+ControlEventFont::ControlEventFont(Control *source, const NFont &font)
+{
+	this->source = source;
+	this->font = (NFont *)&font;
+}
 
-class NColor : public NObject {
-	double r, g, b, a;
-	
-public:
-	NColor();
-	NColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
-	NColor(double r, double g, double b, double a);
-	NColor(const NColor &c);
-	NColor(const NColor &c, double a);
-	virtual ~NColor();
-	
-	virtual NObject *NewInstance();
-	virtual bool Equals(const NObject &o);
-	virtual void Serialize(const Serializator &s);
-	virtual void Deserialize(const Serializator &s);
-	
-	double R();
-	double G();
-	double B();
-	double A();
-	
-	NColor operator =(const NColor &color);
+ControlEventFont::ControlEventFont(const ControlEventFont &e)
+{
+	this->source = e.source;
+	this->font = e.font;
+}
 
-};
+ControlEventFont::~ControlEventFont()
+{
+}
 
-#endif // NCOLOR_H
+NFont ControlEventFont::Font()
+{
+	return *font;
+}

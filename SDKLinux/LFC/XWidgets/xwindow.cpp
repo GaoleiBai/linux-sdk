@@ -117,7 +117,7 @@ void XWindow::init(const XDisplay &d)
 	colordepth = DefaultDepth(windowDisplay, windowScreen);
 	visible = false;
 	backcolor = new NColor(0.95, 0.95, 0.97, 1.0);
-	font = new NFont("Ubuntu Mono", NFont::FontWeightBold, 12);
+	font = new NFont("Ubuntu Mono", NFont::FontWeightBold, 10);
 	drawEnabled = true;
 	
 	// Creates delegates
