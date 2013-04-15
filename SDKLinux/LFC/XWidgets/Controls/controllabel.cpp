@@ -33,7 +33,6 @@ ControlLabel::ControlLabel(const Text &text)
 	this->text = new Text(text);
 	textcolor = new NColor(0, 0, 0, 1.0);
 	autosize = true;
-	updateAreaOnInit = false;
 }
 
 ControlLabel::ControlLabel(const Text &text, const NPoint &position)
@@ -42,7 +41,6 @@ ControlLabel::ControlLabel(const Text &text, const NPoint &position)
 	this->text = new Text(text);
 	textcolor = new NColor(0, 0, 0, 1.0);
 	autosize = true;
-	updateAreaOnInit = false;
 }
 
 ControlLabel::ControlLabel(const Text &text, const NRectangle &area)
@@ -51,7 +49,6 @@ ControlLabel::ControlLabel(const Text &text, const NRectangle &area)
 	this->text = new Text(text);
 	textcolor = new NColor(0, 0, 0, 1.0);
 	autosize = false;
-	updateAreaOnInit = false;
 }
 
 ControlLabel::~ControlLabel()
@@ -60,21 +57,20 @@ ControlLabel::~ControlLabel()
 	delete textcolor;
 }
 
+void ControlLabel::UpdateSize() {
+	if (autosize && window != NULL) {
+		NSize ss = window->HandlerGraphics()->GetTextExtents(text == NULL ? "" : *text, *font);
+		NRectangle r(area->GetX(), area->GetY(), ss.GetWidth() + 6, ss.GetHeight() + 6);
+		Control::SetArea(r);
+	}
+}
+
 void ControlLabel::SetText(const Text &t)
 {
 	if (text == NULL) text = new Text(t);
 	*text = t;
 	
-	if (autosize) {
-		if (window == NULL) {
-			updateAreaOnInit = true;
-		} else {
-			NSize ss = window->HandlerGraphics()->GetTextExtents(text == NULL ? "" : *text, *font);
-			*area = NRectangle(area->GetX(), area->GetY(), ss.GetWidth() + 6, ss.GetHeight() + 6);		
-		}
-	}
-	
-	Draw();
+	UpdateSize();
 }
 
 Text ControlLabel::GetText()
@@ -97,6 +93,7 @@ NColor ControlLabel::GetTextColor()
 void ControlLabel::SetAutoSize(bool autosize)
 {
 	this->autosize = autosize;
+	UpdateSize();
 }
 
 bool ControlLabel::GetAutoSize()
@@ -107,41 +104,23 @@ bool ControlLabel::GetAutoSize()
 void ControlLabel::SetFont(const NFont &font)
 {
 	Control::SetFont(font);
-	
-	if (autosize) {
-		if (window == NULL) {
-			updateAreaOnInit = true;
-		} else {
-			NSize ss = window->HandlerGraphics()->GetTextExtents(text == NULL ? "" : *text, font);
-			*area = NRectangle(area->GetX(), area->GetY(), ss.GetWidth() + 6, ss.GetHeight() + 6);		
-		}
-	}
+	UpdateSize();
 }
 
 void ControlLabel::SetArea(const NRectangle &area)
 {
 	this->area->SetPosition(((NRectangle *)&area)->GetPosition());
 	
-	if (autosize) {
-		if (window == NULL) {
-			updateAreaOnInit = true;
-		} else {
-			NSize ss = window->HandlerGraphics()->GetTextExtents(text == NULL ? "" : *text, *font);
-			*this->area = NRectangle(this->area->GetX(), this->area->GetY(), ss.GetWidth() + 6, ss.GetHeight() + 6);		
-		}
-	} else {
+	if (autosize)
+		UpdateSize();
+	else
 		Control::SetArea(area);
-	}
 }
 
 void ControlLabel::Init(XWindow *w, Control *parent)
 {
 	Control::Init(w, parent);
-	
-	if (updateAreaOnInit) {
-		NSize ss = w->HandlerGraphics()->GetTextExtents(text == NULL ? "" : *text, *font);
-		*area = NRectangle(area->GetX(), area->GetY(), ss.GetWidth() + 6, ss.GetHeight() + 6);		
-	}
+	UpdateSize();
 }
 
 bool ControlLabel::OnDrawBackground(IGraphics *gc, NRectangle *r)

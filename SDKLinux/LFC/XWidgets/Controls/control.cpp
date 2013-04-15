@@ -59,7 +59,7 @@ void Control::Init()
 	parent = NULL;
 	window = NULL;
 	font = new NFont("Ubuntu Mono", NFont::FontWeightNormal, 10);
-	backcolor = new NColor(0, 0, 0, 1.0);
+	backcolor = new NColor(0.95, 0.95, 0.97, 1.0);
 	userdata = NULL;
 	children = new Collection<Control *>();
 	visible = false;

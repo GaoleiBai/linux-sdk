@@ -19,39 +19,47 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef CONTROLLABEL_H
-#define CONTROLLABEL_H
+#ifndef CONTROLBUTTON_H
+#define CONTROLBUTTON_H
 
 #include "control.h"
 
-class ControlLabel : public Control {
-protected:
+class Text;
+class NColor;
+class NPoint;
+class NRectangle;
+
+class ControlButton : public Control {
 	Text *text;
 	NColor *textcolor;
+	NColor *forecolor;
 	bool autosize;
+	bool calculateAreaOnInit;
 	
 	void UpdateSize();
-	
-public:
-	ControlLabel(const Text &text);
-	ControlLabel(const Text &text, const NPoint &position);
-	ControlLabel(const Text &text, const NRectangle &area);
-	virtual ~ControlLabel();
 
-	void SetText(const Text &text);
-	void SetTextColor(const NColor &c);
-	void SetAutoSize(bool autosize);
+public:
+	ControlButton(const Text &t);
+	ControlButton(const Text &t, const NPoint &p);
+	ControlButton(const Text &t, const NRectangle &r);
+	virtual ~ControlButton();
+
+	bool GetAutoSize();
 	Text GetText();
 	NColor GetTextColor();
-	bool GetAutoSize();
+	NColor GetForeColor();
+	void SetAutoSize(bool autosize);
+	void SetText(const Text &t);
+	void SetTextColor(const NColor &c);
+	void SetForeColor(const NColor &c);
 	
-	virtual void SetFont(const NFont &font);
-	virtual void SetArea(const NRectangle &area);
-
+	virtual void SetFont(const NFont &f);
+	virtual void SetArea(const NRectangle &r);
+	
 	virtual void Init(XWindow *w, Control *parent);
-	virtual bool OnDrawBackground(IGraphics *gc, NRectangle *r);
-	virtual bool OnDraw(IGraphics *gc, NRectangle *r);
+	virtual bool OnDrawBackground(IGraphics *g, NRectangle *r);
+	virtual bool OnDraw(IGraphics *g, NRectangle *r);
 	
 };
 
-#endif // CONTROLLABEL_H
+#endif // CONTROLBUTTON_H

@@ -255,6 +255,8 @@
         <File Name="LFC/XWidgets/Controls/controllabel.cpp"/>
         <File Name="LFC/XWidgets/Controls/controlexception.h"/>
         <File Name="LFC/XWidgets/Controls/controlexception.cpp"/>
+        <File Name="LFC/XWidgets/Controls/controlbutton.h"/>
+        <File Name="LFC/XWidgets/Controls/controlbutton.cpp"/>
       </VirtualDirectory>
     </VirtualDirectory>
     <VirtualDirectory Name="Delegations">
