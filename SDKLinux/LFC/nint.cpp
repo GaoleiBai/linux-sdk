@@ -47,6 +47,12 @@ NInt::~NInt()
 {
 }
 
+NInt &NInt::operator =(const NInt &n)
+{
+	value = n.value;
+	return *this;
+}
+
 int NInt::MaxValue()
 {
 	return INT_MAX;

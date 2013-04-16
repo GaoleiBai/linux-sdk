@@ -30,6 +30,8 @@ class WindowEventShow : public NObject {
 public:
 	WindowEventShow(bool shown);
 	virtual ~WindowEventShow();
+	
+	virtual WindowEventShow &operator =(const WindowEventShow &e);
 
 	bool Shown();
 	

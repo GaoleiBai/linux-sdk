@@ -35,6 +35,7 @@ class ControlButton : public Control {
 	NColor *forecolor;
 	bool autosize;
 	bool calculateAreaOnInit;
+	bool isPressed;
 	
 	void UpdateSize();
 
@@ -59,7 +60,8 @@ public:
 	virtual void Init(XWindow *w, Control *parent);
 	virtual bool OnDrawBackground(IGraphics *g, NRectangle *r);
 	virtual bool OnDraw(IGraphics *g, NRectangle *r);
-	
+	virtual bool OnMouseButtonDown(ControlEventMouseButton *e);
+	virtual bool OnMouseButtonUp(ControlEventMouseButton *e);
 };
 
 #endif // CONTROLBUTTON_H

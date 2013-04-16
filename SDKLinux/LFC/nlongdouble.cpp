@@ -50,6 +50,12 @@ NLongDouble::~NLongDouble()
 {
 }
 
+NLongDouble &NLongDouble::operator =(const NLongDouble &n)
+{
+	value = n.value;
+	return *this;
+}
+
 long double NLongDouble::Epsilon()
 {
 	return LDBL_EPSILON;

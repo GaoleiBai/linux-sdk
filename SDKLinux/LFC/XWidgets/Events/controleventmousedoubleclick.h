@@ -42,6 +42,8 @@ public:
 
 	ControlEventMouseDoubleClick(const ControlEventMouseButton &e, const DateTime &doubleclickduration);
 	virtual ~ControlEventMouseDoubleClick();
+	
+	virtual ControlEventMouseDoubleClick &operator =(const ControlEventMouseDoubleClick &e);
 
 	NPoint Position();
 	DateTime DoubleClickDuration();

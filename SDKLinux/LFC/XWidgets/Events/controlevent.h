@@ -35,6 +35,7 @@ public:
 	virtual ~ControlEvent();
 	
 	Control *Source();
+	virtual ControlEvent &operator =(const ControlEvent &e);
 
 };
 

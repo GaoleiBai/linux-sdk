@@ -33,6 +33,8 @@ public:
 	NUChar(unsigned char n);
 	NUChar(const NUChar &u);
 	virtual ~NUChar();
+	
+	virtual NUChar &operator =(const NUChar &n);
 
 	static unsigned char MaxValue();
 	static unsigned char MinValue();

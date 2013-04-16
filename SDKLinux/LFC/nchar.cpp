@@ -48,6 +48,12 @@ NChar::~NChar()
 {
 }
 
+NChar &NChar::operator =(const NChar &n)
+{
+	value = n.value;
+	return *this;
+}
+
 char NChar::MaxValue() 
 {
 	return SCHAR_MAX;

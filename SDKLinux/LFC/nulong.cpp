@@ -47,6 +47,12 @@ NULong::~NULong()
 {
 }
 
+NULong &NULong::operator =(const NULong &n)
+{
+	value = n.value;
+	return *this;
+}
+
 unsigned long NULong::MaxValue()
 {
 	return ULONG_MAX;

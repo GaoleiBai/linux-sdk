@@ -37,6 +37,13 @@ ControlEventVisible::~ControlEventVisible()
 {
 }
 
+ControlEventVisible &ControlEventVisible::operator =(const ControlEventVisible &e)
+{
+	source = e.source;
+	visible = e.visible;
+	return *this;
+}
+
 bool ControlEventVisible::IsVisible()
 {
 	return visible;

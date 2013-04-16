@@ -35,6 +35,8 @@ public:
 
 	WindowEventVisible(XVisibilityEvent *e);
 	virtual ~WindowEventVisible();
+	
+	virtual WindowEventVisible &operator =(const WindowEventVisible &e);
 
 	int VisibilityState();
 

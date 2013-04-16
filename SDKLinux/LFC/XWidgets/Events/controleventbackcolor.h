@@ -34,6 +34,7 @@ public:
 	virtual ~ControlEventBackColor();
 
 	NColor BackColor();
+	virtual ControlEventBackColor &operator =(const ControlEventBackColor &e);
 };
 
 #endif // CONTROLEVENTBACKCOLOR_H

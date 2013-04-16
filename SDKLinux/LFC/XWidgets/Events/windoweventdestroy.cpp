@@ -30,3 +30,9 @@ WindowEventDestroy::~WindowEventDestroy()
 {
 }
 
+WindowEventDestroy &WindowEventDestroy::operator =(const WindowEventDestroy &e)
+{
+	this->e = e.e;
+	return *this;
+}
+

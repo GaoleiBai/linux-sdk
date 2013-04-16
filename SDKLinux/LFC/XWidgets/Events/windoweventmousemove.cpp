@@ -32,6 +32,12 @@ WindowEventMouseMove::~WindowEventMouseMove()
 {
 }
 
+WindowEventMouseMove &WindowEventMouseMove::operator =(const WindowEventMouseMove &e)
+{
+	this->e = e.e;
+	return *this;
+}
+
 DateTime WindowEventMouseMove::Time()
 {
 	return DateTime((time_t)e->time);

@@ -32,6 +32,12 @@ WindowEventFocus::~WindowEventFocus()
 {
 }
 
+WindowEventFocus &WindowEventFocus::operator =(const WindowEventFocus &e)
+{
+	this->e = e.e;
+	return *this;
+}
+
 int WindowEventFocus::NotifyMode()
 {
 	if (e->mode == NotifyNormal) return NotifyModeNormal;

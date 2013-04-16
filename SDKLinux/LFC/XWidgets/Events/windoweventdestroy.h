@@ -31,6 +31,8 @@ class WindowEventDestroy : public NObject {
 public:
 	WindowEventDestroy(XDestroyWindowEvent *e);
 	virtual ~WindowEventDestroy();
+	
+	virtual WindowEventDestroy &operator =(const WindowEventDestroy &e);
 
 };
 

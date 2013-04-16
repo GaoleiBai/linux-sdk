@@ -33,6 +33,8 @@ public:
 	NInt(int n);
 	NInt(const NInt &i);
 	virtual ~NInt();
+	
+	virtual NInt &operator =(const NInt &n);
 
 	static int MaxValue();
 	static int MinValue();

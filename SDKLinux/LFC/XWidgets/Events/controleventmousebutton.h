@@ -29,6 +29,8 @@ class DateTime;
 class NPoint;
 
 class ControlEventMouseButton : public ControlEvent {
+protected:
+	
 	int status;
 	DateTime *time;
 	NPoint *position;
@@ -57,6 +59,8 @@ public:
 	ControlEventMouseButton(const WindowEventMouseButton &e);
 	ControlEventMouseButton(const ControlEventMouseButton &e, const NPoint &controlPosition);
 	virtual ~ControlEventMouseButton();
+	
+	virtual ControlEventMouseButton &operator =(const ControlEventMouseButton &e);
 
 	DateTime Time();
 	NPoint Position();

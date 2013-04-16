@@ -36,6 +36,7 @@ public:
 	virtual ~ControlEventFont();
 
 	NFont Font();
+	ControlEventFont &operator =(const ControlEventFont &e);
 };
 
 #endif // CONTROLEVENTFONT_H

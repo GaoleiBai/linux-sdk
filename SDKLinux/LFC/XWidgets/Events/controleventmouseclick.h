@@ -43,6 +43,8 @@ public:
 	ControlEventMouseClick(const ControlEventMouseButton &e, const DateTime &clickduration);
 	virtual ~ControlEventMouseClick();
 	
+	virtual ControlEventMouseClick &operator =(const ControlEventMouseClick &e);
+	
 	NPoint Position();
 	DateTime ClickDuration();
 	bool DoneWithButton1();

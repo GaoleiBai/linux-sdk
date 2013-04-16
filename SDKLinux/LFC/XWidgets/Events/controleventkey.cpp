@@ -143,3 +143,12 @@ bool ControlEventKey::PressedMod5()
 	return status & StatusPressedMod5;
 }
 
+ControlEventKey &ControlEventKey::operator =(const ControlEventKey &e)
+{
+	status = e.status;
+	*time = *e.time;
+	*position = *e.position;
+	*positionRoot = *e.positionRoot;
+	*keycode = *e.keycode;
+	return *this;
+}

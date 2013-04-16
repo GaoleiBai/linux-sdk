@@ -32,6 +32,12 @@ WindowEventVisible::~WindowEventVisible()
 {
 }
 
+WindowEventVisible &WindowEventVisible::operator =(const WindowEventVisible &e)
+{
+	this->e = e.e;
+	return *this;
+}
+
 int WindowEventVisible::VisibilityState()
 {
 	if (e->state == VisibilityUnobscured) return VisibilityStateUnobscured;

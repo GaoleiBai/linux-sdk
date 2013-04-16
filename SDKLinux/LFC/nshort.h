@@ -32,6 +32,8 @@ public:
 	NShort(const NShort &s);
 	virtual ~NShort();
 	
+	virtual NShort &operator =(const NShort &n);
+	
 	static short MaxValue();
 	static short MinValue();
 	static short Parse(const Text &text);

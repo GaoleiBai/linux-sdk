@@ -32,6 +32,12 @@ WindowEventMouseButton::~WindowEventMouseButton()
 {
 }
 
+WindowEventMouseButton &WindowEventMouseButton::operator =(const WindowEventMouseButton &e)
+{
+	this->e = e.e;
+	return *this;
+}
+
 DateTime WindowEventMouseButton::Time()
 {
 	return DateTime((time_t)e->time);

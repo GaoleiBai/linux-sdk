@@ -42,3 +42,10 @@ NFont ControlEventFont::Font()
 {
 	return *font;
 }
+
+ControlEventFont &ControlEventFont::operator =(const ControlEventFont &e)
+{
+	source = e.source;
+	font = e.font;
+	return *this;
+}

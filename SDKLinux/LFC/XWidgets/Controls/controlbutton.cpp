@@ -34,16 +34,18 @@ ControlButton::ControlButton(const Text &t) : Control()
 	forecolor = new NColor(0.95, 0.95, 0.97, 1.0);
 	autosize = true;
 	calculateAreaOnInit = true;
+	isPressed = false;
 }
 
 ControlButton::ControlButton(const Text &t, const NPoint &p) 
 	: Control(NRectangle(p, NSize(0, 0)))
 {
 	text = new Text(t);
-	textcolor = new NColor(0, 0, 0, 1.0);
+ 	textcolor = new NColor(0, 0, 0, 1.0);
 	forecolor = new NColor(0.95, 0.95, 0.97, 1.0);
 	autosize = true;
 	calculateAreaOnInit = true;
+	isPressed = false;
 }
 
 ControlButton::ControlButton(const Text &t, const NRectangle &r)
@@ -54,6 +56,7 @@ ControlButton::ControlButton(const Text &t, const NRectangle &r)
 	forecolor = new NColor(0.95, 0.95, 0.97, 1.0);
 	autosize = false;
 	calculateAreaOnInit = false;
+	isPressed = false;
 }
 
 ControlButton::~ControlButton()
@@ -149,3 +152,4 @@ bool ControlButton::OnDraw(IGraphics *g, NRectangle *r)
 {
 	
 }
+

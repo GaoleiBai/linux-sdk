@@ -35,6 +35,8 @@ class WindowEventKey : public NObject {
 public:
 	WindowEventKey(XKeyEvent *e);
 	virtual ~WindowEventKey();
+	
+	virtual WindowEventKey &operator =(const WindowEventKey &e);
 
 	DateTime Time();
 	NPoint Position();

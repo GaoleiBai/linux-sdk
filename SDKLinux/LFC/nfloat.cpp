@@ -50,6 +50,12 @@ NFloat::~NFloat()
 {
 }
 
+NFloat &NFloat::operator =(const NFloat &n)
+{
+	value = n.value;
+	return *this;
+}
+
 float NFloat::Epsilon()
 {
 	return FLT_EPSILON;

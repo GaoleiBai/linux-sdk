@@ -30,6 +30,12 @@ WindowEventShow::~WindowEventShow()
 {
 }
 
+WindowEventShow &WindowEventShow::operator =(const WindowEventShow &e)
+{
+	shown = e.shown;
+	return *this;
+}
+
 bool WindowEventShow::Shown()
 {
 	return shown;

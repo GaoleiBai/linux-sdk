@@ -30,6 +30,12 @@ WindowEventKeyboardMapping::~WindowEventKeyboardMapping()
 {
 }
 
+WindowEventKeyboardMapping &WindowEventKeyboardMapping::operator =(const WindowEventKeyboardMapping &e)
+{
+	this->e = e.e;
+	return *this;
+}
+
 int WindowEventKeyboardMapping::FirstKeycode()
 {
 	return e->first_keycode;

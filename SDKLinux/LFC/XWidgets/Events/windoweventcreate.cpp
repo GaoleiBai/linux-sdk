@@ -30,6 +30,12 @@ WindowEventCreate::~WindowEventCreate()
 {
 }
 
+WindowEventCreate &WindowEventCreate::operator =(const WindowEventCreate &e)
+{
+	this->e = e.e;
+	return *this;
+}
+
 NRectangle WindowEventCreate::Area()
 {
 	return NRectangle(e->x, e->y, e->width, e->height);

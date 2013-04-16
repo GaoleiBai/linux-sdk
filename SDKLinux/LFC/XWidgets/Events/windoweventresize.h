@@ -32,6 +32,8 @@ class WindowEventResize {
 public:
 	WindowEventResize(XConfigureEvent *e);
 	virtual ~WindowEventResize();
+	
+	virtual WindowEventResize &operator =(const WindowEventResize &e);
 
 	NRectangle Area();
 	

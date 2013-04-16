@@ -32,6 +32,8 @@ class WindowEventMove : public NObject {
 public:
 	WindowEventMove(XConfigureEvent *e);
 	virtual ~WindowEventMove();
+	
+	virtual WindowEventMove &operator =(const WindowEventMove &e);
 
 	NRectangle Area();
 };

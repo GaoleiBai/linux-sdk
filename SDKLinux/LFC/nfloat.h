@@ -33,6 +33,8 @@ public:
 	NFloat(float n);
 	NFloat(const NFloat &f);
 	virtual ~NFloat();
+	
+	virtual NFloat &operator =(const NFloat &n);
 
 	static float Epsilon();
 	static float NaN();

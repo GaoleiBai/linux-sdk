@@ -33,6 +33,8 @@ public:
 	NLongDouble(long double n);
 	NLongDouble(const NLongDouble &l);
 	virtual ~NLongDouble();
+	
+	virtual NLongDouble &operator =(const NLongDouble &n);
 
 	static long double Epsilon();
 	static long double NaN();

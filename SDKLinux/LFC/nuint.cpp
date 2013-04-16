@@ -52,6 +52,12 @@ unsigned int NUInt::MaxValue()
 	return UINT_MAX;
 }
 
+NUInt &NUInt::operator =(const NUInt &n)
+{
+	value = n.value;
+	return *this;
+}
+
 unsigned int NUInt::MinValue()
 {
 	return 0;

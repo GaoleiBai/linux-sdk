@@ -32,6 +32,13 @@ WindowEventDraw::~WindowEventDraw()
 {
 }
 
+WindowEventDraw &WindowEventDraw::operator =(const WindowEventDraw &e)
+{
+	g = e.g;
+	this->e = e.e;
+	return *this;
+}
+
 NRectangle WindowEventDraw::Area()
 {
 	return NRectangle(e->x, e->y, e->width, e->height);

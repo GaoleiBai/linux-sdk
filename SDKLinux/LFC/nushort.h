@@ -33,6 +33,8 @@ public:
 	NUShort(unsigned short n);
 	NUShort(const NUShort &n);
 	virtual ~NUShort();
+	
+	virtual NUShort &operator =(const NUShort &s);
 
 	static unsigned short MaxValue();
 	static unsigned short MinValue();

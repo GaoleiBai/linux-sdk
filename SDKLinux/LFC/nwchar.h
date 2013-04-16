@@ -34,6 +34,8 @@ public:
 	NWChar(const NWChar &c);
 	virtual ~NWChar();
 	
+	virtual NWChar &operator =(const NWChar &c);
+	
 	static wchar_t MaxValue();
 	static wchar_t MinValue();
 	static wchar_t Parse(const Text &t);

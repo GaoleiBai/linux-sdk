@@ -33,6 +33,8 @@ public:
 	NChar(char c);
 	NChar(const NChar &c);
 	virtual ~NChar();
+	
+	virtual NChar &operator =(const NChar &n);
 
 	static char MaxValue();
 	static char MinValue();

@@ -45,6 +45,14 @@ ControlEventMouseDoubleClick::~ControlEventMouseDoubleClick()
 	delete doubleclickduration;
 }
 
+ControlEventMouseDoubleClick &ControlEventMouseDoubleClick::operator =(const ControlEventMouseDoubleClick &e)
+{
+	status = e.status;
+	*position = *e.position;
+	*doubleclickduration = *e.doubleclickduration;
+	return *this;
+}
+
 NPoint ControlEventMouseDoubleClick::Position()
 {
 	return *position;

@@ -35,6 +35,8 @@ class WindowEventDraw : public NObject {
 public:
 	WindowEventDraw(IGraphics *g, XExposeEvent *e);
 	virtual ~WindowEventDraw();
+	
+	virtual WindowEventDraw &operator =(const WindowEventDraw &e);
 
 	NRectangle Area();
 	int NumberOfFollowingDrawEvents();

@@ -47,6 +47,12 @@ NUChar::~NUChar()
 {
 }
 
+NUChar &NUChar::operator =(const NUChar &c)
+{
+	value = c.value;
+	return *this;
+}
+
 unsigned char NUChar::MaxValue()
 {
 	return UCHAR_MAX;

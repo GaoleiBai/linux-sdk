@@ -48,6 +48,12 @@ NWChar::~NWChar()
 {
 }
 
+NWChar &NWChar::operator =(const NWChar &c)
+{
+	value = c.value;
+	return *this;
+}
+
 wchar_t NWChar::MaxValue()
 {
 	return WCHAR_MAX;

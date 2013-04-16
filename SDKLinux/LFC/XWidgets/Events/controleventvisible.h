@@ -33,6 +33,8 @@ public:
 	ControlEventVisible(const ControlEventVisible &e);
 	virtual ~ControlEventVisible();
 	
+	virtual ControlEventVisible &operator =(const ControlEventVisible &e);
+	
 	bool IsVisible();
 
 };

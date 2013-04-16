@@ -46,6 +46,12 @@ NShort::~NShort()
 {
 }
 
+NShort &NShort::operator =(const NShort &e)
+{
+	value = e.value;
+	return *this;
+}
+
 short NShort::MaxValue()
 {
 	return SHRT_MAX;

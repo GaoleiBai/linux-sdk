@@ -35,6 +35,8 @@ public:
 	WindowEventColormap(XColormapEvent *e);
 	virtual ~WindowEventColormap();
 
+	virtual WindowEventColormap &operator =(const WindowEventColormap &e);
+
 	Colormap NewColormap();
 	bool ColormapChanged();
 	int ColormapState();

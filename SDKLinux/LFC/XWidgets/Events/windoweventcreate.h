@@ -32,6 +32,8 @@ class WindowEventCreate : public NObject {
 public:
 	WindowEventCreate(XCreateWindowEvent *e);
 	virtual ~WindowEventCreate();
+	
+	virtual WindowEventCreate &operator =(const WindowEventCreate &e);
 
 	NRectangle Area();
 	int BorderWidth();

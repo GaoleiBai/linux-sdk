@@ -36,6 +36,8 @@ public:
 	WindowEventKeyboardMapping(XMappingEvent *e);
 	virtual ~WindowEventKeyboardMapping();
 	
+	virtual WindowEventKeyboardMapping &operator =(const WindowEventKeyboardMapping &e);
+	
 	int FirstKeycode();
 	int Count();
 

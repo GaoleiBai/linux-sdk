@@ -32,6 +32,12 @@ WindowEventKeymap::~WindowEventKeymap()
 {
 }
 
+WindowEventKeymap &WindowEventKeymap::operator =(const WindowEventKeymap &e)
+{
+	this->e = e.e;
+	return *this;
+}
+
 bool WindowEventKeymap::KeyPressed(int i)
 {
 	if (i < 0 || i >= 256)

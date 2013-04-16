@@ -59,6 +59,12 @@ Exception::~Exception()
 	delete t;
 }
 
+Exception &Exception::operator =(const Exception &e)
+{
+	*t = *e.t;
+	return *this;
+}
+
 Text Exception::ToText()
 {
 	return *t;

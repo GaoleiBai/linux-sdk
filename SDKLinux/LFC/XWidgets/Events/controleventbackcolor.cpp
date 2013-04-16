@@ -30,7 +30,7 @@ ControlEventBackColor::ControlEventBackColor(Control *source, const NColor &back
 ControlEventBackColor::ControlEventBackColor(const ControlEventBackColor &e)
 {
 	source = e.source;
-	backcolor = e.backcolor;
+	backcolor = new NColor(*e.backcolor);
 }
 
 ControlEventBackColor::~ControlEventBackColor()
@@ -41,4 +41,10 @@ ControlEventBackColor::~ControlEventBackColor()
 NColor ControlEventBackColor::BackColor()
 {
 	return *backcolor;
+}
+
+ControlEventBackColor &ControlEventBackColor::operator =(const ControlEventBackColor &e)
+{
+	*backcolor = *e.backcolor;
+	return *this;
 }

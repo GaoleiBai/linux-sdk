@@ -35,6 +35,8 @@ public:
 	Exception(const Text &t, const char *file, int line, const char *func);
 	virtual ~Exception();
 	
+	virtual Exception &operator =(const Exception &e);
+	
 	virtual Text ToText();
 
 protected:

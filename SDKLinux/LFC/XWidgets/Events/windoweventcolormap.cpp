@@ -30,6 +30,12 @@ WindowEventColormap::~WindowEventColormap()
 {
 }
 
+WindowEventColormap &WindowEventColormap::operator =(const WindowEventColormap &e)
+{
+	this->e = e.e;
+	return *this;
+}
+
 Colormap WindowEventColormap::NewColormap()
 {
 	return e->colormap;

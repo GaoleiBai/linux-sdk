@@ -34,6 +34,8 @@ class WindowEventMouseMove : public NObject {
 public:
 	WindowEventMouseMove(XMotionEvent *e);
 	virtual ~WindowEventMouseMove();
+	
+	virtual WindowEventMouseMove &operator =(const WindowEventMouseMove &e);
 
 	DateTime Time();
 	NPoint Position();

@@ -33,6 +33,8 @@ public:
 	NLongLong(long long n);
 	NLongLong(const NLongLong &l);
 	virtual ~NLongLong();
+	
+	virtual NLongLong &operator =(const NLongLong &n);
 
 	static long long MaxValue();
 	static long long MinValue();

@@ -32,6 +32,12 @@ WindowEventEnterLeave::~WindowEventEnterLeave()
 {
 }
 
+WindowEventEnterLeave &WindowEventEnterLeave::operator =(const WindowEventEnterLeave &e)
+{
+	this->e = e.e;
+	return *this;
+}
+
 DateTime WindowEventEnterLeave::Time()
 {
 	return DateTime((time_t)e->time);

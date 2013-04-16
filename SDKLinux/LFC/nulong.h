@@ -33,6 +33,8 @@ public:
 	NULong(unsigned long n);
 	NULong(const NULong &n);
 	virtual ~NULong();
+	
+	virtual NULong &operator =(const NULong &n);
 
 	static unsigned long MaxValue();
 	static unsigned long MinValue();

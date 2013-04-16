@@ -42,3 +42,9 @@ bool ControlEventFocused::IsFocused()
 	return focused;
 }
 
+ControlEventFocused &ControlEventFocused::operator =(const ControlEventFocused &e)
+{
+	source = e.source;
+	focused = e.focused;
+	return *this;
+}

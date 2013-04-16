@@ -44,6 +44,14 @@ ControlEventMouseClick::~ControlEventMouseClick()
 	delete clickduration;
 }
 
+ControlEventMouseClick &ControlEventMouseClick::operator =(const ControlEventMouseClick &e)
+{
+	status = e.status;
+	*position = *e.position;
+	*clickduration = *e.clickduration;
+	return *this;
+}
+
 NPoint ControlEventMouseClick::Position()
 {
 	return *position;

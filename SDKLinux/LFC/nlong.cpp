@@ -47,6 +47,12 @@ NLong::~NLong()
 {
 }
 
+NLong &NLong::operator =(const NLong &n)
+{
+	value = n.value;
+	return *this;
+}
+
 long NLong::MaxValue()
 {
 	return LONG_MAX;

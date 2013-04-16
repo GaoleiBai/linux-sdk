@@ -34,6 +34,7 @@ public:
 	virtual ~ControlEventFocused();
 
 	bool IsFocused();
+	ControlEventFocused &operator =(const ControlEventFocused &e);
 	
 };
 

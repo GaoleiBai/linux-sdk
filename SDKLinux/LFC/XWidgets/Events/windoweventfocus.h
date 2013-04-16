@@ -49,6 +49,8 @@ public:
 	WindowEventFocus(XFocusChangeEvent *e);
 	virtual ~WindowEventFocus();
 	
+	WindowEventFocus &operator =(const WindowEventFocus &e);
+	
 	int NotifyMode();
 	int NotifyDetail();
 	

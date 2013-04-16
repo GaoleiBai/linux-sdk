@@ -48,6 +48,8 @@ public:
 	
 	WindowEventEnterLeave(XCrossingEvent *e);
 	virtual ~WindowEventEnterLeave();
+	
+	virtual WindowEventEnterLeave &operator =(const WindowEventEnterLeave &e);
 
 	DateTime Time();
 	NPoint Position();

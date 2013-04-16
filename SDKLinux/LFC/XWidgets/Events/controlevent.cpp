@@ -37,3 +37,9 @@ Control *ControlEvent::Source()
 	return source;
 }
 
+ControlEvent &ControlEvent::operator =(const ControlEvent &e)
+{
+	source = e.source;
+	return *this;
+}
+

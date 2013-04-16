@@ -33,6 +33,8 @@ public:
 	NUInt(unsigned int n);
 	NUInt(const NUInt &n);
 	virtual ~NUInt();
+	
+	virtual NUInt &operator =(const NUInt &n);
 
 	static unsigned int MaxValue();
 	static unsigned int MinValue();

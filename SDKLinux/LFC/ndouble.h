@@ -33,6 +33,8 @@ public:
 	NDouble(double n);
 	NDouble(const NDouble &d);
 	virtual ~NDouble();
+	
+	virtual NDouble &operator =(const NDouble &n);
 
 	static double Epsilon();
 	static double NaN();

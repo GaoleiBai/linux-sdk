@@ -48,6 +48,12 @@ NUShort::~NUShort()
 {
 }
 
+NUShort &NUShort::operator =(const NUShort &n)
+{
+	value = n.value;
+	return *this;
+}
+
 unsigned short NUShort::MinValue()
 {
 	return 0;

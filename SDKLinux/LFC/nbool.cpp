@@ -44,6 +44,12 @@ NBool::~NBool()
 {
 }
 
+NBool &NBool::operator =(const NBool &n)
+{
+	value = n.value;
+	return *this;
+}
+
 bool NBool::Parse(const Text &text)
 {
 	bool b = false;

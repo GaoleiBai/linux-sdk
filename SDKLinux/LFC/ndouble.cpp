@@ -49,6 +49,12 @@ NDouble::~NDouble()
 {
 }
 
+NDouble &NDouble::operator =(const NDouble &n)
+{
+	value = n.value;
+	return *this;
+}
+
 double NDouble::Epsilon()
 {
 	return DBL_EPSILON;

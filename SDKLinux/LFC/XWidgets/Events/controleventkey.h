@@ -73,6 +73,8 @@ public:
 	bool PressedMod3();
 	bool PressedMod4();
 	bool PressedMod5();		
+	
+	ControlEventKey &operator =(const ControlEventKey &e);
 
 };
 

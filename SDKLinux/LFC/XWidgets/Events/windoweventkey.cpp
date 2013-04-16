@@ -33,6 +33,12 @@ WindowEventKey::~WindowEventKey()
 {
 }
 
+WindowEventKey &WindowEventKey::operator =(const WindowEventKey &e)
+{
+	keyEvent = e.keyEvent;
+	return *this;
+}
+
 DateTime WindowEventKey::Time()
 {
 	return DateTime((time_t)keyEvent->time);

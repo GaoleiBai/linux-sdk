@@ -35,6 +35,8 @@ public:
 	WindowEventMouseButton(XButtonEvent *e);
 	virtual ~WindowEventMouseButton();
 	
+	virtual WindowEventMouseButton &operator =(const WindowEventMouseButton &e);
+	
 	DateTime Time();
 	NPoint Position();
 	NPoint PositionRoot();	

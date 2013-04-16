@@ -33,6 +33,8 @@ public:
 	NBool(bool b);
 	NBool(const NBool &b);
 	virtual ~NBool();
+	
+	virtual NBool &operator =(const NBool &n);
 
 	static bool Parse(const Text &text);
 	static bool TryParse(const Text &text, bool &b);

@@ -31,6 +31,8 @@ class WindowEventKeymap : public NObject {
 public:
 	WindowEventKeymap(XKeymapEvent *e);
 	virtual ~WindowEventKeymap();
+	
+	virtual WindowEventKeymap &operator =(const WindowEventKeymap &e);
 
 	bool KeyPressed(int i);
 	

@@ -69,6 +69,14 @@ ControlEventMouseButton::~ControlEventMouseButton()
 	delete positionroot;
 }
 
+ControlEventMouseButton &ControlEventMouseButton::operator =(const ControlEventMouseButton &e)
+{
+	status = e.status;
+	*time = *e.time;
+	*position = *e.position;
+	*positionroot = *e.positionroot;
+}
+
 DateTime ControlEventMouseButton::Time()
 {
 	return *time;
