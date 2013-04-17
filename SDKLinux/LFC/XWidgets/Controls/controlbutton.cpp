@@ -25,6 +25,10 @@
 #include "../Graphics/nsize.h"
 #include "../Graphics/nrectangle.h"
 #include "../Graphics/igraphics.h"
+#include "../Events/controleventkey.h"
+#include "../Events/controleventaction.h"
+#include "../../nwchar.h"
+#include "../../Delegations/ndelegationmanager.h"
 #include "../xwindow.h"
 
 ControlButton::ControlButton(const Text &t) : Control()
@@ -35,6 +39,7 @@ ControlButton::ControlButton(const Text &t) : Control()
 	autosize = true;
 	calculateAreaOnInit = true;
 	isPressed = false;
+	onAction = new NDelegationManager();
 }
 
 ControlButton::ControlButton(const Text &t, const NPoint &p) 
@@ -46,6 +51,7 @@ ControlButton::ControlButton(const Text &t, const NPoint &p)
 	autosize = true;
 	calculateAreaOnInit = true;
 	isPressed = false;
+	onAction = new NDelegationManager();
 }
 
 ControlButton::ControlButton(const Text &t, const NRectangle &r)
@@ -57,6 +63,7 @@ ControlButton::ControlButton(const Text &t, const NRectangle &r)
 	autosize = false;
 	calculateAreaOnInit = false;
 	isPressed = false;
+	onAction = new NDelegationManager();
 }
 
 ControlButton::~ControlButton()
@@ -64,15 +71,22 @@ ControlButton::~ControlButton()
 	delete text;
 	delete textcolor;
 	delete forecolor;
+	delete onAction;
 }
 
 void ControlButton::UpdateSize()
 {
 	if (autosize && window != NULL) {
 		NSize ss = window->HandlerGraphics()->GetTextExtents(text == NULL ? "" : *text, *font);
-		NRectangle r(area->GetX(), area->GetY(), ss.GetWidth() + 6, ss.GetHeight() + 6);		
+		NRectangle r(area->GetX(), area->GetY(), ss.GetWidth() + 10, ss.GetHeight() + 6);		
 		Control::SetArea(r);
 	}	
+}
+
+bool ControlButton::OnAction(ControlEventAction *e)
+{
+	DelegationOnAction().Execute(e);
+	return true;
 }
 
 void ControlButton::SetAutoSize(bool autosize)
@@ -135,6 +149,21 @@ void ControlButton::SetArea(const NRectangle &r)
 		Control::SetArea(r);
 }
 
+bool ControlButton::IsFocusable()
+{
+	return true;
+}
+
+bool ControlButton::CaptureSpaceKey()
+{
+	return true;
+}
+
+bool ControlButton::CaptureEnterKey()
+{
+	return true;
+}
+
 void ControlButton::Init(XWindow *w, Control *parent)
 {
 	Control::Init(w, parent);
@@ -150,6 +179,78 @@ bool ControlButton::OnDrawBackground(IGraphics *g, NRectangle *r)
 
 bool ControlButton::OnDraw(IGraphics *g, NRectangle *r)
 {
+	if (isMouseOver) {
+		NColor c(forecolor->R() * 1.15, forecolor->G() * 1.15, forecolor->B() * 1.15, forecolor->A());
+		g->SetColor(c);
+	} else if (isPressed) {
+		NColor c(forecolor->R() * 0.85, forecolor->G() * 0.85, forecolor->B() * 0.85, forecolor->A());
+		g->SetColor(c);
+	} else {
+		g->SetColor(*forecolor);
+	}
+	g->FillRoundRectangle(*r, 3);
 	
+	g->SetColor(*textcolor);
+	if (isPressed) {
+		g->DrawText(*text, 6, 4, *font);
+	} else {
+		g->DrawText(*text, 5, 3, *font);
+	}
 }
 
+bool ControlButton::OnMouseButtonDown(ControlEventMouseButton *e)
+{
+	if (!Control::OnMouseButtonDown(e)) return false;
+	isPressed = true;
+	Draw();
+	return true;
+}
+
+bool ControlButton::OnMouseButtonUp(ControlEventMouseButton *e)
+{
+	if (!Control::OnMouseButtonUp(e)) return false;
+	if (isPressed) return true;
+	isPressed = true;
+	Draw();
+	
+	ControlEventAction a(this);
+	OnAction(&a);
+	
+	return true;
+}
+
+bool ControlButton::OnMouseMove(ControlEventMouseMove *e)
+{
+	isMouseOver = false;
+	if (!Control::OnMouseMove(e)) return false;
+	if (isPressed) return true;
+	isMouseOver = true;
+	Draw();
+	return true;
+}
+
+bool ControlButton::OnKeyPress(ControlEventKey *e)
+{
+	if (!Control::OnKeyPress(e)) return false;
+	isPressed = e->KeyCode().Value() == '\r' || e->KeyCode().Value() == ' ';
+	Draw();
+	return true;
+}
+
+bool ControlButton::OnKeyRelease(ControlEventKey *e)
+{
+	if (!Control::OnKeyRelease(e)) return false;
+	if (!isPressed) return true;
+	isPressed = false;
+	Draw();
+	
+	ControlEventAction a(this);
+	OnAction(&a);
+	
+	return true;
+}
+
+NDelegationManager &ControlButton::DelegationOnAction()
+{
+	return *onAction;
+}

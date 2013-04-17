@@ -247,6 +247,8 @@
         <File Name="LFC/XWidgets/Events/controleventmousedoubleclick.cpp"/>
         <File Name="LFC/XWidgets/Events/controleventfont.h"/>
         <File Name="LFC/XWidgets/Events/controleventfont.cpp"/>
+        <File Name="LFC/XWidgets/Events/controleventaction.h"/>
+        <File Name="LFC/XWidgets/Events/controleventaction.cpp"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Controls">
         <File Name="LFC/XWidgets/Controls/control.h"/>

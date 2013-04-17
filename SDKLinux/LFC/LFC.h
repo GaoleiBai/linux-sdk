@@ -140,6 +140,7 @@
 #include "XWidgets/Events/controleventkey.h"
 #include "XWidgets/Events/controleventmouseclick.h"
 #include "XWidgets/Events/controleventmousedoubleclick.h"
+#include "XWidgets/Events/controleventaction.h"
 #include "XWidgets/Controls/control.h"
 #include "XWidgets/Controls/controllabel.h"
 #include "XWidgets/Controls/controlbutton.h"

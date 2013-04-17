@@ -28,16 +28,21 @@ class Text;
 class NColor;
 class NPoint;
 class NRectangle;
+class ControlEventAction;
 
 class ControlButton : public Control {
+protected:
 	Text *text;
 	NColor *textcolor;
 	NColor *forecolor;
 	bool autosize;
 	bool calculateAreaOnInit;
+	bool isMouseOver;
 	bool isPressed;
+	NDelegationManager *onAction;
 	
 	void UpdateSize();
+	bool OnAction(ControlEventAction *e);
 
 public:
 	ControlButton(const Text &t);
@@ -57,11 +62,21 @@ public:
 	virtual void SetFont(const NFont &f);
 	virtual void SetArea(const NRectangle &r);
 	
+	virtual bool IsFocusable();
+	virtual bool CaptureSpaceKey();
+	virtual bool CaptureEnterKey();
+	
 	virtual void Init(XWindow *w, Control *parent);
 	virtual bool OnDrawBackground(IGraphics *g, NRectangle *r);
 	virtual bool OnDraw(IGraphics *g, NRectangle *r);
 	virtual bool OnMouseButtonDown(ControlEventMouseButton *e);
 	virtual bool OnMouseButtonUp(ControlEventMouseButton *e);
+	virtual bool OnMouseMove(ControlEventMouseMove *e);
+	virtual bool OnKeyPress(ControlEventKey *e);
+	virtual bool OnKeyRelease(ControlEventKey *e);
+	
+	NDelegationManager &DelegationOnAction();	// Arg: ControlEventAction *
+	
 };
 
 #endif // CONTROLBUTTON_H
