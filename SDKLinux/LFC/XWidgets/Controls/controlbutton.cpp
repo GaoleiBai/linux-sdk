@@ -219,8 +219,13 @@ bool ControlButton::OnDraw(IGraphics *g, NRectangle *r)
 	NColor ccc(forecolor->R() * 1.12, forecolor->G() * 1.12, forecolor->B() * 1.12, forecolor->A());	
 	g->SetColor(ccc);
 	g->DrawRoundRectangle(rrr, 5);
-	g->SetColor(NColor(0, 0, 0, 1.0));
-	g->DrawRoundRectangle(rr, 5);
+	
+	if (IsFocused()) {
+		g->SetColor(*focusedcolor);		
+	} else {
+		g->SetColor(NColor(0, 0, 0, 1.0));
+	}
+	g->DrawRoundRectangle(rr, 5);	
 }
 
 bool ControlButton::OnMouseButtonDown(ControlEventMouseButton *e)

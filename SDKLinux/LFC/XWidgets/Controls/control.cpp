@@ -36,6 +36,7 @@
 #include "../Events/controlevententerleave.h"
 #include "../Events/controleventmouseclick.h"
 #include "../Events/controleventmousedoubleclick.h"
+#include "../Events/controleventfocusedcolor.h"
 #include "../../Delegations/ndelegation.h"
 #include "../../nwchar.h"
 #include "../../Time/datetime.h"
@@ -60,6 +61,7 @@ void Control::Init()
 	window = NULL;
 	font = new NFont("Ubuntu Mono", NFont::FontWeightNormal, 10);
 	backcolor = new NColor(0.95, 0.95, 0.97, 1.0);
+	focusedcolor = new NColor(0.60, 0.60, 0.75, 1.0);
 	userdata = NULL;
 	children = new Collection<Control *>();
 	visible = true;
@@ -84,6 +86,8 @@ void Control::Init()
 	onFocus = new NDelegationManager();
 	onBackColor = new NDelegationManager();
 	onFont = new NDelegationManager();
+	onFocusedColor = new NDelegationManager();
+	
 }
 
 NPoint Control::Position()
@@ -100,6 +104,7 @@ Control::~Control()
 	
 	delete area;
 	delete backcolor;
+	delete focusedcolor;
 	children->DeleteAndClear();
 	delete children;
 	if (lastMouseDown != NULL) delete lastMouseDown;
@@ -120,6 +125,7 @@ Control::~Control()
 	delete onFocus;
 	delete onBackColor;
 	delete onFont;
+	delete onFocusedColor;
 		
 }
 
@@ -403,6 +409,12 @@ bool Control::OnFocus(ControlEventFocused *e)
 	return true;
 }
 
+bool Control::OnFocusedColor(ControlEventFocusedColor *e)
+{
+	DelegationOnFocusedColor().Execute(e);
+	return true;
+}
+
 NPoint Control::GetPosition()
 {
 	return area->GetPosition();
@@ -421,6 +433,11 @@ NRectangle Control::Area()
 NColor Control::BackColor()
 {
 	return *backcolor;
+}
+
+NColor Control::FocusedColor()
+{
+	return *focusedcolor;
 }
 
 NFont Control::Font()
@@ -487,6 +504,17 @@ void Control::SetBackColor(const NColor &backcolor)
 	
 	ControlEventBackColor bce(this, backcolor);
 	OnBackColor(&bce);
+	
+	Draw();
+}
+
+void Control::SetFocusedColor(const NColor &focusedcolor)
+{
+	if (this->focusedcolor->Equals(focusedcolor)) return;
+	*this->focusedcolor = focusedcolor;
+	
+	ControlEventFocusedColor fce(this, focusedcolor);
+	OnFocusedColor(&fce);
 	
 	Draw();
 }
@@ -733,4 +761,9 @@ NDelegationManager &Control::DelegationOnBackColor()
 NDelegationManager &Control::DelegationOnFont()
 {
 	return *onFont;
+}
+
+NDelegationManager &Control::DelegationOnFocusedColor()
+{
+	return *onFocusedColor;
 }

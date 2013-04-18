@@ -19,45 +19,29 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#include "testbutton.h"
+#include "controleventfocusedcolor.h"
+#include "../Graphics/ncolor.h"
 
-TestButton::TestButton()
+ControlEventFocusedColor::ControlEventFocusedColor(Control *source, const NColor &focusedcolor)
 {
+	this->source = source;
+	this->focusedcolor = new NColor(focusedcolor);
 }
 
-TestButton::~TestButton()
+ControlEventFocusedColor::~ControlEventFocusedColor()
 {
+	delete focusedcolor;
 }
 
-int TestButton::Perform()
+NColor ControlEventFocusedColor::Color()
 {
-	class VentanaInicio : public XWindow {
-		ControlButton *buttonClose;
-		ControlButton *buttonTest1;
-	protected:
-		virtual void Prepare() {
-			buttonClose = new ControlButton("Close", NPoint(10, 10));
-			buttonTest1 = new ControlButton("Test 1", NRectangle(10, 30, 50, 20));
-			ControlAdd(buttonClose);
-			ControlAdd(buttonTest1);
-		}
-		
-		virtual void Destroy() {
-			ControlRemove(buttonClose);
-			ControlRemove(buttonTest1);
-			delete buttonClose;
-			delete buttonTest1;
-		}
-		
-	public:
-		VentanaInicio(const XDisplay &d) : XWindow(d) {}
-		
-	};
-	
-	XDisplay d;
-	VentanaInicio v(d);
-	v.RunModal();
-	
-	return 0;
+	return *focusedcolor;
+}
+
+ControlEventFocusedColor &ControlEventFocusedColor::operator =(const ControlEventFocusedColor &e)
+{
+	this->source = e.source;
+	*this->focusedcolor = *e.focusedcolor;
+	return *this;
 }
 

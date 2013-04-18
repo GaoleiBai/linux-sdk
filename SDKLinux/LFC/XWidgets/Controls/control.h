@@ -41,6 +41,7 @@ class ControlEventMouseMove;
 class ControlEventEnterLeave;
 class ControlEventMouseClick;
 class ControlEventMouseDoubleClick;
+class ControlEventFocusedColor;
 
 class Control : public NObject {
 	friend class XWindow;
@@ -50,6 +51,7 @@ protected:
 	Control *parent;
 	NRectangle *area;
 	NColor *backcolor;
+	NColor *focusedcolor;
 	NFont *font;
 	void *userdata;
 	Collection<Control *> *children;
@@ -76,6 +78,7 @@ protected:
 	NDelegationManager *onFocus;
 	NDelegationManager *onBackColor;
 	NDelegationManager *onFont;
+	NDelegationManager *onFocusedColor;
 	
 	void Init();
 	NPoint Position();
@@ -97,6 +100,7 @@ public:
 	virtual NSize GetSize();
 	virtual NRectangle Area();
 	virtual NColor BackColor();
+	virtual NColor FocusedColor();
 	virtual NFont Font();
 	virtual void *GetUserData();
 	virtual bool IsVisible();
@@ -108,6 +112,7 @@ public:
 	virtual void SetSize(const NSize &s);
 	virtual void SetArea(const NRectangle &area);
 	virtual void SetBackColor(const NColor &backcolor);
+	virtual void SetFocusedColor(const NColor &focusedcolor);
 	virtual void SetFont(const NFont &font);
 	virtual void SetUserData(void *userdata);
 	virtual void SetVisible(bool visible);
@@ -143,6 +148,7 @@ protected:
 	virtual bool OnMouseEnter(ControlEventEnterLeave *e);
 	virtual bool OnMouseLeave(ControlEventEnterLeave *e);
 	virtual bool OnFocus(ControlEventFocused *e);
+	virtual bool OnFocusedColor(ControlEventFocusedColor *e);
 	virtual bool OnDrawBackground(IGraphics *g, NRectangle *r);
 	virtual bool OnDraw(IGraphics *g, NRectangle *r);
 		
@@ -165,6 +171,7 @@ public:
 	NDelegationManager &DelegationOnFocus();		// Arg: ControlEventFocus *
 	NDelegationManager &DelegationOnBackColor();	// Arg: ControlEventBackColor *
 	NDelegationManager &DelegationOnFont();			// Arg: ControlEventFont *
+	NDelegationManager &DelegationOnFocusedColor();	// Arg: ControlEventFocusedColor *
 	
 };
 
