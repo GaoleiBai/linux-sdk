@@ -399,6 +399,11 @@ int XWindow::RunModal()
 	Dispose();
 }
 
+void XWindow::Close()
+{
+	XDestroyWindow(windowDisplay, window);
+}
+
 void XWindow::ExecuteDelegation(const NDelegation &d, void *params)
 {
 	// Add delegation item to delegationsToExecute collection
@@ -668,11 +673,10 @@ void XWindow::OnMouseDown(WindowEventMouseButton *e)
 void XWindow::OnMouseUp(WindowEventMouseButton *e)
 {
 	// OnMouseUp until one control catch it
-	bool encontrado = false;
-	for (int i=0; i<controls->Count() && !encontrado; i++) {
+	for (int i=0; i<controls->Count(); i++) {
 		ControlEventMouseButton *mb = new ControlEventMouseButton(*e, (*controls)[i]->Position());
 		try {
-			encontrado = (*controls)[i]->OnMouseButtonUp(mb);	
+			(*controls)[i]->OnMouseButtonUp(mb);	
 		} catch (Exception *ee) {
 			delete ee;
 		}
@@ -695,12 +699,11 @@ void XWindow::OnMouseMove(WindowEventMouseMove *e)
 		delete mm;
 	}
 	
-	// OnMouseMove until one control catch it
-	bool encontrado = false;
-	for (int i=0; i<controls->Count() && !encontrado; i++) {
+	// OnMouseMove
+	for (int i=0; i<controls->Count(); i++) {
 		ControlEventMouseMove *mm = new ControlEventMouseMove(*e, (*controls)[i]->Position());
 		try {
-			encontrado = (*controls)[i]->OnMouseMove(mm);
+			(*controls)[i]->OnMouseMove(mm);
 		} catch (Exception *ee) {
 			delete ee;
 		}

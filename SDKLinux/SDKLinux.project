@@ -320,6 +320,8 @@
     <File Name="Tests/testwindow.cpp"/>
     <File Name="Tests/testcontrollabel.h"/>
     <File Name="Tests/testcontrollabel.cpp"/>
+    <File Name="Tests/testbutton.h"/>
+    <File Name="Tests/testbutton.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">

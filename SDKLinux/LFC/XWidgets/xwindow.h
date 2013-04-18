@@ -122,6 +122,7 @@ public:
 	
 	void Run();
 	int RunModal();
+	void Close();
 	void ExecuteDelegation(const NDelegation &d, void *params);
 	void Invalidate();
 	void DrawDisable();

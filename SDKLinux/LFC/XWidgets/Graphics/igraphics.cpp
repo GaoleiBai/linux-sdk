@@ -224,7 +224,7 @@ void IGraphics::DrawRoundRectangle(int x, int y, int width, int height, int roun
 	if (rr > height / 2) rr = height / 2;
 	if (rr > width / 2) rr = width / 2;
 	
-	cairo_new_path(gc);
+	cairo_new_sub_path(gc);
 	cairo_arc(gc, xx + rr, yy + rr, rr, -1 * Math::PI, -1 * Math::PI / 2);
 	cairo_arc(gc, xx + width - rr, yy + rr, rr, -1 * Math::PI / 2, 0);
 	cairo_arc(gc, xx + width - rr, yy + height - rr, rr, 0, Math::PI / 2);

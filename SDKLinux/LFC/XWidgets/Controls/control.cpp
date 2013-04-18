@@ -62,7 +62,7 @@ void Control::Init()
 	backcolor = new NColor(0.95, 0.95, 0.97, 1.0);
 	userdata = NULL;
 	children = new Collection<Control *>();
-	visible = false;
+	visible = true;
 	focused = false;
 	entered = false;
 	orderTabulation = 0;
@@ -275,15 +275,13 @@ bool Control::OnMouseButtonUp(ControlEventMouseButton *e)
 		return false;
 	
 	for (int i=0; i<children->Count(); i++) {
-		bool res = false;
 		ControlEventMouseButton *mb = new ControlEventMouseButton(*e, (*children)[i]->Area().GetPosition());
 		try {
-			res = (*children)[i]->OnMouseButtonDown(mb);
+			(*children)[i]->OnMouseButtonDown(mb);
 		} catch (Exception *e) {
 			delete e;
 		}
 		delete mb;
-		if (res) return true;
 	}
 				
 	bool samebuttonsclick = lastMouseDown != NULL &&

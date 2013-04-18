@@ -25,6 +25,8 @@
 #include "../Graphics/nsize.h"
 #include "../Graphics/nrectangle.h"
 #include "../Graphics/igraphics.h"
+#include "../Graphics/graphicspattern.h"
+#include "../Graphics/graphicspatternlinear.h"
 #include "../Events/controleventkey.h"
 #include "../Events/controleventaction.h"
 #include "../../nwchar.h"
@@ -179,39 +181,65 @@ bool ControlButton::OnDrawBackground(IGraphics *g, NRectangle *r)
 
 bool ControlButton::OnDraw(IGraphics *g, NRectangle *r)
 {
-	if (isMouseOver) {
-		NColor c(forecolor->R() * 1.15, forecolor->G() * 1.15, forecolor->B() * 1.15, forecolor->A());
-		g->SetColor(c);
-	} else if (isPressed) {
-		NColor c(forecolor->R() * 0.85, forecolor->G() * 0.85, forecolor->B() * 0.85, forecolor->A());
-		g->SetColor(c);
+	g->SetLineWidth(1);
+	NRectangle rr(r->GetX() + 1, r->GetY() + 1, r->GetWidth() - 1, r->GetHeight() - 1);
+	NRectangle rrr(r->GetX() + 2, r->GetY() + 2, r->GetWidth() - 2, r->GetHeight() - 2);
+	
+	if (isMouseOver && !isPressed) {
+		GraphicsPatternLinear pp(NPoint(0, 0), NPoint(0, r->GetHeight()));
+		NColor c(forecolor->R() * 1.12, forecolor->G() * 1.12, forecolor->B() * 1.12, forecolor->A());
+		pp.AddColorAtDistance(c, 0);
+		pp.AddColorAtDistance(*forecolor, r->GetHeight() / 2);
+		pp.AddColorAtDistance(c, r->GetHeight());
+		g->SetPattern(pp);
+	} else if (isPressed && isMouseOver) {
+		GraphicsPatternLinear pp(NPoint(0, 0), NPoint(0, r->GetHeight()));
+		NColor c(forecolor->R() * 0.75, forecolor->G() * 0.75, forecolor->B() * 0.75, forecolor->A());
+		pp.AddColorAtDistance(*forecolor, 0);
+		pp.AddColorAtDistance(c, r->GetHeight() / 2);
+		pp.AddColorAtDistance(*forecolor, r->GetHeight());
+		g->SetPattern(pp);
 	} else {
-		g->SetColor(*forecolor);
+		GraphicsPatternLinear pp(NPoint(0, 0), NPoint(0, r->GetHeight()));
+		NColor c(forecolor->R() * 0.88, forecolor->G() * 0.88, forecolor->B() * 0.88, forecolor->A());
+		pp.AddColorAtDistance(*forecolor, 0);
+		pp.AddColorAtDistance(c, r->GetHeight() / 2);
+		pp.AddColorAtDistance(*forecolor, r->GetHeight());
+		g->SetPattern(pp);
 	}
-	g->FillRoundRectangle(*r, 3);
+	g->FillRoundRectangle(rr, 5);
 	
 	g->SetColor(*textcolor);
 	if (isPressed) {
-		g->DrawText(*text, 6, 4, *font);
+		g->DrawText(*text, 6, 2, *font);
 	} else {
-		g->DrawText(*text, 5, 3, *font);
+		g->DrawText(*text, 5, 1, *font);
 	}
+		
+	NColor ccc(forecolor->R() * 1.12, forecolor->G() * 1.12, forecolor->B() * 1.12, forecolor->A());	
+	g->SetColor(ccc);
+	g->DrawRoundRectangle(rrr, 5);
+	g->SetColor(NColor(0, 0, 0, 1.0));
+	g->DrawRoundRectangle(rr, 5);
 }
 
 bool ControlButton::OnMouseButtonDown(ControlEventMouseButton *e)
 {
 	if (!Control::OnMouseButtonDown(e)) return false;
-	isPressed = true;
-	Draw();
+	if (!isPressed) {
+		isPressed = true;
+		Draw();
+	}
 	return true;
 }
 
 bool ControlButton::OnMouseButtonUp(ControlEventMouseButton *e)
 {
+	if (isPressed) {
+		isPressed = false;
+		Draw();
+	}
 	if (!Control::OnMouseButtonUp(e)) return false;
-	if (isPressed) return true;
-	isPressed = true;
-	Draw();
 	
 	ControlEventAction a(this);
 	OnAction(&a);
@@ -221,11 +249,19 @@ bool ControlButton::OnMouseButtonUp(ControlEventMouseButton *e)
 
 bool ControlButton::OnMouseMove(ControlEventMouseMove *e)
 {
-	isMouseOver = false;
-	if (!Control::OnMouseMove(e)) return false;
-	if (isPressed) return true;
-	isMouseOver = true;
-	Draw();
+	if (!Control::OnMouseMove(e)) {
+		if (isMouseOver) {
+			isMouseOver = false;
+			Draw();
+		}
+		return false;
+	}
+	
+	if (!isMouseOver) {
+		isMouseOver = true;
+		Draw();
+	}
+	
 	return true;
 }
 

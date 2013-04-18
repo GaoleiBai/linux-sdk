@@ -40,6 +40,11 @@ int Tests::Perform()
 	
 	StdOut::PrintLine("hello world");
 	
+	if (TestButton::Perform() != 0) {
+		StdOut::PrintLine("TestButton::Perform error!!!");
+		return -1;
+	}
+	
 	if (TestControlLabel::Perform() != 0) {
 		StdOut::PrintLine("TestControlLabel::Perform error!!!");
 		return -1;

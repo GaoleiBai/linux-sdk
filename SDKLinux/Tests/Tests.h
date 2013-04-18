@@ -40,6 +40,7 @@
 #include "testrandom.h"
 #include "testwindow.h"
 #include "testcontrollabel.h"
+#include "testbutton.h"
 
 class Tests {
 public:
