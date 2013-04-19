@@ -40,6 +40,7 @@ public:
 	
 	int FirstKeycode();
 	int Count();
+	XMappingEvent *Handle();
 
 };
 

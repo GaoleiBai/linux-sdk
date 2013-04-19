@@ -26,6 +26,7 @@
 #include "../Collections/collection.h"
 #include <X11/Xlib.h>
 #include <X11/cursorfont.h>
+#include <X11/keysym.h>
 
 class XDisplay;
 class Mutex;

@@ -767,5 +767,6 @@ void XWindow::OnColormap(WindowEventColormap *e)
 
 void XWindow::OnKeyboardMapping(WindowEventKeyboardMapping *e)
 {
+	XRefreshKeyboardMapping(e->Handle());
 	DelegationOnKeyboardMapping().Execute(e);
 }

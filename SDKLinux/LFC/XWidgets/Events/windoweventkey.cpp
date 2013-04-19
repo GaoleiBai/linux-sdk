@@ -23,6 +23,7 @@
 #include "../../Time/datetime.h"
 #include "../../nwchar.h"
 #include "../Graphics/npoint.h"
+#include <X11/keysym.h>
 
 WindowEventKey::WindowEventKey(XKeyEvent *e)
 {
@@ -46,7 +47,8 @@ DateTime WindowEventKey::Time()
 
 NWChar WindowEventKey::KeyCode()
 {
-	return NWChar(keyEvent->keycode);
+	int kc = XLookupKeysym(keyEvent, 0);
+	return NWChar(kc);
 }
 
 NPoint WindowEventKey::Position()

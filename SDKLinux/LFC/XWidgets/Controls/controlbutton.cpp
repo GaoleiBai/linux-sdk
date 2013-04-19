@@ -80,7 +80,7 @@ void ControlButton::UpdateSize()
 {
 	if (autosize && window != NULL) {
 		NSize ss = window->HandlerGraphics()->GetTextExtents(text == NULL ? "" : *text, *font);
-		NRectangle r(area->GetX(), area->GetY(), ss.GetWidth() + 10, ss.GetHeight() + 6);		
+		NRectangle r(area->GetX(), area->GetY(), ss.GetWidth() + 16, ss.GetHeight() + 12);		
 		Control::SetArea(r);
 	}	
 }
@@ -143,12 +143,8 @@ void ControlButton::SetFont(const NFont &f)
 
 void ControlButton::SetArea(const NRectangle &r)
 {
-	this->area->SetPosition(((NRectangle *)&r)->GetPosition());
-	
-	if (autosize)
-		UpdateSize();
-	else
-		Control::SetArea(r);
+	autosize = false;
+	Control::SetArea(r);
 }
 
 bool ControlButton::IsFocusable()
@@ -209,11 +205,13 @@ bool ControlButton::OnDraw(IGraphics *g, NRectangle *r)
 	}
 	g->FillRoundRectangle(rr, 5);
 	
+	NSize ss = g->GetTextExtents(*text, *font);
+	
 	g->SetColor(*textcolor);
 	if (isPressed) {
-		g->DrawText(*text, 6, 2, *font);
+		g->DrawText(*text, 1 + (r->GetWidth() - ss.GetWidth()) / 2, 1 + (r->GetHeight() - ss.GetHeight() - 3) / 2, *font);
 	} else {
-		g->DrawText(*text, 5, 1, *font);
+		g->DrawText(*text, (r->GetWidth() - ss.GetWidth()) / 2, (r->GetHeight() - ss.GetHeight() - 3) / 2, *font);
 	}
 		
 	NColor ccc(forecolor->R() * 1.12, forecolor->G() * 1.12, forecolor->B() * 1.12, forecolor->A());	
@@ -272,16 +270,22 @@ bool ControlButton::OnMouseMove(ControlEventMouseMove *e)
 
 bool ControlButton::OnKeyPress(ControlEventKey *e)
 {
+	if (isPressed) return true;
 	if (!Control::OnKeyPress(e)) return false;
-	isPressed = e->KeyCode().Value() == '\r' || e->KeyCode().Value() == ' ';
+	if (e->KeyCode().Value() != XK_Return && e->KeyCode().Value() != XK_space) return false;
+	
+	isPressed = true;
 	Draw();
-	return true;
+		
+  	return true;
 }
 
 bool ControlButton::OnKeyRelease(ControlEventKey *e)
 {
+	if (!isPressed) return false;
 	if (!Control::OnKeyRelease(e)) return false;
-	if (!isPressed) return true;
+	if (e->KeyCode().Value() != XK_Return && e->KeyCode().Value() != XK_space) return false;
+	
 	isPressed = false;
 	Draw();
 	

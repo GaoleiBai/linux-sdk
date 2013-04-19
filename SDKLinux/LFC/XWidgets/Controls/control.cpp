@@ -196,13 +196,10 @@ bool Control::OnKeyPress(ControlEventKey *e)
 	
 	if (!IsVisible()) return false;
 	if (!IsFocused()) return false;
-	if (e->KeyCode().Value() == 23 && !CaptureTabKey() || 		// Window focus rotate
-		e->KeyCode().Value() == 13 && !CaptureEnterKey() || 	// Return: Window Accept
-		e->KeyCode().Value() == 27 && !CaptureEscapeKey() || 	// Escape: Window Cancel
-		e->KeyCode().Value() == 20 && !CaptureSpaceKey()) 		// Return: Window Accept
-	{
-		return false;
-	}
+	if (e->KeyCode().Value() == XK_Tab && !CaptureTabKey()) return false;		// Window focus rotate
+	if (e->KeyCode().Value() == XK_Return && !CaptureEnterKey()) return false;	// Return: Window Accept
+	if (e->KeyCode().Value() == XK_Escape && !CaptureEscapeKey()) return false; 	// Escape: Window Cancel
+	if (e->KeyCode().Value() == XK_space && !CaptureSpaceKey()) return false; 	// Return: Window Accept
 	
 	DelegationOnKeyPress().Execute(e);
 	return true;
@@ -216,13 +213,10 @@ bool Control::OnKeyRelease(ControlEventKey *e)
 	
 	if (!IsVisible()) return false;
 	if (!IsFocused()) return false;
-	if (e->KeyCode().Value() == 23 && !CaptureTabKey() || 		// Window focus rotate
-		e->KeyCode().Value() == 13 && !CaptureEnterKey() || 	// Return: Window Accept
-		e->KeyCode().Value() == 27 && !CaptureEscapeKey() || 	// Escape: Window Cancel
-		e->KeyCode().Value() == 20 && !CaptureSpaceKey()) 		// Return: Window Accept
-	{
-		return false;
-	}
+	if (e->KeyCode().Value() == XK_Tab && !CaptureTabKey()) return false;		// Window focus rotate
+	if (e->KeyCode().Value() == XK_Return && !CaptureEnterKey()) return false;	// Return: Window Accept
+	if (e->KeyCode().Value() == XK_Escape && !CaptureEscapeKey()) return false; 	// Escape: Window Cancel
+	if (e->KeyCode().Value() == XK_space && !CaptureSpaceKey()) return false; 	// Return: Window Accept
 	
 	DelegationOnKeyRelease().Execute(e);
 	return true;
@@ -489,12 +483,12 @@ void Control::SetArea(const NRectangle &area)
 	if (this->area->Equals(area)) return;
 	*this->area = area;
 	
-	ControlEventMoved me(this, area);
-	OnMove(&me);
-	
 	if (parent == NULL) {
 		if (window != NULL) window->Invalidate();
 	} else parent->Draw();
+	
+	ControlEventMoved me(this, area);
+	OnMove(&me);
 }
 
 void Control::SetBackColor(const NColor &backcolor)
@@ -502,10 +496,10 @@ void Control::SetBackColor(const NColor &backcolor)
 	if (this->backcolor->Equals(backcolor)) return;
 	*this->backcolor = backcolor;
 	
+	Draw();
+	
 	ControlEventBackColor bce(this, backcolor);
 	OnBackColor(&bce);
-	
-	Draw();
 }
 
 void Control::SetFocusedColor(const NColor &focusedcolor)

@@ -60,7 +60,7 @@ ControlLabel::~ControlLabel()
 void ControlLabel::UpdateSize() {
 	if (autosize && window != NULL) {
 		NSize ss = window->HandlerGraphics()->GetTextExtents(text == NULL ? "" : *text, *font);
-		NRectangle r(area->GetX(), area->GetY(), ss.GetWidth() + 6, ss.GetHeight() + 6);
+		NRectangle r(area->GetX(), area->GetY(), ss.GetWidth() + 16, ss.GetHeight() + 12);
 		Control::SetArea(r);
 	}
 }
@@ -109,12 +109,8 @@ void ControlLabel::SetFont(const NFont &font)
 
 void ControlLabel::SetArea(const NRectangle &area)
 {
-	this->area->SetPosition(((NRectangle *)&area)->GetPosition());
-	
-	if (autosize)
-		UpdateSize();
-	else
-		Control::SetArea(area);
+	autosize = false;
+	Control::SetArea(area);
 }
 
 void ControlLabel::Init(XWindow *w, Control *parent)
@@ -132,7 +128,9 @@ bool ControlLabel::OnDrawBackground(IGraphics *gc, NRectangle *r)
 
 bool ControlLabel::OnDraw(IGraphics *gc, NRectangle *r)
 {
+	NSize ss = gc->GetTextExtents(*text, *font);
+	
 	gc->SetColor(*textcolor);
-	gc->DrawText(*text, 1, 1, *font);
+	gc->DrawText(*text, (r->GetWidth() - ss.GetWidth()) / 2, (r->GetHeight() - ss.GetHeight() - 3) / 2, *font);
 }
 

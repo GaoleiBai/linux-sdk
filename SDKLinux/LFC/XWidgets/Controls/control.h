@@ -25,6 +25,7 @@
 #include "../Graphics/nrectangle.h"
 #include "../../Delegations/ndelegationmanager.h"
 #include "../../Collections/collection.h"
+#include <X11/keysym.h>
 
 class IGraphics;
 class NColor;

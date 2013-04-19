@@ -45,3 +45,8 @@ int WindowEventKeyboardMapping::Count()
 {
 	return e->count;
 }
+
+XMappingEvent *WindowEventKeyboardMapping::Handle()
+{
+	return e;
+}
