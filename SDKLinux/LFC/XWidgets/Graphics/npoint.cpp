@@ -21,6 +21,7 @@
 **/
 #include "npoint.h"
 #include "../../FileSystem/serializator.h"
+#include "../../Math/math.h"
 #include <typeinfo>
 
 NPoint::NPoint()
@@ -63,6 +64,11 @@ void NPoint::SetX(int x)
 void NPoint::SetY(int y)
 {
 	this->y = y;
+}
+
+double NPoint::Distance(const NPoint &p)
+{
+	return Math::Sqrt((x - p.x) * (x - p.x) + (y - p.y) * (y - p.y));
 }
 
 NPoint NPoint::operator +(const NPoint &p)

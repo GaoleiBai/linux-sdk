@@ -46,7 +46,7 @@ public:
 	bool GetAutoSize();
 	
 	virtual void SetFont(const NFont &font);
-	virtual void SetArea(const NRectangle &area);
+	virtual void SetArea(const NRectangle &r);
 
 	virtual void Init(XWindow *w, Control *parent);
 	virtual bool OnDrawBackground(IGraphics *gc, NRectangle *r);

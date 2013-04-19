@@ -107,10 +107,11 @@ void ControlLabel::SetFont(const NFont &font)
 	UpdateSize();
 }
 
-void ControlLabel::SetArea(const NRectangle &area)
+void ControlLabel::SetArea(const NRectangle &r)
 {
-	autosize = false;
-	Control::SetArea(area);
+	NRectangle *rr = (NRectangle *)&r;
+	if (!rr->GetSize().Equals(area->GetSize())) autosize = false;
+	Control::SetArea(r);
 }
 
 void ControlLabel::Init(XWindow *w, Control *parent)
@@ -131,6 +132,6 @@ bool ControlLabel::OnDraw(IGraphics *gc, NRectangle *r)
 	NSize ss = gc->GetTextExtents(*text, *font);
 	
 	gc->SetColor(*textcolor);
-	gc->DrawText(*text, (r->GetWidth() - ss.GetWidth()) / 2, (r->GetHeight() - ss.GetHeight() - 3) / 2, *font);
+	gc->DrawText(*text, (r->GetWidth() - ss.GetWidth()) / 2, (r->GetHeight() - ss.GetHeight()) / 2, *font);
 }
 

@@ -143,7 +143,8 @@ void ControlButton::SetFont(const NFont &f)
 
 void ControlButton::SetArea(const NRectangle &r)
 {
-	autosize = false;
+	NRectangle *rr = (NRectangle *)&r;
+	if (!rr->GetSize().Equals(area->GetSize())) autosize = false;
 	Control::SetArea(r);
 }
 

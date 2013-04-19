@@ -99,3 +99,8 @@ NSize &NSize::operator =(const NSize &s)
 	
 	return *this;
 }
+
+NSize NSize::operator +(const NSize &s)
+{
+	return NSize(width + s.width, height + s.height);
+}

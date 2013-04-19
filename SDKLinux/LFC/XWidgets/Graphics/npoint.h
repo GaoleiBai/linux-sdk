@@ -40,6 +40,8 @@ public:
 	int GetX();
 	int GetY();
 	
+	double Distance(const NPoint &p);
+	
 	NPoint operator +(const NPoint &p);
 	NPoint operator -(const NPoint &p);
 	NPoint &operator =(const NPoint &p);

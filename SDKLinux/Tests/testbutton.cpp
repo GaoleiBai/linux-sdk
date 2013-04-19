@@ -38,6 +38,7 @@ int TestButton::Perform()
 		virtual void Prepare() {
 			buttonClose = new ControlButton("Close", NPoint(10, 10));
 			buttonTest1 = new ControlButton("Test 1", NRectangle(10, 30, 50, 20));
+			buttonClose->DelegationOnAction() += NDelegation(this, (Delegate)&VentanaInicio::OnAction_ButtonClose);
 			buttonTest1->DelegationOnAction() += NDelegation(this, (Delegate)&VentanaInicio::OnAction_ButtonTest1);
 			ControlAdd(buttonClose);
 			ControlAdd(buttonTest1);
@@ -52,8 +53,13 @@ int TestButton::Perform()
 		
 		void *OnAction_ButtonTest1(ControlEventAction *e)
 		{
-			NPoint p = buttonTest1->GetPosition();
-			buttonTest1->SetPosition(p + NPoint(10, 10));
+			buttonTest1->SetPosition(buttonTest1->GetPosition() + NPoint(10, 10));
+			buttonTest1->SetSize(buttonTest1->GetSize() + NSize(2, 2));
+		}
+		
+		void *OnAction_ButtonClose(ControlEventAction *e) 
+		{
+			Close();
 		}
 		
 	public:
