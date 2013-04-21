@@ -262,6 +262,8 @@
         <File Name="LFC/XWidgets/Controls/controlbutton.h"/>
         <File Name="LFC/XWidgets/Controls/controlbutton.cpp"/>
       </VirtualDirectory>
+      <File Name="LFC/XWidgets/keysymbols.h"/>
+      <File Name="LFC/XWidgets/keysymbols.cpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Delegations">
       <File Name="LFC/Delegations/ndelegation.cpp"/>
