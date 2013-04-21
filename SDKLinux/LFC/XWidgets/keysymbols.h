@@ -1218,1091 +1218,1067 @@ public:
 
 	// Special (from the DEC VT100 Special Graphics Character Set)
 
-	static const int XK_blank         
-	static const int XK_soliddiamond  
-	static const int XK_checkerboard  
-	static const int XK_ht            
-	static const int XK_ff            
-	static const int XK_cr            
-	static const int XK_lf            
-	static const int XK_nl            
-	static const int XK_vt            
-	static const int XK_lowrightcorner
-	static const int XK_uprightcorner 
-	static const int XK_upleftcorner  
-	static const int XK_lowleftcorner 
-	static const int XK_crossinglines 
-	static const int XK_horizlinescan1
-	static const int XK_horizlinescan3
-	static const int XK_horizlinescan5
-	static const int XK_horizlinescan7
-	static const int XK_horizlinescan9
-	static const int XK_leftt         
-	static const int XK_rightt        
-	static const int XK_bott          
-	static const int XK_topt          
-	static const int XK_vertbar       
+	/*
+	static const int Blank = XK_blank;         
+	static const int SolidDiamond = XK_soliddiamond;  
+	static const int CheckerBoard= XK_checkerboard;  
+	static const int HT = XK_ht;             
+	static const int FF = XK_ff;            
+	static const int CR = XK_cr;            
+	static const int LF = XK_lf;            
+	static const int NL = XK_nl;            
+	static const int VT = XK_vt;            
+	static const int LowRightCorner = XK_lowrightcorner;
+	static const int UpRightCorner = XK_uprightcorner; 
+	static const int UpLeftCornet = XK_upleftcorner;  
+	static const int LowLeftCorner = XK_lowleftcorner; 
+	static const int CrossingLines = XK_crossinglines; 
+	static const int HorizLinesScan1 = XK_horizlinescan1;
+	static const int HorizLinesScan3 = XK_horizlinescan3;
+	static const int HorizLinesScan5 = XK_horizlinescan5;
+	static const int HorizLinesScan7 = XK_horizlinescan7;
+	static const int HorizLinesScan9 = XK_horizlinescan9;
+	static const int LeftT = XK_leftt;         
+	static const int RightT = XK_rightt;        
+	static const int BotT = XK_bott;          
+	static const int TopT = XK_topt;          
+	static const int VertBar = XK_vertbar;       
+	*/
+	
+	// Publishing (these are probably from a long forgotten DEC Publishing font that once shipped with DECwrite)
 
-/*
- * Publishing
- * (these are probably from a long forgotten DEC Publishing
- * font that once shipped with DECwrite)
- * Byte 3 = 0x0a
- */
+	/*
+	static const int EmSpace = XK_emspace;             
+	static const int EnSpace = XK_enspace;             
+	static const int Em3Space = XK_em3space;            
+	static const int Em4Space = XK_em4space;            
+	static const int DigitSpace = XK_digitspace;          
+	static const int PuntcSpace = XK_punctspace;          
+	static const int ThinSpace = XK_thinspace;           
+	static const int HairSpace = XK_hairspace;           
+	static const int EmDash = XK_emdash;              
+	static const int EnDash = XK_endash;              
+	static const int SignIfBlank = XK_signifblank;         
+	static const int Ellipsis = XK_ellipsis;            
+	static const int DoubBaseLineDot = XK_doubbaselinedot;     
+	static const int OneThird = XK_onethird;            
+	static const int TwoThirds = XK_twothirds;           
+	static const int OneFifth = XK_onefifth;            
+	static const int TwoFifths = XK_twofifths;           
+	static const int ThreeFifths = XK_threefifths;         
+	static const int FourFifths = XK_fourfifths;          
+	static const int OneSixth = XK_onesixth;            
+	static const int FiveSixths = XK_fivesixths;          
+	static const int CareOf = XK_careof;              
+	static const int FigDash = XK_figdash;             
+	static const int LeftAngleBracket = XK_leftanglebracket;    
+	static const int DecimalPoint = XK_decimalpoint;        
+	static const int RightAngleBracket = XK_rightanglebracket;   
+	static const int Marker = XK_marker;              
+	static const int OneEight = XK_oneeighth;           
+	static const int ThreeEights = XK_threeeighths;        
+	static const int FiveEights = XK_fiveeighths;         
+	static const int SevenEights = XK_seveneighths;        
+	static const int TradeMark = XK_trademark;           
+	static const int SignatureMark = XK_signaturemark;       
+	static const int TrademarkCircle = XK_trademarkincircle;   
+	static const int LeftOpenTriangle = XK_leftopentriangle;    
+	static const int RightOpenTriangle = XK_rightopentriangle;   
+	static const int EmOpenCircle = XK_emopencircle;        
+	static const int EmOpenRectangle = XK_emopenrectangle;     
+	static const int LeftSingleQuoteMark = XK_leftsinglequotemark; 
+	static const int RightSingleQuoteMark = XK_rightsinglequotemark;
+	static const int LeftDoubleQuoteMark = XK_leftdoublequotemark; 
+	static const int RightDoubleQuoteMark = XK_rightdoublequotemark;
+	static const int Prescription = XK_prescription;        
+	static const int Minutes = XK_minutes;             
+	static const int Seconds = XK_seconds;             
+	static const int LatinCross = XK_latincross;          
+	static const int Hexagram = XK_hexagram;            
+	static const int FilledRectBullet = XK_filledrectbullet;    
+	static const int FilledLeftTriBullet = XK_filledlefttribullet; 
+	static const int FilledRightTriBullet = XK_filledrighttribullet;
+	static const int EmFilledCircle = XK_emfilledcircle;      
+	static const int EmFilledRect = XK_emfilledrect;        
+	static const int EnOpenCirqBullet = XK_enopencircbullet;    
+	static const int EnOpenSquareBullet = XK_enopensquarebullet;  
+	static const int OpenRectBullet = XK_openrectbullet;      
+	static const int OpenTriBulletUp = XK_opentribulletup;     
+	static const int OpenTriBulletDown = XK_opentribulletdown;   
+	static const int OpenStar = XK_openstar;            
+	static const int EnFilledCircBullet = XK_enfilledcircbullet;  
+	static const int EnFilledSqBullet = XK_enfilledsqbullet;    
+	static const int FilledTriBulletUp = XK_filledtribulletup;   
+	static const int FilledTriBulletDown = XK_filledtribulletdown; 
+	static const int LeftPointer = XK_leftpointer;         
+	static const int RightPointer = XK_rightpointer;        
+	static const int Club = XK_club;                
+	static const int Diamond = XK_diamond;             
+	static const int Heart = XK_heart;               
+	static const int MalteseCross = XK_maltesecross;        
+	static const int Dagger = XK_dagger;              
+	static const int DoubleDagger = XK_doubledagger;        
+	static const int CheckMark = XK_checkmark;           
+	static const int BallotCross = XK_ballotcross;         
+	static const int MusicalSharp = XK_musicalsharp;        
+	static const int MusicalFlat = XK_musicalflat;         
+	static const int MaleSymbol = XK_malesymbol;          
+	static const int FemaleSymbol = XK_femalesymbol;        
+	static const int Telephone = XK_telephone;           
+	static const int TelephoneRecorder = XK_telephonerecorder;   
+	static const int PhonographCopyright = XK_phonographcopyright; 
+	static const int Caret = XK_caret;               
+	static const int SingleLowQuoteMark = XK_singlelowquotemark;  
+	static const int DoubleLowQuoteMark = XK_doublelowquotemark;  
+	static const int Cursor = XK_cursor;              
+	*/
 
-	static const int XK_emspace             
-	static const int XK_enspace             
-	static const int XK_em3space            
-	static const int XK_em4space            
-	static const int XK_digitspace          
-	static const int XK_punctspace          
-	static const int XK_thinspace           
-	static const int XK_hairspace           
-	static const int XK_emdash              
-	static const int XK_endash              
-	static const int XK_signifblank         
-	static const int XK_ellipsis            
-	static const int XK_doubbaselinedot     
-	static const int XK_onethird            
-	static const int XK_twothirds           
-	static const int XK_onefifth            
-	static const int XK_twofifths           
-	static const int XK_threefifths         
-	static const int XK_fourfifths          
-	static const int XK_onesixth            
-	static const int XK_fivesixths          
-	static const int XK_careof              
-	static const int XK_figdash             
-	static const int XK_leftanglebracket    
-	static const int XK_decimalpoint        
-	static const int XK_rightanglebracket   
-	static const int XK_marker              
-	static const int XK_oneeighth           
-	static const int XK_threeeighths        
-	static const int XK_fiveeighths         
-	static const int XK_seveneighths        
-	static const int XK_trademark           
-	static const int XK_signaturemark       
-	static const int XK_trademarkincircle   
-	static const int XK_leftopentriangle    
-	static const int XK_rightopentriangle   
-	static const int XK_emopencircle        
-	static const int XK_emopenrectangle     
-	static const int XK_leftsinglequotemark 
-	static const int XK_rightsinglequotemark
-	static const int XK_leftdoublequotemark 
-	static const int XK_rightdoublequotemark
-	static const int XK_prescription        
-	static const int XK_minutes             
-	static const int XK_seconds             
-	static const int XK_latincross          
-	static const int XK_hexagram            
-	static const int XK_filledrectbullet    
-	static const int XK_filledlefttribullet 
-	static const int XK_filledrighttribullet
-	static const int XK_emfilledcircle      
-	static const int XK_emfilledrect        
-	static const int XK_enopencircbullet    
-	static const int XK_enopensquarebullet  
-	static const int XK_openrectbullet      
-	static const int XK_opentribulletup     
-	static const int XK_opentribulletdown   
-	static const int XK_openstar            
-	static const int XK_enfilledcircbullet  
-	static const int XK_enfilledsqbullet    
-	static const int XK_filledtribulletup   
-	static const int XK_filledtribulletdown 
-	static const int XK_leftpointer         
-	static const int XK_rightpointer        
-	static const int XK_club                
-	static const int XK_diamond             
-	static const int XK_heart               
-	static const int XK_maltesecross        
-	static const int XK_dagger              
-	static const int XK_doubledagger        
-	static const int XK_checkmark           
-	static const int XK_ballotcross         
-	static const int XK_musicalsharp        
-	static const int XK_musicalflat         
-	static const int XK_malesymbol          
-	static const int XK_femalesymbol        
-	static const int XK_telephone           
-	static const int XK_telephonerecorder   
-	static const int XK_phonographcopyright 
-	static const int XK_caret               
-	static const int XK_singlelowquotemark  
-	static const int XK_doublelowquotemark  
-	static const int XK_cursor              
+	// APL
 
+	/*
+	static const int LeftCaret = XK_leftcaret; 
+	static const int RightCaret = XK_rightcaret;
+	static const int DownCaret = XK_downcaret; 
+	static const int UpCaret = XK_upcaret;   
+	static const int OverBar = XK_overbar;   
+	static const int DownTack = XK_downtack;  
+	static const int UpShoe = XK_upshoe;    
+	static const int DownStyle = XK_downstile; 
+	static const int UnderBar = XK_underbar;  
+	static const int Jot = XK_jot;       
+	static const int Quad = XK_quad;      
+	static const int UpTack = XK_uptack;    
+	static const int Circle = XK_circle;    
+	static const int UpStile = XK_upstile;   
+	static const int DownShoe = XK_downshoe;  
+	static const int RightShoe = XK_rightshoe; 
+	static const int LeftShoe = XK_leftshoe;  
+	static const int LeftTack = XK_lefttack;  
+	static const int RightTack = XK_righttack; 
+	*/
 
-/*
- * APL
- * Byte 3 = 0x0b
- */
+	// Hebrew
 
-
-	static const int XK_leftcaret 
-	static const int XK_rightcaret
-	static const int XK_downcaret 
-	static const int XK_upcaret   
-	static const int XK_overbar   
-	static const int XK_downtack  
-	static const int XK_upshoe    
-	static const int XK_downstile 
-	static const int XK_underbar  
-	static const int XK_jot       
-	static const int XK_quad      
-	static const int XK_uptack    
-	static const int XK_circle    
-	static const int XK_upstile   
-	static const int XK_downshoe  
-	static const int XK_rightshoe 
-	static const int XK_leftshoe  
-	static const int XK_lefttack  
-	static const int XK_righttack 
-
-
-/*
- * Hebrew
- * Byte 3 = 0x0c
- */
-
-
-	static const int XK_hebrew_doublelowline 
-	static const int XK_hebrew_aleph         
-	static const int XK_hebrew_bet           
-	static const int XK_hebrew_beth          
-	static const int XK_hebrew_gimel         
-	static const int XK_hebrew_gimmel        
-	static const int XK_hebrew_dalet         
-	static const int XK_hebrew_daleth        
-	static const int XK_hebrew_he            
-	static const int XK_hebrew_waw           
-	static const int XK_hebrew_zain          
-	static const int XK_hebrew_zayin         
-	static const int XK_hebrew_chet          
-	static const int XK_hebrew_het           
-	static const int XK_hebrew_tet           
-	static const int XK_hebrew_teth          
-	static const int XK_hebrew_yod           
-	static const int XK_hebrew_finalkaph     
-	static const int XK_hebrew_kaph          
-	static const int XK_hebrew_lamed         
-	static const int XK_hebrew_finalmem      
-	static const int XK_hebrew_mem           
-	static const int XK_hebrew_finalnun      
-	static const int XK_hebrew_nun           
-	static const int XK_hebrew_samech        
-	static const int XK_hebrew_samekh        
-	static const int XK_hebrew_ayin          
-	static const int XK_hebrew_finalpe       
-	static const int XK_hebrew_pe            
-	static const int XK_hebrew_finalzade     
-	static const int XK_hebrew_finalzadi     
-	static const int XK_hebrew_zade          
-	static const int XK_hebrew_zadi          
-	static const int XK_hebrew_qoph          
-	static const int XK_hebrew_kuf           
-	static const int XK_hebrew_resh          
-	static const int XK_hebrew_shin          
-	static const int XK_hebrew_taw           
-	static const int XK_hebrew_taf           
-	static const int XK_Hebrew_switch        
+	static const int HebrewDoubleLowLine = XK_hebrew_doublelowline; 
+	static const int HebrewAleph = XK_hebrew_aleph;         
+	static const int HebrewBet = XK_hebrew_bet;           
+	static const int HebrewBeth = XK_hebrew_beth;          
+	static const int HebrewGimel = XK_hebrew_gimel;         
+	static const int HebrewGimmel = XK_hebrew_gimmel;        
+	static const int HebrewDalet = XK_hebrew_dalet;         
+	static const int HebrewDaleth = XK_hebrew_daleth;        
+	static const int HebrewHe = XK_hebrew_he;            
+	static const int HebrewWaw = XK_hebrew_waw;           
+	static const int HebrewZain = XK_hebrew_zain;          
+	static const int HebrewZayin = XK_hebrew_zayin;         
+	static const int HebrewChet = XK_hebrew_chet;          
+	static const int HebrewHet = XK_hebrew_het;           
+	static const int HebrewTet = XK_hebrew_tet;           
+	static const int HebrewTeth = XK_hebrew_teth;          
+	static const int HebrewYod = XK_hebrew_yod;           
+	static const int HebrewFinalKapth = XK_hebrew_finalkaph;     
+	static const int HebrewKaph = XK_hebrew_kaph;          
+	static const int HebrewLamed = XK_hebrew_lamed;         
+	static const int HebrewFinalMem = XK_hebrew_finalmem;      
+	static const int HebrewMem = XK_hebrew_mem;           
+	static const int HebrewFinalNun = XK_hebrew_finalnun;      
+	static const int HebrewNun = XK_hebrew_nun;           
+	static const int HebrewSameCh = XK_hebrew_samech;        
+	static const int HebrewSameKh = XK_hebrew_samekh;        
+	static const int HebrewAyin = XK_hebrew_ayin;          
+	static const int HebrewFinalPe = XK_hebrew_finalpe;       
+	static const int HebrewPe = XK_hebrew_pe;            
+	static const int HebrewFinalZade = XK_hebrew_finalzade;     
+	static const int HebrewFinalZadi = XK_hebrew_finalzadi;     
+	static const int HebrewZade = XK_hebrew_zade;          
+	static const int HebrewZadi = XK_hebrew_zadi;          
+	static const int HebrewQoph = XK_hebrew_qoph;          
+	static const int HebrewKuf = XK_hebrew_kuf;           
+	static const int HebrewResh = XK_hebrew_resh;          
+	static const int HebrewShin = XK_hebrew_shin;          
+	static const int HebrewTaw = XK_hebrew_taw;           
+	static const int HebrewTaf = XK_hebrew_taf;           
+	static const int HebrewSwitch = XK_Hebrew_switch;        
 
 
-/*
- * Thai
- * Byte 3 = 0x0d
- */
+	// Thai
+
+	static const int ThaiKokai = XK_Thai_kokai;            
+	static const int ThaiKokhHai = XK_Thai_khokhai;          
+	static const int ThaiKokhHuat = XK_Thai_khokhuat;         
+	static const int ThaiKokhHwai = XK_Thai_khokhwai;         
+	static const int ThaiKokhHon = XK_Thai_khokhon;          
+	static const int ThaiKhorakhang = XK_Thai_khorakhang;       
+	static const int ThaiNgongu = XK_Thai_ngongu;           
+	static const int ThaiChochan = XK_Thai_chochan;          
+	static const int ThaiChoching = XK_Thai_choching;         
+	static const int ThaiChochang = XK_Thai_chochang;         
+	static const int ThaiSoso = XK_Thai_soso;             
+	static const int ThaiChochoe = XK_Thai_chochoe;          
+	static const int ThaiYoying = XK_Thai_yoying;           
+	static const int ThaiDochada = XK_Thai_dochada;          
+	static const int ThaiTopatak = XK_Thai_topatak;          
+	static const int ThaiThothan = XK_Thai_thothan;          
+	static const int ThaiThonangmontho = XK_Thai_thonangmontho;    
+	static const int ThaiThophuthao = XK_Thai_thophuthao;       
+	static const int ThaiNonen = XK_Thai_nonen;            
+	static const int ThaiDodek = XK_Thai_dodek;            
+	static const int ThaiTotao = XK_Thai_totao;            
+	static const int ThaiThothung = XK_Thai_thothung;         
+	static const int ThaiThothahan = XK_Thai_thothahan;        
+	static const int ThaiThothong = XK_Thai_thothong;         
+	static const int ThaiNonu = XK_Thai_nonu;             
+	static const int ThaiBobaimai = XK_Thai_bobaimai;         
+	static const int ThaiPopla = XK_Thai_popla;            
+	static const int ThaiPhophung = XK_Thai_phophung;         
+	static const int ThaiFofa = XK_Thai_fofa;             
+	static const int ThaiPhophan = XK_Thai_phophan;          
+	static const int ThaiFofan = XK_Thai_fofan;            
+	static const int ThaiPhosamphao = XK_Thai_phosamphao;       
+	static const int ThaiNoma = XK_Thai_moma;             
+	static const int ThaiYoyak = XK_Thai_yoyak;            
+	static const int ThaiRorua = XK_Thai_rorua;            
+	static const int ThaiRu = XK_Thai_ru;               
+	static const int ThaiLoling = XK_Thai_loling;           
+	static const int ThaiLu = XK_Thai_lu;               
+	static const int ThaiWowaen = XK_Thai_wowaen;           
+	static const int ThaiSosala = XK_Thai_sosala;           
+	static const int ThaiSorusi = XK_Thai_sorusi;           
+	static const int ThaiSosua = XK_Thai_sosua;            
+	static const int ThaiHohip = XK_Thai_hohip;            
+	static const int ThaiLochula = XK_Thai_lochula;          
+	static const int ThaiOang = XK_Thai_oang;             
+	static const int ThaiHonokhuk = XK_Thai_honokhuk;         
+	static const int ThaiPaiyannoi = XK_Thai_paiyannoi;        
+	static const int ThaiSaraa = XK_Thai_saraa;            
+	static const int ThaiMaihanakat = XK_Thai_maihanakat;       
+	static const int ThaiSaraaa = XK_Thai_saraaa;           
+	static const int ThaiSaraam = XK_Thai_saraam;           
+	static const int ThaiSarai = XK_Thai_sarai;            
+	static const int ThaiSaraii = XK_Thai_saraii;           
+	static const int ThaiSaraue = XK_Thai_saraue;           
+	static const int ThaiSarauee = XK_Thai_sarauee;          
+	static const int ThaiSarau = XK_Thai_sarau;            
+	static const int ThaiSarauu = XK_Thai_sarauu;           
+	static const int ThaiPhinthu = XK_Thai_phinthu;          
+	static const int ThaiMaihanakatMaitho = XK_Thai_maihanakat_maitho;
+	static const int ThaiBaht = XK_Thai_baht;             
+	static const int ThaiSarae = XK_Thai_sarae;            
+	static const int ThaiSaraae = XK_Thai_saraae;           
+	static const int ThaiSarao = XK_Thai_sarao;            
+	static const int ThaiSaraaimaimuan = XK_Thai_saraaimaimuan;    
+	static const int ThaiSaraaimaimalai = XK_Thai_saraaimaimalai;   
+	static const int ThaiLakknangyao = XK_Thai_lakkhangyao;      
+	static const int ThaiMaiyamok = XK_Thai_maiyamok;         
+	static const int ThaiMaitaikhu = XK_Thai_maitaikhu;        
+	static const int ThaiMaiek = XK_Thai_maiek;            
+	static const int ThaiMaitho = XK_Thai_maitho;           
+	static const int ThaiMaitri = XK_Thai_maitri;           
+	static const int ThaiMaichattawa = XK_Thai_maichattawa;      
+	static const int ThaiThanthakhat = XK_Thai_thanthakhat;      
+	static const int ThaiNikhahit = XK_Thai_nikhahit;         
+	static const int ThaiLeksun = XK_Thai_leksun;           
+	static const int ThaiLeknung = XK_Thai_leknung;          
+	static const int ThaiLeksong = XK_Thai_leksong;          
+	static const int ThaiLeksam = XK_Thai_leksam;           
+	static const int ThaiLeksi = XK_Thai_leksi;            
+	static const int ThaiLekha = XK_Thai_lekha;            
+	static const int ThaiLekhok = XK_Thai_lekhok;           
+	static const int ThaiLekchet = XK_Thai_lekchet;          
+	static const int ThaiLekpaet = XK_Thai_lekpaet;          
+	static const int ThaiLekkao = XK_Thai_lekkao;           
+
+	// Korean
+
+	static const int Hangul = XK_Hangul;                  
+	static const int HangulStart = XK_Hangul_Start;            
+	static const int HangulEnd = XK_Hangul_End;              
+	static const int HangulHanja = XK_Hangul_Hanja;            
+	static const int HangulJamo = XK_Hangul_Jamo;             
+	static const int HangulRomaja = XK_Hangul_Romaja;           
+	static const int HangulCodeinput = XK_Hangul_Codeinput;        
+	static const int HangulJeonja = XK_Hangul_Jeonja;           
+	static const int HangulBanja = XK_Hangul_Banja;            
+	static const int HangulPreHanja = XK_Hangul_PreHanja;         
+	static const int HangulPostHanja = XK_Hangul_PostHanja;        
+	static const int HangulSingleCandidate = XK_Hangul_SingleCandidate;  
+	static const int HangulMultipleCandidate = XK_Hangul_MultipleCandidate;
+	static const int HangulPrevious = XK_Hangul_PreviousCandidate;
+	static const int HangulSpecial = XK_Hangul_Special;          
+	static const int HangulSwitch = XK_Hangul_switch;           
+
+	// Hangul Consonant Characters
+
+	static const int HangulKiyeog = XK_Hangul_Kiyeog;     
+	static const int HangulSsangKiyeog = XK_Hangul_SsangKiyeog;
+	static const int HangulKiyeogSios = XK_Hangul_KiyeogSios; 
+	static const int HangulNienun = XK_Hangul_Nieun;      
+	static const int HangulNienunJieuj = XK_Hangul_NieunJieuj; 
+	static const int HangulNienunHieuh = XK_Hangul_NieunHieuh; 
+	static const int HangulDikeud = XK_Hangul_Dikeud;     
+	static const int HangulSsangDikeud = XK_Hangul_SsangDikeud;
+	static const int HangulRieul = XK_Hangul_Rieul;      
+	static const int HangulRieulKiyeog = XK_Hangul_RieulKiyeog;
+	static const int HangulRieulMieum = XK_Hangul_RieulMieum; 
+	static const int HangulRieulPieub = XK_Hangul_RieulPieub; 
+	static const int HangulRieulSios = XK_Hangul_RieulSios;  
+	static const int HangulRieulTieut = XK_Hangul_RieulTieut; 
+	static const int HangulRieulPhieuf = XK_Hangul_RieulPhieuf;
+	static const int HangulRieulHieuh = XK_Hangul_RieulHieuh; 
+	static const int HangulMieum = XK_Hangul_Mieum;      
+	static const int HangulPieub = XK_Hangul_Pieub;      
+	static const int HangulSsangPieub = XK_Hangul_SsangPieub; 
+	static const int HangulPieubSios = XK_Hangul_PieubSios;  
+	static const int HangulSios = XK_Hangul_Sios;       
+	static const int HangulSsangSios = XK_Hangul_SsangSios;  
+	static const int HangulIeuj = XK_Hangul_Ieung;      
+	static const int HangulJieuj = XK_Hangul_Jieuj;      
+	static const int HangulSsangJieuj = XK_Hangul_SsangJieuj; 
+	static const int HangulCieuc = XK_Hangul_Cieuc;
+	static const int HangulKhieuq = XK_Hangul_Khieuq;     
+	static const int HangulTieut = XK_Hangul_Tieut;      
+	static const int HangulPhieuf = XK_Hangul_Phieuf;     
+	static const int HangulHieuh = XK_Hangul_Hieuh;      
+
+	// Hangul Vowel Characters
+	
+	static const int HangulA = XK_Hangul_A;  
+	static const int HangulAE = XK_Hangul_AE; 
+	static const int HangulYA = XK_Hangul_YA; 
+	static const int HangulYAE = XK_Hangul_YAE;
+	static const int HangulEO = XK_Hangul_EO; 
+	static const int HangulE = XK_Hangul_E;  
+	static const int HangulYEO = XK_Hangul_YEO;
+	static const int HangulYE = XK_Hangul_YE; 
+	static const int HangulO = XK_Hangul_O;  
+	static const int HangulWA = XK_Hangul_WA; 
+	static const int HangulWAE = XK_Hangul_WAE;
+	static const int HangulOE = XK_Hangul_OE; 
+	static const int HangulYO = XK_Hangul_YO; 
+	static const int HangulU = XK_Hangul_U;  
+	static const int HangulWEO = XK_Hangul_WEO;
+	static const int HangulWE = XK_Hangul_WE; 
+	static const int HangulWI = XK_Hangul_WI; 
+	static const int HangulYU = XK_Hangul_YU; 
+	static const int HangulEU = XK_Hangul_EU; 
+	static const int HangulYI = XK_Hangul_YI; 
+	static const int HangulI = XK_Hangul_I;  
+
+	// Hangul syllable-final (JongSeong) Characters
+	
+	static const int HangulJ_Kiyeog = XK_Hangul_J_Kiyeog;     
+	static const int HangulJ_SsangKiyeog = XK_Hangul_J_SsangKiyeog;
+	static const int HangulJ_KiyeogSios = XK_Hangul_J_KiyeogSios; 
+	static const int HangulJ_Nieun = XK_Hangul_J_Nieun;      
+	static const int HangulJ_NieunJieuj = XK_Hangul_J_NieunJieuj; 
+	static const int HangulJ_NieunHieuh = XK_Hangul_J_NieunHieuh; 
+	static const int HangulJ_Dikeud = XK_Hangul_J_Dikeud;     
+	static const int HangulJ_Rieul = XK_Hangul_J_Rieul;      
+	static const int HangulJ_RieulKiyeog = XK_Hangul_J_RieulKiyeog;
+	static const int HangulJ_RieulMieum = XK_Hangul_J_RieulMieum; 
+	static const int HangulJ_RieulPieub = XK_Hangul_J_RieulPieub; 
+	static const int HangulJ_RieulSios = XK_Hangul_J_RieulSios;  
+	static const int HangulJ_RieulTieut = XK_Hangul_J_RieulTieut; 
+	static const int HangulJ_RieulPhieuf = XK_Hangul_J_RieulPhieuf;
+	static const int HangulJ_RieulHieuh = XK_Hangul_J_RieulHieuh; 
+	static const int HangulJ_Mieum = XK_Hangul_J_Mieum;      
+	static const int HangulJ_Pieub = XK_Hangul_J_Pieub;      
+	static const int HangulJ_PieubSios = XK_Hangul_J_PieubSios;  
+	static const int HangulJ_Sios = XK_Hangul_J_Sios;       
+	static const int HangulJ_SsangSios = XK_Hangul_J_SsangSios;  
+	static const int HangulJ_Ieung = XK_Hangul_J_Ieung;      
+	static const int HangulJ_Jieuj = XK_Hangul_J_Jieuj;      
+	static const int HangulJ_Cieuc = XK_Hangul_J_Cieuc;      
+	static const int HangulJ_Khieuq = XK_Hangul_J_Khieuq;     
+	static const int HangulJ_Tieut = XK_Hangul_J_Tieut;      
+	static const int HangulJ_Phieuf = XK_Hangul_J_Phieuf;     
+	static const int HangulJ_Hieuh = XK_Hangul_J_Hieuh;      
+
+	// Ancient Hangul Consonant Characters
+
+	//static const int HangulYeorinHieuh = XK_Hangul_RieulYeorinHieuh;  
+	static const int HangulSunkyeongeumMieum = XK_Hangul_SunkyeongeumMieum; 
+	static const int HangulSunkyeongeumPieub = XK_Hangul_SunkyeongeumPieub; 
+	static const int HangulPanSios = XK_Hangul_PanSios;           
+	static const int HangulKkogjiDalrinIeung = XK_Hangul_KkogjiDalrinIeung; 
+	static const int HangulSunkyeongeumPhieuf = XK_Hangul_SunkyeongeumPhieuf;
+	static const int HangulYeorinHieuh = XK_Hangul_YeorinHieuh;       
+
+	// Ancient Hangul Vowel Characters
+	
+	static const int HangulAraeA = XK_Hangul_AraeA;
+	static const int HangulAraeAE = XK_Hangul_AraeAE;
+
+	// Ancient Hangul syllable-final (JongSeong) Characters
+	
+	static const int HangulJ_PanSios = XK_Hangul_J_PanSios;          
+	static const int HangulJ_KkogjiDalrinIeung = XK_Hangul_J_KkogjiDalrinIeung;
+	static const int HangulJ_YeorinHieuh = XK_Hangul_J_YeorinHieuh;      
+
+	// Korean currency symbol
+	static const int KoreanWon = XK_Korean_Won;
 
 
-	static const int XK_Thai_kokai            
-	static const int XK_Thai_khokhai          
-	static const int XK_Thai_khokhuat         
-	static const int XK_Thai_khokhwai         
-	static const int XK_Thai_khokhon          
-	static const int XK_Thai_khorakhang       
-	static const int XK_Thai_ngongu           
-	static const int XK_Thai_chochan          
-	static const int XK_Thai_choching         
-	static const int XK_Thai_chochang         
-	static const int XK_Thai_soso             
-	static const int XK_Thai_chochoe          
-	static const int XK_Thai_yoying           
-	static const int XK_Thai_dochada          
-	static const int XK_Thai_topatak          
-	static const int XK_Thai_thothan          
-	static const int XK_Thai_thonangmontho    
-	static const int XK_Thai_thophuthao       
-	static const int XK_Thai_nonen            
-	static const int XK_Thai_dodek            
-	static const int XK_Thai_totao            
-	static const int XK_Thai_thothung         
-	static const int XK_Thai_thothahan        
-	static const int XK_Thai_thothong         
-	static const int XK_Thai_nonu             
-	static const int XK_Thai_bobaimai         
-	static const int XK_Thai_popla            
-	static const int XK_Thai_phophung         
-	static const int XK_Thai_fofa             
-	static const int XK_Thai_phophan          
-	static const int XK_Thai_fofan            
-	static const int XK_Thai_phosamphao       
-	static const int XK_Thai_moma             
-	static const int XK_Thai_yoyak            
-	static const int XK_Thai_rorua            
-	static const int XK_Thai_ru               
-	static const int XK_Thai_loling           
-	static const int XK_Thai_lu               
-	static const int XK_Thai_wowaen           
-	static const int XK_Thai_sosala           
-	static const int XK_Thai_sorusi           
-	static const int XK_Thai_sosua            
-	static const int XK_Thai_hohip            
-	static const int XK_Thai_lochula          
-	static const int XK_Thai_oang             
-	static const int XK_Thai_honokhuk         
-	static const int XK_Thai_paiyannoi        
-	static const int XK_Thai_saraa            
-	static const int XK_Thai_maihanakat       
-	static const int XK_Thai_saraaa           
-	static const int XK_Thai_saraam           
-	static const int XK_Thai_sarai            
-	static const int XK_Thai_saraii           
-	static const int XK_Thai_saraue           
-	static const int XK_Thai_sarauee          
-	static const int XK_Thai_sarau            
-	static const int XK_Thai_sarauu           
-	static const int XK_Thai_phinthu          
-	static const int XK_Thai_maihanakat_maitho
-	static const int XK_Thai_baht             
-	static const int XK_Thai_sarae            
-	static const int XK_Thai_saraae           
-	static const int XK_Thai_sarao            
-	static const int XK_Thai_saraaimaimuan    
-	static const int XK_Thai_saraaimaimalai   
-	static const int XK_Thai_lakkhangyao      
-	static const int XK_Thai_maiyamok         
-	static const int XK_Thai_maitaikhu        
-	static const int XK_Thai_maiek            
-	static const int XK_Thai_maitho           
-	static const int XK_Thai_maitri           
-	static const int XK_Thai_maichattawa      
-	static const int XK_Thai_thanthakhat      
-	static const int XK_Thai_nikhahit         
-	static const int XK_Thai_leksun           
-	static const int XK_Thai_leknung          
-	static const int XK_Thai_leksong          
-	static const int XK_Thai_leksam           
-	static const int XK_Thai_leksi            
-	static const int XK_Thai_lekha            
-	static const int XK_Thai_lekhok           
-	static const int XK_Thai_lekchet          
-	static const int XK_Thai_lekpaet          
-	static const int XK_Thai_lekkao           
+	// Armenian
+
+	static const int ArmenianLigatureEw = XK_Armenian_ligature_ew;    
+	static const int ArmenianFullStop = XK_Armenian_full_stop;      
+	static const int ArmenianVerjaket = XK_Armenian_verjaket;       
+	static const int ArmenianSeparationMark = XK_Armenian_separation_mark;
+	static const int ArmenianBut = XK_Armenian_but;            
+	static const int ArmenianHyphen = XK_Armenian_hyphen;         
+	static const int ArmenianYentamna = XK_Armenian_yentamna;       
+	static const int ArmenianExclam = XK_Armenian_exclam;         
+	static const int ArmenianAmanak = XK_Armenian_amanak;         
+	static const int ArmenianAccent = XK_Armenian_accent;         
+	static const int ArmenianShesht = XK_Armenian_shesht;         
+	static const int ArmenianQuestion = XK_Armenian_question;       
+	static const int ArmenianParuyk = XK_Armenian_paruyk;         
+	static const int Armenian_AYB = XK_Armenian_AYB;            
+	static const int Armenian_ayb = XK_Armenian_ayb;            
+	static const int Armenian_BEN = XK_Armenian_BEN;            
+	static const int Armenian_ben = XK_Armenian_ben;            
+	static const int Armenian_GIM = XK_Armenian_GIM;            
+	static const int Armenian_gim = XK_Armenian_gim;            
+	static const int Armenian_DA = XK_Armenian_DA;             
+	static const int Armenian_da = XK_Armenian_da;             
+	static const int Armenian_YECH = XK_Armenian_YECH;           
+	static const int Armenian_yech = XK_Armenian_yech;           
+	static const int Armenian_ZA = XK_Armenian_ZA;             
+	static const int Armenian_za = XK_Armenian_za;             
+	static const int Armenian_E = XK_Armenian_E;              
+	static const int Armenian_e = XK_Armenian_e;              
+	static const int Armenian_AT = XK_Armenian_AT;             
+	static const int Armenian_at = XK_Armenian_at;             
+	static const int Armenian_TO = XK_Armenian_TO;             
+	static const int Armenian_to = XK_Armenian_to;             
+	static const int Armenian_ZHE = XK_Armenian_ZHE;            
+	static const int Armenian_zhe = XK_Armenian_zhe;            
+	static const int Armenian_INI = XK_Armenian_INI;            
+	static const int Armenian_ini = XK_Armenian_ini;            
+	static const int Armenian_LYUN = XK_Armenian_LYUN;           
+	static const int Armenian_lyun = XK_Armenian_lyun;           
+	static const int Armenian_KHE = XK_Armenian_KHE;            
+	static const int Armenian_khe = XK_Armenian_khe;            
+	static const int Armenian_TSA = XK_Armenian_TSA;            
+	static const int Armenian_tsa = XK_Armenian_tsa;            
+	static const int Armenian_KEN = XK_Armenian_KEN;            
+	static const int Armenian_ken = XK_Armenian_ken;            
+	static const int Armenian_HO = XK_Armenian_HO;             
+	static const int Armenian_ho = XK_Armenian_ho;             
+	static const int Armenian_DZA = XK_Armenian_DZA;            
+	static const int Armenian_dza = XK_Armenian_dza;            
+	static const int Armenian_GHAT = XK_Armenian_GHAT;           
+	static const int Armenian_ghat = XK_Armenian_ghat;           
+	static const int Armenian_TCHE = XK_Armenian_TCHE;           
+	static const int Armenian_tche = XK_Armenian_tche;           
+	static const int Armenian_MEN = XK_Armenian_MEN;            
+	static const int Armenian_men = XK_Armenian_men;            
+	static const int Armenian_HI = XK_Armenian_HI;             
+	static const int Armenian_hi = XK_Armenian_hi;             
+	static const int Armenian_NU = XK_Armenian_NU;             
+	static const int Armenian_nu = XK_Armenian_nu;             
+	static const int Armenian_SHA = XK_Armenian_SHA;            
+	static const int Armenian_sha = XK_Armenian_sha;            
+	static const int Armenian_VO = XK_Armenian_VO;             
+	static const int Armenian_vo = XK_Armenian_vo;             
+	static const int Armenian_CHA = XK_Armenian_CHA;            
+	static const int Armenian_cha = XK_Armenian_cha;            
+	static const int Armenian_PE = XK_Armenian_PE;             
+	static const int Armenian_pe = XK_Armenian_pe;             
+	static const int Armenian_JE = XK_Armenian_JE;             
+	static const int Armenian_je = XK_Armenian_je;             
+	static const int Armenian_RA = XK_Armenian_RA;             
+	static const int Armenian_ra = XK_Armenian_ra;             
+	static const int Armenian_SE = XK_Armenian_SE;             
+	static const int Armenian_se = XK_Armenian_se;             
+	static const int Armenian_VEV = XK_Armenian_VEV;            
+	static const int Armenian_vev = XK_Armenian_vev;            
+	static const int Armenian_TYUN = XK_Armenian_TYUN;           
+	static const int Armenian_tyun = XK_Armenian_tyun;           
+	static const int Armenian_RE = XK_Armenian_RE;             
+	static const int Armenian_re = XK_Armenian_re;             
+	static const int Armenian_TSO = XK_Armenian_TSO;            
+	static const int Armenian_tso = XK_Armenian_tso;            
+	static const int Armenian_VYUN = XK_Armenian_VYUN;           
+	static const int Armenian_vyun = XK_Armenian_vyun;           
+	static const int Armenian_PYUR = XK_Armenian_PYUR;           
+	static const int Armenian_pyur = XK_Armenian_pyur;           
+	static const int Armenian_KE = XK_Armenian_KE;             
+	static const int Armenian_ke = XK_Armenian_ke;             
+	static const int Armenian_O = XK_Armenian_O;              
+	static const int Armenian_o = XK_Armenian_o;              
+	static const int Armenian_FE = XK_Armenian_FE;             
+	static const int Armenian_fe = XK_Armenian_fe;             
+	static const int Armenian_Apostrophe = XK_Armenian_apostrophe;     
 
 
-/*
- * Korean
- * Byte 3 = 0x0e
- */
+	// Georgian
 
 
-	static const int XK_Hangul                  
-	static const int XK_Hangul_Start            
-	static const int XK_Hangul_End              
-	static const int XK_Hangul_Hanja            
-	static const int XK_Hangul_Jamo             
-	static const int XK_Hangul_Romaja           
-	static const int XK_Hangul_Codeinput        
-	static const int XK_Hangul_Jeonja           
-	static const int XK_Hangul_Banja            
-	static const int XK_Hangul_PreHanja         
-	static const int XK_Hangul_PostHanja        
-	static const int XK_Hangul_SingleCandidate  
-	static const int XK_Hangul_MultipleCandidate
-	static const int XK_Hangul_PreviousCandidate
-	static const int XK_Hangul_Special          
-	static const int XK_Hangul_switch           
-
-/* Hangul Consonant Characters */
-	static const int XK_Hangul_Kiyeog     
-	static const int XK_Hangul_SsangKiyeog
-	static const int XK_Hangul_KiyeogSios 
-	static const int XK_Hangul_Nieun      
-	static const int XK_Hangul_NieunJieuj 
-	static const int XK_Hangul_NieunHieuh 
-	static const int XK_Hangul_Dikeud     
-	static const int XK_Hangul_SsangDikeud
-	static const int XK_Hangul_Rieul      
-	static const int XK_Hangul_RieulKiyeog
-	static const int XK_Hangul_RieulMieum 
-	static const int XK_Hangul_RieulPieub 
-	static const int XK_Hangul_RieulSios  
-	static const int XK_Hangul_RieulTieut 
-	static const int XK_Hangul_RieulPhieuf
-	static const int XK_Hangul_RieulHieuh 
-	static const int XK_Hangul_Mieum      
-	static const int XK_Hangul_Pieub      
-	static const int XK_Hangul_SsangPieub 
-	static const int XK_Hangul_PieubSios  
-	static const int XK_Hangul_Sios       
-	static const int XK_Hangul_SsangSios  
-	static const int XK_Hangul_Ieung      
-	static const int XK_Hangul_Jieuj      
-	static const int XK_Hangul_SsangJieuj 
-	static const int XK_Hangul_Cieuc      
-	static const int XK_Hangul_Khieuq     
-	static const int XK_Hangul_Tieut      
-	static const int XK_Hangul_Phieuf     
-	static const int XK_Hangul_Hieuh      
-
-/* Hangul Vowel Characters */
-	static const int XK_Hangul_A  
-	static const int XK_Hangul_AE 
-	static const int XK_Hangul_YA 
-	static const int XK_Hangul_YAE
-	static const int XK_Hangul_EO 
-	static const int XK_Hangul_E  
-	static const int XK_Hangul_YEO
-	static const int XK_Hangul_YE 
-	static const int XK_Hangul_O  
-	static const int XK_Hangul_WA 
-	static const int XK_Hangul_WAE
-	static const int XK_Hangul_OE 
-	static const int XK_Hangul_YO 
-	static const int XK_Hangul_U  
-	static const int XK_Hangul_WEO
-	static const int XK_Hangul_WE 
-	static const int XK_Hangul_WI 
-	static const int XK_Hangul_YU 
-	static const int XK_Hangul_EU 
-	static const int XK_Hangul_YI 
-	static const int XK_Hangul_I  
-
-/* Hangul syllable-final (JongSeong) Characters */
-	static const int XK_Hangul_J_Kiyeog     
-	static const int XK_Hangul_J_SsangKiyeog
-	static const int XK_Hangul_J_KiyeogSios 
-	static const int XK_Hangul_J_Nieun      
-	static const int XK_Hangul_J_NieunJieuj 
-	static const int XK_Hangul_J_NieunHieuh 
-	static const int XK_Hangul_J_Dikeud     
-	static const int XK_Hangul_J_Rieul      
-	static const int XK_Hangul_J_RieulKiyeog
-	static const int XK_Hangul_J_RieulMieum 
-	static const int XK_Hangul_J_RieulPieub 
-	static const int XK_Hangul_J_RieulSios  
-	static const int XK_Hangul_J_RieulTieut 
-	static const int XK_Hangul_J_RieulPhieuf
-	static const int XK_Hangul_J_RieulHieuh 
-	static const int XK_Hangul_J_Mieum      
-	static const int XK_Hangul_J_Pieub      
-	static const int XK_Hangul_J_PieubSios  
-	static const int XK_Hangul_J_Sios       
-	static const int XK_Hangul_J_SsangSios  
-	static const int XK_Hangul_J_Ieung      
-	static const int XK_Hangul_J_Jieuj      
-	static const int XK_Hangul_J_Cieuc      
-	static const int XK_Hangul_J_Khieuq     
-	static const int XK_Hangul_J_Tieut      
-	static const int XK_Hangul_J_Phieuf     
-	static const int XK_Hangul_J_Hieuh      
-
-/* Ancient Hangul Consonant Characters */
-	static const int XK_Hangul_RieulYeorinHieuh  
-	static const int XK_Hangul_SunkyeongeumMieum 
-	static const int XK_Hangul_SunkyeongeumPieub 
-	static const int XK_Hangul_PanSios           
-	static const int XK_Hangul_KkogjiDalrinIeung 
-	static const int XK_Hangul_SunkyeongeumPhieuf
-	static const int XK_Hangul_YeorinHieuh       
-
-/* Ancient Hangul Vowel Characters */
-	static const int XK_Hangul_AraeA 
-	static const int XK_Hangul_AraeAE
-
-/* Ancient Hangul syllable-final (JongSeong) Characters */
-	static const int XK_Hangul_J_PanSios          
-	static const int XK_Hangul_J_KkogjiDalrinIeung
-	static const int XK_Hangul_J_YeorinHieuh      
-
-/* Korean currency symbol */
-	static const int XK_Korean_Won
+	static const int GeorgianAn = XK_Georgian_an;  
+	static const int GeorgianBan = XK_Georgian_ban; 
+	static const int GeorgianGan = XK_Georgian_gan; 
+	static const int GeorgianDon = XK_Georgian_don; 
+	static const int GeorgianEn = XK_Georgian_en;  
+	static const int GeorgianVin = XK_Georgian_vin; 
+	static const int GeorgianZen = XK_Georgian_zen; 
+	static const int GeorgianTan = XK_Georgian_tan; 
+	static const int GeorgianIn = XK_Georgian_in;  
+	static const int GeorgianKan = XK_Georgian_kan; 
+	static const int GeorgianLas = XK_Georgian_las; 
+	static const int GeorgianMan = XK_Georgian_man; 
+	static const int GeorgianNar = XK_Georgian_nar; 
+	static const int GeorgianOn = XK_Georgian_on;  
+	static const int GeorgianPar = XK_Georgian_par; 
+	static const int GeorgianZhar = XK_Georgian_zhar;
+	static const int GeorgianRae = XK_Georgian_rae; 
+	static const int GeorgianSan = XK_Georgian_san; 
+	static const int GeorgianTar = XK_Georgian_tar; 
+	static const int GeorgianUn = XK_Georgian_un;  
+	static const int GeorgianPhar = XK_Georgian_phar;
+	static const int GeorgianKhar = XK_Georgian_khar;
+	static const int GeorgianGhan = XK_Georgian_ghan;
+	static const int GeorgianQar = XK_Georgian_qar; 
+	static const int GeorgianShin = XK_Georgian_shin;
+	static const int GeorgianChin = XK_Georgian_chin;
+	static const int GeorgianCan = XK_Georgian_can; 
+	static const int GeorgianJil = XK_Georgian_jil; 
+	static const int GeorgianCil = XK_Georgian_cil; 
+	static const int GeorgianChar = XK_Georgian_char;
+	static const int GeorgianXan = XK_Georgian_xan; 
+	static const int GeorgianJhan = XK_Georgian_jhan;
+	static const int GeorgianHae = XK_Georgian_hae; 
+	static const int GeorgianHe = XK_Georgian_he;  
+	static const int GeorgianHie = XK_Georgian_hie; 
+	static const int GeorgianWe = XK_Georgian_we;  
+	static const int GeorgianHar = XK_Georgian_har; 
+	static const int GeorgianHoe = XK_Georgian_hoe; 
+	static const int GeorgianFi = XK_Georgian_fi;  
 
 
-/*
- * Armenian
- */
+	// Azeri (and other Turkic or Caucasian languages)
 
 
-	static const int XK_Armenian_ligature_ew    
-	static const int XK_Armenian_full_stop      
-	static const int XK_Armenian_verjaket       
-	static const int XK_Armenian_separation_mark
-	static const int XK_Armenian_but            
-	static const int XK_Armenian_hyphen         
-	static const int XK_Armenian_yentamna       
-	static const int XK_Armenian_exclam         
-	static const int XK_Armenian_amanak         
-	static const int XK_Armenian_accent         
-	static const int XK_Armenian_shesht         
-	static const int XK_Armenian_question       
-	static const int XK_Armenian_paruyk         
-	static const int XK_Armenian_AYB            
-	static const int XK_Armenian_ayb            
-	static const int XK_Armenian_BEN            
-	static const int XK_Armenian_ben            
-	static const int XK_Armenian_GIM            
-	static const int XK_Armenian_gim            
-	static const int XK_Armenian_DA             
-	static const int XK_Armenian_da             
-	static const int XK_Armenian_YECH           
-	static const int XK_Armenian_yech           
-	static const int XK_Armenian_ZA             
-	static const int XK_Armenian_za             
-	static const int XK_Armenian_E              
-	static const int XK_Armenian_e              
-	static const int XK_Armenian_AT             
-	static const int XK_Armenian_at             
-	static const int XK_Armenian_TO             
-	static const int XK_Armenian_to             
-	static const int XK_Armenian_ZHE            
-	static const int XK_Armenian_zhe            
-	static const int XK_Armenian_INI            
-	static const int XK_Armenian_ini            
-	static const int XK_Armenian_LYUN           
-	static const int XK_Armenian_lyun           
-	static const int XK_Armenian_KHE            
-	static const int XK_Armenian_khe            
-	static const int XK_Armenian_TSA            
-	static const int XK_Armenian_tsa            
-	static const int XK_Armenian_KEN            
-	static const int XK_Armenian_ken            
-	static const int XK_Armenian_HO             
-	static const int XK_Armenian_ho             
-	static const int XK_Armenian_DZA            
-	static const int XK_Armenian_dza            
-	static const int XK_Armenian_GHAT           
-	static const int XK_Armenian_ghat           
-	static const int XK_Armenian_TCHE           
-	static const int XK_Armenian_tche           
-	static const int XK_Armenian_MEN            
-	static const int XK_Armenian_men            
-	static const int XK_Armenian_HI             
-	static const int XK_Armenian_hi             
-	static const int XK_Armenian_NU             
-	static const int XK_Armenian_nu             
-	static const int XK_Armenian_SHA            
-	static const int XK_Armenian_sha            
-	static const int XK_Armenian_VO             
-	static const int XK_Armenian_vo             
-	static const int XK_Armenian_CHA            
-	static const int XK_Armenian_cha            
-	static const int XK_Armenian_PE             
-	static const int XK_Armenian_pe             
-	static const int XK_Armenian_JE             
-	static const int XK_Armenian_je             
-	static const int XK_Armenian_RA             
-	static const int XK_Armenian_ra             
-	static const int XK_Armenian_SE             
-	static const int XK_Armenian_se             
-	static const int XK_Armenian_VEV            
-	static const int XK_Armenian_vev            
-	static const int XK_Armenian_TYUN           
-	static const int XK_Armenian_tyun           
-	static const int XK_Armenian_RE             
-	static const int XK_Armenian_re             
-	static const int XK_Armenian_TSO            
-	static const int XK_Armenian_tso            
-	static const int XK_Armenian_VYUN           
-	static const int XK_Armenian_vyun           
-	static const int XK_Armenian_PYUR           
-	static const int XK_Armenian_pyur           
-	static const int XK_Armenian_KE             
-	static const int XK_Armenian_ke             
-	static const int XK_Armenian_O              
-	static const int XK_Armenian_o              
-	static const int XK_Armenian_FE             
-	static const int XK_Armenian_fe             
-	static const int XK_Armenian_apostrophe     
+	// latin
+	static const int XAboveDot = XK_Xabovedot;     
+	static const int IBreve = XK_Ibreve;        
+	static const int ZStroke = XK_Zstroke;       
+	static const int GCaron = XK_Gcaron;        
+	static const int OCaron = XK_Ocaron;        
+	static const int OBarred = XK_Obarred;       
+	static const int xAboveDot = XK_xabovedot;     
+	static const int iBreve = XK_ibreve;        
+	static const int zStroke = XK_zstroke;       
+	static const int gCaron = XK_gcaron;        
+	static const int oCaron = XK_ocaron;        
+	static const int oBarred = XK_obarred;       
+	static const int SCHWA = XK_SCHWA;         
+	static const int schwa = XK_schwa;    
+	
+	// Inupiak
+	static const int LBelowDot = XK_Lbelowdot;     
+	static const int lBelowDot = XK_lbelowdot;     
 
 
-/*
- * Georgian
- */
-
-
-	static const int XK_Georgian_an  
-	static const int XK_Georgian_ban 
-	static const int XK_Georgian_gan 
-	static const int XK_Georgian_don 
-	static const int XK_Georgian_en  
-	static const int XK_Georgian_vin 
-	static const int XK_Georgian_zen 
-	static const int XK_Georgian_tan 
-	static const int XK_Georgian_in  
-	static const int XK_Georgian_kan 
-	static const int XK_Georgian_las 
-	static const int XK_Georgian_man 
-	static const int XK_Georgian_nar 
-	static const int XK_Georgian_on  
-	static const int XK_Georgian_par 
-	static const int XK_Georgian_zhar
-	static const int XK_Georgian_rae 
-	static const int XK_Georgian_san 
-	static const int XK_Georgian_tar 
-	static const int XK_Georgian_un  
-	static const int XK_Georgian_phar
-	static const int XK_Georgian_khar
-	static const int XK_Georgian_ghan
-	static const int XK_Georgian_qar 
-	static const int XK_Georgian_shin
-	static const int XK_Georgian_chin
-	static const int XK_Georgian_can 
-	static const int XK_Georgian_jil 
-	static const int XK_Georgian_cil 
-	static const int XK_Georgian_char
-	static const int XK_Georgian_xan 
-	static const int XK_Georgian_jhan
-	static const int XK_Georgian_hae 
-	static const int XK_Georgian_he  
-	static const int XK_Georgian_hie 
-	static const int XK_Georgian_we  
-	static const int XK_Georgian_har 
-	static const int XK_Georgian_hoe 
-	static const int XK_Georgian_fi  
-
-
-/*
- * Azeri (and other Turkic or Caucasian languages)
- */
-
-
-/* latin */
-	static const int XK_Xabovedot     
-	static const int XK_Ibreve        
-	static const int XK_Zstroke       
-	static const int XK_Gcaron        
-	static const int XK_Ocaron        
-	static const int XK_Obarred       
-	static const int XK_xabovedot     
-	static const int XK_ibreve        
-	static const int XK_zstroke       
-	static const int XK_gcaron        
-	static const int XK_ocaron        
-	static const int XK_obarred       
-	static const int XK_SCHWA         
-	static const int XK_schwa         
-/* those are not really Caucasus */
-/* For Inupiak */
-	static const int XK_Lbelowdot     
-	static const int XK_lbelowdot     
-
-
-/*
- * Vietnamese
- */
+	// Vietnamese
  
 
-	static const int XK_Abelowdot          
-	static const int XK_abelowdot          
-	static const int XK_Ahook              
-	static const int XK_ahook              
-	static const int XK_Acircumflexacute   
-	static const int XK_acircumflexacute   
-	static const int XK_Acircumflexgrave   
-	static const int XK_acircumflexgrave   
-	static const int XK_Acircumflexhook    
-	static const int XK_acircumflexhook    
-	static const int XK_Acircumflextilde   
-	static const int XK_acircumflextilde   
-	static const int XK_Acircumflexbelowdot
-	static const int XK_acircumflexbelowdot
-	static const int XK_Abreveacute        
-	static const int XK_abreveacute        
-	static const int XK_Abrevegrave        
-	static const int XK_abrevegrave        
-	static const int XK_Abrevehook         
-	static const int XK_abrevehook         
-	static const int XK_Abrevetilde        
-	static const int XK_abrevetilde        
-	static const int XK_Abrevebelowdot     
-	static const int XK_abrevebelowdot     
-	static const int XK_Ebelowdot          
-	static const int XK_ebelowdot          
-	static const int XK_Ehook              
-	static const int XK_ehook              
-	static const int XK_Etilde             
-	static const int XK_etilde             
-	static const int XK_Ecircumflexacute   
-	static const int XK_ecircumflexacute   
-	static const int XK_Ecircumflexgrave   
-	static const int XK_ecircumflexgrave   
-	static const int XK_Ecircumflexhook    
-	static const int XK_ecircumflexhook    
-	static const int XK_Ecircumflextilde   
-	static const int XK_ecircumflextilde   
-	static const int XK_Ecircumflexbelowdot
-	static const int XK_ecircumflexbelowdot
-	static const int XK_Ihook              
-	static const int XK_ihook              
-	static const int XK_Ibelowdot          
-	static const int XK_ibelowdot          
-	static const int XK_Obelowdot          
-	static const int XK_obelowdot          
-	static const int XK_Ohook              
-	static const int XK_ohook              
-	static const int XK_Ocircumflexacute   
-	static const int XK_ocircumflexacute   
-	static const int XK_Ocircumflexgrave   
-	static const int XK_ocircumflexgrave   
-	static const int XK_Ocircumflexhook    
-	static const int XK_ocircumflexhook    
-	static const int XK_Ocircumflextilde   
-	static const int XK_ocircumflextilde   
-	static const int XK_Ocircumflexbelowdot
-	static const int XK_ocircumflexbelowdot
-	static const int XK_Ohornacute         
-	static const int XK_ohornacute         
-	static const int XK_Ohorngrave         
-	static const int XK_ohorngrave         
-	static const int XK_Ohornhook          
-	static const int XK_ohornhook          
-	static const int XK_Ohorntilde         
-	static const int XK_ohorntilde         
-	static const int XK_Ohornbelowdot      
-	static const int XK_ohornbelowdot      
-	static const int XK_Ubelowdot          
-	static const int XK_ubelowdot          
-	static const int XK_Uhook              
-	static const int XK_uhook              
-	static const int XK_Uhornacute         
-	static const int XK_uhornacute         
-	static const int XK_Uhorngrave         
-	static const int XK_uhorngrave         
-	static const int XK_Uhornhook          
-	static const int XK_uhornhook          
-	static const int XK_Uhorntilde         
-	static const int XK_uhorntilde         
-	static const int XK_Uhornbelowdot      
-	static const int XK_uhornbelowdot      
-	static const int XK_Ybelowdot          
-	static const int XK_ybelowdot          
-	static const int XK_Yhook              
-	static const int XK_yhook              
-	static const int XK_Ytilde             
-	static const int XK_ytilde             
-	static const int XK_Ohorn              
-	static const int XK_ohorn              
-	static const int XK_Uhorn              
-	static const int XK_uhorn              
+	static const int ABelowDot = XK_Abelowdot;          
+	static const int aBelowDot = XK_abelowdot;          
+	static const int AHook = XK_Ahook;              
+	static const int aHook = XK_ahook;              
+	static const int ACircumflexAcute = XK_Acircumflexacute;   
+	static const int aCircumflexAcute = XK_acircumflexacute;   
+	static const int ACircumflexGrave = XK_Acircumflexgrave;   
+	static const int aCircumflexGrave = XK_acircumflexgrave;   
+	static const int ACircumflexHook = XK_Acircumflexhook;    
+	static const int aCircumflexHook = XK_acircumflexhook;    
+	static const int ACircumflexTilde = XK_Acircumflextilde;   
+	static const int aCircumflexTilde = XK_acircumflextilde;   
+	static const int ACircumflexBelowdot = XK_Acircumflexbelowdot;
+	static const int aCircumflexBelowdot = XK_acircumflexbelowdot;
+	static const int ABreveAcute = XK_Abreveacute;        
+	static const int aBreveAcute = XK_abreveacute;        
+	static const int ABreveGrave = XK_Abrevegrave;        
+	static const int aBreveGrave = XK_abrevegrave;        
+	static const int ABreveHook = XK_Abrevehook;         
+	static const int aBreveHook = XK_abrevehook;         
+	static const int ABreveTilde = XK_Abrevetilde;        
+	static const int aBreveTilde = XK_abrevetilde;        
+	static const int ABreveBelowDot = XK_Abrevebelowdot;     
+	static const int aBreveBelowDot = XK_abrevebelowdot;     
+	static const int EBelowDot = XK_Ebelowdot;          
+	static const int eBelowDot = XK_ebelowdot;          
+	static const int EHook = XK_Ehook;              
+	static const int eHook = XK_ehook;              
+	static const int ETilde = XK_Etilde;             
+	static const int eTilde = XK_etilde;             
+	static const int ECircumflexAcute = XK_Ecircumflexacute;   
+	static const int eCircumflexAcute = XK_ecircumflexacute;   
+	static const int ECircumflexGrave = XK_Ecircumflexgrave;   
+	static const int eCircumflexGrave = XK_ecircumflexgrave;   
+	static const int ECircumflexHook = XK_Ecircumflexhook;    
+	static const int eCircumflexHook = XK_ecircumflexhook;    
+	static const int ECircumflexTilde = XK_Ecircumflextilde;   
+	static const int eCircumflexTilde = XK_ecircumflextilde;   
+	static const int ECircumflexBelowDot = XK_Ecircumflexbelowdot;
+	static const int eCircumflexBelowDot = XK_ecircumflexbelowdot;
+	static const int IHook = XK_Ihook;              
+	static const int iHook = XK_ihook;              
+	static const int IBelowDot = XK_Ibelowdot;          
+	static const int iBelowDot = XK_ibelowdot;          
+	static const int OBelowDot = XK_Obelowdot;          
+	static const int oBelowDot = XK_obelowdot;          
+	static const int OHook = XK_Ohook;              
+	static const int oHook = XK_ohook;              
+	static const int OCircumflexAcute = XK_Ocircumflexacute;   
+	static const int oCircumflexAcute = XK_ocircumflexacute;   
+	static const int OCircumflexGrave = XK_Ocircumflexgrave;   
+	static const int oCircumflexGrave = XK_ocircumflexgrave;   
+	static const int OCircumflexHook = XK_Ocircumflexhook;    
+	static const int oCircumflexHook = XK_ocircumflexhook;    
+	static const int OCircumflexTilde = XK_Ocircumflextilde;   
+	static const int oCircumflexTilde = XK_ocircumflextilde;   
+	static const int OCircumflexBelowDot = XK_Ocircumflexbelowdot;
+	static const int oCircumflexBelowDot = XK_ocircumflexbelowdot;
+	static const int OHornAcute = XK_Ohornacute;         
+	static const int oHornAcute = XK_ohornacute;         
+	static const int OHornGrave = XK_Ohorngrave;         
+	static const int oHornGrave = XK_ohorngrave;         
+	static const int OHornHook = XK_Ohornhook;          
+	static const int oHornHook = XK_ohornhook;          
+	static const int OHornTilde = XK_Ohorntilde;         
+	static const int oHornTilde = XK_ohorntilde;         
+	static const int OHornBelowDot = XK_Ohornbelowdot;      
+	static const int oHornBelowDot = XK_ohornbelowdot;      
+	static const int UBelowDot = XK_Ubelowdot;          
+	static const int uBelowDot = XK_ubelowdot;          
+	static const int UHook = XK_Uhook;              
+	static const int uHook = XK_uhook;              
+	static const int UHornAcute = XK_Uhornacute;         
+	static const int uHornAcute = XK_uhornacute;         
+	static const int UHornGrave = XK_Uhorngrave;         
+	static const int uHornGrave = XK_uhorngrave;         
+	static const int UHornHook = XK_Uhornhook;          
+	static const int uHornHook = XK_uhornhook;          
+	static const int UHornTilde = XK_Uhorntilde;         
+	static const int uHornTilde = XK_uhorntilde;         
+	static const int UHornBelowDot = XK_Uhornbelowdot;      
+	static const int uHornBelowDot = XK_uhornbelowdot;      
+	static const int YBelowDot = XK_Ybelowdot;          
+	static const int yBelowDot = XK_ybelowdot;          
+	static const int YHook = XK_Yhook;              
+	static const int yHook = XK_yhook;              
+	static const int YTilde = XK_Ytilde;             
+	static const int yTilde = XK_ytilde;             
+	static const int OHorn = XK_Ohorn;              
+	static const int oHorn = XK_ohorn;              
+	static const int UHorn = XK_Uhorn;              
+	static const int uHorn = XK_uhorn;              
 
 	// Currency
 
-	static const int XK_EcuSign      
-	static const int XK_ColonSign    
-	static const int XK_CruzeiroSign 
-	static const int XK_FFrancSign   
-	static const int XK_LiraSign     
-	static const int XK_MillSign     
-	static const int XK_NairaSign    
-	static const int XK_PesetaSign   
-	static const int XK_RupeeSign    
-	static const int XK_WonSign      
-	static const int XK_NewSheqelSign
-	static const int XK_DongSign     
-	static const int XK_EuroSign     
+	static const int SignEcu = XK_EcuSign;      
+	static const int SignColon = XK_ColonSign;    
+	static const int SignCruzeiro = XK_CruzeiroSign; 
+	static const int SignFFranc = XK_FFrancSign;   
+	static const int SignLira = XK_LiraSign;     
+	static const int SignMill = XK_MillSign;     
+	static const int SignNaira = XK_NairaSign;    
+	static const int SignPeseta = XK_PesetaSign;   
+	static const int SignRupee = XK_RupeeSign;    
+	static const int SignWon = XK_WonSign;      
+	static const int SignNewSheqel = XK_NewSheqelSign;
+	static const int SignDong = XK_DongSign;     
+	static const int SignEuro = XK_EuroSign;     
 
 	// Mathematical
 
-	static const int XK_zerosuperior    
-	static const int XK_foursuperior    
-	static const int XK_fivesuperior    
-	static const int XK_sixsuperior     
-	static const int XK_sevensuperior   
-	static const int XK_eightsuperior   
-	static const int XK_ninesuperior    
-	static const int XK_zerosubscript   
-	static const int XK_onesubscript    
-	static const int XK_twosubscript    
-	static const int XK_threesubscript  
-	static const int XK_foursubscript   
-	static const int XK_fivesubscript   
-	static const int XK_sixsubscript    
-	static const int XK_sevensubscript  
-	static const int XK_eightsubscript  
-	static const int XK_ninesubscript   
-	static const int XK_partdifferential
-	static const int XK_emptyset        
-	static const int XK_elementof       
-	static const int XK_notelementof    
-	static const int XK_containsas      
-	static const int XK_squareroot      
-	static const int XK_cuberoot        
-	static const int XK_fourthroot      
-	static const int XK_dintegral       
-	static const int XK_tintegral       
-	static const int XK_because         
-	static const int XK_approxeq        
-	static const int XK_notapproxeq     
-	static const int XK_notidentical    
-	static const int XK_stricteq                  
+	static const int ZeroSuperior = XK_zerosuperior;    
+	static const int FourSuperior = XK_foursuperior;    
+	static const int FiveSuperior = XK_fivesuperior;    
+	static const int SixSuperior = XK_sixsuperior;     
+	static const int SevenSuperior = XK_sevensuperior;   
+	static const int EightSuperior = XK_eightsuperior;   
+	static const int NineSuperior = XK_ninesuperior;    
+	static const int SeroSubscript = XK_zerosubscript;   
+	static const int OneSubscript = XK_onesubscript;    
+	static const int TwoSubscript = XK_twosubscript;    
+	static const int ThressSubscript = XK_threesubscript;  
+	static const int FourSubscript = XK_foursubscript;   
+	static const int FiveSubscript = XK_fivesubscript;   
+	static const int SixSubscript = XK_sixsubscript;    
+	static const int SevenSubscript = XK_sevensubscript;  
+	static const int EightSubscript = XK_eightsubscript;  
+	static const int NineSubscript = XK_ninesubscript;   
+	static const int PartDifferencial = XK_partdifferential;
+	static const int EnptySet = XK_emptyset;        
+	static const int ElementOf = XK_elementof;       
+	static const int NotElementOf = XK_notelementof;    
+	static const int ContainSas = XK_containsas;      
+	static const int SquareRoot = XK_squareroot;      
+	static const int CubeRoot = XK_cuberoot;        
+	static const int FourthRoot = XK_fourthroot;      
+	static const int dIntegral = XK_dintegral;       
+	static const int tIntegral = XK_tintegral;       
+	static const int Because = XK_because;         
+	static const int Approxeq = XK_approxeq;        
+	static const int NotApproxeq = XK_notapproxeq;     
+	static const int NotIdentical = XK_notidentical;    
+	static const int Strictew = XK_stricteq;                  
 
 	// Braille
 
-	static const int XK_braille_dot_1       
-	static const int XK_braille_dot_2       
-	static const int XK_braille_dot_3       
-	static const int XK_braille_dot_4       
-	static const int XK_braille_dot_5       
-	static const int XK_braille_dot_6       
-	static const int XK_braille_dot_7       
-	static const int XK_braille_dot_8       
-	static const int XK_braille_dot_9       
-	static const int XK_braille_dot_10      
-	static const int XK_braille_blank       
-	static const int XK_braille_dots_1      
-	static const int XK_braille_dots_2      
-	static const int XK_braille_dots_12     
-	static const int XK_braille_dots_3      
-	static const int XK_braille_dots_13     
-	static const int XK_braille_dots_23     
-	static const int XK_braille_dots_123    
-	static const int XK_braille_dots_4      
-	static const int XK_braille_dots_14     
-	static const int XK_braille_dots_24     
-	static const int XK_braille_dots_124    
-	static const int XK_braille_dots_34     
-	static const int XK_braille_dots_134    
-	static const int XK_braille_dots_234    
-	static const int XK_braille_dots_1234   
-	static const int XK_braille_dots_5      
-	static const int XK_braille_dots_15     
-	static const int XK_braille_dots_25     
-	static const int XK_braille_dots_125    
-	static const int XK_braille_dots_35     
-	static const int XK_braille_dots_135    
-	static const int XK_braille_dots_235    
-	static const int XK_braille_dots_1235   
-	static const int XK_braille_dots_45     
-	static const int XK_braille_dots_145    
-	static const int XK_braille_dots_245    
-	static const int XK_braille_dots_1245   
-	static const int XK_braille_dots_345    
-	static const int XK_braille_dots_1345   
-	static const int XK_braille_dots_2345   
-	static const int XK_braille_dots_12345  
-	static const int XK_braille_dots_6      
-	static const int XK_braille_dots_16     
-	static const int XK_braille_dots_26     
-	static const int XK_braille_dots_126    
-	static const int XK_braille_dots_36     
-	static const int XK_braille_dots_136    
-	static const int XK_braille_dots_236    
-	static const int XK_braille_dots_1236   
-	static const int XK_braille_dots_46     
-	static const int XK_braille_dots_146    
-	static const int XK_braille_dots_246    
-	static const int XK_braille_dots_1246   
-	static const int XK_braille_dots_346    
-	static const int XK_braille_dots_1346   
-	static const int XK_braille_dots_2346   
-	static const int XK_braille_dots_12346  
-	static const int XK_braille_dots_56     
-	static const int XK_braille_dots_156    
-	static const int XK_braille_dots_256    
-	static const int XK_braille_dots_1256   
-	static const int XK_braille_dots_356    
-	static const int XK_braille_dots_1356   
-	static const int XK_braille_dots_2356   
-	static const int XK_braille_dots_12356  
-	static const int XK_braille_dots_456    
-	static const int XK_braille_dots_1456   
-	static const int XK_braille_dots_2456   
-	static const int XK_braille_dots_12456  
-	static const int XK_braille_dots_3456   
-	static const int XK_braille_dots_13456  
-	static const int XK_braille_dots_23456  
-	static const int XK_braille_dots_123456 
-	static const int XK_braille_dots_7      
-	static const int XK_braille_dots_17     
-	static const int XK_braille_dots_27     
-	static const int XK_braille_dots_127    
-	static const int XK_braille_dots_37     
-	static const int XK_braille_dots_137    
-	static const int XK_braille_dots_237    
-	static const int XK_braille_dots_1237   
-	static const int XK_braille_dots_47     
-	static const int XK_braille_dots_147    
-	static const int XK_braille_dots_247    
-	static const int XK_braille_dots_1247   
-	static const int XK_braille_dots_347    
-	static const int XK_braille_dots_1347   
-	static const int XK_braille_dots_2347   
-	static const int XK_braille_dots_12347  
-	static const int XK_braille_dots_57     
-	static const int XK_braille_dots_157    
-	static const int XK_braille_dots_257    
-	static const int XK_braille_dots_1257   
-	static const int XK_braille_dots_357    
-	static const int XK_braille_dots_1357   
-	static const int XK_braille_dots_2357   
-	static const int XK_braille_dots_12357  
-	static const int XK_braille_dots_457    
-	static const int XK_braille_dots_1457   
-	static const int XK_braille_dots_2457   
-	static const int XK_braille_dots_12457  
-	static const int XK_braille_dots_3457   
-	static const int XK_braille_dots_13457  
-	static const int XK_braille_dots_23457  
-	static const int XK_braille_dots_123457 
-	static const int XK_braille_dots_67     
-	static const int XK_braille_dots_167    
-	static const int XK_braille_dots_267    
-	static const int XK_braille_dots_1267   
-	static const int XK_braille_dots_367    
-	static const int XK_braille_dots_1367   
-	static const int XK_braille_dots_2367   
-	static const int XK_braille_dots_12367  
-	static const int XK_braille_dots_467    
-	static const int XK_braille_dots_1467   
-	static const int XK_braille_dots_2467   
-	static const int XK_braille_dots_12467  
-	static const int XK_braille_dots_3467   
-	static const int XK_braille_dots_13467  
-	static const int XK_braille_dots_23467  
-	static const int XK_braille_dots_123467 
-	static const int XK_braille_dots_567    
-	static const int XK_braille_dots_1567   
-	static const int XK_braille_dots_2567   
-	static const int XK_braille_dots_12567  
-	static const int XK_braille_dots_3567   
-	static const int XK_braille_dots_13567  
-	static const int XK_braille_dots_23567  
-	static const int XK_braille_dots_123567 
-	static const int XK_braille_dots_4567   
-	static const int XK_braille_dots_14567  
-	static const int XK_braille_dots_24567  
-	static const int XK_braille_dots_124567 
-	static const int XK_braille_dots_34567  
-	static const int XK_braille_dots_134567 
-	static const int XK_braille_dots_234567 
-	static const int XK_braille_dots_1234567
-	static const int XK_braille_dots_8      
-	static const int XK_braille_dots_18     
-	static const int XK_braille_dots_28     
-	static const int XK_braille_dots_128    
-	static const int XK_braille_dots_38     
-	static const int XK_braille_dots_138    
-	static const int XK_braille_dots_238    
-	static const int XK_braille_dots_1238   
-	static const int XK_braille_dots_48     
-	static const int XK_braille_dots_148    
-	static const int XK_braille_dots_248    
-	static const int XK_braille_dots_1248   
-	static const int XK_braille_dots_348    
-	static const int XK_braille_dots_1348   
-	static const int XK_braille_dots_2348   
-	static const int XK_braille_dots_12348  
-	static const int XK_braille_dots_58     
-	static const int XK_braille_dots_158    
-	static const int XK_braille_dots_258    
-	static const int XK_braille_dots_1258   
-	static const int XK_braille_dots_358    
-	static const int XK_braille_dots_1358   
-	static const int XK_braille_dots_2358   
-	static const int XK_braille_dots_12358  
-	static const int XK_braille_dots_458    
-	static const int XK_braille_dots_1458   
-	static const int XK_braille_dots_2458   
-	static const int XK_braille_dots_12458  
-	static const int XK_braille_dots_3458   
-	static const int XK_braille_dots_13458  
-	static const int XK_braille_dots_23458  
-	static const int XK_braille_dots_123458 
-	static const int XK_braille_dots_68     
-	static const int XK_braille_dots_168    
-	static const int XK_braille_dots_268    
-	static const int XK_braille_dots_1268   
-	static const int XK_braille_dots_368    
-	static const int XK_braille_dots_1368   
-	static const int XK_braille_dots_2368   
-	static const int XK_braille_dots_12368  
-	static const int XK_braille_dots_468    
-	static const int XK_braille_dots_1468   
-	static const int XK_braille_dots_2468   
-	static const int XK_braille_dots_12468  
-	static const int XK_braille_dots_3468   
-	static const int XK_braille_dots_13468  
-	static const int XK_braille_dots_23468  
-	static const int XK_braille_dots_123468 
-	static const int XK_braille_dots_568    
-	static const int XK_braille_dots_1568   
-	static const int XK_braille_dots_2568   
-	static const int XK_braille_dots_12568  
-	static const int XK_braille_dots_3568   
-	static const int XK_braille_dots_13568  
-	static const int XK_braille_dots_23568  
-	static const int XK_braille_dots_123568 
-	static const int XK_braille_dots_4568   
-	static const int XK_braille_dots_14568  
-	static const int XK_braille_dots_24568  
-	static const int XK_braille_dots_124568 
-	static const int XK_braille_dots_34568  
-	static const int XK_braille_dots_134568 
-	static const int XK_braille_dots_234568 
-	static const int XK_braille_dots_1234568
-	static const int XK_braille_dots_78     
-	static const int XK_braille_dots_178    
-	static const int XK_braille_dots_278    
-	static const int XK_braille_dots_1278   
-	static const int XK_braille_dots_378    
-	static const int XK_braille_dots_1378   
-	static const int XK_braille_dots_2378   
-	static const int XK_braille_dots_12378  
-	static const int XK_braille_dots_478    
-	static const int XK_braille_dots_1478   
-	static const int XK_braille_dots_2478   
-	static const int XK_braille_dots_12478  
-	static const int XK_braille_dots_3478   
-	static const int XK_braille_dots_13478  
-	static const int XK_braille_dots_23478  
-	static const int XK_braille_dots_123478 
-	static const int XK_braille_dots_578    
-	static const int XK_braille_dots_1578   
-	static const int XK_braille_dots_2578   
-	static const int XK_braille_dots_12578  
-	static const int XK_braille_dots_3578   
-	static const int XK_braille_dots_13578  
-	static const int XK_braille_dots_23578  
-	static const int XK_braille_dots_123578 
-	static const int XK_braille_dots_4578   
-	static const int XK_braille_dots_14578  
-	static const int XK_braille_dots_24578  
-	static const int XK_braille_dots_124578 
-	static const int XK_braille_dots_34578  
-	static const int XK_braille_dots_134578 
-	static const int XK_braille_dots_234578 
-	static const int XK_braille_dots_1234578
-	static const int XK_braille_dots_678    
-	static const int XK_braille_dots_1678   
-	static const int XK_braille_dots_2678   
-	static const int XK_braille_dots_12678  
-	static const int XK_braille_dots_3678   
-	static const int XK_braille_dots_13678  
-	static const int XK_braille_dots_23678  
-	static const int XK_braille_dots_123678 
-	static const int XK_braille_dots_4678   
-	static const int XK_braille_dots_14678  
-	static const int XK_braille_dots_24678  
-	static const int XK_braille_dots_124678 
-	static const int XK_braille_dots_34678  
-	static const int XK_braille_dots_134678 
-	static const int XK_braille_dots_234678 
-	static const int XK_braille_dots_1234678
-	static const int XK_braille_dots_5678   
-	static const int XK_braille_dots_15678  
-	static const int XK_braille_dots_25678  
-	static const int XK_braille_dots_125678 
-	static const int XK_braille_dots_35678  
-	static const int XK_braille_dots_135678 
-	static const int XK_braille_dots_235678 
-	static const int XK_braille_dots_1235678
-	static const int XK_braille_dots_45678  
-	static const int XK_braille_dots_145678 
-	static const int XK_braille_dots_245678 
-	static const int XK_braille_dots_1245678
-	static const int XK_braille_dots_345678 
-	static const int XK_braille_dots_1345678
-	static const int XK_braille_dots_2345678
-	static const int XK_braille_dots_12345678
+	static const int BrailleDot1 = XK_braille_dot_1;       
+	static const int BrailleDot2 = XK_braille_dot_2;       
+	static const int BrailleDot3 = XK_braille_dot_3;       
+	static const int BrailleDot4 = XK_braille_dot_4;       
+	static const int BrailleDot5 = XK_braille_dot_5;       
+	static const int BrailleDot6 = XK_braille_dot_6;       
+	static const int BrailleDot7 = XK_braille_dot_7;       
+	static const int BrailleDot8 = XK_braille_dot_8;       
+	static const int BrailleDot9 = XK_braille_dot_9;       
+	static const int BrailleDot10 = XK_braille_dot_10;      
+	static const int BrailleBlank = XK_braille_blank;       
+	static const int BrailleDots1 = XK_braille_dots_1;      
+	static const int BrailleDots2 = XK_braille_dots_2;      
+	static const int BrailleDots12 = XK_braille_dots_12;     
+	static const int BrailleDots3 = XK_braille_dots_3;      
+	static const int BrailleDots13 = XK_braille_dots_13;     
+	static const int BrailleDots23 = XK_braille_dots_23;     
+	static const int BrailleDots123 = XK_braille_dots_123;    
+	static const int BrailleDots4 = XK_braille_dots_4;      
+	static const int BrailleDots14 = XK_braille_dots_14;     
+	static const int BrailleDots24 = XK_braille_dots_24;     
+	static const int BrailleDots124 = XK_braille_dots_124;    
+	static const int BrailleDots34 = XK_braille_dots_34;     
+	static const int BrailleDots134 = XK_braille_dots_134;    
+	static const int BrailleDots234 = XK_braille_dots_234;    
+	static const int BrailleDots1234 = XK_braille_dots_1234;   
+	static const int BrailleDots5 = XK_braille_dots_5;      
+	static const int BrailleDots15 = XK_braille_dots_15;     
+	static const int BrailleDots25 = XK_braille_dots_25;     
+	static const int BrailleDots125 = XK_braille_dots_125;    
+	static const int BrailleDots35 = XK_braille_dots_35;     
+	static const int BrailleDots135 = XK_braille_dots_135;    
+	static const int BrailleDots235 = XK_braille_dots_235;    
+	static const int BrailleDots1235 = XK_braille_dots_1235;   
+	static const int BrailleDots45 = XK_braille_dots_45;     
+	static const int BrailleDots145 = XK_braille_dots_145;    
+	static const int BrailleDots245 = XK_braille_dots_245;    
+	static const int BrailleDots1245 = XK_braille_dots_1245;   
+	static const int BrailleDots345 = XK_braille_dots_345;    
+	static const int BrailleDots1345 = XK_braille_dots_1345;   
+	static const int BrailleDots2345 = XK_braille_dots_2345;   
+	static const int BrailleDots12345 = XK_braille_dots_12345;  
+	static const int BrailleDots6 = XK_braille_dots_6;      
+	static const int BrailleDots16 = XK_braille_dots_16;     
+	static const int BrailleDots26 = XK_braille_dots_26;     
+	static const int BrailleDots126 = XK_braille_dots_126;    
+	static const int BrailleDots36 = XK_braille_dots_36;     
+	static const int BrailleDots136 = XK_braille_dots_136;    
+	static const int BrailleDots236 = XK_braille_dots_236;    
+	static const int BrailleDots1236 = XK_braille_dots_1236;   
+	static const int BrailleDots46 = XK_braille_dots_46;     
+	static const int BrailleDots146 = XK_braille_dots_146;    
+	static const int BrailleDots246 = XK_braille_dots_246;    
+	static const int BrailleDots1246 = XK_braille_dots_1246;   
+	static const int BrailleDots346 = XK_braille_dots_346;    
+	static const int BrailleDots1346 = XK_braille_dots_1346;   
+	static const int BrailleDots2346 = XK_braille_dots_2346;   
+	static const int BrailleDots12346 = XK_braille_dots_12346;  
+	static const int BrailleDots56 = XK_braille_dots_56;     
+	static const int BrailleDots156 = XK_braille_dots_156;    
+	static const int BrailleDots256 = XK_braille_dots_256;    
+	static const int BrailleDots1256 = XK_braille_dots_1256;   
+	static const int BrailleDots356 = XK_braille_dots_356;    
+	static const int BrailleDots1356 = XK_braille_dots_1356;   
+	static const int BrailleDots2356 = XK_braille_dots_2356;   
+	static const int BrailleDots12356 = XK_braille_dots_12356;  
+	static const int BrailleDots456 = XK_braille_dots_456;    
+	static const int BrailleDots1456 = XK_braille_dots_1456;   
+	static const int BrailleDots2456 = XK_braille_dots_2456;   
+	static const int BrailleDots12456 = XK_braille_dots_12456;  
+	static const int BrailleDots3456 = XK_braille_dots_3456;   
+	static const int BrailleDots13456 = XK_braille_dots_13456;  
+	static const int BrailleDots23456 = XK_braille_dots_23456;  
+	static const int BrailleDots123456 = XK_braille_dots_123456; 
+	static const int BrailleDots7 = XK_braille_dots_7;      
+	static const int BrailleDots17 = XK_braille_dots_17;     
+	static const int BrailleDots27 = XK_braille_dots_27;     
+	static const int BrailleDots127 = XK_braille_dots_127;    
+	static const int BrailleDots37 = XK_braille_dots_37;     
+	static const int BrailleDots137 = XK_braille_dots_137;    
+	static const int BrailleDots237 = XK_braille_dots_237;    
+	static const int BrailleDots1237 = XK_braille_dots_1237;   
+	static const int BrailleDots47 = XK_braille_dots_47;     
+	static const int BrailleDots147 = XK_braille_dots_147;    
+	static const int BrailleDots247 = XK_braille_dots_247;    
+	static const int BrailleDots1247 = XK_braille_dots_1247;   
+	static const int BrailleDots347 = XK_braille_dots_347;    
+	static const int BrailleDots1347 = XK_braille_dots_1347;   
+	static const int BrailleDots2347 = XK_braille_dots_2347;   
+	static const int BrailleDots12347 = XK_braille_dots_12347;  
+	static const int BrailleDots57 = XK_braille_dots_57;     
+	static const int BrailleDots157 = XK_braille_dots_157;    
+	static const int BrailleDots257 = XK_braille_dots_257;    
+	static const int BrailleDots1257 = XK_braille_dots_1257;   
+	static const int BrailleDots357 = XK_braille_dots_357;    
+	static const int BrailleDots1357 = XK_braille_dots_1357;   
+	static const int BrailleDots2357 = XK_braille_dots_2357;   
+	static const int BrailleDots12357 = XK_braille_dots_12357;  
+	static const int BrailleDots457 = XK_braille_dots_457;    
+	static const int BrailleDots1457 = XK_braille_dots_1457;   
+	static const int BrailleDots2457 = XK_braille_dots_2457;   
+	static const int BrailleDots12457 = XK_braille_dots_12457;  
+	static const int BrailleDots3457 = XK_braille_dots_3457;   
+	static const int BrailleDots13457 = XK_braille_dots_13457;  
+	static const int BrailleDots23457 = XK_braille_dots_23457;  
+	static const int BrailleDots123457 = XK_braille_dots_123457; 
+	static const int BrailleDots67 = XK_braille_dots_67;     
+	static const int BrailleDots167 = XK_braille_dots_167;    
+	static const int BrailleDots267 = XK_braille_dots_267;    
+	static const int BrailleDots1267 = XK_braille_dots_1267;   
+	static const int BrailleDots367 = XK_braille_dots_367;    
+	static const int BrailleDots1367 = XK_braille_dots_1367;   
+	static const int BrailleDots2367 = XK_braille_dots_2367;   
+	static const int BrailleDots12367 = XK_braille_dots_12367;  
+	static const int BrailleDots467 = XK_braille_dots_467;    
+	static const int BrailleDots1467 = XK_braille_dots_1467;   
+	static const int BrailleDots2467 = XK_braille_dots_2467;   
+	static const int BrailleDots12467 = XK_braille_dots_12467;  
+	static const int BrailleDots3467 = XK_braille_dots_3467;   
+	static const int BrailleDots13467 = XK_braille_dots_13467;  
+	static const int BrailleDots23467 = XK_braille_dots_23467;  
+	static const int BrailleDots123467 = XK_braille_dots_123467; 
+	static const int BrailleDots567 = XK_braille_dots_567;    
+	static const int BrailleDots1567 = XK_braille_dots_1567;   
+	static const int BrailleDots2567 = XK_braille_dots_2567;   
+	static const int BrailleDots12567 = XK_braille_dots_12567;  
+	static const int BrailleDots3567 = XK_braille_dots_3567;   
+	static const int BrailleDots13567 = XK_braille_dots_13567;  
+	static const int BrailleDots23567 = XK_braille_dots_23567;  
+	static const int BrailleDots123567 = XK_braille_dots_123567; 
+	static const int BrailleDots4567 = XK_braille_dots_4567;   
+	static const int BrailleDots14567 = XK_braille_dots_14567;  
+	static const int BrailleDots24567 = XK_braille_dots_24567;  
+	static const int BrailleDots124567 = XK_braille_dots_124567; 
+	static const int BrailleDots34567 = XK_braille_dots_34567;  
+	static const int BrailleDots134567 = XK_braille_dots_134567; 
+	static const int BrailleDots234567 = XK_braille_dots_234567; 
+	static const int BrailleDots1234567 = XK_braille_dots_1234567;
+	static const int BrailleDots8 = XK_braille_dots_8;      
+	static const int BrailleDots18 = XK_braille_dots_18;     
+	static const int BrailleDots28 = XK_braille_dots_28;     
+	static const int BrailleDots128 = XK_braille_dots_128;    
+	static const int BrailleDots38 = XK_braille_dots_38;     
+	static const int BrailleDots138 = XK_braille_dots_138;    
+	static const int BrailleDots238 = XK_braille_dots_238;    
+	static const int BrailleDots1238 = XK_braille_dots_1238;   
+	static const int BrailleDots48 = XK_braille_dots_48;    
+	static const int BrailleDots148 = XK_braille_dots_148;    
+	static const int BrailleDots248 = XK_braille_dots_248;    
+	static const int BrailleDots1248 = XK_braille_dots_1248;   
+	static const int BrailleDots348 = XK_braille_dots_348;    
+	static const int BrailleDots1348 = XK_braille_dots_1348;   
+	static const int BrailleDots2348 = XK_braille_dots_2348;   
+	static const int BrailleDots12348 = XK_braille_dots_12348;  
+	static const int BrailleDots58 = XK_braille_dots_58;     
+	static const int BrailleDots158 = XK_braille_dots_158;    
+	static const int BrailleDots258 = XK_braille_dots_258;    
+	static const int BrailleDots1258 = XK_braille_dots_1258;   
+	static const int BrailleDots358 = XK_braille_dots_358;    
+	static const int BrailleDots1358 = XK_braille_dots_1358;   
+	static const int BrailleDots2358 = XK_braille_dots_2358;   
+	static const int BrailleDots12358 = XK_braille_dots_12358;  
+	static const int BrailleDots458 = XK_braille_dots_458;    
+	static const int BrailleDots1458 = XK_braille_dots_1458;   
+	static const int BrailleDots2458 = XK_braille_dots_2458;   
+	static const int BrailleDots12458 = XK_braille_dots_12458;  
+	static const int BrailleDots3458 = XK_braille_dots_3458;   
+	static const int BrailleDots13458 = XK_braille_dots_13458;  
+	static const int BrailleDots23458 = XK_braille_dots_23458;  
+	static const int BrailleDots123458 = XK_braille_dots_123458; 
+	static const int BrailleDots68 = XK_braille_dots_68;     
+	static const int BrailleDots168 = XK_braille_dots_168;    
+	static const int BrailleDots268 = XK_braille_dots_268;    
+	static const int BrailleDots1268 = XK_braille_dots_1268;   
+	static const int BrailleDots368 = XK_braille_dots_368;    
+	static const int BrailleDots1368 = XK_braille_dots_1368;   
+	static const int BrailleDots2368 = XK_braille_dots_2368;   
+	static const int BrailleDots12368 = XK_braille_dots_12368;  
+	static const int BrailleDots468 = XK_braille_dots_468;    
+	static const int BrailleDots1468 = XK_braille_dots_1468;   
+	static const int BrailleDots2468 = XK_braille_dots_2468;   
+	static const int BrailleDots12468 = XK_braille_dots_12468;  
+	static const int BrailleDots3468 = XK_braille_dots_3468;   
+	static const int BrailleDots13468 = XK_braille_dots_13468;  
+	static const int BrailleDots23468 = XK_braille_dots_23468;  
+	static const int BrailleDots123468 = XK_braille_dots_123468; 
+	static const int BrailleDots568 = XK_braille_dots_568;    
+	static const int BrailleDots1568 = XK_braille_dots_1568;   
+	static const int BrailleDots2568 = XK_braille_dots_2568;   
+	static const int BrailleDots12568 = XK_braille_dots_12568;  
+	static const int BrailleDots3568 = XK_braille_dots_3568;   
+	static const int BrailleDots13568 = XK_braille_dots_13568;  
+	static const int BrailleDots23568 = XK_braille_dots_23568;  
+	static const int BrailleDots123568 = XK_braille_dots_123568; 
+	static const int BrailleDots4568 = XK_braille_dots_4568;   
+	static const int BrailleDots14568 = XK_braille_dots_14568;  
+	static const int BrailleDots24568 = XK_braille_dots_24568;  
+	static const int BrailleDots124568 = XK_braille_dots_124568; 
+	static const int BrailleDots34568 = XK_braille_dots_34568;  
+	static const int BrailleDots134568 = XK_braille_dots_134568; 
+	static const int BrailleDots234568 = XK_braille_dots_234568; 
+	static const int BrailleDots1234568 = XK_braille_dots_1234568;
+	static const int BrailleDots78 = XK_braille_dots_78;     
+	static const int BrailleDots178 = XK_braille_dots_178;    
+	static const int BrailleDots278 = XK_braille_dots_278;    
+	static const int BrailleDots1278 = XK_braille_dots_1278;   
+	static const int BrailleDots378 = XK_braille_dots_378;    
+	static const int BrailleDots1378 = XK_braille_dots_1378;   
+	static const int BrailleDots2378 = XK_braille_dots_2378;   
+	static const int BrailleDots12378 = XK_braille_dots_12378;  
+	static const int BrailleDots478 = XK_braille_dots_478;    
+	static const int BrailleDots1478 = XK_braille_dots_1478;   
+	static const int BrailleDots2478 = XK_braille_dots_2478;   
+	static const int BrailleDots12478 = XK_braille_dots_12478;  
+	static const int BrailleDots3478 = XK_braille_dots_3478;   
+	static const int BrailleDots13478 = XK_braille_dots_13478;  
+	static const int BrailleDots23478 = XK_braille_dots_23478;  
+	static const int BrailleDots123478 = XK_braille_dots_123478; 
+	static const int BrailleDots578 = XK_braille_dots_578;    
+	static const int BrailleDots1578 = XK_braille_dots_1578;   
+	static const int BrailleDots2578 = XK_braille_dots_2578;   
+	static const int BrailleDots12578 = XK_braille_dots_12578;  
+	static const int BrailleDots3578 = XK_braille_dots_3578;   
+	static const int BrailleDots13578 = XK_braille_dots_13578;  
+	static const int BrailleDots23578 = XK_braille_dots_23578;  
+	static const int BrailleDots123578 = XK_braille_dots_123578; 
+	static const int BrailleDots4578 = XK_braille_dots_4578;   
+	static const int BrailleDots14578 = XK_braille_dots_14578;  
+	static const int BrailleDots24578 = XK_braille_dots_24578;  
+	static const int BrailleDots124578 = XK_braille_dots_124578; 
+	static const int BrailleDots34578 = XK_braille_dots_34578;  
+	static const int BrailleDots134578 = XK_braille_dots_134578; 
+	static const int BrailleDots234578 = XK_braille_dots_234578; 
+	static const int BrailleDots1234578 = XK_braille_dots_1234578;
+	static const int BrailleDots678 = XK_braille_dots_678;    
+	static const int BrailleDots1678 = XK_braille_dots_1678;   
+	static const int BrailleDots2678 = XK_braille_dots_2678;   
+	static const int BrailleDots12678 = XK_braille_dots_12678;  
+	static const int BrailleDots3678 = XK_braille_dots_3678;   
+	static const int BrailleDots13678 = XK_braille_dots_13678;  
+	static const int BrailleDots23678 = XK_braille_dots_23678;  
+	static const int BrailleDots123678 = XK_braille_dots_123678; 
+	static const int BrailleDots4678 = XK_braille_dots_4678;   
+	static const int BrailleDots14678 = XK_braille_dots_14678;  
+	static const int BrailleDots24678 = XK_braille_dots_24678;  
+	static const int BrailleDots124678 = XK_braille_dots_124678; 
+	static const int BrailleDots34678 = XK_braille_dots_34678;  
+	static const int BrailleDots134678 = XK_braille_dots_134678; 
+	static const int BrailleDots234678 = XK_braille_dots_234678; 
+	static const int BrailleDots1234678 = XK_braille_dots_1234678;
+	static const int BrailleDots5678 = XK_braille_dots_5678;   
+	static const int BrailleDots15678 = XK_braille_dots_15678;  
+	static const int BrailleDots25678 = XK_braille_dots_25678;  
+	static const int BrailleDots125678 = XK_braille_dots_125678; 
+	static const int BrailleDots35678 = XK_braille_dots_35678;  
+	static const int BrailleDots135678 = XK_braille_dots_135678; 
+	static const int BrailleDots235678 = XK_braille_dots_235678; 
+	static const int BrailleDots1235678 = XK_braille_dots_1235678;
+	static const int BrailleDots45678 = XK_braille_dots_45678;  
+	static const int BrailleDots145678 = XK_braille_dots_145678; 
+	static const int BrailleDots245678 = XK_braille_dots_245678; 
+	static const int BrailleDots1245678 = XK_braille_dots_1245678;
+	static const int BrailleDots345678 = XK_braille_dots_345678; 
+	static const int BrailleDots1345678 = XK_braille_dots_1345678;
+	static const int BrailleDots2345678 = XK_braille_dots_2345678;
+	static const int BrailleDots12345678 = XK_braille_dots_12345678;
 
-/*
- * Sinhala (http://unicode.org/charts/PDF/U0D80.pdf)
- * http://www.nongnu.org/sinhala/doc/transliteration/sinhala-transliteration_6.html
- */
+	// Sinhala (http://unicode.org/charts/PDF/U0D80.pdf) http://www.nongnu.org/sinhala/doc/transliteration/sinhala-transliteration_6.html
 
-	static const int XK_Sinh_ng      
-	static const int XK_Sinh_h2      
-	static const int XK_Sinh_a       
-	static const int XK_Sinh_aa      
-	static const int XK_Sinh_ae      
-	static const int XK_Sinh_aee     
-	static const int XK_Sinh_i       
-	static const int XK_Sinh_ii      
-	static const int XK_Sinh_u       
-	static const int XK_Sinh_uu      
-	static const int XK_Sinh_ri      
-	static const int XK_Sinh_rii     
-	static const int XK_Sinh_lu      
-	static const int XK_Sinh_luu     
-	static const int XK_Sinh_e       
-	static const int XK_Sinh_ee      
-	static const int XK_Sinh_ai      
-	static const int XK_Sinh_o       
-	static const int XK_Sinh_oo      
-	static const int XK_Sinh_au      
-	static const int XK_Sinh_ka      
-	static const int XK_Sinh_kha     
-	static const int XK_Sinh_ga      
-	static const int XK_Sinh_gha     
-	static const int XK_Sinh_ng2     
-	static const int XK_Sinh_nga     
-	static const int XK_Sinh_ca      
-	static const int XK_Sinh_cha     
-	static const int XK_Sinh_ja      
-	static const int XK_Sinh_jha     
-	static const int XK_Sinh_nya     
-	static const int XK_Sinh_jnya    
-	static const int XK_Sinh_nja     
-	static const int XK_Sinh_tta     
-	static const int XK_Sinh_ttha    
-	static const int XK_Sinh_dda     
-	static const int XK_Sinh_ddha    
-	static const int XK_Sinh_nna     
-	static const int XK_Sinh_ndda    
-	static const int XK_Sinh_tha     
-	static const int XK_Sinh_thha    
-	static const int XK_Sinh_dha     
-	static const int XK_Sinh_dhha    
-	static const int XK_Sinh_na      
-	static const int XK_Sinh_ndha    
-	static const int XK_Sinh_pa      
-	static const int XK_Sinh_pha     
-	static const int XK_Sinh_ba      
-	static const int XK_Sinh_bha     
-	static const int XK_Sinh_ma      
-	static const int XK_Sinh_mba     
-	static const int XK_Sinh_ya      
-	static const int XK_Sinh_ra      
-	static const int XK_Sinh_la      
-	static const int XK_Sinh_va      
-	static const int XK_Sinh_sha     
-	static const int XK_Sinh_ssha    
-	static const int XK_Sinh_sa      
-	static const int XK_Sinh_ha      
-	static const int XK_Sinh_lla     
-	static const int XK_Sinh_fa      
-	static const int XK_Sinh_al      
-	static const int XK_Sinh_aa2     
-	static const int XK_Sinh_ae2     
-	static const int XK_Sinh_aee2    
-	static const int XK_Sinh_i2      
-	static const int XK_Sinh_ii2     
-	static const int XK_Sinh_u2      
-	static const int XK_Sinh_uu2     
-	static const int XK_Sinh_ru2     
-	static const int XK_Sinh_e2      
-	static const int XK_Sinh_ee2     
-	static const int XK_Sinh_ai2     
-	static const int XK_Sinh_o2      
-	static const int XK_Sinh_oo2     
-	static const int XK_Sinh_au2     
-	static const int XK_Sinh_lu2     
-	static const int XK_Sinh_ruu2    
-	static const int XK_Sinh_luu2    
-	static const int XK_Sinh_kunddaliya
+	static const int SinhNg = XK_Sinh_ng;      
+	static const int SinhH2 = XK_Sinh_h2;      
+	static const int SinhA = XK_Sinh_a;       
+	static const int SinhAA = XK_Sinh_aa;      
+	static const int SinhAE = XK_Sinh_ae;      
+	static const int SinhAEE = XK_Sinh_aee;     
+	static const int SinhI = XK_Sinh_i;       
+	static const int SinhII = XK_Sinh_ii;      
+	static const int SinhU = XK_Sinh_u;       
+	static const int SinhUU = XK_Sinh_uu;      
+	static const int SinhRI = XK_Sinh_ri;      
+	static const int SinhRII = XK_Sinh_rii;     
+	static const int SinhLU = XK_Sinh_lu;      
+	static const int SinhLUU = XK_Sinh_luu;     
+	static const int SinhE = XK_Sinh_e;       
+	static const int SinhEE = XK_Sinh_ee;      
+	static const int SinhAI = XK_Sinh_ai;      
+	static const int SinhO = XK_Sinh_o;       
+	static const int SinhOO = XK_Sinh_oo;      
+	static const int SinhAU = XK_Sinh_au;      
+	static const int SinhKA = XK_Sinh_ka;      
+	static const int SinhKHA = XK_Sinh_kha;     
+	static const int SinhGA = XK_Sinh_ga;      
+	static const int SinhGHA = XK_Sinh_gha;     
+	static const int SinhNG2 = XK_Sinh_ng2;     
+	static const int SinhNGA = XK_Sinh_nga;     
+	static const int SinhCA = XK_Sinh_ca;      
+	static const int SinhCHA = XK_Sinh_cha;     
+	static const int SinhJA = XK_Sinh_ja;      
+	static const int SinhJHA = XK_Sinh_jha;     
+	static const int SinhNYA = XK_Sinh_nya;     
+	static const int SinhJNYA = XK_Sinh_jnya;    
+	static const int SinhNJA = XK_Sinh_nja;     
+	static const int SinhTTA = XK_Sinh_tta;     
+	static const int SinhTTHA = XK_Sinh_ttha;    
+	static const int SinhDDA = XK_Sinh_dda;     
+	static const int SinhDDHA = XK_Sinh_ddha;    
+	static const int SinhNNA = XK_Sinh_nna;     
+	static const int SinhNDDA = XK_Sinh_ndda;    
+	static const int SinhTHA = XK_Sinh_tha;     
+	static const int SinhTHHA = XK_Sinh_thha;    
+	static const int SinhDHA = XK_Sinh_dha;     
+	static const int SinhDHHA = XK_Sinh_dhha;    
+	static const int SinhNA = XK_Sinh_na;      
+	static const int SinhNDHA = XK_Sinh_ndha;    
+	static const int SinhPA = XK_Sinh_pa;      
+	static const int SinhPHA = XK_Sinh_pha;     
+	static const int SinhBA = XK_Sinh_ba;      
+	static const int SinhNHA = XK_Sinh_bha;     
+	static const int SinhMA = XK_Sinh_ma;      
+	static const int SinhMBA = XK_Sinh_mba;     
+	static const int SinhYA = XK_Sinh_ya;      
+	static const int SinhRA = XK_Sinh_ra;      
+	static const int SinhLA = XK_Sinh_la;      
+	static const int SinhVA = XK_Sinh_va;      
+	static const int SinhSHA = XK_Sinh_sha;     
+	static const int SinhSSHA = XK_Sinh_ssha;    
+	static const int SinhSA = XK_Sinh_sa;      
+	static const int SinhHA = XK_Sinh_ha;      
+	static const int SinhLLA = XK_Sinh_lla;     
+	static const int SinhFA = XK_Sinh_fa;      
+	static const int SinhAL = XK_Sinh_al;      
+	static const int SinhAA2 = XK_Sinh_aa2;     
+	static const int SinhAE2 = XK_Sinh_ae2;     
+	static const int SinhAEE2 = XK_Sinh_aee2;    
+	static const int SinhI2 = XK_Sinh_i2;      
+	static const int SinhII2 = XK_Sinh_ii2;     
+	static const int SinhU2 = XK_Sinh_u2;      
+	static const int SinhUU2 = XK_Sinh_uu2;     
+	static const int SinhRU2 = XK_Sinh_ru2;     
+	static const int SinhE2 = XK_Sinh_e2;      
+	static const int SinhEE2 = XK_Sinh_ee2;     
+	static const int SinhAI2 = XK_Sinh_ai2;     
+	static const int SinhO2 = XK_Sinh_o2;      
+	static const int SinhOO2 = XK_Sinh_oo2;     
+	static const int SinhAU2 = XK_Sinh_au2;     
+	static const int SinhLU2 = XK_Sinh_lu2;     
+	static const int SinhRUU2 = XK_Sinh_ruu2;    
+	static const int SinhLUU2 = XK_Sinh_luu2;    
+	static const int SinhKunddaliya = XK_Sinh_kunddaliya;
 
 };
 
