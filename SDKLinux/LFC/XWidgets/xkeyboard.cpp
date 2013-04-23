@@ -19,33 +19,22 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef XDISPLAY_H
-#define XDISPLAY_H
+#include "xkeyboard.h"
+#include "xexception.h"
+#include "../Text/text.h"
+#include <stdlib.h>
 
-#include "../n_object.h"
-#include <X11/Xlib.h>
-#include <X11/XKBlib.h>
+XKeyboard::XKeyboard(Display *d)
+{
+	display = d;
+}
 
-class XDisplay : public NObject {
-	friend class XWindow;
-	
-	static XDisplay *defaultXDisplay;
-	
-	bool createdAsCopy;
-	Display *d;
-	Text *displayName;
-	
-	XDisplay(Display *d);
-	
-public:
-	XDisplay();
-	XDisplay(const Text &displayName);
-	virtual ~XDisplay();
-	
-	Text &Name();
-	
-	static XDisplay &Default();
-	
-};
+XKeyboard::~XKeyboard()
+{
+}
 
-#endif // XDISPLAY_H
+Display *XKeyboard::HandleDisplay()
+{
+	return display;
+}
+

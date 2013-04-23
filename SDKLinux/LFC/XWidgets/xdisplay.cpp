@@ -32,6 +32,19 @@ XDisplay::XDisplay()
 	d = XOpenDisplay(NULL);
 	if (d == NULL)
 		throw new XException((Text)"Could not open display NULL", __FILE__, __LINE__, __func__);
+		
+	// Init Xkb exception
+	XExtCodes *cc = XInitExtension(d, XkbName);
+	if (cc == NULL) throw new XException("Cannot init XKEYBOARD extension", __FILE__, __LINE__, __func__);
+	
+	// Query extension
+	int opcode = 0, event = 0, error = 0, lib_major_in_out = 0, lib_minor_in_out = 0;
+	if (!XkbQueryExtension(d, &opcode, &event, &error, &lib_major_in_out, &lib_minor_in_out))
+		throw new XException("Error in XQueryExtension", __FILE__, __LINE__, __func__);
+		
+	// Check library version
+	if (!XkbLibraryVersion(&lib_major_in_out, &lib_minor_in_out))
+		throw new XException("Error in XkbLibraryExtension", __FILE__, __LINE__, __func__);
 }
 
 XDisplay::XDisplay(Display *d)

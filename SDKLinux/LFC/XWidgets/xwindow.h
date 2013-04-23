@@ -51,6 +51,7 @@ class WindowEventMove;
 class WindowEventResize;
 class WindowEventColormap;
 class WindowEventKeyboardMapping;
+class XKeyboard;
 
 class XWindow : public NObject {
 private:
@@ -62,6 +63,7 @@ private:
 	Window windowParent;
 	Display *windowDisplay;
 	Visual *windowVisual;
+	XKeyboard *keyboard;
 	int windowScreen;
 	bool visible;
 	NRectangle *area;

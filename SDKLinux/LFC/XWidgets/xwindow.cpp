@@ -22,6 +22,7 @@
 #include "xwindow.h"
 #include "xdisplay.h"
 #include "xexception.h"
+#include "xkeyboard.h"
 #include "../nwchar.h"
 #include "../Text/text.h"
 #include "../Threading/mutex.h"
@@ -76,6 +77,7 @@ XWindow::~XWindow()
 	delete area;
 	delete backcolor;
 	delete font;
+	delete keyboard;
 	
 	// Destroy window
 	int res = XDestroyWindow(windowDisplay, window);
@@ -159,6 +161,10 @@ void XWindow::init(const XDisplay &d)
 		KeymapStateMask | ExposureMask | VisibilityChangeMask | StructureNotifyMask |
 		FocusChangeMask | PropertyChangeMask | ColormapChangeMask | OwnerGrabButtonMask);
 	XException::CheckResult(res);	
+	
+	// Select Xkb events
+	if (!XkbSelectEvents(windowDisplay, XkbUseCoreKbd, XkbNewKeyboardNotifyMask | XkbMapNotifyMask, 0))
+		throw new XException("Cannot select Xkb events", __FILE__, __LINE__, __func__);
 	
 	// Create a graphics context
 	gc = new XWindowGraphics(*this);
