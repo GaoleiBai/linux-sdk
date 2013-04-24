@@ -22,7 +22,6 @@
 #include "xwindow.h"
 #include "xdisplay.h"
 #include "xexception.h"
-#include "xkeyboard.h"
 #include "../nwchar.h"
 #include "../Text/text.h"
 #include "../Threading/mutex.h"
@@ -77,7 +76,6 @@ XWindow::~XWindow()
 	delete area;
 	delete backcolor;
 	delete font;
-	delete keyboard;
 	
 	// Destroy window
 	int res = XDestroyWindow(windowDisplay, window);
@@ -163,7 +161,12 @@ void XWindow::init(const XDisplay &d)
 	XException::CheckResult(res);	
 	
 	// Select Xkb events
-	if (!XkbSelectEvents(windowDisplay, XkbUseCoreKbd, XkbNewKeyboardNotifyMask | XkbMapNotifyMask, 0))
+	if (!XkbSelectEvents(windowDisplay, XkbUseCoreKbd, 
+		XkbNewKeyboardNotifyMask | XkbMapNotifyMask | XkbStateNotifyMask,
+		XkbNewKeyboardNotifyMask | XkbMapNotifyMask | XkbStateNotifyMask))
+		throw new XException("Cannot select Xkb events", __FILE__, __LINE__, __func__);
+	
+	if (!XkbSelectEvents(windowDisplay, XkbUseCoreKbd, XkbAllEventsMask, XkbAllEventsMask))
 		throw new XException("Cannot select Xkb events", __FILE__, __LINE__, __func__);
 	
 	// Create a graphics context
@@ -297,48 +300,39 @@ int XWindow::RunModal()
 	Atom wmDeleteMessage = XInternAtom(windowDisplay, "WM_DELETE_WINDOW", false);
 	XSetWMProtocols(windowDisplay, window, &wmDeleteMessage, 1);
 	
-	XEvent event;
+	XkbEvent event;
 	do {
 		// Gets the new event
-		int res = XNextEvent(windowDisplay, &event);
-		if (window != event.xany.window) continue;
+		int res = XNextEvent(windowDisplay, &event.core);
+		if (window != event.core.xany.window) continue;
 		
 		// Processes the events
-		if (event.type == KeyPress) {
-			WindowEventKey e(&event.xkey);
-			OnKeyPress(&e);
-		} else if (event.type == KeyRelease) {
-			WindowEventKey e(&event.xkey);
-			OnKeyRelease(&e);
-		} else if (event.type == ButtonPress) {
-			WindowEventMouseButton e(&event.xbutton);
+		if (event.type == ButtonPress) {
+			WindowEventMouseButton e(&event.core.xbutton);
 			OnMouseDown(&e);
 		} else if (event.type == ButtonRelease) {
-			WindowEventMouseButton e(&event.xbutton);
+			WindowEventMouseButton e(&event.core.xbutton);
 			OnMouseUp(&e);
 		} else if (event.type == MotionNotify) {
-			WindowEventMouseMove e(&event.xmotion);
+			WindowEventMouseMove e(&event.core.xmotion);
 			OnMouseMove(&e);
 		} else if (event.type == EnterNotify) {
-			WindowEventEnterLeave e(&event.xcrossing);
+			WindowEventEnterLeave e(&event.core.xcrossing);
 			OnMouseEnterLeave(&e);
 		} else if (event.type == LeaveNotify) {
-			WindowEventEnterLeave e(&event.xcrossing);
+			WindowEventEnterLeave e(&event.core.xcrossing);
 			OnMouseEnterLeave(&e);
 		} else if (event.type == FocusIn) {
-			WindowEventFocus e(&event.xfocus);
+			WindowEventFocus e(&event.core.xfocus);
 			OnFocus(&e);
 		} else if (event.type == FocusOut) {
-			WindowEventFocus e(&event.xfocus);
+			WindowEventFocus e(&event.core.xfocus);
 			OnFocus(&e);
-		} else if (event.type == KeymapNotify) {
-			WindowEventKeymap e(&event.xkeymap);
-			OnKeymap(&e);
-		} else if (event.type == Expose && event.xexpose.count == 0) { 
-			WindowEventDraw e(gc, &event.xexpose);
+		} else if (event.type == Expose && event.core.xexpose.count == 0) { 
+			WindowEventDraw e(gc, &event.core.xexpose);
 			OnDraw(&e);
 		} else if (event.type == VisibilityNotify) {
-			WindowEventVisible e(&event.xvisibility);
+			WindowEventVisible e(&event.core.xvisibility);
 			OnVisible(&e);
 		} else if (event.type == UnmapNotify) {
 			WindowEventShow e(false);
@@ -348,33 +342,51 @@ int XWindow::RunModal()
 			OnShow(&e);
 		} else if (event.type == ConfigureNotify) {			
 			bool generateWindowMoveEvent = 
-				area->GetX() != event.xconfigure.x || 
-				area->GetY() != event.xconfigure.y;
+				area->GetX() != event.core.xconfigure.x || 
+				area->GetY() != event.core.xconfigure.y;
 			bool generateWindowResizeEvent = 
-				area->GetWidth() != event.xconfigure.width || 
-				area->GetHeight() != event.xconfigure.height;
+				area->GetWidth() != event.core.xconfigure.width || 
+				area->GetHeight() != event.core.xconfigure.height;
 			
-			*area = NRectangle(event.xconfigure.x, event.xconfigure.y, event.xconfigure.width, event.xconfigure.height);
-			borderwidth = event.xconfigure.border_width;		
+			*area = NRectangle(
+				event.core.xconfigure.x, event.core.xconfigure.y, 
+				event.core.xconfigure.width, event.core.xconfigure.height);
+			borderwidth = event.core.xconfigure.border_width;		
 						
 			if (generateWindowMoveEvent) {
-				WindowEventMove e(&event.xconfigure);
+				WindowEventMove e(&event.core.xconfigure);
 				OnMove(&e);
 			}
 			if (generateWindowResizeEvent) {
 				gc->Resize(area->GetWidth(), area->GetHeight());	// Resize XWindowGraphics
-				WindowEventResize e(&event.xconfigure);
+				WindowEventResize e(&event.core.xconfigure);
 				OnResize(&e);
 			}			
 		} else if (event.type == ColormapNotify) {
-			WindowEventColormap e(&event.xcolormap);
+			WindowEventColormap e(&event.core.xcolormap);
 			OnColormap(&e);
-		} else if (event.type == MappingNotify) {
-			WindowEventKeyboardMapping e(&event.xmapping);
-			OnKeyboardMapping(&e);
+		} else if (event.type == KeyPress) {
+			WindowEventKey e(&event.core.xkey);
+			OnKeyPress(&e);
+		} else if (event.type == KeyRelease) {
+			WindowEventKey e(&event.core.xkey);
+			OnKeyRelease(&e);
+		} else if (event.type == XDisplay::Default().XkbBaseEvent() + XkbEventCode) {
+			// XkbEvents
+			if (event.any.xkb_type == XkbMapNotify) {
+				WindowEventKeymap e(&event.map);
+				OnKeymap(&e);
+			} else if (event.any.xkb_type == XkbNewKeyboardNotify) {
+				WindowEventKeyboardMapping e(&event.new_kbd);
+				OnKeyboardMapping(&e);
+			} else if (event.any.xkb_type == XkbStateNotifyMask) {
+				int kk = 1;
+			}
 		} else if (event.type == ClientMessage) {
-			if (event.xclient.data.l[0] == wmDeleteMessage)
+			if (event.core.xclient.data.l[0] == wmDeleteMessage)
 				break;
+		} else if (event.type != 28 && event.type != 21) {
+			int kk = 1;
 		}
 		
 		// Locks the collection of delegations
@@ -620,15 +632,15 @@ void XWindow::OnKeyPress(WindowEventKey *e)
 		
 	// Noone catched the event?
 	if (!redirected) {
-		if (e->KeyCode().Value() == 23) {
+		if (e->Keysym() == XK_Tab) {
 			// Window focus rotate
 			if (!e->PressedShift()) ControlFocusNext();
 			else ControlFocusPrevious();
-		} else if (e->KeyCode().Value() == 13) {
+		} else if (e->Keysym() == 13) {
 			// Return: Window Accept
-		} else if (e->KeyCode().Value() == 27) {
+		} else if (e->Keysym() == 27) {
 			// Escape: Window Cancel
-		} else if (e->KeyCode().Value() == 20) {
+		} else if (e->Keysym() == 20) {
 			// Return: Window Accept
 		}
 	}	
@@ -731,6 +743,7 @@ void XWindow::OnFocus(WindowEventFocus *e)
 
 void XWindow::OnKeymap(WindowEventKeymap *e)
 {
+	XkbRefreshKeyboardMapping(e->Handle());
 	DelegationOnKeymap().Execute(e);
 }
 
@@ -773,6 +786,5 @@ void XWindow::OnColormap(WindowEventColormap *e)
 
 void XWindow::OnKeyboardMapping(WindowEventKeyboardMapping *e)
 {
-	XRefreshKeyboardMapping(e->Handle());
 	DelegationOnKeyboardMapping().Execute(e);
 }

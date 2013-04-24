@@ -24,17 +24,18 @@
 
 #include "../../n_object.h"
 #include <X11/Xlib.h>
+#include <X11/XKBlib.h>
 
 class WindowEventKeymap : public NObject {
-	XKeymapEvent *e;
+	XkbMapNotifyEvent *e;
 	
 public:
-	WindowEventKeymap(XKeymapEvent *e);
+	WindowEventKeymap(XkbMapNotifyEvent *e);
 	virtual ~WindowEventKeymap();
 	
 	virtual WindowEventKeymap &operator =(const WindowEventKeymap &e);
 
-	bool KeyPressed(int i);
+	XkbMapNotifyEvent *Handle();
 	
 };
 

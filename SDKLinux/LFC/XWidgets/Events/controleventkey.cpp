@@ -24,6 +24,7 @@
 #include "../Graphics/npoint.h"
 #include "../../nwchar.h"
 #include "../../Time/datetime.h"
+#include "../../Text/text.h"
 
 ControlEventKey::ControlEventKey(const WindowEventKey &e)
 {
@@ -47,7 +48,8 @@ ControlEventKey::ControlEventKey(const WindowEventKey &e)
 	time = new DateTime(ee->Time());
 	position = new NPoint(ee->Position());
 	positionRoot = new NPoint(ee->PositionRoot());
-	keycode = new NWChar(ee->KeyCode());
+	keyText = new Text(ee->KeyText());
+	keySym = ee->Keysym();
 }
 
 ControlEventKey::~ControlEventKey()
@@ -55,7 +57,7 @@ ControlEventKey::~ControlEventKey()
 	delete time;
 	delete position;
 	delete positionRoot;
-	delete keycode;
+	delete keyText;
 }
 
 DateTime ControlEventKey::Time()
@@ -73,9 +75,14 @@ NPoint ControlEventKey::PositionRoot()
 	return *positionRoot;
 }
 
-NWChar ControlEventKey::KeyCode()
+KeySym ControlEventKey::Keysym()
 {
-	return *keycode;
+	return keySym;
+}
+
+Text ControlEventKey::KeyText()
+{
+	return *keyText;
 }
 
 bool ControlEventKey::PressedButton1()
@@ -149,6 +156,7 @@ ControlEventKey &ControlEventKey::operator =(const ControlEventKey &e)
 	*time = *e.time;
 	*position = *e.position;
 	*positionRoot = *e.positionRoot;
-	*keycode = *e.keycode;
+	keySym = e.keySym;
+	*keyText = *e.keyText;
 	return *this;
 }

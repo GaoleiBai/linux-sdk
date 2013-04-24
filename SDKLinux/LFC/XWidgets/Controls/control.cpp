@@ -22,6 +22,7 @@
 #include "control.h"
 #include "controlexception.h"
 #include "../xwindow.h"
+#include "../keysymbols.h"
 #include "../Graphics/igraphics.h"
 #include "../Graphics/npoint.h"
 #include "../Graphics/nfont.h"
@@ -196,10 +197,10 @@ bool Control::OnKeyPress(ControlEventKey *e)
 	
 	if (!IsVisible()) return false;
 	if (!IsFocused()) return false;
-	if (e->KeyCode().Value() == XK_Tab && !CaptureTabKey()) return false;		// Window focus rotate
-	if (e->KeyCode().Value() == XK_Return && !CaptureEnterKey()) return false;	// Return: Window Accept
-	if (e->KeyCode().Value() == XK_Escape && !CaptureEscapeKey()) return false; 	// Escape: Window Cancel
-	if (e->KeyCode().Value() == XK_space && !CaptureSpaceKey()) return false; 	// Return: Window Accept
+	if (e->Keysym() == KeySymbols::Tab && !CaptureTabKey()) return false;		// Window focus rotate
+	if (e->Keysym() == KeySymbols::Return && !CaptureEnterKey()) return false;	// Return: Window Accept
+	if (e->Keysym() == KeySymbols::Escape && !CaptureEscapeKey()) return false; 	// Escape: Window Cancel
+	if (e->Keysym() == KeySymbols::Space && !CaptureSpaceKey()) return false; 	// Return: Window Accept
 	
 	DelegationOnKeyPress().Execute(e);
 	return true;
@@ -213,10 +214,10 @@ bool Control::OnKeyRelease(ControlEventKey *e)
 	
 	if (!IsVisible()) return false;
 	if (!IsFocused()) return false;
-	if (e->KeyCode().Value() == XK_Tab && !CaptureTabKey()) return false;		// Window focus rotate
-	if (e->KeyCode().Value() == XK_Return && !CaptureEnterKey()) return false;	// Return: Window Accept
-	if (e->KeyCode().Value() == XK_Escape && !CaptureEscapeKey()) return false; 	// Escape: Window Cancel
-	if (e->KeyCode().Value() == XK_space && !CaptureSpaceKey()) return false; 	// Return: Window Accept
+	if (e->Keysym() == KeySymbols::Tab && !CaptureTabKey()) return false;		// Window focus rotate
+	if (e->Keysym() == KeySymbols::Return && !CaptureEnterKey()) return false;	// Return: Window Accept
+	if (e->Keysym() == KeySymbols::Escape && !CaptureEscapeKey()) return false; 	// Escape: Window Cancel
+	if (e->Keysym() == KeySymbols::Space && !CaptureSpaceKey()) return false; 	// Return: Window Accept
 	
 	DelegationOnKeyRelease().Execute(e);
 	return true;

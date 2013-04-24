@@ -103,6 +103,7 @@
 #include "Data/sqlite3recordset.h"
 #include "XWidgets/xwindow.h"
 #include "XWidgets/xdisplay.h"
+#include "XWidgets/keysymbols.h"
 #include "XWidgets/xexception.h"
 #include "XWidgets/Graphics/igraphics.h"
 #include "XWidgets/Graphics/xwindowgraphics.h"

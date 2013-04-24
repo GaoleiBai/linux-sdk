@@ -34,6 +34,8 @@ class XDisplay : public NObject {
 	bool createdAsCopy;
 	Display *d;
 	Text *displayName;
+	int base_error;
+	int base_event;
 	
 	XDisplay(Display *d);
 	
@@ -43,6 +45,8 @@ public:
 	virtual ~XDisplay();
 	
 	Text &Name();
+	int XkbBaseError();
+	int XkbBaseEvent();
 	
 	static XDisplay &Default();
 	

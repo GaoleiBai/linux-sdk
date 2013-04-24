@@ -24,23 +24,22 @@
 
 #include "../../n_object.h"
 #include <X11/Xlib.h>
+#include <X11/XKBlib.h>
 
 class WindowEventKeyboardMapping : public NObject {
-	XMappingEvent *e;
+	XkbNewKeyboardNotifyEvent *e;
 	
 public:
 	static const int MappingRequestModifier = MappingModifier;
 	static const int MappingRequestKeyboard = MappingKeyboard;
 	static const int MappintRequestPointer = MappingPointer;
 	
-	WindowEventKeyboardMapping(XMappingEvent *e);
+	WindowEventKeyboardMapping(XkbNewKeyboardNotifyEvent *e);
 	virtual ~WindowEventKeyboardMapping();
 	
 	virtual WindowEventKeyboardMapping &operator =(const WindowEventKeyboardMapping &e);
 	
-	int FirstKeycode();
-	int Count();
-	XMappingEvent *Handle();
+	XkbNewKeyboardNotifyEvent *Handle();
 
 };
 

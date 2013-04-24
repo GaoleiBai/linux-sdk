@@ -29,10 +29,15 @@ XDisplay::XDisplay()
 {
 	createdAsCopy = false;
 	displayName = new Text("NULL");
-	d = XOpenDisplay(NULL);
+	//d = XOpenDisplay(NULL);
+	int lib_major_in_out = XkbMajorVersion;
+	int lib_minor_in_out = XkbMinorVersion;
+	int reason = XkbOD_Success;
+	d = XkbOpenDisplay(NULL, &base_event, &base_error, &lib_major_in_out, &lib_minor_in_out, &reason);
 	if (d == NULL)
 		throw new XException((Text)"Could not open display NULL", __FILE__, __LINE__, __func__);
 		
+	/*
 	// Init Xkb exception
 	XExtCodes *cc = XInitExtension(d, XkbName);
 	if (cc == NULL) throw new XException("Cannot init XKEYBOARD extension", __FILE__, __LINE__, __func__);
@@ -45,6 +50,11 @@ XDisplay::XDisplay()
 	// Check library version
 	if (!XkbLibraryVersion(&lib_major_in_out, &lib_minor_in_out))
 		throw new XException("Error in XkbLibraryExtension", __FILE__, __LINE__, __func__);
+		
+	major_opcode = cc->major_opcode;
+	base_error = cc->first_error;
+	base_event = cc->first_event;
+	*/
 }
 
 XDisplay::XDisplay(Display *d)
@@ -72,6 +82,16 @@ XDisplay::~XDisplay()
 	if (!createdAsCopy && XCloseDisplay(d) == BadGC)
 		throw new XException((Text)"Invalid display parameter", __FILE__, __LINE__, __func__);
 	delete displayName;
+}
+
+int XDisplay::XkbBaseEvent()
+{
+	return base_event;
+}
+
+int XDisplay::XkbBaseError()
+{
+	return base_error;
 }
 
 XDisplay &XDisplay::Default()

@@ -21,7 +21,7 @@
 **/
 #include "windoweventkeyboardmapping.h"
 
-WindowEventKeyboardMapping::WindowEventKeyboardMapping(XMappingEvent *e)
+WindowEventKeyboardMapping::WindowEventKeyboardMapping(XkbNewKeyboardNotifyEvent *e)
 {
 	this->e = e;
 }
@@ -36,17 +36,7 @@ WindowEventKeyboardMapping &WindowEventKeyboardMapping::operator =(const WindowE
 	return *this;
 }
 
-int WindowEventKeyboardMapping::FirstKeycode()
-{
-	return e->first_keycode;
-}
-
-int WindowEventKeyboardMapping::Count()
-{
-	return e->count;
-}
-
-XMappingEvent *WindowEventKeyboardMapping::Handle()
+XkbNewKeyboardNotifyEvent *WindowEventKeyboardMapping::Handle()
 {
 	return e;
 }

@@ -23,7 +23,7 @@
 #include "../xexception.h"
 #include "../../Text/text.h"
 
-WindowEventKeymap::WindowEventKeymap(XKeymapEvent *e)
+WindowEventKeymap::WindowEventKeymap(XkbMapNotifyEvent *e)
 {
 	this->e = e;
 }
@@ -38,13 +38,8 @@ WindowEventKeymap &WindowEventKeymap::operator =(const WindowEventKeymap &e)
 	return *this;
 }
 
-bool WindowEventKeymap::KeyPressed(int i)
+XkbMapNotifyEvent *WindowEventKeymap::Handle()
 {
-	if (i < 0 || i >= 256)
-		throw new XException((Text)"Key index " + i + " doesn't exist", __FILE__, __LINE__, __func__);
-		
-	int byte_ix = i >> 3; 		// (i / 8)
-	int bit_ix = i & 0x0007; 	// (i % 8)
-	return e->key_vector[byte_ix] & (1 << bit_ix);
+	return e;
 }
 

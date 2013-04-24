@@ -23,6 +23,7 @@
 #define CONTROLEVENTKEY_H
 
 #include "controlevent.h"
+#include <X11/XKBlib.h>
 
 class WindowEventKey;
 class DateTime;
@@ -33,9 +34,10 @@ class ControlEventKey : public ControlEvent {
 protected:
 	int status;
 	DateTime *time;
-	NWChar *keycode;
 	NPoint *position;
 	NPoint *positionRoot;
+	KeySym keySym;
+	Text *keyText;
 	
 public:
 	static const int StatusPressedButton1 = 1;
@@ -58,7 +60,8 @@ public:
 	DateTime Time();
 	NPoint Position();
 	NPoint PositionRoot();
-	NWChar KeyCode();
+	KeySym Keysym();
+	Text KeyText();
 	
 	bool PressedButton1();
 	bool PressedButton2();

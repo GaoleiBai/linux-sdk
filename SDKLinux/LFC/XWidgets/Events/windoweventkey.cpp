@@ -20,7 +20,9 @@
 *
 **/
 #include "windoweventkey.h"
+#include "../xexception.h"
 #include "../../Time/datetime.h"
+#include "../../Text/text.h"
 #include "../../nwchar.h"
 #include "../Graphics/npoint.h"
 #include <X11/keysym.h>
@@ -28,10 +30,23 @@
 WindowEventKey::WindowEventKey(XKeyEvent *e)
 {
 	keyEvent = e;
+	
+	XkbStateRec s;
+	Status st = XkbGetState(keyEvent->display, XkbUseCoreKbd, &s);
+	if (st != XkbOD_Success)
+		throw new XException("Error getting xkb keyboard state", __FILE__, __LINE__, __func__);
+	
+	keySym = XkbKeycodeToKeysym(keyEvent->display, keyEvent->keycode, 0, 0);
+	
+	char cadena[10];
+	int overflow = 0;
+	int nbytes = XkbTranslateKeySym(keyEvent->display, &keySym, s.mods, cadena, 10, &overflow);
+	if (nbytes > 0)  *keyText = cadena; 
 }
 
 WindowEventKey::~WindowEventKey()
 {
+	delete keyText;
 }
 
 WindowEventKey &WindowEventKey::operator =(const WindowEventKey &e)
@@ -45,10 +60,14 @@ DateTime WindowEventKey::Time()
 	return DateTime((time_t)keyEvent->time);
 }
 
-NWChar WindowEventKey::KeyCode()
+KeySym WindowEventKey::Keysym()
 {
-	int kc = XLookupKeysym(keyEvent, 0);
-	return NWChar(kc);
+	return keySym;
+}
+
+Text WindowEventKey::KeyText()
+{
+	return *keyText;
 }
 
 NPoint WindowEventKey::Position()

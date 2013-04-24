@@ -24,6 +24,7 @@
 
 #include "../../n_object.h"
 #include <X11/Xlib.h>
+#include <X11/XKBlib.h>
 
 class DateTime;
 class NWChar;
@@ -31,6 +32,8 @@ class NPoint;
 
 class WindowEventKey : public NObject {
 	XKeyEvent *keyEvent;
+	Text *keyText;
+	KeySym keySym;
 	
 public:
 	WindowEventKey(XKeyEvent *e);
@@ -41,7 +44,9 @@ public:
 	DateTime Time();
 	NPoint Position();
 	NPoint PositionRoot();
-	NWChar KeyCode();
+	
+	KeySym Keysym();
+	Text KeyText();
 	
 	bool PressedButton1();
 	bool PressedButton2();
