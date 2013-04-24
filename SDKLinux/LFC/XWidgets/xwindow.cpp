@@ -21,6 +21,7 @@
 **/
 #include "xwindow.h"
 #include "xdisplay.h"
+#include "keysymbols.h"
 #include "xexception.h"
 #include "../nwchar.h"
 #include "../Text/text.h"
@@ -568,6 +569,7 @@ Control *XWindow::ControlGetFocused()
 	for (int i=0; i<focusables.Count(); i++)
 		if (focusables[i]->IsFocused())
 			return focusables[i];
+	return focusables.Count() > 0 ? focusables[0] : NULL;
 }
 
 void XWindow::ControlFocusNext()
@@ -576,6 +578,7 @@ void XWindow::ControlFocusNext()
 	if (focusables.Count() == 0) return;
 	
 	Control *focused = ControlGetFocused();
+	if (focused != NULL) focused->SetFocus(false);
 	int ix = focused == NULL ? 0 : controls->FindFirstIx(focused);
 	if (ix == -1) return;
 	
@@ -590,6 +593,7 @@ void XWindow::ControlFocusPrevious()
 	if (focusables.Count() == 0) return;
 	
 	Control *focused = ControlGetFocused();
+	if (focused != NULL) focused->SetFocus(false);
 	int ix = focused == NULL ? 0 : controls->FindFirstIx(focused);
 	if (ix == -1) return;
 	
@@ -632,15 +636,15 @@ void XWindow::OnKeyPress(WindowEventKey *e)
 		
 	// Noone catched the event?
 	if (!redirected) {
-		if (e->Keysym() == XK_Tab) {
+		if (e->Keysym() == KeySymbols::Tab) {
 			// Window focus rotate
 			if (!e->PressedShift()) ControlFocusNext();
 			else ControlFocusPrevious();
-		} else if (e->Keysym() == 13) {
+		} else if (e->Keysym() == KeySymbols::Return) {
 			// Return: Window Accept
-		} else if (e->Keysym() == 27) {
+		} else if (e->Keysym() == KeySymbols::Escape) {
 			// Escape: Window Cancel
-		} else if (e->Keysym() == 20) {
+		} else if (e->Keysym() == KeySymbols::Space) {
 			// Return: Window Accept
 		}
 	}	

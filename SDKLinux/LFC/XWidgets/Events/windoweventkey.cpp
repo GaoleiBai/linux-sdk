@@ -41,7 +41,7 @@ WindowEventKey::WindowEventKey(XKeyEvent *e)
 	char cadena[10];
 	int overflow = 0;
 	int nbytes = XkbTranslateKeySym(keyEvent->display, &keySym, s.mods, cadena, 10, &overflow);
-	if (nbytes > 0)  *keyText = cadena; 
+	keyText = nbytes > 0 ? new Text(cadena) : new Text(); 
 }
 
 WindowEventKey::~WindowEventKey()
