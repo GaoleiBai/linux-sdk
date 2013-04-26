@@ -23,6 +23,7 @@
 #include "../xexception.h"
 #include "../../Time/datetime.h"
 #include "../../Text/text.h"
+#include "../../Devices/stdout.h"
 #include "../../nwchar.h"
 #include "../Graphics/npoint.h"
 #include <X11/keysym.h>
@@ -36,12 +37,22 @@ WindowEventKey::WindowEventKey(XKeyEvent *e)
 	if (st != XkbOD_Success)
 		throw new XException("Error getting xkb keyboard state", __FILE__, __LINE__, __func__);
 	
-	keySym = XkbKeycodeToKeysym(keyEvent->display, keyEvent->keycode, 0, 0);
+	int shift = (s.mods & ShiftMask) != 0 ? 1 : 0;
+	if (shift == 0) shift =  (s.mods & Mod5Mask) != 0 ? 2 : 0;
+	//int lock = (s.mods & LockMask) != 0 ? 1 : 0;
+	//int ctrl = (s.mods & ControlMask) != 0 ? 1 : 0;
+	//int mod1 = (s.mods & Mod1Mask) != 0 ? 1 : 0;
+	//int mod2 = (s.mods & Mod2Mask) != 0 ? 1 : 0;
+	//int mod3 = (s.mods & Mod3Mask) != 0 ? 1 : 0;
+	//int mod4 = (s.mods & Mod4Mask) != 0 ? 1 : 0;
+	//int mod5 = (s.mods & Mod5Mask) != 0 ? 1 : 0;
+	keySym = XkbKeycodeToKeysym(keyEvent->display, keyEvent->keycode, 0, shift);
 	
 	char cadena[10];
 	int overflow = 0;
 	int nbytes = XkbTranslateKeySym(keyEvent->display, &keySym, s.mods, cadena, 10, &overflow);
-	keyText = nbytes > 0 ? new Text(cadena) : new Text(); 
+	keyText = nbytes > 0 ? new Text(cadena) : new Text();
+	if (nbytes > 0) StdOut::Print(*keyText);
 }
 
 WindowEventKey::~WindowEventKey()
