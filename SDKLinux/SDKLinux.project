@@ -261,6 +261,8 @@
         <File Name="LFC/XWidgets/Controls/controlexception.cpp"/>
         <File Name="LFC/XWidgets/Controls/controlbutton.h"/>
         <File Name="LFC/XWidgets/Controls/controlbutton.cpp"/>
+        <File Name="LFC/XWidgets/Controls/controltextbox.h"/>
+        <File Name="LFC/XWidgets/Controls/controltextbox.cpp"/>
       </VirtualDirectory>
       <File Name="LFC/XWidgets/keysymbols.h"/>
       <File Name="LFC/XWidgets/keysymbols.cpp"/>
