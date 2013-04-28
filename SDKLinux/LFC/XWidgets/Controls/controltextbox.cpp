@@ -21,6 +21,8 @@
 **/
 #include "controltextbox.h"
 #include "../Graphics/ncolor.h"
+#include "../Graphics/npoint.h"
+#include "../Graphics/igraphics.h"
 
 ControlTextBox::ControlTextBox(const NRectangle &r)
 	: Control(r)
@@ -68,6 +70,16 @@ int ControlTextBox::GetSelectionLenght()
 	return selectionLength;
 }
 
+NColor ControlTextBox::GetTextColor()
+{
+	return *textColor;
+}
+
+NColor ControlTextBox::GetTextBackColor()
+{
+	return *textBackColor;
+}
+
 void ControlTextBox::SetText(const Text &t)
 {
 	*text = t;
@@ -105,8 +117,16 @@ void ControlTextBox::SetSelectionLength(int l)
 	Draw();
 }
 
-void ControlTextBox::Draw()
+void ControlTextBox::SetTextColor(const NColor &c)
 {
+	*textColor = c;
+	Draw();
+}
+
+void ControlTextBox::SetTextBackColor(const NColor &c)
+{
+	*textBackColor = c;
+	Draw();
 }
 
 bool ControlTextBox::IsFocusable()
@@ -114,23 +134,41 @@ bool ControlTextBox::IsFocusable()
 	return true;
 }
 
-bool ControlTextBox::CaptureTabKey()
-{
-	return false;
-}
-
-bool ControlTextBox::CaptureEnterKey()
-{
-	return false;
-}
-
 bool ControlTextBox::CaptureSpaceKey()
 {
 	return true;
 }
 
-bool ControlTextBox::CaptureEscapeKey()
+bool ControlTextBox::OnDrawBackground(IGraphics *g, NRectangle *r)
 {
-	return true;
+	g->SetColor(*backcolor);
+	g->FillRectangle(*area);
 }
 
+bool ControlTextBox::OnDraw(IGraphics *g, NRectangle *r)
+{
+	g->SetColor(*textBackColor);
+	g->FillRoundRectangle(*r, 5);
+	
+	g->SetColor(NColor(
+		(backcolor->R() + textBackColor->R()) / 2,
+		(backcolor->G() + textBackColor->G()) / 2,
+		(backcolor->B() + textBackColor->B()) / 2,
+		(backcolor->A() + textBackColor->A()) / 2));
+	g->DrawRoundRectangle(NRectangle(r->GetPosition() + NPoint(1, 1), r->GetSize() - NSize(1, 1)), 5);
+	
+	if (focused)
+		g->SetColor(*focusedcolor);
+	else
+		g->SetColor(NColor(0, 0, 0, 1.0));
+	g->DrawRoundRectangle(*r, 5);
+	
+	g->Save();
+	g->TransformTranslate(3, 3);
+	g->ClipRegionSet(NRectangle(r->GetPosition(), r->GetSize() - NSize(6, 6)));
+	
+	// TODO: Draw Text
+	
+	
+	g->Restore();
+}

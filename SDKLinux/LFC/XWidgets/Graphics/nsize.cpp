@@ -104,3 +104,8 @@ NSize NSize::operator +(const NSize &s)
 {
 	return NSize(width + s.width, height + s.height);
 }
+
+NSize NSize::operator -(const NSize &s)
+{
+	return NSize(width - s.width, height - s.height);
+}

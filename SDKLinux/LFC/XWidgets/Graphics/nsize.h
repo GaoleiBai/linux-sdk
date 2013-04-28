@@ -45,6 +45,7 @@ public:
 	
 	NSize &operator =(const NSize &s);
 	NSize operator +(const NSize &s);
+	NSize operator -(const NSize &s);
 	
 };
 

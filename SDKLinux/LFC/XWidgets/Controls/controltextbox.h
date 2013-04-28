@@ -25,6 +25,7 @@
 #include "control.h"
 
 class ControlTextBox : public Control {
+protected:
 	Text *text;
 	int selectionStart;
 	int selectionLength;
@@ -40,17 +41,22 @@ public:
 	Text GetSelectedText();
 	int GetSelectionStart();
 	int GetSelectionLenght();
+	NColor GetTextColor();
+	NColor GetTextBackColor();
 	void SetText(const Text &t);
 	void SetSelectedText(const Text &t);
 	void SetSelectionStart(int s);
 	void SetSelectionLength(int l);
+	void SetTextColor(const NColor &c);
+	void SetTextBackColor(const NColor &c);
 	
-	virtual void Draw();
 	virtual bool IsFocusable();
-	virtual bool CaptureTabKey();
-	virtual bool CaptureEnterKey();
 	virtual bool CaptureSpaceKey();
-	virtual bool CaptureEscapeKey();	
+	
+protected:
+	virtual bool OnDrawBackground(IGraphics *g, NRectangle *r);
+	virtual bool OnDraw(IGraphics *g, NRectangle *r);
+	
 
 };
 
