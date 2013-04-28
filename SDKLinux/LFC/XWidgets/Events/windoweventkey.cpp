@@ -52,7 +52,7 @@ WindowEventKey::WindowEventKey(XKeyEvent *e)
 	int overflow = 0;
 	int nbytes = XkbTranslateKeySym(keyEvent->display, &keySym, s.mods, cadena, 10, &overflow);
 	keyText = nbytes > 0 ? new Text(cadena) : new Text();
-	//if (nbytes > 0) StdOut::Print(*keyText);
+	if (nbytes > 0) StdOut::Print(*keyText);
 }
 
 WindowEventKey::~WindowEventKey()

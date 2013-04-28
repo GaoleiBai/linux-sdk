@@ -26,8 +26,10 @@
 
 class ControlTextBox : public Control {
 	Text *text;
-	int caretPosition;
-	int selectionCount;
+	int selectionStart;
+	int selectionLength;
+	NColor *textColor;
+	NColor *textBackColor;
 	
 public:
 	ControlTextBox(const NRectangle &r);
@@ -36,8 +38,19 @@ public:
 	
 	Text GetText();
 	Text GetSelectedText();
+	int GetSelectionStart();
+	int GetSelectionLenght();
 	void SetText(const Text &t);
 	void SetSelectedText(const Text &t);
+	void SetSelectionStart(int s);
+	void SetSelectionLength(int l);
+	
+	virtual void Draw();
+	virtual bool IsFocusable();
+	virtual bool CaptureTabKey();
+	virtual bool CaptureEnterKey();
+	virtual bool CaptureSpaceKey();
+	virtual bool CaptureEscapeKey();	
 
 };
 

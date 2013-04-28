@@ -29,32 +29,18 @@ XDisplay::XDisplay()
 {
 	createdAsCopy = false;
 	displayName = new Text("NULL");
-	//d = XOpenDisplay(NULL);
+
 	int lib_major_in_out = XkbMajorVersion;
 	int lib_minor_in_out = XkbMinorVersion;
 	int reason = XkbOD_Success;
 	d = XkbOpenDisplay(NULL, &base_event, &base_error, &lib_major_in_out, &lib_minor_in_out, &reason);
 	if (d == NULL)
 		throw new XException((Text)"Could not open display NULL", __FILE__, __LINE__, __func__);
-		
-	/*
-	// Init Xkb exception
-	XExtCodes *cc = XInitExtension(d, XkbName);
-	if (cc == NULL) throw new XException("Cannot init XKEYBOARD extension", __FILE__, __LINE__, __func__);
-	
-	// Query extension
-	int opcode = 0, event = 0, error = 0, lib_major_in_out = 0, lib_minor_in_out = 0;
-	if (!XkbQueryExtension(d, &opcode, &event, &error, &lib_major_in_out, &lib_minor_in_out))
-		throw new XException("Error in XQueryExtension", __FILE__, __LINE__, __func__);
-		
-	// Check library version
-	if (!XkbLibraryVersion(&lib_major_in_out, &lib_minor_in_out))
-		throw new XException("Error in XkbLibraryExtension", __FILE__, __LINE__, __func__);
-		
-	major_opcode = cc->major_opcode;
-	base_error = cc->first_error;
-	base_event = cc->first_event;
-	*/
+
+	if (!XkbSetXlibControls(d, 
+		XkbLC_ComposeLED, 
+		XkbLC_ComposeLED))
+		throw new XException((Text)"Error setting XkbControls", __FILE__, __LINE__, __func__);
 }
 
 XDisplay::XDisplay(Display *d)

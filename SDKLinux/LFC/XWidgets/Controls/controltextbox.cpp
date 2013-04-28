@@ -20,16 +20,117 @@
 *
 **/
 #include "controltextbox.h"
+#include "../Graphics/ncolor.h"
 
 ControlTextBox::ControlTextBox(const NRectangle &r)
+	: Control(r)
 {
+	text = new Text("");
+	selectionStart = 0;
+	selectionLength = 0;
+	textColor = new NColor(0, 0, 0, 1.0);
+	textBackColor = new NColor(1.0, 1.0, 1.0, 1.0);
 }
 
 ControlTextBox::ControlTextBox(const Text &t, const NRectangle &r)
 {
+	text = new Text(t);
+	selectionStart = 0;
+	selectionLength = 0;
+	textColor = new NColor(0, 0, 0, 1.0);
+	textBackColor = new NColor(1.0, 1.0, 1.0, 1.0);
 }
 
 ControlTextBox::~ControlTextBox()
 {
+	delete text;
+	delete textColor;
+	delete textBackColor;
+}
+
+Text ControlTextBox::GetText()
+{
+	return *text;
+}
+
+Text ControlTextBox::GetSelectedText()
+{
+	return text->SubText(selectionStart, selectionLength);
+}
+
+int ControlTextBox::GetSelectionStart()
+{
+	return selectionStart;
+}
+
+int ControlTextBox::GetSelectionLenght()
+{
+	return selectionLength;
+}
+
+void ControlTextBox::SetText(const Text &t)
+{
+	*text = t;
+	selectionStart = 0;
+	selectionLength = ((Text *)&t)->Length();
+	Draw();
+}
+
+void ControlTextBox::SetSelectedText(const Text &t)
+{
+	*text = text->Replace(GetSelectedText(), t);
+	selectionLength = ((Text *)&t)->Length();
+	Draw();
+}
+
+void ControlTextBox::SetSelectionStart(int s)
+{
+	if (s >= text->Length()) {
+		selectionStart = text->Length() - 1;
+		selectionLength = 0;
+	} else if (s + selectionLength >= text->Length()) {
+		selectionStart = s;
+		selectionLength = text->Length() - s;
+	} else {
+		selectionStart = s;
+	}
+	Draw();
+}
+
+void ControlTextBox::SetSelectionLength(int l)
+{
+	selectionLength = 
+		selectionStart + l >= text->Length() ? 
+		text->Length() - selectionStart : l;
+	Draw();
+}
+
+void ControlTextBox::Draw()
+{
+}
+
+bool ControlTextBox::IsFocusable()
+{
+	return true;
+}
+
+bool ControlTextBox::CaptureTabKey()
+{
+	return false;
+}
+
+bool ControlTextBox::CaptureEnterKey()
+{
+	return false;
+}
+
+bool ControlTextBox::CaptureSpaceKey()
+{
+	return true;
+}
+
+bool ControlTextBox::CaptureEscapeKey()
+{
+	return true;
 }
 
