@@ -266,6 +266,12 @@
       </VirtualDirectory>
       <File Name="LFC/XWidgets/keysymbols.h"/>
       <File Name="LFC/XWidgets/keysymbols.cpp"/>
+      <File Name="LFC/XWidgets/keycompositionmanager.h"/>
+      <File Name="LFC/XWidgets/keycompositionmanager.cpp"/>
+      <File Name="LFC/XWidgets/keycompositionpath.h"/>
+      <File Name="LFC/XWidgets/keycompositionpath.cpp"/>
+      <File Name="LFC/XWidgets/keycompositionsymbol.h"/>
+      <File Name="LFC/XWidgets/keycompositionsymbol.cpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Delegations">
       <File Name="LFC/Delegations/ndelegation.cpp"/>

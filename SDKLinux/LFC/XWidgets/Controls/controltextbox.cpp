@@ -168,7 +168,16 @@ bool ControlTextBox::OnDraw(IGraphics *g, NRectangle *r)
 	g->ClipRegionSet(NRectangle(r->GetPosition(), r->GetSize() - NSize(6, 6)));
 	
 	// TODO: Draw Text
-	
+	NSize ss = g->GetTextExtents(*text, *font);
+	g->DrawText(*text, (area->GetWidth() - ss.GetWidth()) / 2, (area->GetHeight() - ss.GetHeight()) / 2, *font);
 	
 	g->Restore();
+}
+
+bool ControlTextBox::OnKeyPress(ControlEventKey *e)
+{
+	if (!Control::OnKeyPress(e)) return false;
+	
+	
+	return true;
 }
