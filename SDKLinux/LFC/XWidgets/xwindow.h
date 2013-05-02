@@ -39,6 +39,7 @@ class ControlEventFocused;
 class IGraphics;
 class WindowEventDraw;
 class WindowEventKey;
+class WindowEventKeySymbol;
 class WindowEventMouseButton;
 class WindowEventMouseMove;
 class WindowEventEnterLeave;
@@ -72,9 +73,11 @@ private:
 	NColor *backcolor;
 	NFont *font;
 	bool drawEnabled;
+	Text *composeKeySymBuffer;
 	
 	NDelegationManager *dOnWindowKeyPress;
 	NDelegationManager *dOnWindowKeyRelease;
+	NDelegationManager *dOnWindowKeySymbol;
 	NDelegationManager *dOnWindowKeymap;
 	NDelegationManager *dOnWindowKeyboardMapping;
 	NDelegationManager *dOnWindowMouseDown;
@@ -100,6 +103,7 @@ public:
 	
 	NDelegationManager &DelegationOnKeyPress();			// Arg: WindowEventKey *
 	NDelegationManager &DelegationOnKeyRelease();		// Arg: WindowEventKey *
+	NDelegationManager &DelegationOnKeySymbol();		// Arg: WindowEventKeySymbol *
 	NDelegationManager &DelegationOnKeymap();			// Arg: WindowKeymap *
 	NDelegationManager &DelegationOnKeyboardMapping();	// Arg: WindowEventKeyboardMapping *
 	NDelegationManager &DelegationOnMouseDown();		// Arg: WindowEventMouseButton *
@@ -160,6 +164,7 @@ protected:
 	virtual void Draw();
 	virtual void OnKeyPress(WindowEventKey *e);
 	virtual void OnKeyRelease(WindowEventKey *e);
+	virtual void OnKeySymbol(WindowEventKeySymbol *e);
 	virtual void OnMouseDown(WindowEventMouseButton *e);
 	virtual void OnMouseUp(WindowEventMouseButton *e);
 	virtual void OnMouseMove(WindowEventMouseMove *e);

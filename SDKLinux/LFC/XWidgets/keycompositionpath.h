@@ -24,20 +24,21 @@
 
 #include "../Collections/collection.h"
 
-class KeyCompositionSymbol;
+class Text;
 
 class KeyCompositionPath : public NObject {
 protected:
-	Collection <KeyCompositionSymbol *> *initialSymbols;
-	Collection <KeyCompositionSymbol *> *finalSymbols;
+	Text *composition;
+	Text *result;
+	bool continueComposing;
 	
 	
 public:
-	KeyCompositionPath();
+	KeyCompositionPath(const Text &composition, const Text &result, bool continueComposing);
 	virtual ~KeyCompositionPath();
-
-	void AddInitialSymbol(const KeyCompositionSymbol &s);
-	void AddFinalSymbol(const KeyCompositionSymbol &s);
+	
+	Text &Composition();
+	Text &Result();
 	
 };
 

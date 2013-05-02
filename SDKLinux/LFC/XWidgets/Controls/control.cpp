@@ -23,6 +23,7 @@
 #include "controlexception.h"
 #include "../xwindow.h"
 #include "../keysymbols.h"
+#include "../keycompositionsymbol.h"
 #include "../Graphics/igraphics.h"
 #include "../Graphics/npoint.h"
 #include "../Graphics/nfont.h"
@@ -80,6 +81,7 @@ void Control::Init()
 	onKeyPreview = new NDelegationManager();
 	onKeyPress = new NDelegationManager();
 	onKeyRelease = new NDelegationManager();
+	onKeySymbol = new NDelegationManager();
 	onMove = new NDelegationManager();
 	onVisible = new NDelegationManager();
 	onEnter = new NDelegationManager();
@@ -118,6 +120,7 @@ Control::~Control()
 	delete onMouseDoubleClick;
 	delete onKeyPreview;
 	delete onKeyPress;
+	delete onKeySymbol;
 	delete onKeyRelease;
 	delete onMove;
 	delete onVisible;
@@ -197,10 +200,10 @@ bool Control::OnKeyPress(ControlEventKey *e)
 	
 	if (!IsVisible()) return false;
 	if (!IsFocused()) return false;
-	if (e->Keysym() == KeySymbols::Tab && !CaptureTabKey()) return false;		// Window focus rotate
-	if (e->Keysym() == KeySymbols::Return && !CaptureEnterKey()) return false;	// Return: Window Accept
-	if (e->Keysym() == KeySymbols::Escape && !CaptureEscapeKey()) return false; 	// Escape: Window Cancel
-	if (e->Keysym() == KeySymbols::Space && !CaptureSpaceKey()) return false; 	// Return: Window Accept
+	if (e->Symbol().SymbolValue() == KeySymbols::Tab && !CaptureTabKey()) return false;		// Window focus rotate
+	if (e->Symbol().SymbolValue() == KeySymbols::Return && !CaptureEnterKey()) return false;	// Return: Window Accept
+	if (e->Symbol().SymbolValue() == KeySymbols::Escape && !CaptureEscapeKey()) return false; 	// Escape: Window Cancel
+	if (e->Symbol().SymbolValue() == KeySymbols::Space && !CaptureSpaceKey()) return false; 	// Return: Window Accept
 	
 	DelegationOnKeyPress().Execute(e);
 	return true;
@@ -214,10 +217,23 @@ bool Control::OnKeyRelease(ControlEventKey *e)
 	
 	if (!IsVisible()) return false;
 	if (!IsFocused()) return false;
-	if (e->Keysym() == KeySymbols::Tab && !CaptureTabKey()) return false;		// Window focus rotate
-	if (e->Keysym() == KeySymbols::Return && !CaptureEnterKey()) return false;	// Return: Window Accept
-	if (e->Keysym() == KeySymbols::Escape && !CaptureEscapeKey()) return false; 	// Escape: Window Cancel
-	if (e->Keysym() == KeySymbols::Space && !CaptureSpaceKey()) return false; 	// Return: Window Accept
+	if (e->Symbol().SymbolValue() == KeySymbols::Tab && !CaptureTabKey()) return false;		// Window focus rotate
+	if (e->Symbol().SymbolValue() == KeySymbols::Return && !CaptureEnterKey()) return false;	// Return: Window Accept
+	if (e->Symbol().SymbolValue() == KeySymbols::Escape && !CaptureEscapeKey()) return false; 	// Escape: Window Cancel
+	if (e->Symbol().SymbolValue() == KeySymbols::Space && !CaptureSpaceKey()) return false; 	// Return: Window Accept
+	
+	DelegationOnKeyRelease().Execute(e);
+	return true;
+}
+
+bool Control::OnKeySymbol(ControlEventKeySymbol *e)
+{
+	for (int i=0;i<children->Count(); i++) 
+		if ((*children)[i]->OnKeySymbol(e)) 
+			return true;
+	
+	if (!IsVisible()) return false;
+	if (!IsFocused()) return false;
 	
 	DelegationOnKeyRelease().Execute(e);
 	return true;
@@ -721,6 +737,11 @@ NDelegationManager &Control::DelegationOnKeyPress()
 NDelegationManager &Control::DelegationOnKeyRelease()
 {
 	return *onKeyRelease;
+}
+
+NDelegationManager &Control::DelegationOnKeySymbol()
+{
+	return *onKeySymbol;
 }
 
 NDelegationManager &Control::DelegationOnMove()

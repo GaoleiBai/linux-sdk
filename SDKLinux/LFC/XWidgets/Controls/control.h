@@ -33,6 +33,7 @@ class NFont;
 class XWindow;
 class ControlEventMoved;
 class ControlEventKey;
+class ControlEventKeySymbol;
 class ControlEventFocused;
 class ControlEventMouseButton;
 class ControlEventBackColor;
@@ -71,6 +72,7 @@ protected:
 	NDelegationManager *onMouseDoubleClick;
 	NDelegationManager *onKeyPreview;
 	NDelegationManager *onKeyPress;
+	NDelegationManager *onKeySymbol;
 	NDelegationManager *onKeyRelease;
 	NDelegationManager *onMove;
 	NDelegationManager *onVisible;
@@ -138,6 +140,7 @@ protected:
 	virtual bool OnVisible(ControlEventVisible *e);
 	virtual bool OnKeyPreview(ControlEventKey *e);
 	virtual bool OnKeyPress(ControlEventKey *e);
+	virtual bool OnKeySymbol(ControlEventKeySymbol *e);
 	virtual bool OnKeyRelease(ControlEventKey *e);
 	virtual bool OnCheckFocus(ControlEventMouseButton *e);
 	virtual bool OnMouseButtonDown(ControlEventMouseButton *e);
@@ -165,6 +168,7 @@ public:
 	NDelegationManager &DelegationOnKeyPreview();	// Arg: ControlEventKey *
 	NDelegationManager &DelegationOnKeyPress();		// Arg: ControlEventKey *
 	NDelegationManager &DelegationOnKeyRelease();	// Arg: ControlEventKey *
+	NDelegationManager &DelegationOnKeySymbol();	// Arg: ControlEventKeySymbol *
 	NDelegationManager &DelegationOnMove();			// Arg: ControlEventMoved *
 	NDelegationManager &DelegationOnVisible();		// Arg: ControlEventVisible *
 	NDelegationManager &DelegationOnMouseEnter();	// Arg: ControlEventEnterLeave *

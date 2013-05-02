@@ -19,45 +19,27 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef WINDOWEVENTKEY_H
-#define WINDOWEVENTKEY_H
+#ifndef CONTROLEVENTKEYSYMBOL_H
+#define CONTROLEVENTKEYSYMBOL_H
 
-#include "../../n_object.h"
-#include <X11/Xlib.h>
-#include <X11/XKBlib.h>
+#include "controlevent.h"
 
-class DateTime;
-class NWChar;
-class NPoint;
+class KeyCompositionSymbol;
+class WindowEventKeySymbol;
 
-class WindowEventKey : public NObject {
-	XKeyEvent *keyEvent;
+class ControlEventKeySymbol : public ControlEvent {
+	KeyCompositionSymbol *symbol;
 	
 public:
-	WindowEventKey(XKeyEvent *e);
-	virtual ~WindowEventKey();
+	ControlEventKeySymbol(const ControlEventKeySymbol &e);
+	ControlEventKeySymbol(const WindowEventKeySymbol &e);
+	ControlEventKeySymbol(const KeyCompositionSymbol &s, Control *source);
+	virtual ~ControlEventKeySymbol();
 	
-	virtual WindowEventKey &operator =(const WindowEventKey &e);
-
-	XKeyEvent *Handle();
-	DateTime Time();
-	NPoint Position();
-	NPoint PositionRoot();
+	ControlEventKeySymbol &operator =(const ControlEventKeySymbol &s);
 	
-	bool PressedButton1();
-	bool PressedButton2();
-	bool PressedButton3();
-	bool PressedButton4();
-	bool PressedButton5();
-	bool PressedShift();
-	bool PressedLock();
-	bool PressedControl();
-	bool PressedMod1();
-	bool PressedMod2();
-	bool PressedMod3();
-	bool PressedMod4();
-	bool PressedMod5();	
+	KeyCompositionSymbol &Symbol();
 
 };
 
-#endif // WINDOWEVENTKEY_H
+#endif // CONTROLEVENTKEYSYMBOL_H

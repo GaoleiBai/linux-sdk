@@ -19,45 +19,32 @@
 * License along with this library. If not, see <http://www.gnu.org/licenses/>.
 *
 **/
-#ifndef WINDOWEVENTKEY_H
-#define WINDOWEVENTKEY_H
+#include "windoweventkeysymbol.h"
+#include "../keycompositionsymbol.h"
 
-#include "../../n_object.h"
-#include <X11/Xlib.h>
-#include <X11/XKBlib.h>
+WindowEventKeySymbol::WindowEventKeySymbol(const KeyCompositionSymbol &s)
+{
+	symbol = new KeyCompositionSymbol(s);
+}
 
-class DateTime;
-class NWChar;
-class NPoint;
+WindowEventKeySymbol::WindowEventKeySymbol(const WindowEventKeySymbol &e)
+{
+	symbol = new KeyCompositionSymbol(*e.symbol);
+}
 
-class WindowEventKey : public NObject {
-	XKeyEvent *keyEvent;
-	
-public:
-	WindowEventKey(XKeyEvent *e);
-	virtual ~WindowEventKey();
-	
-	virtual WindowEventKey &operator =(const WindowEventKey &e);
+WindowEventKeySymbol::~WindowEventKeySymbol()
+{
+	delete symbol;
+}
 
-	XKeyEvent *Handle();
-	DateTime Time();
-	NPoint Position();
-	NPoint PositionRoot();
-	
-	bool PressedButton1();
-	bool PressedButton2();
-	bool PressedButton3();
-	bool PressedButton4();
-	bool PressedButton5();
-	bool PressedShift();
-	bool PressedLock();
-	bool PressedControl();
-	bool PressedMod1();
-	bool PressedMod2();
-	bool PressedMod3();
-	bool PressedMod4();
-	bool PressedMod5();	
+WindowEventKeySymbol &WindowEventKeySymbol::operator =(const WindowEventKeySymbol &e)
+{
+	*symbol = *e.symbol;
+	return *this;
+}
 
-};
+KeyCompositionSymbol &WindowEventKeySymbol::Symbol()
+{
+	return *symbol;
+}
 
-#endif // WINDOWEVENTKEY_H

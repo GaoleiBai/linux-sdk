@@ -20,12 +20,28 @@
 *
 **/
 #include "keycompositionpath.h"
+#include "../Text/text.h"
 
-KeyCompositionPath::KeyCompositionPath()
+KeyCompositionPath::KeyCompositionPath(const Text &composition, const Text &result, bool continueComposing)
 {
+	this->composition = new Text(composition);
+	this->result = new Text(result);
+	this->continueComposing = continueComposing;
 }
 
 KeyCompositionPath::~KeyCompositionPath()
 {
+	delete composition;
+	delete result;
+}
+
+Text &KeyCompositionPath::Composition()
+{
+	return *composition;
+}
+
+Text &KeyCompositionPath::Result()
+{
+	return *result;
 }
 

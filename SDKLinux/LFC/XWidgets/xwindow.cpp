@@ -23,6 +23,8 @@
 #include "xdisplay.h"
 #include "keysymbols.h"
 #include "xexception.h"
+#include "keycompositionmanager.h"
+#include "keycompositionsymbol.h"
 #include "../nwchar.h"
 #include "../Text/text.h"
 #include "../Threading/mutex.h"
@@ -32,6 +34,7 @@
 #include "Graphics/npoint.h"
 #include "Controls/control.h"
 #include "Events/windoweventkey.h"
+#include "Events/windoweventkeysymbol.h"
 #include "Events/windoweventmousebutton.h"
 #include "Events/windoweventmousemove.h"
 #include "Events/windowevententerleave.h"
@@ -48,6 +51,7 @@
 #include "Events/windoweventcolormap.h"
 #include "Events/controleventfocused.h"
 #include "Events/controleventkey.h"
+#include "Events/controleventkeysymbol.h"
 #include "Events/controleventmousebutton.h"
 #include "Events/controleventmousemove.h"
 #include <string.h>
@@ -77,6 +81,7 @@ XWindow::~XWindow()
 	delete area;
 	delete backcolor;
 	delete font;
+	delete composeKeySymBuffer;
 	
 	// Destroy window
 	int res = XDestroyWindow(windowDisplay, window);
@@ -84,6 +89,7 @@ XWindow::~XWindow()
 	
 	delete dOnWindowKeyPress;
 	delete dOnWindowKeyRelease;
+	delete dOnWindowKeySymbol;
 	delete dOnWindowKeymap;
 	delete dOnWindowKeyboardMapping;
 	delete dOnWindowMouseDown;
@@ -120,10 +126,12 @@ void XWindow::init(const XDisplay &d)
 	backcolor = new NColor(0.95, 0.95, 0.97, 1.0);
 	font = new NFont("Ubuntu Mono", NFont::FontWeightBold, 10);
 	drawEnabled = true;
+	composeKeySymBuffer = new Text("");
 	
 	// Creates delegates
 	dOnWindowKeyPress = new NDelegationManager();
 	dOnWindowKeyRelease = new NDelegationManager();
+	dOnWindowKeySymbol = new NDelegationManager();
 	dOnWindowKeymap = new NDelegationManager();
 	dOnWindowKeyboardMapping = new NDelegationManager();
 	dOnWindowMouseDown = new NDelegationManager();
@@ -185,6 +193,11 @@ NDelegationManager &XWindow::DelegationOnKeyPress()
 NDelegationManager &XWindow::DelegationOnKeyRelease()
 {
 	return *dOnWindowKeyRelease;
+}
+
+NDelegationManager &XWindow::DelegationOnKeySymbol()
+{
+	return *dOnWindowKeySymbol;
 }
 
 NDelegationManager &XWindow::DelegationOnKeymap()
@@ -623,7 +636,33 @@ void XWindow::Draw()
 
 void XWindow::OnKeyPress(WindowEventKey *e)
 {
-	ControlEventKey ek(*e);
+	// ********************************************************************
+	// Calculate keySym and keyText
+	XkbStateRec s;
+	Status st = XkbGetState(e->Handle()->display, XkbUseCoreKbd, &s);
+	if (st != XkbOD_Success)
+		throw new XException("Error getting xkb keyboard state", __FILE__, __LINE__, __func__);
+	
+	int shift = (s.mods & ShiftMask) != 0 ? 1 : 0;
+	if (shift == 0) shift =  (s.mods & Mod5Mask) != 0 ? 2 : 0;
+	//int lock = (s.mods & LockMask) != 0 ? 1 : 0;
+	//int ctrl = (s.mods & ControlMask) != 0 ? 1 : 0;
+	//int mod1 = (s.mods & Mod1Mask) != 0 ? 1 : 0;
+	//int mod2 = (s.mods & Mod2Mask) != 0 ? 1 : 0;
+	//int mod3 = (s.mods & Mod3Mask) != 0 ? 1 : 0;
+	//int mod4 = (s.mods & Mod4Mask) != 0 ? 1 : 0;
+	//int mod5 = (s.mods & Mod5Mask) != 0 ? 1 : 0;
+	KeySym keySym = XkbKeycodeToKeysym(e->Handle()->display, e->Handle()->keycode, 0, shift);
+	
+	char cadena[10];
+	int overflow = 0;
+	int nbytes = XkbTranslateKeySym(e->Handle()->display, &keySym, s.mods, cadena, 10, &overflow);
+	Text keyText = nbytes > 0 ? cadena : "";
+
+
+	// ********************************************************************
+	// Manage KeyPreview and KeyPress events
+	ControlEventKey ek(*e, KeyCompositionSymbol(keySym, keyText));
 	
 	// Key preview to every control
 	for (int i=0; i<controls->Count(); i++)
@@ -636,25 +675,58 @@ void XWindow::OnKeyPress(WindowEventKey *e)
 		
 	// Noone catched the event?
 	if (!redirected) {
-		if (e->Keysym() == KeySymbols::Tab) {
+		if (keySym == KeySymbols::Tab) {
 			// Window focus rotate
 			if (!e->PressedShift()) ControlFocusNext();
 			else ControlFocusPrevious();
-		} else if (e->Keysym() == KeySymbols::Return) {
+		} else if (keySym == KeySymbols::Return) {
 			// Return: Window Accept
-		} else if (e->Keysym() == KeySymbols::Escape) {
+		} else if (keySym == KeySymbols::Escape) {
 			// Escape: Window Cancel
-		} else if (e->Keysym() == KeySymbols::Space) {
+		} else if (keySym == KeySymbols::Space) {
 			// Return: Window Accept
 		}
 	}	
 	
 	DelegationOnKeyPress().Execute(e);	
+	
+	
+	// ********************************************************************
+	// Manage KeySymbol event	
+	bool continueComposing = false;
+	Text t = KeyCompositionManager::Default().GetComposedKeySym(keyText, continueComposing);
+	*composeKeySymBuffer = continueComposing ? *composeKeySymBuffer + t : "";
+	
+	// Send Key Symbol Event
+	KeyCompositionSymbol symbol(t == keyText ? keySym : 0, t);
+	WindowEventKeySymbol weks(symbol);
+	OnKeySymbol(&weks);
 }
 
 void XWindow::OnKeyRelease(WindowEventKey *e)
 {
-	ControlEventKey kr(*e);
+	XkbStateRec s;
+	Status st = XkbGetState(e->Handle()->display, XkbUseCoreKbd, &s);
+	if (st != XkbOD_Success)
+		throw new XException("Error getting xkb keyboard state", __FILE__, __LINE__, __func__);
+	
+	int shift = (s.mods & ShiftMask) != 0 ? 1 : 0;
+	if (shift == 0) shift =  (s.mods & Mod5Mask) != 0 ? 2 : 0;
+	//int lock = (s.mods & LockMask) != 0 ? 1 : 0;
+	//int ctrl = (s.mods & ControlMask) != 0 ? 1 : 0;
+	//int mod1 = (s.mods & Mod1Mask) != 0 ? 1 : 0;
+	//int mod2 = (s.mods & Mod2Mask) != 0 ? 1 : 0;
+	//int mod3 = (s.mods & Mod3Mask) != 0 ? 1 : 0;
+	//int mod4 = (s.mods & Mod4Mask) != 0 ? 1 : 0;
+	//int mod5 = (s.mods & Mod5Mask) != 0 ? 1 : 0;
+	KeySym keySym = XkbKeycodeToKeysym(e->Handle()->display, e->Handle()->keycode, 0, shift);
+	
+	char cadena[10];
+	int overflow = 0;
+	int nbytes = XkbTranslateKeySym(e->Handle()->display, &keySym, s.mods, cadena, 10, &overflow);
+	Text keyText = nbytes > 0 ? cadena : "";
+	
+	ControlEventKey kr(*e, KeyCompositionSymbol(keySym, keyText));
 	
 	// Key redirection until the focused control catches it
 	bool redirected = false;
@@ -662,6 +734,14 @@ void XWindow::OnKeyRelease(WindowEventKey *e)
 		redirected = (*controls)[i]->OnKeyRelease(&kr);	
 		
 	DelegationOnKeyRelease().Execute(e);
+}
+
+void XWindow::OnKeySymbol(WindowEventKeySymbol *e)
+{
+	ControlEventKeySymbol ee(*e);
+	for (int i=0; i<controls->Count(); i++)
+		if ((*controls)[i]->OnKeySymbol(&ee))
+			return;
 }
 
 void XWindow::OnMouseDown(WindowEventMouseButton *e)

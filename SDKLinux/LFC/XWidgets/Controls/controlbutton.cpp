@@ -33,6 +33,7 @@
 #include "../../Delegations/ndelegationmanager.h"
 #include "../xwindow.h"
 #include "../keysymbols.h"
+#include "../keycompositionsymbol.h"
 
 ControlButton::ControlButton(const Text &t) : Control()
 {
@@ -274,7 +275,9 @@ bool ControlButton::OnKeyPress(ControlEventKey *e)
 {
 	if (isPressed) return true;
 	if (!Control::OnKeyPress(e)) return false;
-	if (e->Keysym() != KeySymbols::Return && e->Keysym() != KeySymbols::Space) return false;
+	if (e->Symbol().SymbolValue() != KeySymbols::Return && 
+		e->Symbol().SymbolValue() != KeySymbols::Space) 
+			return false;
 	
 	isPressed = true;
 	Draw();
@@ -286,7 +289,7 @@ bool ControlButton::OnKeyRelease(ControlEventKey *e)
 {
 	if (!isPressed) return false;
 	if (!Control::OnKeyRelease(e)) return false;
-	if (e->Keysym() != KeySymbols::Return && e->Keysym() != KeySymbols::Space) return false;
+	if (e->Symbol().SymbolValue() != KeySymbols::Return && e->Symbol().SymbolValue() != KeySymbols::Space) return false;
 	
 	isPressed = false;
 	Draw();

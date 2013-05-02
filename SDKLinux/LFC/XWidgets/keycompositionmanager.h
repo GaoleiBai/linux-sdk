@@ -24,12 +24,20 @@
 
 #include "../Collections/collection.h"
 
+class KeyCompositionPath;
+
 class KeyCompositionManager : public NObject {
 protected:
-
-public:
+	Collection<KeyCompositionPath *> *paths;
+	
 	KeyCompositionManager();
 	virtual ~KeyCompositionManager();
+	
+	static KeyCompositionManager *defaultKeyCompositionManager;
+	
+public:
+	static KeyCompositionManager &Default();
+	Text GetComposedKeySym(const Text &t, bool &continueComposing);
 
 };
 

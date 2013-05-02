@@ -44,6 +44,7 @@ KeyCompositionSymbol &KeyCompositionSymbol::operator =(const KeyCompositionSymbo
 {
 	symbolValue = s.symbolValue;
 	*textValue = *s.textValue;
+	return *this;
 }
 
 Text KeyCompositionSymbol::ToText()

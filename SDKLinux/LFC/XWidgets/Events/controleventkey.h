@@ -29,6 +29,7 @@ class WindowEventKey;
 class DateTime;
 class NWChar;
 class NPoint;
+class KeyCompositionSymbol;
 
 class ControlEventKey : public ControlEvent {
 protected:
@@ -36,8 +37,7 @@ protected:
 	DateTime *time;
 	NPoint *position;
 	NPoint *positionRoot;
-	KeySym keySym;
-	Text *keyText;
+	KeyCompositionSymbol *symbol;
 	
 public:
 	static const int StatusPressedButton1 = 1;
@@ -54,14 +54,13 @@ public:
 	static const int StatusPressedMod4 = 2048;
 	static const int StatusPressedMod5 = 4096;
 
-	ControlEventKey(const WindowEventKey &e);
+	ControlEventKey(const WindowEventKey &e, const KeyCompositionSymbol &s);
 	virtual ~ControlEventKey();
 	
 	DateTime Time();
 	NPoint Position();
 	NPoint PositionRoot();
-	KeySym Keysym();
-	Text KeyText();
+	KeyCompositionSymbol Symbol();
 	
 	bool PressedButton1();
 	bool PressedButton2();

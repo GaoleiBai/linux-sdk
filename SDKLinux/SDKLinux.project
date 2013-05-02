@@ -251,6 +251,10 @@
         <File Name="LFC/XWidgets/Events/controleventaction.cpp"/>
         <File Name="LFC/XWidgets/Events/controleventfocusedcolor.h"/>
         <File Name="LFC/XWidgets/Events/controleventfocusedcolor.cpp"/>
+        <File Name="LFC/XWidgets/Events/windoweventkeysymbol.h"/>
+        <File Name="LFC/XWidgets/Events/windoweventkeysymbol.cpp"/>
+        <File Name="LFC/XWidgets/Events/controleventkeysymbol.h"/>
+        <File Name="LFC/XWidgets/Events/controleventkeysymbol.cpp"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Controls">
         <File Name="LFC/XWidgets/Controls/control.h"/>
@@ -270,8 +274,8 @@
       <File Name="LFC/XWidgets/keycompositionmanager.cpp"/>
       <File Name="LFC/XWidgets/keycompositionpath.h"/>
       <File Name="LFC/XWidgets/keycompositionpath.cpp"/>
-      <File Name="LFC/XWidgets/keycompositionsymbol.h"/>
       <File Name="LFC/XWidgets/keycompositionsymbol.cpp"/>
+      <File Name="LFC/XWidgets/keycompositionsymbol.h"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Delegations">
       <File Name="LFC/Delegations/ndelegation.cpp"/>

@@ -21,12 +21,13 @@
 **/
 #include "controleventkey.h"
 #include "windoweventkey.h"
+#include "../keycompositionsymbol.h"
 #include "../Graphics/npoint.h"
 #include "../../nwchar.h"
 #include "../../Time/datetime.h"
 #include "../../Text/text.h"
 
-ControlEventKey::ControlEventKey(const WindowEventKey &e)
+ControlEventKey::ControlEventKey(const WindowEventKey &e, const KeyCompositionSymbol &s)
 {
 	WindowEventKey *ee = (WindowEventKey *)&e;
 	
@@ -48,8 +49,7 @@ ControlEventKey::ControlEventKey(const WindowEventKey &e)
 	time = new DateTime(ee->Time());
 	position = new NPoint(ee->Position());
 	positionRoot = new NPoint(ee->PositionRoot());
-	keyText = new Text(ee->KeyText());
-	keySym = ee->Keysym();
+	symbol = new KeyCompositionSymbol(s);
 }
 
 ControlEventKey::~ControlEventKey()
@@ -57,7 +57,7 @@ ControlEventKey::~ControlEventKey()
 	delete time;
 	delete position;
 	delete positionRoot;
-	delete keyText;
+	delete symbol;
 }
 
 DateTime ControlEventKey::Time()
@@ -75,14 +75,9 @@ NPoint ControlEventKey::PositionRoot()
 	return *positionRoot;
 }
 
-KeySym ControlEventKey::Keysym()
+KeyCompositionSymbol ControlEventKey::Symbol()
 {
-	return keySym;
-}
-
-Text ControlEventKey::KeyText()
-{
-	return *keyText;
+	return *symbol;
 }
 
 bool ControlEventKey::PressedButton1()
@@ -156,7 +151,6 @@ ControlEventKey &ControlEventKey::operator =(const ControlEventKey &e)
 	*time = *e.time;
 	*position = *e.position;
 	*positionRoot = *e.positionRoot;
-	keySym = e.keySym;
-	*keyText = *e.keyText;
+	*symbol = *e.symbol;
 	return *this;
 }
