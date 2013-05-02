@@ -698,9 +698,11 @@ void XWindow::OnKeyPress(WindowEventKey *e)
 	*composeKeySymBuffer = continueComposing ? *composeKeySymBuffer + t : "";
 	
 	// Send Key Symbol Event
-	KeyCompositionSymbol symbol(t == keyText ? keySym : 0, t);
-	WindowEventKeySymbol weks(symbol);
-	OnKeySymbol(&weks);
+	if (!continueComposing) {
+		KeyCompositionSymbol symbol(t == keyText ? keySym : 0, t);
+		WindowEventKeySymbol weks(symbol);
+		OnKeySymbol(&weks);
+	}
 }
 
 void XWindow::OnKeyRelease(WindowEventKey *e)
@@ -742,6 +744,8 @@ void XWindow::OnKeySymbol(WindowEventKeySymbol *e)
 	for (int i=0; i<controls->Count(); i++)
 		if ((*controls)[i]->OnKeySymbol(&ee))
 			return;
+			
+	DelegationOnKeySymbol().Execute(e);
 }
 
 void XWindow::OnMouseDown(WindowEventMouseButton *e)

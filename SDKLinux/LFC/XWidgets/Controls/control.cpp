@@ -235,7 +235,7 @@ bool Control::OnKeySymbol(ControlEventKeySymbol *e)
 	if (!IsVisible()) return false;
 	if (!IsFocused()) return false;
 	
-	DelegationOnKeyRelease().Execute(e);
+	DelegationOnKeySymbol().Execute(e);
 	return true;
 }
 
