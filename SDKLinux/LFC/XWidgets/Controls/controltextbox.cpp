@@ -150,18 +150,22 @@ bool ControlTextBox::OnDraw(IGraphics *g, NRectangle *r)
 	g->SetColor(*textBackColor);
 	g->FillRoundRectangle(*r, 5);
 	
-	g->SetColor(NColor(
-		(backcolor->R() + textBackColor->R()) / 2,
-		(backcolor->G() + textBackColor->G()) / 2,
-		(backcolor->B() + textBackColor->B()) / 2,
-		(backcolor->A() + textBackColor->A()) / 2));
-	g->DrawRoundRectangle(NRectangle(r->GetPosition() + NPoint(1, 1), r->GetSize() - NSize(1, 1)), 5);
-	
+	// Draw a subtle inline
+	g->SetLineWidth(2);
+	double rr =	(backcolor->R() + textBackColor->R()) / 2;
+	double gg =	(backcolor->G() + textBackColor->G()) / 2;
+	double bb =	(backcolor->B() + textBackColor->B()) / 2;
+	double aa =	(backcolor->A() + textBackColor->A()) / 2;
+	g->SetColor(NColor(rr, gg, bb, aa));
+	g->DrawRoundRectangle(NRectangle(r->GetPosition() + NPoint(1, 1), r->GetSize() - NSize(2, 2)), 5);
+
+	// Draw outline
+	g->SetLineWidth(1);
 	if (focused)
 		g->SetColor(*focusedcolor);
 	else
 		g->SetColor(NColor(0, 0, 0, 1.0));
-	g->DrawRoundRectangle(*r, 5);
+	g->DrawRoundRectangle(NRectangle(r->GetPosition() + NPoint(1, 1), r->GetSize() - NSize(2, 2)), 5);
 	
 	g->Save();
 	g->TransformTranslate(3, 3);

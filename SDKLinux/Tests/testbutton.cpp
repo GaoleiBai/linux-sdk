@@ -34,21 +34,30 @@ int TestButton::Perform()
 	class VentanaInicio : public XWindow {
 		ControlButton *buttonClose;
 		ControlButton *buttonTest1;
+		ControlTextBox *campoPrueba1;
+		
 	protected:
 		virtual void Prepare() {
 			buttonClose = new ControlButton("Close", NPoint(10, 10));
 			buttonTest1 = new ControlButton("Test 1", NRectangle(10, 30, 50, 20));
+			campoPrueba1 = new ControlTextBox(NRectangle(10, 60, 100, 20));
+			
 			buttonClose->DelegationOnAction() += NDelegation(this, (Delegate)&VentanaInicio::OnAction_ButtonClose);
 			buttonTest1->DelegationOnAction() += NDelegation(this, (Delegate)&VentanaInicio::OnAction_ButtonTest1);
+			
 			ControlAdd(buttonClose);
 			ControlAdd(buttonTest1);
+			ControlAdd(campoPrueba1);
 		}
 		
 		virtual void Destroy() {
 			ControlRemove(buttonClose);
 			ControlRemove(buttonTest1);
+			ControlRemove(campoPrueba1);
+			
 			delete buttonClose;
 			delete buttonTest1;
+			delete campoPrueba1;
 		}
 		
 		void *OnAction_ButtonTest1(ControlEventAction *e)

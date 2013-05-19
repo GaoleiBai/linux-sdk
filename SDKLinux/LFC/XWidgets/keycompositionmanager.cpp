@@ -21,13 +21,15 @@
 **/
 #include "keycompositionmanager.h"
 #include "keycompositionpath.h"
+#include "xexception.h"
 #include "../Text/text.h"
 
 KeyCompositionManager *KeyCompositionManager::defaultKeyCompositionManager = NULL;
 
 KeyCompositionManager::KeyCompositionManager()
 {
-	if (defaultKeyCompositionManager != NULL) return;
+	if (defaultKeyCompositionManager != NULL) 
+		throw new XException("KeyComposition manager is a singleton class so that it can only be instantiated once", __FILE__, __LINE__, __func__);
 	defaultKeyCompositionManager = this;
 	
 	paths = new Collection<KeyCompositionPath *>();
@@ -112,5 +114,7 @@ Text KeyCompositionManager::GetComposedKeySym(const Text &t, bool &continueCompo
 
 KeyCompositionManager &KeyCompositionManager::Default()
 {
+	if (defaultKeyCompositionManager == NULL)
+		defaultKeyCompositionManager = new KeyCompositionManager();
 	return *defaultKeyCompositionManager;
 }

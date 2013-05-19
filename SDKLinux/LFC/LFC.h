@@ -146,6 +146,7 @@
 #include "XWidgets/Controls/control.h"
 #include "XWidgets/Controls/controllabel.h"
 #include "XWidgets/Controls/controlbutton.h"
+#include "XWidgets/Controls/controltextbox.h"
 #include "XWidgets/Controls/controlexception.h"
 
 void lfc_init();
