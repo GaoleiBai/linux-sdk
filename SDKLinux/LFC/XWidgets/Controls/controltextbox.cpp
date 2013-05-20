@@ -23,6 +23,8 @@
 #include "../Graphics/ncolor.h"
 #include "../Graphics/npoint.h"
 #include "../Graphics/igraphics.h"
+#include "../Events/controleventkey.h"
+#include "../keycompositionsymbol.h"
 
 ControlTextBox::ControlTextBox(const NRectangle &r)
 	: Control(r)
@@ -168,12 +170,12 @@ bool ControlTextBox::OnDraw(IGraphics *g, NRectangle *r)
 	g->DrawRoundRectangle(NRectangle(r->GetPosition() + NPoint(1, 1), r->GetSize() - NSize(2, 2)), 5);
 	
 	g->Save();
-	g->TransformTranslate(3, 3);
-	g->ClipRegionSet(NRectangle(r->GetPosition(), r->GetSize() - NSize(6, 6)));
+	g->TransformTranslate(5, 3);
+	g->ClipRegionSet(NRectangle(r->GetPosition(), r->GetSize() - NSize(10, 6)));
 	
-	// TODO: Draw Text
 	NSize ss = g->GetTextExtents(*text, *font);
-	g->DrawText(*text, (area->GetWidth() - ss.GetWidth()) / 2, (area->GetHeight() - ss.GetHeight()) / 2, *font);
+	g->SetColor(*textColor);
+	g->DrawText(*text, 0, 0, *font);
 	
 	g->Restore();
 }
@@ -182,6 +184,18 @@ bool ControlTextBox::OnKeyPress(ControlEventKey *e)
 {
 	if (!Control::OnKeyPress(e)) return false;
 	
+	// Update text
+	Text tt = e->Symbol().TextValue();
+	if (tt.Length() > 0) {
+		*text = 
+			text->SubText(0, selectionStart) + tt + 
+			text->SubText(selectionStart + selectionLength);
+		selectionStart++;
+		selectionLength = 0;
+	}
+		
+	// Redraw control
+	Draw();
 	
 	return true;
 }

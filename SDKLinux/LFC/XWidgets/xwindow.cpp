@@ -694,7 +694,7 @@ void XWindow::OnKeyPress(WindowEventKey *e)
 	// ********************************************************************
 	// Manage KeySymbol event	
 	bool continueComposing = false;
-	Text t = KeyCompositionManager::Default().GetComposedKeySym(keyText, continueComposing);
+	Text t = KeyCompositionManager::Default().GetComposedKeySym(*composeKeySymBuffer + keyText, continueComposing);
 	*composeKeySymBuffer = continueComposing ? *composeKeySymBuffer + t : "";
 	
 	// Send Key Symbol Event
