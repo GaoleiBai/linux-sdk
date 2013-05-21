@@ -73,6 +73,20 @@ KeyCompositionManager::KeyCompositionManager()
 	paths->Add(new KeyCompositionPath("`O", "Ò", false));
 	paths->Add(new KeyCompositionPath("`U", "Ù", false));
 	
+	// Composition of ' character
+	paths->Add(new KeyCompositionPath("\302\264 ", "'", false));
+	paths->Add(new KeyCompositionPath("\302\264\302\264", "", false));
+	paths->Add(new KeyCompositionPath("\302\264a", "á", false));
+	paths->Add(new KeyCompositionPath("\302\264e", "é", false));
+	paths->Add(new KeyCompositionPath("\302\264i", "í", false));
+	paths->Add(new KeyCompositionPath("\302\264o", "ó", false));
+	paths->Add(new KeyCompositionPath("\302\264u", "ú", false));
+	paths->Add(new KeyCompositionPath("\302\264A", "Á", false));
+	paths->Add(new KeyCompositionPath("\302\264E", "É", false));
+	paths->Add(new KeyCompositionPath("\302\264I", "Í", false));
+	paths->Add(new KeyCompositionPath("\302\264O", "Ó", false));
+	paths->Add(new KeyCompositionPath("\302\264U", "Ú", false));
+	
 	paths->Add(new KeyCompositionPath("' ", "'", false));
 	paths->Add(new KeyCompositionPath("''", "", false));
 	paths->Add(new KeyCompositionPath("'a", "á", false));

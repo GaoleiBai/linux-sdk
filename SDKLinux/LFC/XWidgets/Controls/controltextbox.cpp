@@ -23,7 +23,7 @@
 #include "../Graphics/ncolor.h"
 #include "../Graphics/npoint.h"
 #include "../Graphics/igraphics.h"
-#include "../Events/controleventkey.h"
+#include "../Events/controleventkeysymbol.h"
 #include "../keycompositionsymbol.h"
 
 ControlTextBox::ControlTextBox(const NRectangle &r)
@@ -180,12 +180,12 @@ bool ControlTextBox::OnDraw(IGraphics *g, NRectangle *r)
 	g->Restore();
 }
 
-bool ControlTextBox::OnKeyPress(ControlEventKey *e)
+bool ControlTextBox::OnKeySymbol(ControlEventKeySymbol *s)
 {
-	if (!Control::OnKeyPress(e)) return false;
+	if (!Control::OnKeySymbol(s)) return false;
 	
 	// Update text
-	Text tt = e->Symbol().TextValue();
+	Text tt = s->Symbol().TextValue();
 	if (tt.Length() > 0) {
 		*text = 
 			text->SubText(0, selectionStart) + tt + 

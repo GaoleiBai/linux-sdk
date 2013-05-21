@@ -56,7 +56,7 @@ public:
 protected:
 	virtual bool OnDrawBackground(IGraphics *g, NRectangle *r);
 	virtual bool OnDraw(IGraphics *g, NRectangle *r);
-	virtual bool OnKeyPress(ControlEventKey *e);
+	virtual bool OnKeySymbol(ControlEventKeySymbol *s);
 	
 
 };

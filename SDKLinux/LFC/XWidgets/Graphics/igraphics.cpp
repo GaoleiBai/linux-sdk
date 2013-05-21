@@ -343,8 +343,8 @@ void IGraphics::DrawGraphics(const NRectangle &r, const IGraphics &src, const NP
 void IGraphics::DrawText(const Text &text, int x, int y, const NFont &font)
 {
 	Text *tt = (Text *)&text;
-	char *ttt = new char[2 * tt->Length() + 1];
-	tt->GetAnsiString(ttt, 2 * tt->Length());
+	char *ttt = new char[6 * tt->Length() + 1];
+	tt->GetAnsiString(ttt, 6 * tt->Length());
 	NFont *ff = (NFont *)&font;
 	
 	PangoLayout *layout = pango_cairo_create_layout(gc);
