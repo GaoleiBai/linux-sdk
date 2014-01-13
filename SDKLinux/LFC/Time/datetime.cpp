@@ -204,12 +204,12 @@ DateTime & DateTime::operator =(const DateTime &d)
 
 DateTime DateTime::operator +(const DateTime &d)
 {
-	return *this + ((DateTime *)&d)->TotalDays();
+	return this->TotalDays() + ((DateTime *)&d)->TotalDays();
 }
 
 DateTime DateTime::operator -(const DateTime &d)
 {
-	return *this + (-((DateTime *)&d)->TotalDays());
+	return this->TotalDays() - ((DateTime *)&d)->TotalDays();
 }
 
 void DateTime::operator +=(const DateTime &t)
